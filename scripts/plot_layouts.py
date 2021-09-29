@@ -1,5 +1,5 @@
 #%% [markdown]
-# # Look at it
+# # Look at the left and right hemispheres of the brain
 
 #%% [markdown]
 # ## Preliminaries
@@ -11,27 +11,26 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from sklearn.preprocessing import normalize
+from giskard.plot import adjplot, graphplot
+from giskard.utils import get_paired_inds
+from graspologic.embed import LaplacianSpectralEmbed, select_svd
 from graspologic.utils import pass_to_ranks
-from umap import AlignedUMAP
-from giskard.plot import graphplot
-
+from matplotlib.colors import LinearSegmentedColormap
 from pkg.data import (
     load_maggot_graph,
-    select_nice_nodes,
-    load_node_palette,
     load_network_palette,
+    load_node_palette,
+    select_nice_nodes,
 )
 from pkg.io import savefig
 from pkg.plot import set_theme
-from giskard.utils import get_paired_inds
-
-from matplotlib.colors import LinearSegmentedColormap
 from scipy.stats import binom
+from sklearn.preprocessing import normalize
+from umap import AlignedUMAP
 
 
 def stashfig(name, **kwargs):
-    foldername = "look_at_it"
+    foldername = "plot_layouts"
     savefig(name, foldername=foldername, **kwargs)
 
 
@@ -64,8 +63,6 @@ rr_adj = adj[np.ix_(right_inds, right_inds)]
 #%% [markdown]
 # ## Plot the ipsilateral subgraph adjacency matrices
 # %%
-
-from giskard.plot import adjplot
 
 
 def calculate_weighted_degrees(adj):
@@ -250,8 +247,6 @@ rr_mg.sum
 # ## [Experimental] Plot a graph layout for each hemisphere using aligned UMAP
 #%%
 
-from graspologic.embed import select_svd
-from pkg.data import load_node_palette
 
 node_palette, NODE_KEY = load_node_palette()
 
@@ -262,9 +257,6 @@ def ase(adj, n_components=None):
     X = U @ S_sqrt
     Y = Vt.T @ S_sqrt
     return X, Y
-
-
-from graspologic.embed import LaplacianSpectralEmbed
 
 
 def lse(adj, n_components=None):
