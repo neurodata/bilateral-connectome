@@ -1,8 +1,11 @@
 import numpy as np
 from sklearn.utils import check_random_state
 
-def perturb(adjacency, effect_size=100, mode='add'):
+
+def perturb(adjacency, effect_size=100, mode="add"):
     # TODO type checking, etc
+    pass
+
 
 def remove_edges(adjacency, effect_size=100, random_state=None):
     random_state = check_random_state(random_state)
@@ -20,6 +23,7 @@ def remove_edges(adjacency, effect_size=100, random_state=None):
 
 def swap_edges(adjacency, effect_size=100, random_state=None):
     return 0
+
 
 def add_edges(adjacency, effect_size=100, random_state=None):
     return 0

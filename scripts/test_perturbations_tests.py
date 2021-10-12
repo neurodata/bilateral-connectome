@@ -54,27 +54,30 @@ right_adj = binarize(right_adj)
 
 random_state = np.random.default_rng(8888)
 adj = right_adj
-n_sims = 1
+n_sims = 2
 effect_sizes = [0, 50, 100, 150, 200]
-test_name = "ER"
-perturbation = "remove_edges_random"
 rows = []
 
-for effect_size in effect_sizes:
-    for i in range(n_sims):
-        seed = get_random_seed(random_state)
-        perturb_adj = remove_edges(adj, effect_size, random_state=seed)
-        print(np.sum(adj - perturb_adj))
-        stat, pvalue, other = erdos_reyni_test(adj, perturb_adj)
-        row = {
-            "stat": stat,
-            "pvalue": pvalue,
-            "other": other,
-            "test": test_name,
-            "perturbation": perturbation,
-            "effect_size": effect_size,
-        }
-        rows.append(row)
+tests = {"ER": erdos_reyni_test}
+perturbations = {"Remove edges": remove_edges}
+
+for perturbation_name, perturb in perturbations.items():
+    for effect_size in effect_sizes:
+        for sim in range(n_sims):
+            seed = get_random_seed(random_state)
+            perturb_adj = perturb(adj, effect_size=effect_size, random_state=seed)
+            for test_name, test in tests.items():
+                stat, pvalue, other = test(adj, perturb_adj)
+                row = {
+                    "stat": stat,
+                    "pvalue": pvalue,
+                    "other": other,
+                    "test": test_name,
+                    "perturbation": perturbation_name,
+                    "effect_size": effect_size,
+                    "sim": sim,
+                }
+                rows.append(row)
 
 results = pd.DataFrame(rows)
 #%%
