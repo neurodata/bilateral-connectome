@@ -50,7 +50,6 @@ right_adj = binarize(right_adj)
 
 #%%
 
-
 left_n = left_adj.size
 right_n = right_adj.size
 left_p = np.count_nonzero(left_adj) / left_n
