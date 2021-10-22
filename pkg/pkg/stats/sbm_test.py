@@ -5,7 +5,7 @@ import pandas as pd
 from graspologic.utils import remove_loops
 from scipy.stats import chi2_contingency, combine_pvalues, fisher_exact
 from statsmodels.stats.proportion import test_proportions_2indep
-
+import logging
 
 SBMResult = namedtuple(
     "sbm_result", ["probabilities", "observed", "possible", "group_counts"]
@@ -64,6 +64,9 @@ def fit_sbm(A, labels, loops=False):
 
 
 def binom_2samp(x1, n1, x2, n2, method="agresti-caffo"):
+    if x1 == 0 or x2 == 0:
+        # logging.warn("One or more counts were 0, not running test and returning nan")
+        return np.nan, np.nan
     cont_table = np.array([[x1, n1 - x1], [x2, n2 - x2]])
     if method == "fisher":
         stat, pvalue = fisher_exact(cont_table)
@@ -81,8 +84,7 @@ def binom_2samp(x1, n1, x2, n2, method="agresti-caffo"):
         )
     else:
         raise ValueError()
-    if x1 == 0 or x2 == 0:
-        print(stat, pvalue)
+
     return stat, pvalue
 
 
@@ -140,6 +142,9 @@ def stochastic_block_test(A1, A2, labels1, labels2, method="agresti-caffo"):
     misc["group_counts2"] = group_counts2
 
     # TODO how else to combine pvalues
-    stat, pvalue = combine_pvalues(uncorrected_pvalues.values.ravel(), method="fisher")
-
+    run_pvalues = uncorrected_pvalues.values
+    run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
+    stat, pvalue = combine_pvalues(run_pvalues, method="fisher")
+    n_tests = len(run_pvalues)
+    misc["n_tests"] = n_tests
     return stat, pvalue, misc

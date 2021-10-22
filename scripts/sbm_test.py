@@ -2,8 +2,10 @@
 # ## Preliminaries
 #%%
 
+from operator import sub
 import time
 from giskard.plot import remove_shared_ax
+from giskard.plot.utils import soft_axis_off
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,6 +24,9 @@ from pkg.perturb import add_edges, remove_edges, shuffle_edges
 from pkg.plot import set_theme
 from pkg.stats import stochastic_block_test
 from seaborn.utils import relative_luminance
+from pkg.stats import fit_sbm
+from giskard.plot import remove_shared_ax
+from giskard.plot import rotate_labels
 
 
 def stashfig(name, **kwargs):
@@ -58,34 +63,24 @@ left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 
 
-from pkg.stats import fit_sbm
-
-B1, n_observed1, n_possible1 = fit_sbm(left_adj, left_labels)
-
-B1
-
 #%%
-
-from giskard.plot import remove_shared_ax
-
-
-def rotate_labels(ax):
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 
 
 stat, pvalue, misc = stochastic_block_test(
     left_adj, right_adj, labels1=left_labels, labels2=right_labels, method="fisher"
 )
 
+#%%
 B1 = misc["probabilities1"]
 B2 = misc["probabilities2"]
 index = B1.index
 p_max = max(B1.values.max(), B2.values.max())
 uncorrected_pvalues = misc["uncorrected_pvalues"]
+n_tests = misc["n_tests"]
 
 alpha = 0.05
 K = B1.shape[0]
-hb_thresh = alpha / K ** 2
+hb_thresh = alpha / n_tests
 
 set_theme(font_scale=1.25)
 fig, axs = plt.subplots(
@@ -93,23 +88,29 @@ fig, axs = plt.subplots(
     5,
     figsize=(30, 15),
     gridspec_kw=dict(
-        height_ratios=[2, 1], width_ratios=[0.3, 10, 10, 10, 1], hspace=0.1
+        height_ratios=[2, 1],
+        width_ratios=[0.3, 10, 10, 10, 1],
+        hspace=0.15,
+        wspace=0.66,
     ),
-    constrained_layout=True,
+    # constrained_layout=True,
 )
 axs[1, 1].sharex(axs[0, 1])
-heatmap_kws = dict(cmap="Blues", square=True, cbar=False, vmax=p_max)
+heatmap_kws = dict(cmap="Blues", square=True, cbar=False, vmax=p_max, fmt="s")
 
+annot = np.full((K, K), "")
+annot[B1.values == 0] = 0
 ax = axs[0, 1]
-sns.heatmap(B1, ax=ax, **heatmap_kws)
+sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
 ax.set(ylabel="Source group", xlabel="Target group")
 ax.set_title(r"$\hat{B}$ left", fontsize="xx-large")
 # rotate_labels(ax)
 # plt.setp(ax.get_xticklabels(), visible=True)
 
-
+annot = np.full((K, K), "")
+annot[B2.values == 0] = 0
 ax = axs[0, 2]
-im = sns.heatmap(B2, ax=ax, **heatmap_kws)
+im = sns.heatmap(B2, ax=ax, annot=annot, **heatmap_kws)
 ax.set(ylabel="", xlabel="Target group")
 ax.set_title(r"$\hat{B}$ right", fontsize="xx-large")
 # rotate_labels(ax)
@@ -129,7 +130,7 @@ ax.axis("off")
 ax = axs[0, 3]
 
 colors = im.get_children()[0].get_facecolors()
-mask = uncorrected_pvalues < hb_thresh
+significant = uncorrected_pvalues < hb_thresh
 
 # annot = pd.DataFrame(np.full((K, K), "*"), index=mask.index, columns=mask.columns)
 # annot[~mask] = ""
@@ -144,7 +145,7 @@ ax.set_title(r"$log($p-value$)$ (unadjusted)", fontsize="xx-large")
 
 
 pad = 0.2
-for idx, (is_significant, color) in enumerate(zip(mask.values.ravel(), colors)):
+for idx, (is_significant, color) in enumerate(zip(significant.values.ravel(), colors)):
     if is_significant:
         i, j = np.unravel_index(idx, (K, K))
         lum = relative_luminance(color)
@@ -179,9 +180,9 @@ ax = axs[1, 1]
 # ax.sharex(axs[0, 1])
 countplot(misc["group_counts1"], ax)
 ax.set_title("Left", fontsize="xx-large")
-remove_shared_ax(ax, y=False)
-axs[0, 1].set_xticks(np.arange(K) + 0.5)
-axs[0, 1].set_xticklabels(index)
+# remove_shared_ax(ax, y=False)
+# axs[0, 1].set_xticks(np.arange(K) + 0.5)
+# axs[0, 1].set_xticklabels(index)
 
 ax = axs[1, 2]
 ax.sharex(axs[0, 2])
@@ -215,4 +216,85 @@ axs[1, 0].remove()
 axs[1, 4].remove()
 
 stashfig("SBM-left-right-comparison")
+
 # %%
+
+row_inds, col_inds = np.nonzero(significant.values)
+
+n_significant = len(row_inds)
+
+rows = []
+for row_ind, col_ind in zip(row_inds, col_inds):
+    source = index[row_ind]
+    target = index[col_ind]
+    left_p = B1.loc[source, target]
+    right_p = B2.loc[source, target]
+    pair = source + r"$\rightarrow$" + target
+    rows.append(
+        {
+            "source": source,
+            "target": target,
+            "p": left_p,
+            "side": "Left",
+            "pair": pair,
+        }
+    )
+    rows.append(
+        {
+            "source": source,
+            "target": target,
+            "p": right_p,
+            "side": "Right",
+            "pair": pair,
+        }
+    )
+sig_data = pd.DataFrame(rows)
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.pointplot(
+    data=sig_data,
+    y="p",
+    x="pair",
+    ax=ax,
+    hue="side",
+    dodge=True,
+    join=False,
+    palette=network_palette,
+)
+
+ax.get_legend().set_title("Side")
+rotate_labels(ax)
+ax.set(xlabel="Group pair", ylabel="Connection probability")
+stashfig("significant-p-comparison")
+
+#%%
+n_edges_left = np.count_nonzero(left_adj)
+n_edges_right = np.count_nonzero(right_adj)
+from pkg.perturb import remove_edges
+from tqdm import tqdm
+
+n_remove = n_edges_right - n_edges_left
+
+rows = []
+n_resamples = 100
+for i in tqdm(range(n_resamples)):
+    subsampled_right_adj = remove_edges(right_adj, effect_size=n_remove)
+    stat, pvalue, misc = stochastic_block_test(
+        left_adj,
+        subsampled_right_adj,
+        labels1=left_labels,
+        labels2=right_labels,
+        method="fisher",
+    )
+    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+
+resample_results = pd.DataFrame(rows)
+
+resample_results
+
+#%%
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(data=resample_results, x="pvalue", ax=ax)
+ax.set(xlabel="p-value", ylabel="", yticks=[])
+ax.spines["left"].set_visible(False)
+stashfig("p-values-post-correction")

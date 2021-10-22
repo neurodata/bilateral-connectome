@@ -1,4 +1,4 @@
-from pkg.stats import stochastic_block_test
+from .sbm_test import stochastic_block_test
 import numpy as np
 
 

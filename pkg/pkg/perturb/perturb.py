@@ -19,13 +19,13 @@ def remove_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
         adjacency, random_seed, effect_size, max_tries
     )
 
-    nonzero_inds = np.nonzero(adjacency)
-    edge_counter = np.arange(len(nonzero_inds[0]))
+    row_inds, col_inds = np.nonzero(adjacency)
+    edge_counter = np.arange(len(row_inds))
     rng.shuffle(edge_counter)
-    for i in edge_counter[:effect_size]:
-        source = nonzero_inds[0][i]
-        target = nonzero_inds[1][i]
-        adjacency[source, target] = 0
+    select_edges = edge_counter[:effect_size]
+    select_row_inds = row_inds[select_edges]
+    select_col_inds = col_inds[select_edges]
+    adjacency[select_row_inds, select_col_inds] = 0
     return adjacency
 
 
