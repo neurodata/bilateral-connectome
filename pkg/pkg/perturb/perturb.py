@@ -6,7 +6,11 @@ from giskard.utils import get_random_seed
 def _input_checks(adjacency, random_seed, effect_size, max_tries):
     adjacency = adjacency.copy()
     n = adjacency.shape[0]
-    rng = default_rng(random_seed)
+
+    if isinstance(random_seed, np.integer):
+        rng = default_rng(random_seed)
+    else:
+        rng = random_seed
 
     if max_tries is None:
         max_tries = effect_size * 10
