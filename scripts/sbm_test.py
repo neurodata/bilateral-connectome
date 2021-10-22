@@ -1,5 +1,5 @@
 #%% [markdown]
-# # A community-based test for bilateral symmetry
+# # A community based test
 
 #%% [markdown]
 # ## Preliminaries
@@ -271,105 +271,104 @@ stashfig("SBM-left-right-comparison")
 # indicating that we should reject our null hypothesis that the communitiy connection
 # probabilities are the same.
 
+# %% [markdown]
+# ## Look at the community connections that were significantly different
+
 #%%
-# # %% [markdown]
-# # ## Look at the community connections that were significantly different
+row_inds, col_inds = np.nonzero(significant.values)
 
-# #%%
-# row_inds, col_inds = np.nonzero(significant.values)
+n_significant = len(row_inds)
 
-# n_significant = len(row_inds)
+rows = []
+for row_ind, col_ind in zip(row_inds, col_inds):
+    source = index[row_ind]
+    target = index[col_ind]
+    left_p = B1.loc[source, target]
+    right_p = B2.loc[source, target]
+    pair = source + r"$\rightarrow$" + target
+    rows.append(
+        {
+            "source": source,
+            "target": target,
+            "p": left_p,
+            "side": "Left",
+            "pair": pair,
+        }
+    )
+    rows.append(
+        {
+            "source": source,
+            "target": target,
+            "p": right_p,
+            "side": "Right",
+            "pair": pair,
+        }
+    )
+sig_data = pd.DataFrame(rows)
 
-# rows = []
-# for row_ind, col_ind in zip(row_inds, col_inds):
-#     source = index[row_ind]
-#     target = index[col_ind]
-#     left_p = B1.loc[source, target]
-#     right_p = B2.loc[source, target]
-#     pair = source + r"$\rightarrow$" + target
-#     rows.append(
-#         {
-#             "source": source,
-#             "target": target,
-#             "p": left_p,
-#             "side": "Left",
-#             "pair": pair,
-#         }
-#     )
-#     rows.append(
-#         {
-#             "source": source,
-#             "target": target,
-#             "p": right_p,
-#             "side": "Right",
-#             "pair": pair,
-#         }
-#     )
-# sig_data = pd.DataFrame(rows)
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.pointplot(
+    data=sig_data,
+    y="p",
+    x="pair",
+    ax=ax,
+    hue="side",
+    dodge=True,
+    join=False,
+    palette=network_palette,
+)
 
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.pointplot(
-#     data=sig_data,
-#     y="p",
-#     x="pair",
-#     ax=ax,
-#     hue="side",
-#     dodge=True,
-#     join=False,
-#     palette=network_palette,
-# )
+ax.get_legend().set_title("Side")
+rotate_labels(ax)
+ax.set(xlabel="Group pair", ylabel="Connection probability")
+stashfig("significant-p-comparison")
 
-# ax.get_legend().set_title("Side")
-# rotate_labels(ax)
-# ax.set(xlabel="Group pair", ylabel="Connection probability")
-# stashfig("significant-p-comparison")
+#%% [markdown]
+# ## Resample the right network to make the density the same, rerun the test
+#%%
+n_edges_left = np.count_nonzero(left_adj)
+n_edges_right = np.count_nonzero(right_adj)
+n_remove = n_edges_right - n_edges_left
+glue("n_edges_left", n_edges_left, display=False)
+glue("n_edges_right", n_edges_right, display=False)
+glue("n_remove", n_remove, display=False)
 
-# #%% [markdown]
-# # ## Resample the right network to make the density the same, rerun the test
-# #%%
-# n_edges_left = np.count_nonzero(left_adj)
-# n_edges_right = np.count_nonzero(right_adj)
-# n_remove = n_edges_right - n_edges_left
-# glue("n_edges_left", n_edges_left, display=False)
-# glue("n_edges_right", n_edges_right, display=False)
-# glue("n_remove", n_remove, display=False)
+rows = []
+n_resamples = 25
+glue("n_resamples", n_resamples, display=False)
+for i in tqdm(range(n_resamples)):
+    subsampled_right_adj = remove_edges(
+        right_adj, effect_size=n_remove, random_seed=rng
+    )
+    stat, pvalue, misc = stochastic_block_test(
+        left_adj,
+        subsampled_right_adj,
+        labels1=left_labels,
+        labels2=right_labels,
+        method="fisher",
+    )
+    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
 
-# rows = []
-# n_resamples = 100
-# glue("n_resamples", n_resamples, display=False)
-# for i in tqdm(range(n_resamples)):
-#     subsampled_right_adj = remove_edges(
-#         right_adj, effect_size=n_remove, random_seed=rng
-#     )
-#     stat, pvalue, misc = stochastic_block_test(
-#         left_adj,
-#         subsampled_right_adj,
-#         labels1=left_labels,
-#         labels2=right_labels,
-#         method="fisher",
-#     )
-#     rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+resample_results = pd.DataFrame(rows)
 
-# resample_results = pd.DataFrame(rows)
+#%% [markdown]
+# ### Plot the p-values for the corrected tests
+#%%
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(data=resample_results, x="pvalue", ax=ax)
+ax.set(xlabel="p-value", ylabel="", yticks=[])
+ax.spines["left"].set_visible(False)
+stashfig("p-values-post-correction")
 
-# #%% [markdown]
-# # ### Plot the p-values for the corrected tests
-# #%%
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.histplot(data=resample_results, x="pvalue", ax=ax)
-# ax.set(xlabel="p-value", ylabel="", yticks=[])
-# ax.spines["left"].set_visible(False)
-# stashfig("p-values-post-correction")
+mean_resample_pvalue = np.mean(resample_results["pvalue"])
+median_resample_pvalue = np.median(resample_results["pvalue"])
 
-# mean_resample_pvalue = np.mean(resample_results["pvalue"])
-# median_resample_pvalue = np.median(resample_results["pvalue"])
-
-# #%% [markdown]
-# # ## End
-# #%%
-# elapsed = time.time() - t0
-# delta = datetime.timedelta(seconds=elapsed)
-# print("----")
-# print(f"Script took {delta}")
-# print(f"Completed at {datetime.datetime.now()}")
-# print("----")
+#%% [markdown]
+# ## End
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print("----")
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")
+print("----")

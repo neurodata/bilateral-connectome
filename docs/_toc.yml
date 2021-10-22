@@ -5,3 +5,5 @@ parts:
   chapters:
   - file: outline
   - file: introduction
+- caption: Tests
+  - file: sbm_test
