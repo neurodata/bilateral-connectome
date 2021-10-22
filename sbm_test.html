@@ -43,8 +43,6 @@
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -198,59 +196,27 @@
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   A community-based test for bilateral symmetry
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preliminaries">
+   Preliminaries
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#preliminaries">
-     Preliminaries
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-and-process-data">
+   Load and process data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-the-stochastic-block-model-2-sample-test">
+   Run the stochastic block model 2-sample test
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-the-results">
+     Plot the results
     </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#load-and-process-data">
-     Load and process data
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#run-the-stochastic-block-model-2-sample-test">
-     Run the stochastic block model 2-sample test
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#plot-the-results">
-       Plot the results
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#markdown">
-   %% [markdown]
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#look-at-the-community-connections-that-were-significantly-different">
-   ## Look at the community connections that were significantly different
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
-   ## Resample the right network to make the density the same, rerun the test
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-the-p-values-for-the-corrected-tests">
-   ### Plot the p-values for the corrected tests
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#end">
-   ## End
-  </a>
  </li>
 </ul>
 
@@ -585,108 +551,115 @@ Removed 0 nodes when taking the largest connected component.
 </div>
 <p>indicating that we should reject our null hypothesis that the communitiy connection
 probabilities are the same.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # %% [markdown]</span>
+<span class="c1"># # ## Look at the community connections that were significantly different</span>
+
+<span class="c1"># #%%</span>
+<span class="c1"># row_inds, col_inds = np.nonzero(significant.values)</span>
+
+<span class="c1"># n_significant = len(row_inds)</span>
+
+<span class="c1"># rows = []</span>
+<span class="c1"># for row_ind, col_ind in zip(row_inds, col_inds):</span>
+<span class="c1">#     source = index[row_ind]</span>
+<span class="c1">#     target = index[col_ind]</span>
+<span class="c1">#     left_p = B1.loc[source, target]</span>
+<span class="c1">#     right_p = B2.loc[source, target]</span>
+<span class="c1">#     pair = source + r&quot;$\rightarrow$&quot; + target</span>
+<span class="c1">#     rows.append(</span>
+<span class="c1">#         {</span>
+<span class="c1">#             &quot;source&quot;: source,</span>
+<span class="c1">#             &quot;target&quot;: target,</span>
+<span class="c1">#             &quot;p&quot;: left_p,</span>
+<span class="c1">#             &quot;side&quot;: &quot;Left&quot;,</span>
+<span class="c1">#             &quot;pair&quot;: pair,</span>
+<span class="c1">#         }</span>
+<span class="c1">#     )</span>
+<span class="c1">#     rows.append(</span>
+<span class="c1">#         {</span>
+<span class="c1">#             &quot;source&quot;: source,</span>
+<span class="c1">#             &quot;target&quot;: target,</span>
+<span class="c1">#             &quot;p&quot;: right_p,</span>
+<span class="c1">#             &quot;side&quot;: &quot;Right&quot;,</span>
+<span class="c1">#             &quot;pair&quot;: pair,</span>
+<span class="c1">#         }</span>
+<span class="c1">#     )</span>
+<span class="c1"># sig_data = pd.DataFrame(rows)</span>
+
+<span class="c1"># fig, ax = plt.subplots(1, 1, figsize=(8, 6))</span>
+<span class="c1"># sns.pointplot(</span>
+<span class="c1">#     data=sig_data,</span>
+<span class="c1">#     y=&quot;p&quot;,</span>
+<span class="c1">#     x=&quot;pair&quot;,</span>
+<span class="c1">#     ax=ax,</span>
+<span class="c1">#     hue=&quot;side&quot;,</span>
+<span class="c1">#     dodge=True,</span>
+<span class="c1">#     join=False,</span>
+<span class="c1">#     palette=network_palette,</span>
+<span class="c1"># )</span>
+
+<span class="c1"># ax.get_legend().set_title(&quot;Side&quot;)</span>
+<span class="c1"># rotate_labels(ax)</span>
+<span class="c1"># ax.set(xlabel=&quot;Group pair&quot;, ylabel=&quot;Connection probability&quot;)</span>
+<span class="c1"># stashfig(&quot;significant-p-comparison&quot;)</span>
+
+<span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ## Resample the right network to make the density the same, rerun the test</span>
+<span class="c1"># #%%</span>
+<span class="c1"># n_edges_left = np.count_nonzero(left_adj)</span>
+<span class="c1"># n_edges_right = np.count_nonzero(right_adj)</span>
+<span class="c1"># n_remove = n_edges_right - n_edges_left</span>
+<span class="c1"># glue(&quot;n_edges_left&quot;, n_edges_left, display=False)</span>
+<span class="c1"># glue(&quot;n_edges_right&quot;, n_edges_right, display=False)</span>
+<span class="c1"># glue(&quot;n_remove&quot;, n_remove, display=False)</span>
+
+<span class="c1"># rows = []</span>
+<span class="c1"># n_resamples = 100</span>
+<span class="c1"># glue(&quot;n_resamples&quot;, n_resamples, display=False)</span>
+<span class="c1"># for i in tqdm(range(n_resamples)):</span>
+<span class="c1">#     subsampled_right_adj = remove_edges(</span>
+<span class="c1">#         right_adj, effect_size=n_remove, random_seed=rng</span>
+<span class="c1">#     )</span>
+<span class="c1">#     stat, pvalue, misc = stochastic_block_test(</span>
+<span class="c1">#         left_adj,</span>
+<span class="c1">#         subsampled_right_adj,</span>
+<span class="c1">#         labels1=left_labels,</span>
+<span class="c1">#         labels2=right_labels,</span>
+<span class="c1">#         method=&quot;fisher&quot;,</span>
+<span class="c1">#     )</span>
+<span class="c1">#     rows.append({&quot;stat&quot;: stat, &quot;pvalue&quot;: pvalue, &quot;misc&quot;: misc, &quot;resample&quot;: i})</span>
+
+<span class="c1"># resample_results = pd.DataFrame(rows)</span>
+
+<span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ### Plot the p-values for the corrected tests</span>
+<span class="c1"># #%%</span>
+<span class="c1"># fig, ax = plt.subplots(1, 1, figsize=(8, 6))</span>
+<span class="c1"># sns.histplot(data=resample_results, x=&quot;pvalue&quot;, ax=ax)</span>
+<span class="c1"># ax.set(xlabel=&quot;p-value&quot;, ylabel=&quot;&quot;, yticks=[])</span>
+<span class="c1"># ax.spines[&quot;left&quot;].set_visible(False)</span>
+<span class="c1"># stashfig(&quot;p-values-post-correction&quot;)</span>
+
+<span class="c1"># mean_resample_pvalue = np.mean(resample_results[&quot;pvalue&quot;])</span>
+<span class="c1"># median_resample_pvalue = np.median(resample_results[&quot;pvalue&quot;])</span>
+
+<span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ## End</span>
+<span class="c1"># #%%</span>
+<span class="c1"># elapsed = time.time() - t0</span>
+<span class="c1"># delta = datetime.timedelta(seconds=elapsed)</span>
+<span class="c1"># print(&quot;----&quot;)</span>
+<span class="c1"># print(f&quot;Script took {delta}&quot;)</span>
+<span class="c1"># print(f&quot;Completed at {datetime.datetime.now()}&quot;)</span>
+<span class="c1"># print(&quot;----&quot;)</span>
+</pre></div>
 </div>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="markdown">
-<h1>%% [markdown]<a class="headerlink" href="#markdown" title="Permalink to this headline">¶</a></h1>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="look-at-the-community-connections-that-were-significantly-different">
-<h1>## Look at the community connections that were significantly different<a class="headerlink" href="#look-at-the-community-connections-that-were-significantly-different" title="Permalink to this headline">¶</a></h1>
-<p>#%%
-row_inds, col_inds = np.nonzero(significant.values)</p>
-<p>n_significant = len(row_inds)</p>
-<p>rows = []
-for row_ind, col_ind in zip(row_inds, col_inds):
-source = index[row_ind]
-target = index[col_ind]
-left_p = B1.loc[source, target]
-right_p = B2.loc[source, target]
-pair = source + r”<span class="math notranslate nohighlight">\(\rightarrow\)</span>” + target
-rows.append(
-{
-“source”: source,
-“target”: target,
-“p”: left_p,
-“side”: “Left”,
-“pair”: pair,
-}
-)
-rows.append(
-{
-“source”: source,
-“target”: target,
-“p”: right_p,
-“side”: “Right”,
-“pair”: pair,
-}
-)
-sig_data = pd.DataFrame(rows)</p>
-<p>fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.pointplot(
-data=sig_data,
-y=”p”,
-x=”pair”,
-ax=ax,
-hue=”side”,
-dodge=True,
-join=False,
-palette=network_palette,
-)</p>
-<p>ax.get_legend().set_title(“Side”)
-rotate_labels(ax)
-ax.set(xlabel=”Group pair”, ylabel=”Connection probability”)
-stashfig(“significant-p-comparison”)</p>
-<p>#%% [markdown]</p>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
-<h1>## Resample the right network to make the density the same, rerun the test<a class="headerlink" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test" title="Permalink to this headline">¶</a></h1>
-<p>#%%
-n_edges_left = np.count_nonzero(left_adj)
-n_edges_right = np.count_nonzero(right_adj)
-n_remove = n_edges_right - n_edges_left
-glue(“n_edges_left”, n_edges_left, display=False)
-glue(“n_edges_right”, n_edges_right, display=False)
-glue(“n_remove”, n_remove, display=False)</p>
-<p>rows = []
-n_resamples = 100
-glue(“n_resamples”, n_resamples, display=False)
-for i in tqdm(range(n_resamples)):
-subsampled_right_adj = remove_edges(
-right_adj, effect_size=n_remove, random_seed=rng
-)
-stat, pvalue, misc = stochastic_block_test(
-left_adj,
-subsampled_right_adj,
-labels1=left_labels,
-labels2=right_labels,
-method=”fisher”,
-)
-rows.append({“stat”: stat, “pvalue”: pvalue, “misc”: misc, “resample”: i})</p>
-<p>resample_results = pd.DataFrame(rows)</p>
-<p>#%% [markdown]</p>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="plot-the-p-values-for-the-corrected-tests">
-<h1>### Plot the p-values for the corrected tests<a class="headerlink" href="#plot-the-p-values-for-the-corrected-tests" title="Permalink to this headline">¶</a></h1>
-<p>#%%
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(data=resample_results, x=”pvalue”, ax=ax)
-ax.set(xlabel=”p-value”, ylabel=””, yticks=[])
-ax.spines[“left”].set_visible(False)
-stashfig(“p-values-post-correction”)</p>
-<p>mean_resample_pvalue = np.mean(resample_results[“pvalue”])
-median_resample_pvalue = np.median(resample_results[“pvalue”])</p>
-<p>#%% [markdown]</p>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="end">
-<h1>## End<a class="headerlink" href="#end" title="Permalink to this headline">¶</a></h1>
-<p>#%%
-elapsed = time.time() - t0
-delta = datetime.timedelta(seconds=elapsed)
-print(“—-“)
-print(f”Script took {delta}”)
-print(f”Completed at {datetime.datetime.now()}”)
-print(“—-“)</p>
 </div>
 
     <script type="text/x-thebe-config">
