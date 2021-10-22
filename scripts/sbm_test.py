@@ -271,7 +271,7 @@ stashfig("SBM-left-right-comparison")
 # indicating that we should reject our null hypothesis that the communitiy connection
 # probabilities are the same.
 
-#%% [markdown]
+#%%
 # # %% [markdown]
 # # ## Look at the community connections that were significantly different
 
