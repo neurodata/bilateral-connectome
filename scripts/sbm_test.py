@@ -36,7 +36,7 @@ def stashfig(name, **kwargs):
 
 
 # %% [markdown]
-# ## Load and process data
+# ### Load and process data
 #%%
 
 t0 = time.time()
@@ -64,20 +64,18 @@ left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 
 #%% [markdown]
-# ## Run the stochastic block model 2-sample test
+# ## The stochastic block model 2-sample test
+#%% [markdown]
+# ### Run the test
 #%%
 
 stat, pvalue, misc = stochastic_block_test(
     left_adj, right_adj, labels1=left_labels, labels2=right_labels, method="fisher"
 )
-glue("uncorrected_pvalue", pvalue)
+glue("uncorrected_pvalue", pvalue, display=False)
 
 #%% [markdown]
 # ### Plot the results
-# The plot below describes:
-# - The estimated community-to-community connection probabilities for both the left and the right hemisphere,
-# - The number of nodes in each community
-# - The p-values for each individual test
 #%%
 # get values
 B1 = misc["probabilities1"]
@@ -92,8 +90,8 @@ hb_thresh = alpha / n_tests
 
 # set up plot
 pad = 2
-width_ratios = [0.5, pad + 0.8, 10, pad - 0.4, 10, pad + 0.7, 10, 0.5]
-height_ratios = [2, 0.4, 1]
+width_ratios = [0.5, pad + 0.8, 10, pad - 0.4, 10, pad + 0.9, 10, 0.5]
+height_ratios = [2, 0.6, 1]
 set_theme(font_scale=1.25)
 fig, axs = plt.subplots(
     len(height_ratios),
@@ -241,10 +239,10 @@ axs[top_row, right_col].set_xticklabels(index)
 # some text to describe the overall p-values and legend
 ax = axs[bottom_row, pvalue_col]
 ax.axis("off")
-ax.text(-0.1, 0.9, f"Overall p-value: {pvalue:0.2e}", fontsize="x-large", ha="left")
+ax.text(-0.1, 1.1, f"Overall p-value: {pvalue:0.2e}", fontsize="x-large", ha="left")
 ax.text(
     -0.1,
-    0.65,
+    0.9,
     r"$\times$ - significant @ "
     + r"$ \alpha=0.05$"
     + "\n"
@@ -261,15 +259,36 @@ for i in range(len(height_ratios)):
         if not axs[i, j].has_data() and not (i == bottom_row and j == pvalue_col):
             axs[i, j].set_visible(False)
 
-stashfig("SBM-left-right-comparison")
+fig.text(0.12, 0.9, "A)", fontweight="bold", fontsize=50)
+fig.text(0.12, 0.35, "B)", fontweight="bold", fontsize=50)
+fig.text(0.63, 0.9, "C)", fontweight="bold", fontsize=50)
 
+
+glue("fig_sbm_uncorrected", fig, display=False)
+stashfig("SBM-left-right-comparison")
+plt.close()
 
 #%% [markdown]
-# We see that the p-value for this test is
-# ```{glue:} uncorrected_pvalue
+# ```{glue:figure} fig_sbm_uncorrected
+# :name: "fig-sbm-uncorrected"
+
+# Comparison of stochastic block model fits for the left and right hemispheres.
+# **A)** The estimated group-to-group connection probabilities for the left
+# and right hemispheres appear qualitatively similar. Any estimated
+# probabilities which are zero (i.e. no edge was present between a given pair of
+# communities) is indicated explicitly with a "0" in that cell of the matrix. **B)** The
+# number of neurons in each group is also similar between the left and right hemispheres.
+# **C)** The p-values for each hypothesis test between individual elements of
+# the block probability matrices. In other words, each cell represents a test for
+# whether a given group-to-group connection probability is the same on the left and the
+# right sides. "X" denotes a significant p-value after Bonferroni-Holm correction,
+# with $\alpha=0.05$. "B" indicates that a test was not run since the estimated probability
+# was zero in that cell on both the left and right. "L" indicates this was the case on
+# the left only, and "R" that it was the case on the right only. These individual
+# p-values were combined using Fisher's method, resulting in an overall p-value (for the
+# null hypothesis that the two group connection probability matrices are the same) of
+# {glue:text}`uncorrected_pvalue:0.2e`.
 # ```
-# indicating that we should reject our null hypothesis that the communitiy connection
-# probabilities are the same.
 
 # %% [markdown]
 # ## Look at the community connections that were significantly different
@@ -321,7 +340,20 @@ sns.pointplot(
 ax.get_legend().set_title("Side")
 rotate_labels(ax)
 ax.set(xlabel="Group pair", ylabel="Connection probability")
+
+glue("fig_significant_p_comparison", fig, display=False)
 stashfig("significant-p-comparison")
+plt.close()
+
+
+#%% [markdown]
+# ```{glue:figure} fig_significant_p_comparison
+# :name: "fig-significant-p-comparison"
+#
+# Comparison of estimated group-to-group connection probabilities for the group-pairs
+# which were significantly different in {numref}`Figure {number} <fig-sbm-uncorrected>`.
+# In each case, the connection probability on the right hemisphere is higher.
+# ```
 
 #%% [markdown]
 # ## Resample the right network to make the density the same, rerun the test
@@ -334,9 +366,9 @@ glue("n_edges_right", n_edges_right, display=False)
 glue("n_remove", n_remove, display=False)
 
 rows = []
-n_resamples = 25
+n_resamples = 100
 glue("n_resamples", n_resamples, display=False)
-for i in tqdm(range(n_resamples)):
+for i in range(n_resamples):
     subsampled_right_adj = remove_edges(
         right_adj, effect_size=n_remove, random_seed=rng
     )
@@ -358,10 +390,28 @@ fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 sns.histplot(data=resample_results, x="pvalue", ax=ax)
 ax.set(xlabel="p-value", ylabel="", yticks=[])
 ax.spines["left"].set_visible(False)
+
+glue('fig_pvalues_corrected', fig, display=False)
 stashfig("p-values-post-correction")
+plt.close()
 
 mean_resample_pvalue = np.mean(resample_results["pvalue"])
 median_resample_pvalue = np.median(resample_results["pvalue"])
+
+#%% [markdown]
+# ```{glue:figure} fig_pvalues_corrected
+# :name: "fig-pvalues-corrected"
+#
+# Histogram of p-values after a correction for network density. For the observed networks
+# the left hemisphere has {glue:text}`n_edges_left` edges, and the right hemisphere has
+# {glue:text}`n_edges_right`. Here, we randomly removed exactly {glue:text}`n_remove`
+# edges from the right hemisphere network, and re-ran the stochastic block model testing
+# procedure from {numref}`Figure {number} <fig-sbm-uncorrected>`. This entire process 
+# was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
+# of p-values for the overall test. Note that the p-values are no longer small, indicating
+# that with this density correction, we now failed to reject our null hypothesis of 
+# bilateral symmetry under the stochastic block model.
+# ```
 
 #%% [markdown]
 # ## End
