@@ -8,3 +8,6 @@ parts:
   - caption: Tests
     chapters:
     - file: sbm_test
+  - caption: Appendix
+    chapters: 
+    - file: nhypergeom_sims
