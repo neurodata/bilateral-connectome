@@ -268,6 +268,27 @@ glue("fig_sbm_uncorrected", fig, display=False)
 stashfig("SBM-left-right-comparison")
 plt.close()
 
+#%%
+
+observed1 = misc["observed1"]
+possible1 = misc["possible1"]
+# observed2 = misc["observed2"]
+# possible2 = misc["possible2"]
+
+# expected1 = np.multiply(observed1, possible1)
+
+xs = np.arange(K ** 2)
+ys = observed1.values.ravel()
+ys = np.sort(ys)
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.lineplot(x=xs, y=ys, ax=ax)
+ax.set(
+    yscale="log",
+    xlabel="Sorted index (group-to-group connections)",
+    ylabel="Number of edges",
+)
+
 #%% [markdown]
 # ```{glue:figure} fig_sbm_uncorrected
 # :name: "fig-sbm-uncorrected"
@@ -391,7 +412,7 @@ sns.histplot(data=resample_results, x="pvalue", ax=ax)
 ax.set(xlabel="p-value", ylabel="", yticks=[])
 ax.spines["left"].set_visible(False)
 
-glue('fig_pvalues_corrected', fig, display=False)
+glue("fig_pvalues_corrected", fig, display=False)
 stashfig("p-values-post-correction")
 plt.close()
 
@@ -406,10 +427,10 @@ median_resample_pvalue = np.median(resample_results["pvalue"])
 # the left hemisphere has {glue:text}`n_edges_left` edges, and the right hemisphere has
 # {glue:text}`n_edges_right`. Here, we randomly removed exactly {glue:text}`n_remove`
 # edges from the right hemisphere network, and re-ran the stochastic block model testing
-# procedure from {numref}`Figure {number} <fig-sbm-uncorrected>`. This entire process 
+# procedure from {numref}`Figure {number} <fig-sbm-uncorrected>`. This entire process
 # was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
 # of p-values for the overall test. Note that the p-values are no longer small, indicating
-# that with this density correction, we now failed to reject our null hypothesis of 
+# that with this density correction, we now failed to reject our null hypothesis of
 # bilateral symmetry under the stochastic block model.
 # ```
 
