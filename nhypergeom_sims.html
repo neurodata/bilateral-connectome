@@ -1,0 +1,770 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>An exact test for non-unity null odds ratios &#8212; Bilateral Connectome</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="A community based test" href="sbm_test.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/nd_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Bilateral Connectome</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="landing.html">
+   Welcome
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Preliminaries
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="outline.html">
+   Outline
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Tests
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sbm_test.html">
+   A community based test
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Appendix
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   An exact test for non-unity null odds ratios
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/nhypergeom_sims.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/neurodata/bilateral-connectome"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fnhypergeom_sims.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-for-the-test">
+   Code for the test
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simulation-setup">
+   Simulation setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#experiment">
+   Experiment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#results">
+   Results
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="an-exact-test-for-non-unity-null-odds-ratios">
+<h1>An exact test for non-unity null odds ratios<a class="headerlink" href="#an-exact-test-for-non-unity-null-odds-ratios" title="Permalink to this headline">¶</a></h1>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">set_theme</span><span class="p">,</span> <span class="n">subuniformity_plot</span>
+<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">Figure</span>
+<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span><span class="p">,</span> <span class="n">fisher_exact</span><span class="p">,</span> <span class="n">nchypergeom_fisher</span>
+
+<span class="n">set_theme</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">my_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
+    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">Figure</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="code-for-the-test">
+<h2>Code for the test<a class="headerlink" href="#code-for-the-test" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fisher_exact_nonunity</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">&quot;two-sided&quot;</span><span class="p">,</span> <span class="n">null_odds</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform a Fisher exact test on a 2x2 contingency table.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    table : array_like of ints</span>
+<span class="sd">        A 2x2 contingency table.  Elements must be non-negative integers.</span>
+<span class="sd">    alternative : {&#39;two-sided&#39;, &#39;less&#39;, &#39;greater&#39;}, optional</span>
+<span class="sd">        Defines the alternative hypothesis.</span>
+<span class="sd">        The following options are available (default is &#39;two-sided&#39;):</span>
+<span class="sd">        * &#39;two-sided&#39;</span>
+<span class="sd">        * &#39;less&#39;: one-sided</span>
+<span class="sd">        * &#39;greater&#39;: one-sided</span>
+<span class="sd">        See the Notes for more details.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    oddsratio : float</span>
+<span class="sd">        This is prior odds ratio and not a posterior estimate.</span>
+<span class="sd">    p_value : float</span>
+<span class="sd">        P-value, the probability of obtaining a distribution at least as</span>
+<span class="sd">        extreme as the one that was actually observed, assuming that the</span>
+<span class="sd">        null hypothesis is true.</span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    chi2_contingency : Chi-square test of independence of variables in a</span>
+<span class="sd">        contingency table.  This can be used as an alternative to</span>
+<span class="sd">        `fisher_exact` when the numbers in the table are large.</span>
+<span class="sd">    barnard_exact : Barnard&#39;s exact test, which is a more powerful alternative</span>
+<span class="sd">        than Fisher&#39;s exact test for 2x2 contingency tables.</span>
+<span class="sd">    boschloo_exact : Boschloo&#39;s exact test, which is a more powerful alternative</span>
+<span class="sd">        than Fisher&#39;s exact test for 2x2 contingency tables.</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    *Null hypothesis and p-values*</span>
+<span class="sd">    The null hypothesis is that the input table is from the hypergeometric</span>
+<span class="sd">    distribution with parameters (as used in `hypergeom`)</span>
+<span class="sd">    ``M = a + b + c + d``, ``n = a + b`` and ``N = a + c``, where the</span>
+<span class="sd">    input table is ``[[a, b], [c, d]]``.  This distribution has support</span>
+<span class="sd">    ``max(0, N + n - M) &lt;= x &lt;= min(N, n)``, or, in terms of the values</span>
+<span class="sd">    in the input table, ``min(0, a - d) &lt;= x &lt;= a + min(b, c)``.  ``x``</span>
+<span class="sd">    can be interpreted as the upper-left element of a 2x2 table, so the</span>
+<span class="sd">    tables in the distribution have form::</span>
+<span class="sd">        [  x           n - x     ]</span>
+<span class="sd">        [N - x    M - (n + N) + x]</span>
+<span class="sd">    For example, if::</span>
+<span class="sd">        table = [6  2]</span>
+<span class="sd">                [1  4]</span>
+<span class="sd">    then the support is ``2 &lt;= x &lt;= 7``, and the tables in the distribution</span>
+<span class="sd">    are::</span>
+<span class="sd">        [2 6]   [3 5]   [4 4]   [5 3]   [6 2]  [7 1]</span>
+<span class="sd">        [5 0]   [4 1]   [3 2]   [2 3]   [1 4]  [0 5]</span>
+<span class="sd">    The probability of each table is given by the hypergeometric distribution</span>
+<span class="sd">    ``hypergeom.pmf(x, M, n, N)``.  For this example, these are (rounded to</span>
+<span class="sd">    three significant digits)::</span>
+<span class="sd">        x       2      3      4      5       6        7</span>
+<span class="sd">        p  0.0163  0.163  0.408  0.326  0.0816  0.00466</span>
+<span class="sd">    These can be computed with::</span>
+<span class="sd">        &gt;&gt;&gt; from scipy.stats import hypergeom</span>
+<span class="sd">        &gt;&gt;&gt; table = np.array([[6, 2], [1, 4]])</span>
+<span class="sd">        &gt;&gt;&gt; M = table.sum()</span>
+<span class="sd">        &gt;&gt;&gt; n = table[0].sum()</span>
+<span class="sd">        &gt;&gt;&gt; N = table[:, 0].sum()</span>
+<span class="sd">        &gt;&gt;&gt; start, end = hypergeom.support(M, n, N)</span>
+<span class="sd">        &gt;&gt;&gt; hypergeom.pmf(np.arange(start, end+1), M, n, N)</span>
+<span class="sd">        array([0.01631702, 0.16317016, 0.40792541, 0.32634033, 0.08158508,</span>
+<span class="sd">               0.004662  ])</span>
+<span class="sd">    The two-sided p-value is the probability that, under the null hypothesis,</span>
+<span class="sd">    a random table would have a probability equal to or less than the</span>
+<span class="sd">    probability of the input table.  For our example, the probability of</span>
+<span class="sd">    the input table (where ``x = 6``) is 0.0816.  The x values where the</span>
+<span class="sd">    probability does not exceed this are 2, 6 and 7, so the two-sided p-value</span>
+<span class="sd">    is ``0.0163 + 0.0816 + 0.00466 ~= 0.10256``::</span>
+<span class="sd">        &gt;&gt;&gt; from scipy.stats import fisher_exact</span>
+<span class="sd">        &gt;&gt;&gt; oddsr, p = fisher_exact(table, alternative=&#39;two-sided&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; p</span>
+<span class="sd">        0.10256410256410257</span>
+<span class="sd">    The one-sided p-value for ``alternative=&#39;greater&#39;`` is the probability</span>
+<span class="sd">    that a random table has ``x &gt;= a``, which in our example is ``x &gt;= 6``,</span>
+<span class="sd">    or ``0.0816 + 0.00466 ~= 0.08626``::</span>
+<span class="sd">        &gt;&gt;&gt; oddsr, p = fisher_exact(table, alternative=&#39;greater&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; p</span>
+<span class="sd">        0.08624708624708627</span>
+<span class="sd">    This is equivalent to computing the survival function of the</span>
+<span class="sd">    distribution at ``x = 5`` (one less than ``x`` from the input table,</span>
+<span class="sd">    because we want to include the probability of ``x = 6`` in the sum)::</span>
+<span class="sd">        &gt;&gt;&gt; hypergeom.sf(5, M, n, N)</span>
+<span class="sd">        0.08624708624708627</span>
+<span class="sd">    For ``alternative=&#39;less&#39;``, the one-sided p-value is the probability</span>
+<span class="sd">    that a random table has ``x &lt;= a``, (i.e. ``x &lt;= 6`` in our example),</span>
+<span class="sd">    or ``0.0163 + 0.163 + 0.408 + 0.326 + 0.0816 ~= 0.9949``::</span>
+<span class="sd">        &gt;&gt;&gt; oddsr, p = fisher_exact(table, alternative=&#39;less&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; p</span>
+<span class="sd">        0.9953379953379957</span>
+<span class="sd">    This is equivalent to computing the cumulative distribution function</span>
+<span class="sd">    of the distribution at ``x = 6``:</span>
+<span class="sd">        &gt;&gt;&gt; hypergeom.cdf(6, M, n, N)</span>
+<span class="sd">        0.9953379953379957</span>
+<span class="sd">    *Odds ratio*</span>
+<span class="sd">    The calculated odds ratio is different from the one R uses. This SciPy</span>
+<span class="sd">    implementation returns the (more common) &quot;unconditional Maximum</span>
+<span class="sd">    Likelihood Estimate&quot;, while R uses the &quot;conditional Maximum Likelihood</span>
+<span class="sd">    Estimate&quot;.</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Say we spend a few days counting whales and sharks in the Atlantic and</span>
+<span class="sd">    Indian oceans. In the Atlantic ocean we find 8 whales and 1 shark, in the</span>
+<span class="sd">    Indian ocean 2 whales and 5 sharks. Then our contingency table is::</span>
+<span class="sd">                Atlantic  Indian</span>
+<span class="sd">        whales     8        2</span>
+<span class="sd">        sharks     1        5</span>
+<span class="sd">    We use this table to find the p-value:</span>
+<span class="sd">    &gt;&gt;&gt; from scipy.stats import fisher_exact</span>
+<span class="sd">    &gt;&gt;&gt; oddsratio, pvalue = fisher_exact([[8, 2], [1, 5]])</span>
+<span class="sd">    &gt;&gt;&gt; pvalue</span>
+<span class="sd">    0.0349...</span>
+<span class="sd">    The probability that we would observe this or an even more imbalanced ratio</span>
+<span class="sd">    by chance is about 3.5%.  A commonly used significance level is 5%--if we</span>
+<span class="sd">    adopt that, we can therefore conclude that our observed imbalance is</span>
+<span class="sd">    statistically significant; whales prefer the Atlantic while sharks prefer</span>
+<span class="sd">    the Indian ocean.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">nchypergeom_fisher</span>
+
+    <span class="c1"># int32 is not enough for the algorithm</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input `table` must be of shape (2, 2).&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All values in `table` must be nonnegative.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># If both values in a row or column are zero, the p-value is 1 and</span>
+        <span class="c1"># the odds ratio is NaN.</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">1.0</span>
+
+    <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">oddsratio</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">oddsratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">rv</span> <span class="o">=</span> <span class="n">dist</span><span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">binary_search</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Binary search for where to begin halves in two-sided test.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span>
+            <span class="n">minval</span> <span class="o">=</span> <span class="n">mode</span>
+            <span class="n">maxval</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">minval</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">maxval</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="n">guess</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">while</span> <span class="n">maxval</span> <span class="o">-</span> <span class="n">minval</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">maxval</span> <span class="o">==</span> <span class="n">minval</span> <span class="o">+</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">guess</span> <span class="o">==</span> <span class="n">minval</span><span class="p">:</span>
+                <span class="n">guess</span> <span class="o">=</span> <span class="n">maxval</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">guess</span> <span class="o">=</span> <span class="p">(</span><span class="n">maxval</span> <span class="o">+</span> <span class="n">minval</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">pguess</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span>
+                <span class="n">ng</span> <span class="o">=</span> <span class="n">guess</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ng</span> <span class="o">=</span> <span class="n">guess</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">pguess</span> <span class="o">&lt;=</span> <span class="n">pexact</span> <span class="o">&lt;</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">ng</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="k">elif</span> <span class="n">pguess</span> <span class="o">&lt;</span> <span class="n">pexact</span><span class="p">:</span>
+                <span class="n">maxval</span> <span class="o">=</span> <span class="n">guess</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">minval</span> <span class="o">=</span> <span class="n">guess</span>
+        <span class="k">if</span> <span class="n">guess</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">guess</span> <span class="o">=</span> <span class="n">minval</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">guess</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pexact</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="n">guess</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="n">guess</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pexact</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="n">guess</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">guess</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="n">guess</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">guess</span>
+
+    <span class="k">if</span> <span class="n">alternative</span> <span class="o">==</span> <span class="s2">&quot;less&quot;</span><span class="p">:</span>
+        <span class="n">pvalue</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">alternative</span> <span class="o">==</span> <span class="s2">&quot;greater&quot;</span><span class="p">:</span>
+        <span class="c1"># Same formula as the &#39;less&#39; case, but with the second column.</span>
+        <span class="n">pvalue</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">alternative</span> <span class="o">==</span> <span class="s2">&quot;two-sided&quot;</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">pexact</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
+        <span class="n">pmode</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
+
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-4</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pexact</span> <span class="o">-</span> <span class="n">pmode</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">pexact</span><span class="p">,</span> <span class="n">pmode</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="mf">1.0</span>
+
+        <span class="k">elif</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mode</span><span class="p">:</span>
+            <span class="n">plower</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="n">plower</span>
+
+            <span class="n">guess</span> <span class="o">=</span> <span class="n">binary_search</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">)</span>
+            <span class="n">pvalue</span> <span class="o">=</span> <span class="n">plower</span> <span class="o">+</span> <span class="n">dist</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">guess</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pupper</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="n">pupper</span>
+
+            <span class="n">guess</span> <span class="o">=</span> <span class="n">binary_search</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+            <span class="n">pvalue</span> <span class="o">=</span> <span class="n">pupper</span> <span class="o">+</span> <span class="n">dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">guess</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;`alternative` should be one of {&#39;two-sided&#39;, &#39;less&#39;, &#39;greater&#39;}&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">pvalue</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pvalue</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="n">pvalue</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="simulation-setup">
+<h2>Simulation setup<a class="headerlink" href="#simulation-setup" title="Permalink to this headline">¶</a></h2>
+<p>Here, we investigate the performance of this test on simulated independent binomials.
+The model we use is as follows:</p>
+<p>Let</p>
+<div class="math notranslate nohighlight">
+\[X \sim Binomial(m_x, p_x)\]</div>
+<p>independently,</p>
+<div class="math notranslate nohighlight">
+\[Y \sim Binomial(m_y, p_y)\]</div>
+<p>Fix <span class="math notranslate nohighlight">\(m_x = \)</span> <span class="pasted-text">1000</span>, <span class="math notranslate nohighlight">\(m_y = \)</span> <span class="pasted-text">2000</span>, <span class="math notranslate nohighlight">\(p_y = \)</span> <span class="pasted-text">0.01</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(p_x = \omega p_y\)</span>, where <span class="math notranslate nohighlight">\(\omega\)</span> is some positive real number, not
+not necessarily equal to 1, such that <span class="math notranslate nohighlight">\(p_x \in (0, 1)\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_x</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;m_x&quot;</span><span class="p">,</span> <span class="n">m_x</span><span class="p">)</span>
+<span class="n">m_y</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;m_y&quot;</span><span class="p">,</span> <span class="n">m_y</span><span class="p">)</span>
+
+<span class="n">upper_omegas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">lower_omegas</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">upper_omegas</span>
+<span class="n">lower_omegas</span> <span class="o">=</span> <span class="n">lower_omegas</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">omegas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">upper_omegas</span><span class="p">,</span> <span class="n">lower_omegas</span><span class="p">)))</span>
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;upper_omega&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">omegas</span><span class="p">))</span>
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;lower_omega&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">omegas</span><span class="p">))</span>
+
+
+<span class="n">p_y</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;p_y&quot;</span><span class="p">,</span> <span class="n">p_y</span><span class="p">)</span>
+
+<span class="n">n_sims</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;n_sims&quot;</span><span class="p">,</span> <span class="n">n_sims</span><span class="p">)</span>
+
+<span class="n">alternative</span> <span class="o">=</span> <span class="s2">&quot;two-sided&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<div class="section" id="experiment">
+<h2>Experiment<a class="headerlink" href="#experiment" title="Permalink to this headline">¶</a></h2>
+<p>Below, we’ll sample from the model described above, varying <span class="math notranslate nohighlight">\(\omega\)</span> from
+<span class="pasted-text">0.25</span> to <span class="pasted-text">4.0</span>. For each value of <span class="math notranslate nohighlight">\(\omega\)</span>,
+we’ll draw <span class="pasted-text">200</span> samples of <span class="math notranslate nohighlight">\((x,y)\)</span> from the model described above.
+For each draw, we’ll test the following two hypotheses:</p>
+<div class="math notranslate nohighlight">
+\[H_0: p_x = p_y \quad H_A: p_x \neq p_y\]</div>
+<p>using Fisher’s exact test, and</p>
+<div class="math notranslate nohighlight">
+\[H_0: p_x = \omega_0 p_y \quad H_A: p_x \neq \omega_0 p_y\]</div>
+<p>using a modified version of Fisher’s exact test, which uses
+<a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution</a>
+as the null distribution. Note that we can re-write this null as</p>
+<div class="math notranslate nohighlight">
+\[H_0: \frac{p_x}{p_y} = \omega_0\]</div>
+<p>to easily see that this is a test for a posited odds ratio <span class="math notranslate nohighlight">\(\omega_0\)</span>. For this
+experiment, we set <span class="math notranslate nohighlight">\(\omega_0 = \omega\)</span> - in other words, we assume the true odds ratio
+is known.</p>
+<p>Below, we’ll call the first hypothesis test <strong>FE</strong> (Fisher’s Exact), and the second
+<strong>NUFE (Non-unity Fisher’s Exact)</strong>.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># definitions following https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">omega</span> <span class="ow">in</span> <span class="n">omegas</span><span class="p">:</span>
+    <span class="c1"># params</span>
+    <span class="n">p_x</span> <span class="o">=</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">p_y</span>
+    <span class="n">omega_x</span> <span class="o">=</span> <span class="n">p_x</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_x</span><span class="p">)</span>
+    <span class="n">omega_y</span> <span class="o">=</span> <span class="n">p_y</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_y</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_sims</span><span class="p">):</span>
+        <span class="c1"># sample</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">m_x</span><span class="p">,</span> <span class="n">p_x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">m_y</span><span class="p">,</span> <span class="n">p_y</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x</span><span class="p">,</span> <span class="n">m_x</span> <span class="o">-</span> <span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">m_y</span> <span class="o">-</span> <span class="n">y</span><span class="p">]])</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">vanilla_pvalue</span> <span class="o">=</span> <span class="n">fisher_exact</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="n">alternative</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">nu_pvalue</span> <span class="o">=</span> <span class="n">fisher_exact_nonunity</span><span class="p">(</span>
+            <span class="n">table</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="n">alternative</span><span class="p">,</span> <span class="n">null_odds</span><span class="o">=</span><span class="n">omega</span>
+        <span class="p">)</span>
+
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;FE&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;omega&quot;</span><span class="p">:</span> <span class="n">omega</span><span class="p">,</span>
+                <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">vanilla_pvalue</span><span class="p">,</span>
+                <span class="s2">&quot;sim&quot;</span><span class="p">:</span> <span class="n">sim</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;NUFE&quot;</span><span class="p">,</span> <span class="s2">&quot;omega&quot;</span><span class="p">:</span> <span class="n">omega</span><span class="p">,</span> <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">nu_pvalue</span><span class="p">,</span> <span class="s2">&quot;sim&quot;</span><span class="p">:</span> <span class="n">sim</span><span class="p">})</span>
+
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;FE&quot;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;NUFE&quot;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">results</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;omega&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkred&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\omega$&quot;</span><span class="p">)</span>
+
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;fig_mean_pvalue_by_omega&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="figure align-default" id="fig-mean-pvalue-by-omega">
+<div class="cell_output docutils container">
+<img alt="_images/nhypergeom_sims_10_0.png" src="_images/nhypergeom_sims_10_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Plot of mean p-values by the true odds ratio <span class="math notranslate nohighlight">\(\omega\)</span>. Each point in the lineplot
+denotes the mean over <span class="pasted-text">200</span> trials, and the shaded region denotes 95%
+bootstrap CI estimates. Fisher’s Exact test
+(FE) tends to reject for non-unity odds ratios, while the modified, non-unity Fisher’s
+exact test (NUFE) does not. Note that NUFE is testing the null hypothesis that the
+odds ratio (<span class="math notranslate nohighlight">\(\omega_0\)</span>) is equal to the true odds ratio in the simulation (<span class="math notranslate nohighlight">\(\omega\)</span>).</span><a class="headerlink" href="#fig-mean-pvalue-by-omega" title="Permalink to this image">¶</a></p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_select_pvalues</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+
+    <span class="n">subuniformity_plot</span><span class="p">(</span>
+        <span class="n">results</span><span class="p">[(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">method</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;omega&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">omega</span><span class="p">)][</span>
+            <span class="s2">&quot;pvalue&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">method</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\omega = $&quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">omega</span><span class="si">}</span><span class="s2">, method = </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">)</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plot_select_pvalues</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;FE&quot;</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plot_select_pvalues</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;NUFE&quot;</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;fig_pvalue_dist_omega_1&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plot_select_pvalues</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;FE&quot;</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plot_select_pvalues</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;NUFE&quot;</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">my_glue</span><span class="p">(</span><span class="s2">&quot;fig_pvalue_dist_omega_3&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="figure align-default" id="fig-pvalue-dist-omega-1">
+<div class="cell_output docutils container">
+<img alt="_images/nhypergeom_sims_12_0.png" src="_images/nhypergeom_sims_12_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
+<span class="math notranslate nohighlight">\(\omega = 1\)</span>. Dashed line denotes the cumulative distribution function for a
+<span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable. p-value in upper left is for a one-sided KS-test that
+for the null that the distribution is stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span>
+random variable. Note that both tests appear to have uniform p-values in the case
+where the null that both tests are concerned with is true.</span><a class="headerlink" href="#fig-pvalue-dist-omega-1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="fig-pvalue-dist-omega-3">
+<div class="cell_output docutils container">
+<img alt="_images/nhypergeom_sims_12_1.png" src="_images/nhypergeom_sims_12_1.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
+<span class="math notranslate nohighlight">\(\omega = 3\)</span>. Dashed line denotes the cumulative distribution function for a
+<span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable. p-value in upper left is for a one-sided KS-test that
+for the null that the distribution is stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span>
+random variable. When <span class="math notranslate nohighlight">\(\omega = 3\)</span>, the null that FE is testing is indeed false, so it
+makes sense that we see yield many small p-values. However, for <span class="math notranslate nohighlight">\(NUFE\)</span>, <span class="math notranslate nohighlight">\(H_0\)</span> is true,
+as we specified that <span class="math notranslate nohighlight">\(\omega_0 = \omega\)</span>. NUFE remains valid in this case as the
+p-values appear stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable.</span><a class="headerlink" href="#fig-pvalue-dist-omega-3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="sbm_test.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">A community based test</p>
+            </div>
+        </a>
+    </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By NeuroData<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
