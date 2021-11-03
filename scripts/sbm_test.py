@@ -4,6 +4,9 @@
 #%% [markdown]
 # ## Preliminaries
 #%%
+import warnings
+
+warnings.filterwarnings("ignore")
 
 import datetime
 import time
@@ -268,26 +271,6 @@ glue("fig_sbm_uncorrected", fig, display=False)
 stashfig("SBM-left-right-comparison")
 plt.close()
 
-#%%
-
-observed1 = misc["observed1"]
-possible1 = misc["possible1"]
-# observed2 = misc["observed2"]
-# possible2 = misc["possible2"]
-
-# expected1 = np.multiply(observed1, possible1)
-
-xs = np.arange(K ** 2)
-ys = observed1.values.ravel()
-ys = np.sort(ys)
-
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.lineplot(x=xs, y=ys, ax=ax)
-ax.set(
-    yscale="log",
-    xlabel="Sorted index (group-to-group connections)",
-    ylabel="Number of edges",
-)
 
 #%% [markdown]
 # ```{glue:figure} fig_sbm_uncorrected
@@ -381,13 +364,20 @@ plt.close()
 #%%
 n_edges_left = np.count_nonzero(left_adj)
 n_edges_right = np.count_nonzero(right_adj)
-n_remove = n_edges_right - n_edges_left
-glue("n_edges_left", n_edges_left, display=False)
-glue("n_edges_right", n_edges_right, display=False)
+n_left = left_adj.shape[0]
+n_right = right_adj.shape[0]
+density_left = n_edges_left / (n_left ** 2)
+density_right = n_edges_right / (n_right ** 2)
+
+n_remove = int((density_right - density_left) * (n_right ** 2))
+
+glue("density_left", density_left, display=False)
+glue("density_right", density_right, display=False)
 glue("n_remove", n_remove, display=False)
 
+#%%
 rows = []
-n_resamples = 100
+n_resamples = 25
 glue("n_resamples", n_resamples, display=False)
 for i in range(n_resamples):
     subsampled_right_adj = remove_edges(
@@ -424,15 +414,49 @@ median_resample_pvalue = np.median(resample_results["pvalue"])
 # :name: "fig-pvalues-corrected"
 #
 # Histogram of p-values after a correction for network density. For the observed networks
-# the left hemisphere has {glue:text}`n_edges_left` edges, and the right hemisphere has
-# {glue:text}`n_edges_right`. Here, we randomly removed exactly {glue:text}`n_remove`
-# edges from the right hemisphere network, and re-ran the stochastic block model testing
+# the left hemisphere has a density of {glue:text}`density_left:0.4f`, and the right hemisphere has
+# a density of {glue:text}`density_right:0.4f`. Here, we randomly removed exactly {glue:text}`n_remove`
+# edges from the right hemisphere network, which makes the density of the right network
+# match that of the left hemisphere network. Then, we re-ran the stochastic block model testing
 # procedure from {numref}`Figure {number} <fig-sbm-uncorrected>`. This entire process
 # was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
 # of p-values for the overall test. Note that the p-values are no longer small, indicating
 # that with this density correction, we now failed to reject our null hypothesis of
 # bilateral symmetry under the stochastic block model.
 # ```
+
+#%%
+null_odds = density_left / density_right
+stat, pvalue, misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method="fisher",
+    null_odds=null_odds,
+)
+glue("corrected_pvalue", pvalue, display=False)
+
+
+#%% [markdown]
+# ## Appendix
+#%%
+
+observed1 = misc["observed1"]
+possible1 = misc["possible1"]
+
+xs = np.arange(K ** 2)
+ys = observed1.values.ravel()
+ys = np.sort(ys)
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.lineplot(x=xs, y=ys, ax=ax)
+ax.set(
+    yscale="log",
+    xlabel="Sorted index (group-to-group connections)",
+    ylabel="Number of edges",
+)
+
 
 #%% [markdown]
 # ## End

@@ -3,9 +3,9 @@ from collections import namedtuple
 import numpy as np
 import pandas as pd
 from graspologic.utils import remove_loops
+from .fisher_exact_nonunity import fisher_exact_nonunity
 from scipy.stats import chi2_contingency, combine_pvalues, fisher_exact
 from statsmodels.stats.proportion import test_proportions_2indep
-import logging
 
 SBMResult = namedtuple(
     "sbm_result", ["probabilities", "observed", "possible", "group_counts"]
@@ -63,13 +63,18 @@ def fit_sbm(A, labels, loops=False):
     return SBMResult(B_hat, n_observed, n_possible, counts_labels)
 
 
-def binom_2samp(x1, n1, x2, n2, method="agresti-caffo"):
+def binom_2samp(x1, n1, x2, n2, null_odds, method="agresti-caffo"):
     if x1 == 0 or x2 == 0:
         # logging.warn("One or more counts were 0, not running test and returning nan")
         return np.nan, np.nan
+    if null_odds != 1 and method != "fisher":
+        raise ValueError("Non-unity null odds only works with Fisher's exact test")
+
     cont_table = np.array([[x1, n1 - x1], [x2, n2 - x2]])
-    if method == "fisher":
+    if method == "fisher" and null_odds == 1:
         stat, pvalue = fisher_exact(cont_table)
+    if method == "fisher" and null_odds != 1:
+        stat, pvalue = fisher_exact_nonunity(cont_table, null_odds=null_odds)
     elif method == "chi2":
         stat, pvalue, _, _ = chi2_contingency(cont_table)
     elif method == "agresti-caffo":
@@ -95,7 +100,10 @@ def _make_adjacency_dataframe(data, index):
     return df
 
 
-def stochastic_block_test(A1, A2, labels1, labels2, method="agresti-caffo"):
+def stochastic_block_test(
+    A1, A2, labels1, labels2, null_odds=1.0, method="fisher_exact"
+):
+
     B1, n_observed1, n_possible1, group_counts1 = fit_sbm(A1, labels1)
     B2, n_observed2, n_possible2, group_counts2 = fit_sbm(A2, labels2)
 
@@ -125,6 +133,7 @@ def stochastic_block_test(A1, A2, labels1, labels2, method="agresti-caffo"):
                 n_observed2.loc[i, j],
                 n_possible2.loc[i, j],
                 method=method,
+                null_odds=null_odds,
             )
             uncorrected_pvalues.loc[i, j] = curr_pvalue
             stats.loc[i, j] = curr_stat
