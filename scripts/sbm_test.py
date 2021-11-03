@@ -32,10 +32,17 @@ from pkg.stats import stochastic_block_test
 from seaborn.utils import relative_luminance
 from tqdm import tqdm
 
+DISPLAY_FIGS = True
 
-def stashfig(name, **kwargs):
+
+def gluefig(name, fig, **kwargs):
     foldername = "sbm_test"
     savefig(name, foldername=foldername, **kwargs)
+
+    glue("fig:" + name, fig, display=False)
+
+    if not DISPLAY_FIGS:
+        plt.close()
 
 
 # %% [markdown]
@@ -48,7 +55,7 @@ rng = np.random.default_rng(8888)
 
 network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
-
+neutral_color = sns.color_palette("Set2")[2]
 
 GROUP_KEY = "simple_group"
 
@@ -99,6 +106,16 @@ ax.set(
     xticks=np.arange(len(group_counts_left)) + 0.2,
     xticklabels=group_counts_left.index,
 )
+gluefig("group-counts", fig)
+
+#%% [markdown]
+
+# ```{glue:figure} fig:group-counts
+# :name: "fig:group-counts"
+
+# The number of neurons in each group in each hemisphere. Note the similarity between
+# the hemispheres.
+# ```
 
 #%%
 
@@ -144,7 +161,7 @@ def plot_stochastic_block_test(misc):
     ax = axs[left_col]
     sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
     ax.set(ylabel="Source group", xlabel="Target group")
-    ax.set_title(r"$\hat{B}$ left", fontsize="xx-large")
+    ax.set_title(r"$\hat{B}$ left", fontsize="xx-large", color=network_palette["Left"])
 
     # heatmap of right connection probabilities
     annot = np.full((K, K), "")
@@ -155,7 +172,7 @@ def plot_stochastic_block_test(misc):
     text = r"$\hat{B}$ right"
     if null_odds != 1:
         text = r"$c$" + text
-    ax.set_title(text, fontsize="xx-large")
+    ax.set_title(text, fontsize="xx-large", color=network_palette["Right"])
 
     # handle the colorbars
     # NOTE: did it this way cause the other options weren't playing nice with auto constrain
@@ -251,14 +268,11 @@ def plot_stochastic_block_test(misc):
 
 
 fig, axs = plot_stochastic_block_test(misc)
-glue("fig_sbm_uncorrected", fig, display=False)
-stashfig("SBM-left-right-comparison")
-plt.close()
-
+gluefig("sbm-uncorrected", fig)
 
 #%% [markdown]
-# ```{glue:figure} fig_sbm_uncorrected
-# :name: "fig-sbm-uncorrected"
+# ```{glue:figure} fig:sbm-uncorrected
+# :name: "fig:sbm-uncorrected"
 
 # Comparison of stochastic block model fits for the left and right hemispheres.
 # **A)** The estimated group-to-group connection probabilities for the left
@@ -278,47 +292,115 @@ plt.close()
 # {glue:text}`uncorrected_pvalue:0.2e`.
 # ```
 
-#%%
-B1 = misc["probabilities1"]
-B2 = misc["probabilities2"]
-B1_ravel = B1.values.ravel()
-B2_ravel = B2.values.ravel()
-arange = np.arange(len(B1_ravel))
-sum_ravel = B1_ravel + B2_ravel
-sort_inds = np.argsort(-sum_ravel)
-B1_ravel = B1_ravel[sort_inds]
-B2_ravel = B2_ravel[sort_inds]
-
-fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-sns.scatterplot(
-    x=arange, y=B1_ravel, color=network_palette["Left"], ax=ax, linewidth=0, s=10
-)
-sns.scatterplot(
-    x=arange, y=B2_ravel, color=network_palette["Right"], ax=ax, linewidth=0, s=10
-)
-
-ax.set_yscale("log")
-ax.set(
-    ylabel="Estimated probability " + r"($\hat{p}$)",
-    xticks=[],
-    xlabel="Sorted group pairs",
-)
-ax.spines["bottom"].set_visible(False)
-
 
 #%%
-diff = B1_ravel - B2_ravel
-yscale = np.max(np.abs(diff))
-fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-sns.scatterplot(x=arange, y=diff, ax=ax, linewidth=0, s=20)
-ax.axhline(0, color="black", zorder=-1)
-ax.spines["bottom"].set_visible(False)
-ax.set(
-    xticks=[],
-    ylabel=r"$\hat{p}_{left} - \hat{p}_{right}$",
-    xlabel="Sorted group pairs",
-    ylim=(-yscale, yscale),
-)
+
+
+def plot_estimated_probabilities(misc):
+    B1 = misc["probabilities1"]
+    B2 = misc["probabilities2"]
+    null_odds = misc["null_odds"]
+    B2 = B2 * null_odds
+    B1_ravel = B1.values.ravel()
+    B2_ravel = B2.values.ravel()
+    arange = np.arange(len(B1_ravel))
+    sum_ravel = B1_ravel + B2_ravel
+    sort_inds = np.argsort(-sum_ravel)
+    B1_ravel = B1_ravel[sort_inds]
+    B2_ravel = B2_ravel[sort_inds]
+
+    fig, axs = plt.subplots(2, 1, figsize=(10, 10), sharex=True)
+    ax = axs[0]
+    sns.scatterplot(
+        x=arange,
+        y=B1_ravel,
+        color=network_palette["Left"],
+        ax=ax,
+        linewidth=0,
+        s=10,
+    )
+    sns.scatterplot(
+        x=arange,
+        y=B2_ravel,
+        color=network_palette["Right"],
+        ax=ax,
+        linewidth=0,
+        s=10,
+    )
+    ax.text(
+        0.7,
+        0.8,
+        "Left",
+        color=network_palette["Left"],
+        transform=ax.transAxes,
+    )
+    ax.text(
+        0.7,
+        0.7,
+        "Right",
+        color=network_palette["Right"],
+        transform=ax.transAxes,
+    )
+    ax.set_yscale("log")
+    ax.set(
+        ylabel="Estimated probability " + r"($\hat{p}$)",
+        xticks=[],
+        xlabel="Sorted group pairs",
+    )
+    ax.spines["bottom"].set_visible(False)
+
+    ax = axs[1]
+    diff = B1_ravel - B2_ravel
+    yscale = np.max(np.abs(diff))
+    yscale *= 1.05
+    sns.scatterplot(
+        x=arange, y=diff, ax=ax, linewidth=0, s=25, color=neutral_color, alpha=1
+    )
+    ax.axhline(0, color="black", zorder=-1)
+    ax.spines["bottom"].set_visible(False)
+    ax.set(
+        xticks=[],
+        ylabel=r"$\hat{p}_{left} - \hat{p}_{right}$",
+        xlabel="Sorted group pairs",
+        ylim=(-yscale, yscale),
+    )
+    ax.text(
+        0.5,
+        0.8,
+        "Left connection stronger",
+        color=network_palette["Left"],
+        transform=ax.transAxes,
+    )
+    ax.text(
+        0.5,
+        0.2,
+        "Right connection stronger",
+        color=network_palette["Right"],
+        transform=ax.transAxes,
+    )
+
+    fig.text(0.02, 0.905, "A)", fontweight="bold", fontsize=30)
+    fig.text(0.02, 0.49, "B)", fontweight="bold", fontsize=30)
+
+    return fig, ax
+
+
+fig, ax = plot_estimated_probabilities(misc)
+gluefig("probs-uncorrected", fig)
+
+#%% [markdown]
+# ```{glue:figure} fig:probs-uncorrected
+# :name: "fig:probs-uncorrected"
+
+# Comparison of estimated connection probabilities for the left and right hemispheres.
+# **A)** The estimated group-to-group connection probabilities ($\hat{p}$), sorted by
+# the mean left/right connection probability. Note the very subtle tendency for the
+# left probability to be lower than the corresponding one on the right. **B)** The
+# differences between corresponding group-to-group connection probabilities
+# ($\hat{p}_{left} - \hat{p}_{right}$). The trend of the left connection probabilities
+# being slightly smaller than the corresponding probability on the right is more
+# apparent here, as there are more negative than positive values.
+# ```
 
 # %% [markdown]
 # ## Look at the community connections that were significantly different
@@ -384,130 +466,127 @@ ax.get_legend().set_title("Side")
 rotate_labels(ax)
 ax.set(xlabel="Group pair", ylabel="Connection probability")
 
-glue("fig_significant_p_comparison", fig, display=False)
-stashfig("significant-p-comparison")
-# plt.close()
-
+gluefig("significant-p-comparison", fig)
 
 #%% [markdown]
-# ```{glue:figure} fig_significant_p_comparison
-# :name: "fig-significant-p-comparison"
+# ```{glue:figure} fig:significant-p-comparison
+# :name: "fig:significant-p-comparison"
 #
 # Comparison of estimated group-to-group connection probabilities for the group-pairs
-# which were significantly different in {numref}`Figure {number} <fig-sbm-uncorrected>`.
+# which were significantly different in {numref}`Figure {number} <fig:sbm-uncorrected>`.
 # In each case, the connection probability on the right hemisphere is higher.
 # ```
-
-#%% [markdown]
-# ## Resample the right network to make the density the same, rerun the test
 #%%
-n_edges_left = np.count_nonzero(left_adj)
-n_edges_right = np.count_nonzero(right_adj)
-n_left = left_adj.shape[0]
-n_right = right_adj.shape[0]
-density_left = n_edges_left / (n_left ** 2)
-density_right = n_edges_right / (n_right ** 2)
+# #%% [markdown]
+# # ## Resample the right network to make the density the same, rerun the test
+# #%%
+# n_edges_left = np.count_nonzero(left_adj)
+# n_edges_right = np.count_nonzero(right_adj)
+# n_left = left_adj.shape[0]
+# n_right = right_adj.shape[0]
+# density_left = n_edges_left / (n_left ** 2)
+# density_right = n_edges_right / (n_right ** 2)
 
-n_remove = int((density_right - density_left) * (n_right ** 2))
+# n_remove = int((density_right - density_left) * (n_right ** 2))
 
-glue("density_left", density_left, display=False)
-glue("density_right", density_right, display=False)
-glue("n_remove", n_remove, display=False)
+# glue("density_left", density_left, display=False)
+# glue("density_right", density_right, display=False)
+# glue("n_remove", n_remove, display=False)
 
-#%%
-rows = []
-n_resamples = 25
-glue("n_resamples", n_resamples, display=False)
-for i in range(n_resamples):
-    subsampled_right_adj = remove_edges(
-        right_adj, effect_size=n_remove, random_seed=rng
-    )
-    stat, pvalue, misc = stochastic_block_test(
-        left_adj,
-        subsampled_right_adj,
-        labels1=left_labels,
-        labels2=right_labels,
-        method="fisher",
-    )
-    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+# #%%
+# rows = []
+# n_resamples = 25
+# glue("n_resamples", n_resamples, display=False)
+# for i in range(n_resamples):
+#     subsampled_right_adj = remove_edges(
+#         right_adj, effect_size=n_remove, random_seed=rng
+#     )
+#     stat, pvalue, misc = stochastic_block_test(
+#         left_adj,
+#         subsampled_right_adj,
+#         labels1=left_labels,
+#         labels2=right_labels,
+#         method="fisher",
+#     )
+#     rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
 
-resample_results = pd.DataFrame(rows)
+# resample_results = pd.DataFrame(rows)
 
-#%% [markdown]
-# ### Plot the p-values for the corrected tests
-#%%
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(data=resample_results, x="pvalue", ax=ax)
-ax.set(xlabel="p-value", ylabel="", yticks=[])
-ax.spines["left"].set_visible(False)
+# #%% [markdown]
+# # ### Plot the p-values for the corrected tests
+# #%%
+# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# sns.histplot(data=resample_results, x="pvalue", ax=ax)
+# ax.set(xlabel="p-value", ylabel="", yticks=[])
+# ax.spines["left"].set_visible(False)
 
-glue("fig_pvalues_corrected", fig, display=False)
-stashfig("p-values-post-correction")
-plt.close()
-
-mean_resample_pvalue = np.mean(resample_results["pvalue"])
-median_resample_pvalue = np.median(resample_results["pvalue"])
-
-#%% [markdown]
-# ```{glue:figure} fig_pvalues_corrected
-# :name: "fig-pvalues-corrected"
-#
-# Histogram of p-values after a correction for network density. For the observed networks
-# the left hemisphere has a density of {glue:text}`density_left:0.4f`, and the right hemisphere has
-# a density of {glue:text}`density_right:0.4f`. Here, we randomly removed exactly {glue:text}`n_remove`
-# edges from the right hemisphere network, which makes the density of the right network
-# match that of the left hemisphere network. Then, we re-ran the stochastic block model testing
-# procedure from {numref}`Figure {number} <fig-sbm-uncorrected>`. This entire process
-# was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
-# of p-values for the overall test. Note that the p-values are no longer small, indicating
-# that with this density correction, we now failed to reject our null hypothesis of
-# bilateral symmetry under the stochastic block model.
-# ```
-
-#%%
-null_odds = density_left / density_right
-stat, pvalue, misc = stochastic_block_test(
-    left_adj,
-    right_adj,
-    labels1=left_labels,
-    labels2=right_labels,
-    method="fisher",
-    null_odds=null_odds,
-)
-glue("corrected_pvalue", pvalue, display=False)
-
-#%%
-fig, axs = plot_stochastic_block_test(misc)
-glue("fig_sbm_uncorrected", fig, display=False)
-stashfig("SBM-left-right-comparison")
+# glue("fig_pvalues_corrected", fig, display=False)
+# stashfig("p-values-post-correction")
 # plt.close()
 
-#%% [markdown]
-# ## Appendix
-#%%
+# mean_resample_pvalue = np.mean(resample_results["pvalue"])
+# median_resample_pvalue = np.median(resample_results["pvalue"])
 
-observed1 = misc["observed1"]
-possible1 = misc["possible1"]
+# #%% [markdown]
+# # ```{glue:figure} fig_pvalues_corrected
+# # :name: "fig-pvalues-corrected"
+# #
+# # Histogram of p-values after a correction for network density. For the observed networks
+# # the left hemisphere has a density of {glue:text}`density_left:0.4f`, and the right hemisphere has
+# # a density of {glue:text}`density_right:0.4f`. Here, we randomly removed exactly {glue:text}`n_remove`
+# # edges from the right hemisphere network, which makes the density of the right network
+# # match that of the left hemisphere network. Then, we re-ran the stochastic block model testing
+# # procedure from {numref}`Figure {number} <fig-sbm-uncorrected>`. This entire process
+# # was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
+# # of p-values for the overall test. Note that the p-values are no longer small, indicating
+# # that with this density correction, we now failed to reject our null hypothesis of
+# # bilateral symmetry under the stochastic block model.
+# # ```
 
-xs = np.arange(K ** 2)
-ys = observed1.values.ravel()
-ys = np.sort(ys)
+# #%%
+# null_odds = density_left / density_right
+# stat, pvalue, misc = stochastic_block_test(
+#     left_adj,
+#     right_adj,
+#     labels1=left_labels,
+#     labels2=right_labels,
+#     method="fisher",
+#     null_odds=null_odds,
+# )
+# glue("corrected_pvalue", pvalue, display=False)
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.lineplot(x=xs, y=ys, ax=ax)
-ax.set(
-    yscale="log",
-    xlabel="Sorted index (group-to-group connections)",
-    ylabel="Number of edges",
-)
+# #%%
+# fig, axs = plot_stochastic_block_test(misc)
+# glue("fig_sbm_uncorrected", fig, display=False)
+# stashfig("SBM-left-right-comparison")
+# # plt.close()
+
+# #%% [markdown]
+# # ## Appendix
+# #%%
+
+# observed1 = misc["observed1"]
+# possible1 = misc["possible1"]
+
+# xs = np.arange(K ** 2)
+# ys = observed1.values.ravel()
+# ys = np.sort(ys)
+
+# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# sns.lineplot(x=xs, y=ys, ax=ax)
+# ax.set(
+#     yscale="log",
+#     xlabel="Sorted index (group-to-group connections)",
+#     ylabel="Number of edges",
+# )
 
 
-#%% [markdown]
-# ## End
-#%%
-elapsed = time.time() - t0
-delta = datetime.timedelta(seconds=elapsed)
-print("----")
-print(f"Script took {delta}")
-print(f"Completed at {datetime.datetime.now()}")
-print("----")
+# #%% [markdown]
+# # ## End
+# #%%
+# elapsed = time.time() - t0
+# delta = datetime.timedelta(seconds=elapsed)
+# print("----")
+# print(f"Script took {delta}")
+# print(f"Completed at {datetime.datetime.now()}")
+# print("----")
