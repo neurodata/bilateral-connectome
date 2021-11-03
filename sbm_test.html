@@ -258,23 +258,6 @@
    Look at the community connections that were significantly different
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
-   Resample the right network to make the density the same, rerun the test
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-p-values-for-the-corrected-tests">
-     Plot the p-values for the corrected tests
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#end">
-   End
-  </a>
- </li>
 </ul>
 
             </nav>
@@ -292,7 +275,11 @@
 <h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -316,29 +303,17 @@
 <span class="kn">from</span> <span class="nn">seaborn.utils</span> <span class="kn">import</span> <span class="n">relative_luminance</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
+<span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="k">def</span> <span class="nf">stashfig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">foldername</span> <span class="o">=</span> <span class="s2">&quot;sbm_test&quot;</span>
     <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">foldername</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/bpedigo/JHU_code/bilateral/.venv/lib/python3.9/site-packages/beartype/_util/hint/pep/utilpeptest.py:396: BeartypeDecorHintPepDeprecatedWarning: Type hint typing.List[numpy.ndarray] deprecated by PEP 585. To resolve this, globally replace this hint by the equivalent PEP 585 type hint (e.g., &quot;typing.List[int]&quot; by &quot;list[int]&quot;). See also:
-    https://www.python.org/dev/peps/pep-0585
-  warn(warning_message, BeartypeDecorHintPepDeprecatedWarning)
-/Users/bpedigo/JHU_code/bilateral/.venv/lib/python3.9/site-packages/beartype/_util/hint/pep/utilpeptest.py:396: BeartypeDecorHintPepDeprecatedWarning: Type hint typing.List[scipy.sparse.csr.csr_matrix] deprecated by PEP 585. To resolve this, globally replace this hint by the equivalent PEP 585 type hint (e.g., &quot;typing.List[int]&quot; by &quot;list[int]&quot;). See also:
-    https://www.python.org/dev/peps/pep-0585
-  warn(warning_message, BeartypeDecorHintPepDeprecatedWarning)
-/Users/bpedigo/JHU_code/bilateral/.venv/lib/python3.9/site-packages/beartype/_util/hint/pep/utilpeptest.py:396: BeartypeDecorHintPepDeprecatedWarning: Type hint typing.List[typing.Union[networkx.classes.graph.Graph, networkx.classes.ordered.OrderedGraph, networkx.classes.digraph.DiGraph, networkx.classes.ordered.OrderedDiGraph]] deprecated by PEP 585. To resolve this, globally replace this hint by the equivalent PEP 585 type hint (e.g., &quot;typing.List[int]&quot; by &quot;list[int]&quot;). See also:
-    https://www.python.org/dev/peps/pep-0585
-  warn(warning_message, BeartypeDecorHintPepDeprecatedWarning)
-/Users/bpedigo/JHU_code/bilateral/.venv/lib/python3.9/site-packages/beartype/_util/hint/pep/utilpeptest.py:396: BeartypeDecorHintPepDeprecatedWarning: Type hint typing.List[typing.Tuple[graspologic.pipeline.embed.embeddings.Embeddings, graspologic.pipeline.embed.embeddings.Embeddings]] deprecated by PEP 585. To resolve this, globally replace this hint by the equivalent PEP 585 type hint (e.g., &quot;typing.List[int]&quot; by &quot;list[int]&quot;). See also:
-    https://www.python.org/dev/peps/pep-0585
-  warn(warning_message, BeartypeDecorHintPepDeprecatedWarning)
-/Users/bpedigo/JHU_code/bilateral/.venv/lib/python3.9/site-packages/beartype/_util/hint/pep/utilpeptest.py:396: BeartypeDecorHintPepDeprecatedWarning: Type hint typing.Tuple[graspologic.pipeline.embed.embeddings.Embeddings, graspologic.pipeline.embed.embeddings.Embeddings] deprecated by PEP 585. To resolve this, globally replace this hint by the equivalent PEP 585 type hint (e.g., &quot;typing.List[int]&quot; by &quot;list[int]&quot;). See also:
-    https://www.python.org/dev/peps/pep-0585
-  warn(warning_message, BeartypeDecorHintPepDeprecatedWarning)
+
+    <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig:&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -353,7 +328,7 @@
 
 <span class="n">network_palette</span><span class="p">,</span> <span class="n">NETWORK_KEY</span> <span class="o">=</span> <span class="n">load_network_palette</span><span class="p">()</span>
 <span class="n">node_palette</span><span class="p">,</span> <span class="n">NODE_KEY</span> <span class="o">=</span> <span class="n">load_node_palette</span><span class="p">()</span>
-
+<span class="n">neutral_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;simple_group&quot;</span>
 
@@ -404,207 +379,202 @@ Removed 0 nodes when taking the largest connected component.
 <h3>Plot the results<a class="headerlink" href="#plot-the-results" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get values</span>
-<span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
-<span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
-<span class="n">index</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">index</span>
-<span class="n">p_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">B2</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-<span class="n">uncorrected_pvalues</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">]</span>
-<span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="n">hb_thresh</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">n_tests</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># set up plot</span>
-<span class="n">pad</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">width_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">pad</span> <span class="o">-</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">pad</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
-<span class="n">height_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
-    <span class="nb">len</span><span class="p">(</span><span class="n">height_ratios</span><span class="p">),</span>
-    <span class="nb">len</span><span class="p">(</span><span class="n">width_ratios</span><span class="p">),</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
-    <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">height_ratios</span><span class="o">=</span><span class="n">height_ratios</span><span class="p">,</span>
-        <span class="n">width_ratios</span><span class="o">=</span><span class="n">width_ratios</span><span class="p">,</span>
-    <span class="p">),</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">group_counts_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts1&quot;</span><span class="p">]</span>
+<span class="n">group_counts_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts2&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group_counts_left</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mf">0.17</span><span class="p">,</span> <span class="n">group_counts_left</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.17</span><span class="p">,</span> <span class="n">group_counts_right</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
+
+<span class="n">rotate_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span>
+    <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group_counts_left</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">xticklabels</span><span class="o">=</span><span class="n">group_counts_left</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">left_col</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">right_col</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">pvalue_col</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">top_row</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">bottom_row</span> <span class="o">=</span> <span class="mi">2</span>
-
-
-<span class="n">heatmap_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">p_max</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
-
-<span class="c1"># heatmap of left connection probabilities</span>
-<span class="n">annot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="n">annot</span><span class="p">[</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">left_col</span><span class="p">]</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">sharex</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">bottom_row</span><span class="p">,</span> <span class="n">left_col</span><span class="p">])</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">B1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="n">annot</span><span class="p">,</span> <span class="o">**</span><span class="n">heatmap_kws</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Source group&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">$ left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
-
-
-<span class="c1"># heatmap of right connection probabilities</span>
-<span class="n">annot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="n">annot</span><span class="p">[</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">right_col</span><span class="p">]</span>
-<span class="n">im</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">B2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="n">annot</span><span class="p">,</span> <span class="o">**</span><span class="n">heatmap_kws</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">$ right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
-
-
-<span class="c1"># handle the colorbars</span>
-<span class="c1"># NOTE: did it this way cause the other options weren&#39;t playing nice with auto constrain</span>
-<span class="c1"># layouts.</span>
-
-
-<span class="k">def</span> <span class="nf">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
-    <span class="n">pos</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
-    <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">ymax</span> <span class="o">+</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymin</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="n">height</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymin</span>
-    <span class="n">new_pos</span> <span class="o">=</span> <span class="n">Bbox</span><span class="p">(</span>
-        <span class="p">[[</span><span class="n">pos</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">],</span> <span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">]]</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">new_pos</span><span class="p">)</span>
-
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
-    <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="n">cax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">shrink</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">ticklocation</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-<span class="c1"># plot p-values</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">pvalue_col</span><span class="p">]</span>
-
-<span class="n">colors</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_facecolors</span><span class="p">()</span>
-<span class="n">significant</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span> <span class="o">&lt;</span> <span class="n">hb_thresh</span>
-
-
-<span class="n">annot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="n">annot</span><span class="p">[(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>
-<span class="n">annot</span><span class="p">[(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;L&quot;</span>
-<span class="n">annot</span><span class="p">[(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span>
-<span class="n">plot_pvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">uncorrected_pvalues</span><span class="p">)</span>
-<span class="n">plot_pvalues</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">plot_pvalues</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">im</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
-    <span class="n">plot_pvalues</span><span class="p">,</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">annot</span><span class="o">=</span><span class="n">annot</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span>
-    <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log($p-value$)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
-
-<span class="c1"># NOTE: the x&#39;s looked bad so I did this super hacky thing...</span>
-<span class="n">pad</span> <span class="o">=</span> <span class="mf">0.2</span>
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">is_significant</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">significant</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">colors</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="n">is_significant</span><span class="p">:</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-        <span class="c1"># REF: seaborn heatmap</span>
-        <span class="n">lum</span> <span class="o">=</span> <span class="n">relative_luminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-        <span class="n">text_color</span> <span class="o">=</span> <span class="s2">&quot;.15&quot;</span> <span class="k">if</span> <span class="n">lum</span> <span class="o">&gt;</span> <span class="mf">0.408</span> <span class="k">else</span> <span class="s2">&quot;w&quot;</span>
-
-        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">text_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">text_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-<span class="c1"># plot colorbar for the pvalue plot</span>
-<span class="c1"># NOTE: only did it this way for consistency with the other colorbar</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="n">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
-    <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="n">cax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">shrink</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">ticklocation</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-<span class="c1"># plot the counts in each group</span>
-<span class="k">def</span> <span class="nf">countplot</span><span class="p">(</span><span class="n">group_counts</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group_counts</span><span class="p">)):</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">group_counts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;dimgray&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[])</span>
-
-
-<span class="c1"># left</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">bottom_row</span><span class="p">,</span> <span class="n">left_col</span><span class="p">]</span>
-<span class="n">countplot</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts1&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
-<span class="n">remove_shared_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">left_col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">left_col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-
-<span class="c1"># right</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">bottom_row</span><span class="p">,</span> <span class="n">right_col</span><span class="p">]</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">sharex</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">right_col</span><span class="p">])</span>
-<span class="n">countplot</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts2&quot;</span><span class="p">],</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
-<span class="n">remove_shared_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">right_col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="n">top_row</span><span class="p">,</span> <span class="n">right_col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-
-<span class="c1"># some text to describe the overall p-values and legend</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">bottom_row</span><span class="p">,</span> <span class="n">pvalue_col</span><span class="p">]</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Overall p-value: </span><span class="si">{</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">0.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-    <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span>
-    <span class="mf">0.9</span><span class="p">,</span>
-    <span class="sa">r</span><span class="s2">&quot;$\times$ - significant @ &quot;</span>
-    <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;$ \alpha=0.05$&quot;</span>
-    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="o">+</span> <span class="s2">&quot;B - both 0</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="o">+</span> <span class="s2">&quot;L - left 0</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="o">+</span> <span class="s2">&quot;R - right 0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
-    <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">height_ratios</span><span class="p">)):</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">width_ratios</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">has_data</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">bottom_row</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="n">pvalue_col</span><span class="p">):</span>
-            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;A)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="s2">&quot;B)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.63</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;C)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-
-
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_sbm_uncorrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">stashfig</span><span class="p">(</span><span class="s2">&quot;SBM-left-right-comparison&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;group-counts&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="_images/sbm_test_9_1.png" src="_images/sbm_test_9_1.png" />
+</div>
+</div>
+<div class="figure align-default" id="fig-group-counts">
+<div class="cell_output docutils container">
+<img alt="_images/sbm_test_9_0.png" src="_images/sbm_test_9_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
+the hemispheres.</span><a class="headerlink" href="#fig-group-counts" title="Permalink to this image">¶</a></p>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_stochastic_block_test</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
+    <span class="c1"># get values</span>
+    <span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
+    <span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
+    <span class="n">null_odds</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;null_odds&quot;</span><span class="p">]</span>
+    <span class="n">B2</span> <span class="o">=</span> <span class="n">B2</span> <span class="o">*</span> <span class="n">null_odds</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">p_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">B2</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">uncorrected_pvalues</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">]</span>
+    <span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">hb_thresh</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">n_tests</span>
+
+    <span class="c1"># set up plot</span>
+    <span class="n">pad</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">width_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">pad</span> <span class="o">-</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">pad</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+    <span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">width_ratios</span><span class="p">),</span>
+        <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">width_ratios</span><span class="o">=</span><span class="n">width_ratios</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">left_col</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">right_col</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">pvalue_col</span> <span class="o">=</span> <span class="mi">6</span>
+
+    <span class="n">heatmap_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">p_max</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1"># heatmap of left connection probabilities</span>
+    <span class="n">annot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">annot</span><span class="p">[</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">left_col</span><span class="p">]</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">B1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="n">annot</span><span class="p">,</span> <span class="o">**</span><span class="n">heatmap_kws</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Source group&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">$ left&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
+
+    <span class="c1"># heatmap of right connection probabilities</span>
+    <span class="n">annot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">annot</span><span class="p">[</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">right_col</span><span class="p">]</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">B2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="n">annot</span><span class="p">,</span> <span class="o">**</span><span class="n">heatmap_kws</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">$ right&quot;</span>
+    <span class="k">if</span> <span class="n">null_odds</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$c$&quot;</span> <span class="o">+</span> <span class="n">text</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
+
+    <span class="c1"># handle the colorbars</span>
+    <span class="c1"># NOTE: did it this way cause the other options weren&#39;t playing nice with auto constrain</span>
+    <span class="c1"># layouts.</span>
+
+    <span class="k">def</span> <span class="nf">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">ymax</span> <span class="o">+</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymin</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymin</span>
+        <span class="n">new_pos</span> <span class="o">=</span> <span class="n">Bbox</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">new_pos</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">cax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">shrink</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">ticklocation</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># plot p-values</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">pvalue_col</span><span class="p">]</span>
+
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_facecolors</span><span class="p">()</span>
+    <span class="n">significant</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span> <span class="o">&lt;</span> <span class="n">hb_thresh</span>
+
+    <span class="n">annot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">annot</span><span class="p">[(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>
+    <span class="n">annot</span><span class="p">[(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;L&quot;</span>
+    <span class="n">annot</span><span class="p">[(</span><span class="n">B1</span><span class="o">.</span><span class="n">values</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">B2</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span>
+    <span class="n">plot_pvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">uncorrected_pvalues</span><span class="p">)</span>
+    <span class="n">plot_pvalues</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">plot_pvalues</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+        <span class="n">plot_pvalues</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">annot</span><span class="o">=</span><span class="n">annot</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span>
+        <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log($p-value$)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
+
+    <span class="c1"># NOTE: the x&#39;s looked bad so I did this super hacky thing...</span>
+    <span class="n">pad</span> <span class="o">=</span> <span class="mf">0.2</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">is_significant</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+        <span class="nb">zip</span><span class="p">(</span><span class="n">significant</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">colors</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_significant</span><span class="p">:</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
+            <span class="c1"># REF: seaborn heatmap</span>
+            <span class="n">lum</span> <span class="o">=</span> <span class="n">relative_luminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+            <span class="n">text_color</span> <span class="o">=</span> <span class="s2">&quot;.15&quot;</span> <span class="k">if</span> <span class="n">lum</span> <span class="o">&gt;</span> <span class="mf">0.408</span> <span class="k">else</span> <span class="s2">&quot;w&quot;</span>
+
+            <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">text_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">pad</span><span class="p">]</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">text_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># plot colorbar for the pvalue plot</span>
+    <span class="c1"># NOTE: only did it this way for consistency with the other colorbar</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+        <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">cax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">shrink</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">ticklocation</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="s2">&quot;A)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.63</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="s2">&quot;B)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># remove dummy axes</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">width_ratios</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">has_data</span><span class="p">():</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_stochastic_block_test</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm-uncorrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sbm_test_11_1.png" src="_images/sbm_test_11_1.png" />
 </div>
 </div>
 <div class="figure align-default" id="fig-sbm-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_test_9_0.png" src="_images/sbm_test_9_0.png" />
+<img alt="_images/sbm_test_11_0.png" src="_images/sbm_test_11_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities for the left
 and right hemispheres appear qualitatively similar. Any estimated
 probabilities which are zero (i.e. no edge was present between a given pair of
@@ -621,13 +591,139 @@ p-values were combined using Fisher’s method, resulting in an overall p-value 
 null hypothesis that the two group connection probability matrices are the same) of
 <span class="pasted-text">5.47e-05</span>.</span><a class="headerlink" href="#fig-sbm-uncorrected" title="Permalink to this image">¶</a></p>
 </div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_estimated_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
+    <span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
+    <span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
+    <span class="n">null_odds</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;null_odds&quot;</span><span class="p">]</span>
+    <span class="n">B2</span> <span class="o">=</span> <span class="n">B2</span> <span class="o">*</span> <span class="n">null_odds</span>
+    <span class="n">B1_ravel</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">B2_ravel</span> <span class="o">=</span> <span class="n">B2</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">arange</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">B1_ravel</span><span class="p">))</span>
+    <span class="n">sum_ravel</span> <span class="o">=</span> <span class="n">B1_ravel</span> <span class="o">+</span> <span class="n">B2_ravel</span>
+    <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">sum_ravel</span><span class="p">)</span>
+    <span class="n">B1_ravel</span> <span class="o">=</span> <span class="n">B1_ravel</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+    <span class="n">B2_ravel</span> <span class="o">=</span> <span class="n">B2_ravel</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">arange</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">B1_ravel</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">arange</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">B2_ravel</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mf">0.7</span><span class="p">,</span>
+        <span class="mf">0.8</span><span class="p">,</span>
+        <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mf">0.7</span><span class="p">,</span>
+        <span class="mf">0.7</span><span class="p">,</span>
+        <span class="s2">&quot;Right&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Estimated probability &quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;($\hat</span><span class="si">{p}</span><span class="s2">$)&quot;</span><span class="p">,</span>
+        <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Sorted group pairs&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">B1_ravel</span> <span class="o">-</span> <span class="n">B2_ravel</span>
+    <span class="n">yscale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span>
+    <span class="n">yscale</span> <span class="o">*=</span> <span class="mf">1.05</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">arange</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">diff</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">neutral_color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+        <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{p}</span><span class="s2">_</span><span class="si">{left}</span><span class="s2"> - \hat</span><span class="si">{p}</span><span class="s2">_</span><span class="si">{right}</span><span class="s2">$&quot;</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Sorted group pairs&quot;</span><span class="p">,</span>
+        <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">yscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mf">0.5</span><span class="p">,</span>
+        <span class="mf">0.8</span><span class="p">,</span>
+        <span class="s2">&quot;Left connection stronger&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mf">0.5</span><span class="p">,</span>
+        <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s2">&quot;Right connection stronger&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.905</span><span class="p">,</span> <span class="s2">&quot;A)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.49</span><span class="p">,</span> <span class="s2">&quot;B)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_estimated_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;probs-uncorrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/sbm_test_13_1.png" src="_images/sbm_test_13_1.png" />
+</div>
+</div>
+<div class="figure align-default" id="fig-probs-uncorrected">
+<div class="cell_output docutils container">
+<img alt="_images/sbm_test_13_0.png" src="_images/sbm_test_13_0.png" />
+</div>
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
+<strong>A)</strong> The estimated group-to-group connection probabilities (<span class="math notranslate nohighlight">\(\hat{p}\)</span>), sorted by
+the mean left/right connection probability. Note the very subtle tendency for the
+left probability to be lower than the corresponding one on the right. <strong>B)</strong> The
+differences between corresponding group-to-group connection probabilities
+(<span class="math notranslate nohighlight">\(\hat{p}_{left} - \hat{p}_{right}\)</span>). The trend of the left connection probabilities
+being slightly smaller than the corresponding probability on the right is more
+apparent here, as there are more negative than positive values.</span><a class="headerlink" href="#fig-probs-uncorrected" title="Permalink to this image">¶</a></p>
+</div>
 </div>
 </div>
 <div class="section" id="look-at-the-community-connections-that-were-significantly-different">
 <h2>Look at the community connections that were significantly different<a class="headerlink" href="#look-at-the-community-connections-that-were-significantly-different" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">row_inds</span><span class="p">,</span> <span class="n">col_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">significant</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
+<span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
+<span class="n">null_odds</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;null_odds&quot;</span><span class="p">]</span>
+<span class="n">B2</span> <span class="o">=</span> <span class="n">B2</span> <span class="o">*</span> <span class="n">null_odds</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">index</span>
+
+<span class="n">uncorrected_pvalues</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">]</span>
+<span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">hb_thresh</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">n_tests</span>
+<span class="n">significant</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span> <span class="o">&lt;</span> <span class="n">hb_thresh</span>
+
+<span class="n">row_inds</span><span class="p">,</span> <span class="n">col_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">significant</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 
 <span class="n">n_significant</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_inds</span><span class="p">)</span>
 
@@ -674,113 +770,137 @@ null hypothesis that the two group connection probability matrices are the same)
 <span class="n">rotate_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group pair&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Connection probability&quot;</span><span class="p">)</span>
 
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;fig_significant_p_comparison&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">stashfig</span><span class="p">(</span><span class="s2">&quot;significant-p-comparison&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;significant-p-comparison&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="_images/sbm_test_16_1.png" src="_images/sbm_test_16_1.png" />
 </div>
 </div>
 <div class="figure align-default" id="fig-significant-p-comparison">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_test_12_0.png" src="_images/sbm_test_12_0.png" />
+<img alt="_images/sbm_test_16_0.png" src="_images/sbm_test_16_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
-which were significantly different in <a class="reference internal" href="#fig-sbm-uncorrected"><span class="std std-numref">Figure 2</span></a>.
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
+which were significantly different in <a class="reference internal" href="#fig-sbm-uncorrected"><span class="std std-numref">Figure 3</span></a>.
 In each case, the connection probability on the right hemisphere is higher.</span><a class="headerlink" href="#fig-significant-p-comparison" title="Permalink to this image">¶</a></p>
 </div>
-</div>
-<div class="section" id="resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
-<h2>Resample the right network to make the density the same, rerun the test<a class="headerlink" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_edges_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
-<span class="n">n_edges_right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
-<span class="n">n_remove</span> <span class="o">=</span> <span class="n">n_edges_right</span> <span class="o">-</span> <span class="n">n_edges_left</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_edges_left&quot;</span><span class="p">,</span> <span class="n">n_edges_left</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_edges_right&quot;</span><span class="p">,</span> <span class="n">n_edges_right</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_remove&quot;</span><span class="p">,</span> <span class="n">n_remove</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ## Resample the right network to make the density the same, rerun the test</span>
+<span class="c1"># #%%</span>
+<span class="c1"># n_edges_left = np.count_nonzero(left_adj)</span>
+<span class="c1"># n_edges_right = np.count_nonzero(right_adj)</span>
+<span class="c1"># n_left = left_adj.shape[0]</span>
+<span class="c1"># n_right = right_adj.shape[0]</span>
+<span class="c1"># density_left = n_edges_left / (n_left ** 2)</span>
+<span class="c1"># density_right = n_edges_right / (n_right ** 2)</span>
 
-<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">n_resamples</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_resamples&quot;</span><span class="p">,</span> <span class="n">n_resamples</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_resamples</span><span class="p">):</span>
-    <span class="n">subsampled_right_adj</span> <span class="o">=</span> <span class="n">remove_edges</span><span class="p">(</span>
-        <span class="n">right_adj</span><span class="p">,</span> <span class="n">effect_size</span><span class="o">=</span><span class="n">n_remove</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">rng</span>
-    <span class="p">)</span>
-    <span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
-        <span class="n">left_adj</span><span class="p">,</span>
-        <span class="n">subsampled_right_adj</span><span class="p">,</span>
-        <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
-        <span class="n">labels2</span><span class="o">=</span><span class="n">right_labels</span><span class="p">,</span>
-        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;stat&quot;</span><span class="p">:</span> <span class="n">stat</span><span class="p">,</span> <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">pvalue</span><span class="p">,</span> <span class="s2">&quot;misc&quot;</span><span class="p">:</span> <span class="n">misc</span><span class="p">,</span> <span class="s2">&quot;resample&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">})</span>
+<span class="c1"># n_remove = int((density_right - density_left) * (n_right ** 2))</span>
 
-<span class="n">resample_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-</div>
-</div>
-<div class="section" id="plot-the-p-values-for-the-corrected-tests">
-<h3>Plot the p-values for the corrected tests<a class="headerlink" href="#plot-the-p-values-for-the-corrected-tests" title="Permalink to this headline">¶</a></h3>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">resample_results</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># glue(&quot;density_left&quot;, density_left, display=False)</span>
+<span class="c1"># glue(&quot;density_right&quot;, density_right, display=False)</span>
+<span class="c1"># glue(&quot;n_remove&quot;, n_remove, display=False)</span>
 
-<span class="n">glue</span><span class="p">(</span><span class="s1">&#39;fig_pvalues_corrected&#39;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">stashfig</span><span class="p">(</span><span class="s2">&quot;p-values-post-correction&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1"># #%%</span>
+<span class="c1"># rows = []</span>
+<span class="c1"># n_resamples = 25</span>
+<span class="c1"># glue(&quot;n_resamples&quot;, n_resamples, display=False)</span>
+<span class="c1"># for i in range(n_resamples):</span>
+<span class="c1">#     subsampled_right_adj = remove_edges(</span>
+<span class="c1">#         right_adj, effect_size=n_remove, random_seed=rng</span>
+<span class="c1">#     )</span>
+<span class="c1">#     stat, pvalue, misc = stochastic_block_test(</span>
+<span class="c1">#         left_adj,</span>
+<span class="c1">#         subsampled_right_adj,</span>
+<span class="c1">#         labels1=left_labels,</span>
+<span class="c1">#         labels2=right_labels,</span>
+<span class="c1">#         method=&quot;fisher&quot;,</span>
+<span class="c1">#     )</span>
+<span class="c1">#     rows.append({&quot;stat&quot;: stat, &quot;pvalue&quot;: pvalue, &quot;misc&quot;: misc, &quot;resample&quot;: i})</span>
 
-<span class="n">mean_resample_pvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">resample_results</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">])</span>
-<span class="n">median_resample_pvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">resample_results</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-</div>
-</div>
-<div class="figure align-default" id="fig-pvalues-corrected">
-<div class="cell_output docutils container">
-<img alt="_images/sbm_test_17_0.png" src="_images/sbm_test_17_0.png" />
-</div>
-<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Histogram of p-values after a correction for network density. For the observed networks
-the left hemisphere has <span class="pasted-text">36523</span> edges, and the right hemisphere has
-<span class="pasted-text">39178</span>. Here, we randomly removed exactly <span class="pasted-text">2655</span>
-edges from the right hemisphere network, and re-ran the stochastic block model testing
-procedure from <a class="reference internal" href="#fig-sbm-uncorrected"><span class="std std-numref">Figure 2</span></a>. This entire process
-was repeated <span class="pasted-text">100</span> times. The histogram above shows the distribution
-of p-values for the overall test. Note that the p-values are no longer small, indicating
-that with this density correction, we now failed to reject our null hypothesis of
-bilateral symmetry under the stochastic block model.</span><a class="headerlink" href="#fig-pvalues-corrected" title="Permalink to this image">¶</a></p>
-</div>
-</div>
-</div>
-<div class="section" id="end">
-<h2>End<a class="headerlink" href="#end" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;----&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;----&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----
-Script took 0:04:03.278439
-Completed at 2021-10-25 10:26:25.825586
-----
+<span class="c1"># resample_results = pd.DataFrame(rows)</span>
+
+<span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ### Plot the p-values for the corrected tests</span>
+<span class="c1"># #%%</span>
+<span class="c1"># fig, ax = plt.subplots(1, 1, figsize=(8, 6))</span>
+<span class="c1"># sns.histplot(data=resample_results, x=&quot;pvalue&quot;, ax=ax)</span>
+<span class="c1"># ax.set(xlabel=&quot;p-value&quot;, ylabel=&quot;&quot;, yticks=[])</span>
+<span class="c1"># ax.spines[&quot;left&quot;].set_visible(False)</span>
+
+<span class="c1"># glue(&quot;fig_pvalues_corrected&quot;, fig, display=False)</span>
+<span class="c1"># stashfig(&quot;p-values-post-correction&quot;)</span>
+<span class="c1"># plt.close()</span>
+
+<span class="c1"># mean_resample_pvalue = np.mean(resample_results[&quot;pvalue&quot;])</span>
+<span class="c1"># median_resample_pvalue = np.median(resample_results[&quot;pvalue&quot;])</span>
+
+<span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ```{glue:figure} fig_pvalues_corrected</span>
+<span class="c1"># # :name: &quot;fig-pvalues-corrected&quot;</span>
+<span class="c1"># #</span>
+<span class="c1"># # Histogram of p-values after a correction for network density. For the observed networks</span>
+<span class="c1"># # the left hemisphere has a density of {glue:text}`density_left:0.4f`, and the right hemisphere has</span>
+<span class="c1"># # a density of {glue:text}`density_right:0.4f`. Here, we randomly removed exactly {glue:text}`n_remove`</span>
+<span class="c1"># # edges from the right hemisphere network, which makes the density of the right network</span>
+<span class="c1"># # match that of the left hemisphere network. Then, we re-ran the stochastic block model testing</span>
+<span class="c1"># # procedure from {numref}`Figure {number} &lt;fig-sbm-uncorrected&gt;`. This entire process</span>
+<span class="c1"># # was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution</span>
+<span class="c1"># # of p-values for the overall test. Note that the p-values are no longer small, indicating</span>
+<span class="c1"># # that with this density correction, we now failed to reject our null hypothesis of</span>
+<span class="c1"># # bilateral symmetry under the stochastic block model.</span>
+<span class="c1"># # ```</span>
+
+<span class="c1"># #%%</span>
+<span class="c1"># null_odds = density_left / density_right</span>
+<span class="c1"># stat, pvalue, misc = stochastic_block_test(</span>
+<span class="c1">#     left_adj,</span>
+<span class="c1">#     right_adj,</span>
+<span class="c1">#     labels1=left_labels,</span>
+<span class="c1">#     labels2=right_labels,</span>
+<span class="c1">#     method=&quot;fisher&quot;,</span>
+<span class="c1">#     null_odds=null_odds,</span>
+<span class="c1"># )</span>
+<span class="c1"># glue(&quot;corrected_pvalue&quot;, pvalue, display=False)</span>
+
+<span class="c1"># #%%</span>
+<span class="c1"># fig, axs = plot_stochastic_block_test(misc)</span>
+<span class="c1"># glue(&quot;fig_sbm_uncorrected&quot;, fig, display=False)</span>
+<span class="c1"># stashfig(&quot;SBM-left-right-comparison&quot;)</span>
+<span class="c1"># # plt.close()</span>
+
+<span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ## Appendix</span>
+<span class="c1"># #%%</span>
+
+<span class="c1"># observed1 = misc[&quot;observed1&quot;]</span>
+<span class="c1"># possible1 = misc[&quot;possible1&quot;]</span>
+
+<span class="c1"># xs = np.arange(K ** 2)</span>
+<span class="c1"># ys = observed1.values.ravel()</span>
+<span class="c1"># ys = np.sort(ys)</span>
+
+<span class="c1"># fig, ax = plt.subplots(1, 1, figsize=(8, 6))</span>
+<span class="c1"># sns.lineplot(x=xs, y=ys, ax=ax)</span>
+<span class="c1"># ax.set(</span>
+<span class="c1">#     yscale=&quot;log&quot;,</span>
+<span class="c1">#     xlabel=&quot;Sorted index (group-to-group connections)&quot;,</span>
+<span class="c1">#     ylabel=&quot;Number of edges&quot;,</span>
+<span class="c1"># )</span>
+
+
+<span class="c1"># #%% [markdown]</span>
+<span class="c1"># # ## End</span>
+<span class="c1"># #%%</span>
+<span class="c1"># elapsed = time.time() - t0</span>
+<span class="c1"># delta = datetime.timedelta(seconds=elapsed)</span>
+<span class="c1"># print(&quot;----&quot;)</span>
+<span class="c1"># print(f&quot;Script took {delta}&quot;)</span>
+<span class="c1"># print(f&quot;Completed at {datetime.datetime.now()}&quot;)</span>
+<span class="c1"># print(&quot;----&quot;)</span>
 </pre></div>
 </div>
 </div>
