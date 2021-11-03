@@ -71,9 +71,9 @@ def binom_2samp(x1, n1, x2, n2, null_odds, method="agresti-caffo"):
         raise ValueError("Non-unity null odds only works with Fisher's exact test")
 
     cont_table = np.array([[x1, n1 - x1], [x2, n2 - x2]])
-    if method == "fisher" and null_odds == 1:
+    if method == "fisher" and null_odds == 1.0:
         stat, pvalue = fisher_exact(cont_table)
-    if method == "fisher" and null_odds != 1:
+    elif method == "fisher" and null_odds != 1.0:
         stat, pvalue = fisher_exact_nonunity(cont_table, null_odds=null_odds)
     elif method == "chi2":
         stat, pvalue, _, _ = chi2_contingency(cont_table)
@@ -149,6 +149,7 @@ def stochastic_block_test(
     misc["possible2"] = n_possible2
     misc["group_counts1"] = group_counts1
     misc["group_counts2"] = group_counts2
+    misc["null_odds"] = null_odds
 
     # TODO how else to combine pvalues
     run_pvalues = uncorrected_pvalues.values

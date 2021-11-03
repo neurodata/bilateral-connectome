@@ -77,196 +77,180 @@ stat, pvalue, misc = stochastic_block_test(
 )
 glue("uncorrected_pvalue", pvalue, display=False)
 
+
 #%% [markdown]
 # ### Plot the results
 #%%
-# get values
-B1 = misc["probabilities1"]
-B2 = misc["probabilities2"]
-index = B1.index
-p_max = max(B1.values.max(), B2.values.max())
-uncorrected_pvalues = misc["uncorrected_pvalues"]
-n_tests = misc["n_tests"]
-K = B1.shape[0]
-alpha = 0.05
-hb_thresh = alpha / n_tests
+set_theme(font_scale=1)
 
-# set up plot
-pad = 2
-width_ratios = [0.5, pad + 0.8, 10, pad - 0.4, 10, pad + 0.9, 10, 0.5]
-height_ratios = [2, 0.6, 1]
-set_theme(font_scale=1.25)
-fig, axs = plt.subplots(
-    len(height_ratios),
-    len(width_ratios),
-    figsize=(30, 15),
-    gridspec_kw=dict(
-        height_ratios=height_ratios,
-        width_ratios=width_ratios,
-    ),
+fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+
+group_counts_left = misc["group_counts1"]
+group_counts_right = misc["group_counts2"]
+
+for i in range(len(group_counts_left)):
+    ax.bar(i - 0.17, group_counts_left[i], width=0.3, color=network_palette["Left"])
+    ax.bar(i + 0.17, group_counts_right[i], width=0.3, color=network_palette["Right"])
+
+rotate_labels(ax)
+ax.set(
+    ylabel="Count",
+    xlabel="Group",
+    xticks=np.arange(len(group_counts_left)) + 0.2,
+    xticklabels=group_counts_left.index,
 )
-left_col = 2
-right_col = 4
-pvalue_col = 6
-top_row = 0
-bottom_row = 2
+
+#%%
 
 
-heatmap_kws = dict(cmap="Blues", square=True, cbar=False, vmax=p_max, fmt="s")
+def plot_stochastic_block_test(misc):
+    # get values
+    B1 = misc["probabilities1"]
+    B2 = misc["probabilities2"]
+    null_odds = misc["null_odds"]
+    B2 = B2 * null_odds
 
-# heatmap of left connection probabilities
-annot = np.full((K, K), "")
-annot[B1.values == 0] = 0
-ax = axs[top_row, left_col]
-ax.sharex(axs[bottom_row, left_col])
-sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
-ax.set(ylabel="Source group", xlabel="Target group")
-ax.set_title(r"$\hat{B}$ left", fontsize="xx-large")
+    index = B1.index
+    p_max = max(B1.values.max(), B2.values.max())
+    uncorrected_pvalues = misc["uncorrected_pvalues"]
+    n_tests = misc["n_tests"]
+    K = B1.shape[0]
+    alpha = 0.05
+    hb_thresh = alpha / n_tests
 
-
-# heatmap of right connection probabilities
-annot = np.full((K, K), "")
-annot[B2.values == 0] = 0
-ax = axs[top_row, right_col]
-im = sns.heatmap(B2, ax=ax, annot=annot, **heatmap_kws)
-ax.set(ylabel="", xlabel="Target group")
-ax.set_title(r"$\hat{B}$ right", fontsize="xx-large")
-
-
-# handle the colorbars
-# NOTE: did it this way cause the other options weren't playing nice with auto constrain
-# layouts.
-
-
-def shrink_axis(ax, scale=0.7):
-    pos = ax.get_position()
-    mid = (pos.ymax + pos.ymin) / 2
-    height = pos.ymax - pos.ymin
-    new_pos = Bbox(
-        [[pos.xmin, mid - scale * 0.5 * height], [pos.xmax, mid + scale * 0.5 * height]]
+    # set up plot
+    pad = 2
+    width_ratios = [0.5, pad + 0.8, 10, pad - 0.4, 10, pad + 0.9, 10, 0.5]
+    set_theme(font_scale=1.25)
+    fig, axs = plt.subplots(
+        1,
+        len(width_ratios),
+        figsize=(30, 10),
+        gridspec_kw=dict(
+            width_ratios=width_ratios,
+        ),
     )
-    ax.set_position(new_pos)
+    left_col = 2
+    right_col = 4
+    pvalue_col = 6
+
+    heatmap_kws = dict(
+        cmap="Blues", square=True, cbar=False, vmax=p_max, fmt="s", xticklabels=True
+    )
+
+    # heatmap of left connection probabilities
+    annot = np.full((K, K), "")
+    annot[B1.values == 0] = 0
+    ax = axs[left_col]
+    sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
+    ax.set(ylabel="Source group", xlabel="Target group")
+    ax.set_title(r"$\hat{B}$ left", fontsize="xx-large")
+
+    # heatmap of right connection probabilities
+    annot = np.full((K, K), "")
+    annot[B2.values == 0] = 0
+    ax = axs[right_col]
+    im = sns.heatmap(B2, ax=ax, annot=annot, **heatmap_kws)
+    ax.set(ylabel="", xlabel="Target group")
+    text = r"$\hat{B}$ right"
+    if null_odds != 1:
+        text = r"$c$" + text
+    ax.set_title(text, fontsize="xx-large")
+
+    # handle the colorbars
+    # NOTE: did it this way cause the other options weren't playing nice with auto constrain
+    # layouts.
+
+    def shrink_axis(ax, scale=0.7):
+        pos = ax.get_position()
+        mid = (pos.ymax + pos.ymin) / 2
+        height = pos.ymax - pos.ymin
+        new_pos = Bbox(
+            [
+                [pos.xmin, mid - scale * 0.5 * height],
+                [pos.xmax, mid + scale * 0.5 * height],
+            ]
+        )
+        ax.set_position(new_pos)
+
+    ax = axs[0]
+    shrink_axis(ax, scale=0.5)
+    _ = fig.colorbar(
+        im.get_children()[0],
+        cax=ax,
+        fraction=1,
+        shrink=1,
+        ticklocation="left",
+    )
+
+    # plot p-values
+    ax = axs[pvalue_col]
+
+    colors = im.get_children()[0].get_facecolors()
+    significant = uncorrected_pvalues < hb_thresh
+
+    annot = np.full((K, K), "")
+    annot[(B1.values == 0) & (B2.values == 0)] = "B"
+    annot[(B1.values == 0) & (B2.values != 0)] = "L"
+    annot[(B1.values != 0) & (B2.values == 0)] = "R"
+    plot_pvalues = np.log10(uncorrected_pvalues)
+    plot_pvalues[np.isnan(plot_pvalues)] = 0
+    im = sns.heatmap(
+        plot_pvalues,
+        ax=ax,
+        annot=annot,
+        cmap="RdBu",
+        center=0,
+        square=True,
+        cbar=False,
+        fmt="s",
+    )
+    ax.set(ylabel="", xlabel="Target group")
+    ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
+    ax.set_title(r"$log($p-value$)$", fontsize="xx-large")
+
+    # NOTE: the x's looked bad so I did this super hacky thing...
+    pad = 0.2
+    for idx, (is_significant, color) in enumerate(
+        zip(significant.values.ravel(), colors)
+    ):
+        if is_significant:
+            i, j = np.unravel_index(idx, (K, K))
+            # REF: seaborn heatmap
+            lum = relative_luminance(color)
+            text_color = ".15" if lum > 0.408 else "w"
+
+            xs = [j + pad, j + 1 - pad]
+            ys = [i + pad, i + 1 - pad]
+            ax.plot(xs, ys, color=text_color, linewidth=4)
+            xs = [j + 1 - pad, j + pad]
+            ys = [i + pad, i + 1 - pad]
+            ax.plot(xs, ys, color=text_color, linewidth=4)
+
+    # plot colorbar for the pvalue plot
+    # NOTE: only did it this way for consistency with the other colorbar
+    ax = axs[7]
+    shrink_axis(ax, scale=0.5)
+    _ = fig.colorbar(
+        im.get_children()[0],
+        cax=ax,
+        fraction=1,
+        shrink=1,
+        ticklocation="right",
+    )
+
+    fig.text(0.11, 0.85, "A)", fontweight="bold", fontsize=50)
+    fig.text(0.63, 0.85, "B)", fontweight="bold", fontsize=50)
+
+    # remove dummy axes
+    for i in range(len(width_ratios)):
+        if not axs[i].has_data():
+            axs[i].set_visible(False)
+
+    return fig, axs
 
 
-ax = axs[top_row, 0]
-shrink_axis(ax, scale=0.5)
-cbar = fig.colorbar(
-    im.get_children()[0],
-    cax=ax,
-    fraction=1,
-    shrink=1,
-    ticklocation="left",
-)
-
-
-# plot p-values
-ax = axs[top_row, pvalue_col]
-
-colors = im.get_children()[0].get_facecolors()
-significant = uncorrected_pvalues < hb_thresh
-
-
-annot = np.full((K, K), "")
-annot[(B1.values == 0) & (B2.values == 0)] = "B"
-annot[(B1.values == 0) & (B2.values != 0)] = "L"
-annot[(B1.values != 0) & (B2.values == 0)] = "R"
-plot_pvalues = np.log10(uncorrected_pvalues)
-plot_pvalues[np.isnan(plot_pvalues)] = 0
-im = sns.heatmap(
-    plot_pvalues,
-    ax=ax,
-    annot=annot,
-    cmap="RdBu",
-    center=0,
-    square=True,
-    cbar=False,
-    fmt="s",
-)
-ax.set(ylabel="", xlabel="Target group")
-ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-ax.set_title(r"$log($p-value$)$", fontsize="xx-large")
-
-# NOTE: the x's looked bad so I did this super hacky thing...
-pad = 0.2
-for idx, (is_significant, color) in enumerate(zip(significant.values.ravel(), colors)):
-    if is_significant:
-        i, j = np.unravel_index(idx, (K, K))
-        # REF: seaborn heatmap
-        lum = relative_luminance(color)
-        text_color = ".15" if lum > 0.408 else "w"
-
-        xs = [j + pad, j + 1 - pad]
-        ys = [i + pad, i + 1 - pad]
-        ax.plot(xs, ys, color=text_color, linewidth=4)
-        xs = [j + 1 - pad, j + pad]
-        ys = [i + pad, i + 1 - pad]
-        ax.plot(xs, ys, color=text_color, linewidth=4)
-
-# plot colorbar for the pvalue plot
-# NOTE: only did it this way for consistency with the other colorbar
-ax = axs[top_row, 7]
-shrink_axis(ax, scale=0.5)
-cbar = fig.colorbar(
-    im.get_children()[0],
-    cax=ax,
-    fraction=1,
-    shrink=1,
-    ticklocation="right",
-)
-
-
-# plot the counts in each group
-def countplot(group_counts, ax):
-    for i in range(len(group_counts)):
-        ax.bar(i + 0.5, group_counts[i], color="dimgray")
-    ax.set(ylabel="Count", xlabel="Group", xticks=[])
-
-
-# left
-ax = axs[bottom_row, left_col]
-countplot(misc["group_counts1"], ax)
-ax.set_title("Left", fontsize="xx-large")
-remove_shared_ax(ax, y=False)
-axs[top_row, left_col].set_xticks(np.arange(K) + 0.5)
-axs[top_row, left_col].set_xticklabels(index)
-
-# right
-ax = axs[bottom_row, right_col]
-ax.sharex(axs[top_row, right_col])
-countplot(misc["group_counts2"], ax)
-ax.set_title("Right", fontsize="xx-large")
-remove_shared_ax(ax, y=False)
-axs[top_row, right_col].set_xticks(np.arange(K) + 0.5)
-axs[top_row, right_col].set_xticklabels(index)
-
-# some text to describe the overall p-values and legend
-ax = axs[bottom_row, pvalue_col]
-ax.axis("off")
-ax.text(-0.1, 1.1, f"Overall p-value: {pvalue:0.2e}", fontsize="x-large", ha="left")
-ax.text(
-    -0.1,
-    0.9,
-    r"$\times$ - significant @ "
-    + r"$ \alpha=0.05$"
-    + "\n"
-    + "B - both 0\n"
-    + "L - left 0\n"
-    + "R - right 0\n",
-    va="top",
-    fontsize="large",
-)
-
-
-for i in range(len(height_ratios)):
-    for j in range(len(width_ratios)):
-        if not axs[i, j].has_data() and not (i == bottom_row and j == pvalue_col):
-            axs[i, j].set_visible(False)
-
-fig.text(0.12, 0.9, "A)", fontweight="bold", fontsize=50)
-fig.text(0.12, 0.35, "B)", fontweight="bold", fontsize=50)
-fig.text(0.63, 0.9, "C)", fontweight="bold", fontsize=50)
-
-
+fig, axs = plot_stochastic_block_test(misc)
 glue("fig_sbm_uncorrected", fig, display=False)
 stashfig("SBM-left-right-comparison")
 plt.close()
@@ -294,10 +278,65 @@ plt.close()
 # {glue:text}`uncorrected_pvalue:0.2e`.
 # ```
 
+#%%
+B1 = misc["probabilities1"]
+B2 = misc["probabilities2"]
+B1_ravel = B1.values.ravel()
+B2_ravel = B2.values.ravel()
+arange = np.arange(len(B1_ravel))
+sum_ravel = B1_ravel + B2_ravel
+sort_inds = np.argsort(-sum_ravel)
+B1_ravel = B1_ravel[sort_inds]
+B2_ravel = B2_ravel[sort_inds]
+
+fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+sns.scatterplot(
+    x=arange, y=B1_ravel, color=network_palette["Left"], ax=ax, linewidth=0, s=10
+)
+sns.scatterplot(
+    x=arange, y=B2_ravel, color=network_palette["Right"], ax=ax, linewidth=0, s=10
+)
+
+ax.set_yscale("log")
+ax.set(
+    ylabel="Estimated probability " + r"($\hat{p}$)",
+    xticks=[],
+    xlabel="Sorted group pairs",
+)
+ax.spines["bottom"].set_visible(False)
+
+
+#%%
+diff = B1_ravel - B2_ravel
+yscale = np.max(np.abs(diff))
+fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+sns.scatterplot(x=arange, y=diff, ax=ax, linewidth=0, s=20)
+ax.axhline(0, color="black", zorder=-1)
+ax.spines["bottom"].set_visible(False)
+ax.set(
+    xticks=[],
+    ylabel=r"$\hat{p}_{left} - \hat{p}_{right}$",
+    xlabel="Sorted group pairs",
+    ylim=(-yscale, yscale),
+)
+
 # %% [markdown]
 # ## Look at the community connections that were significantly different
 
 #%%
+B1 = misc["probabilities1"]
+B2 = misc["probabilities2"]
+null_odds = misc["null_odds"]
+B2 = B2 * null_odds
+index = B1.index
+
+uncorrected_pvalues = misc["uncorrected_pvalues"]
+n_tests = misc["n_tests"]
+K = B1.shape[0]
+alpha = 0.05
+hb_thresh = alpha / n_tests
+significant = uncorrected_pvalues < hb_thresh
+
 row_inds, col_inds = np.nonzero(significant.values)
 
 n_significant = len(row_inds)
@@ -347,7 +386,7 @@ ax.set(xlabel="Group pair", ylabel="Connection probability")
 
 glue("fig_significant_p_comparison", fig, display=False)
 stashfig("significant-p-comparison")
-plt.close()
+# plt.close()
 
 
 #%% [markdown]
@@ -437,6 +476,11 @@ stat, pvalue, misc = stochastic_block_test(
 )
 glue("corrected_pvalue", pvalue, display=False)
 
+#%%
+fig, axs = plot_stochastic_block_test(misc)
+glue("fig_sbm_uncorrected", fig, display=False)
+stashfig("SBM-left-right-comparison")
+# plt.close()
 
 #%% [markdown]
 # ## Appendix
