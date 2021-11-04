@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import remove_shared_ax, rotate_labels
+from giskard.plot import rotate_labels
 from graspologic.utils import binarize
 from matplotlib.transforms import Bbox
 from myst_nb import glue
@@ -31,7 +31,6 @@ from pkg.perturb import remove_edges
 from pkg.plot import set_theme
 from pkg.stats import stochastic_block_test
 from seaborn.utils import relative_luminance
-from tqdm import tqdm
 
 DISPLAY_FIGS = False
 
@@ -121,7 +120,7 @@ gluefig("group-counts", fig)
 #%%
 
 
-def plot_stochastic_block_test(misc):
+def plot_stochastic_block_test(misc, pvalue_vmin=None):
     # get values
     B1 = misc["probabilities1"]
     B2 = misc["probabilities2"]
@@ -222,10 +221,11 @@ def plot_stochastic_block_test(misc):
         square=True,
         cbar=False,
         fmt="s",
+        vmin=pvalue_vmin,
     )
     ax.set(ylabel="", xlabel="Target group")
     ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-    ax.set_title(r"$log($p-value$)$", fontsize="xx-large")
+    ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
 
     # NOTE: the x's looked bad so I did this super hacky thing...
     pad = 0.2
@@ -270,6 +270,9 @@ def plot_stochastic_block_test(misc):
 
 fig, axs = plot_stochastic_block_test(misc)
 gluefig("sbm-uncorrected", fig)
+
+# need to save this for later for setting colorbar the same on other plot
+pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 
 #%% [markdown]
 # ```{glue:figure} fig:sbm-uncorrected
@@ -317,7 +320,8 @@ def plot_estimated_probabilities(misc):
         color=network_palette["Left"],
         ax=ax,
         linewidth=0,
-        s=10,
+        s=15,
+        alpha=0.5,
     )
     sns.scatterplot(
         x=arange,
@@ -325,7 +329,9 @@ def plot_estimated_probabilities(misc):
         color=network_palette["Right"],
         ax=ax,
         linewidth=0,
-        s=10,
+        s=15,
+        alpha=0.5,
+        zorder=-1,
     )
     ax.text(
         0.7,
@@ -364,17 +370,20 @@ def plot_estimated_probabilities(misc):
         xlabel="Sorted group pairs",
         ylim=(-yscale, yscale),
     )
+    n_greater = np.count_nonzero(diff > 0)
+    n_total = len(diff)
     ax.text(
-        0.5,
+        0.3,
         0.8,
-        "Left connection stronger",
+        f"Left connection stronger ({n_greater}/{n_total})",
         color=network_palette["Left"],
         transform=ax.transAxes,
     )
+    n_lesser = np.count_nonzero(diff < 0)
     ax.text(
-        0.5,
-        0.2,
-        "Right connection stronger",
+        0.3,
+        0.15,
+        f"Right connection stronger ({n_lesser}/{n_total})",
         color=network_palette["Right"],
         transform=ax.transAxes,
     )
@@ -569,7 +578,6 @@ gluefig("pvalues-corrected", fig)
 # divided by number of possible edges) then
 #
 # $$c = \frac{\rho_{left}}{\rho_{right}}$$
-# .
 #
 # A test for the adjusted null hypothesis above is given by using
 # [Fisher's noncentral hypergeometric distribution](https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
@@ -588,7 +596,7 @@ stat, pvalue, misc = stochastic_block_test(
 glue("corrected-pvalue", pvalue, display=False)
 
 #%%
-fig, axs = plot_stochastic_block_test(misc)
+fig, axs = plot_stochastic_block_test(misc, pvalue_vmin=pvalue_vmin)
 gluefig("sbm-corrected", fig)
 
 #%% [markdown]
