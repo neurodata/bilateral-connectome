@@ -308,7 +308,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">remove_shared_ax</span><span class="p">,</span> <span class="n">rotate_labels</span>
+<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">rotate_labels</span>
 <span class="kn">from</span> <span class="nn">graspologic.utils</span> <span class="kn">import</span> <span class="n">binarize</span>
 <span class="kn">from</span> <span class="nn">matplotlib.transforms</span> <span class="kn">import</span> <span class="n">Bbox</span>
 <span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
@@ -323,7 +323,6 @@
 <span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">stochastic_block_test</span>
 <span class="kn">from</span> <span class="nn">seaborn.utils</span> <span class="kn">import</span> <span class="n">relative_luminance</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -435,7 +434,7 @@ the hemispheres.</span><a class="headerlink" href="#fig-group-counts" title="Per
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_stochastic_block_test</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_stochastic_block_test</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">pvalue_vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># get values</span>
     <span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
     <span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
@@ -536,10 +535,11 @@ the hemispheres.</span><a class="headerlink" href="#fig-group-counts" title="Per
         <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">pvalue_vmin</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log($p-value$)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log_</span><span class="si">{10}</span><span class="s2">($p-value$)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
 
     <span class="c1"># NOTE: the x&#39;s looked bad so I did this super hacky thing...</span>
     <span class="n">pad</span> <span class="o">=</span> <span class="mf">0.2</span>
@@ -584,6 +584,9 @@ the hemispheres.</span><a class="headerlink" href="#fig-group-counts" title="Per
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_stochastic_block_test</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm-uncorrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+
+<span class="c1"># need to save this for later for setting colorbar the same on other plot</span>
+<span class="n">pvalue_vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -633,7 +636,8 @@ null hypothesis that the two group connection probability matrices are the same)
         <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
         <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
         <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="n">arange</span><span class="p">,</span>
@@ -641,7 +645,9 @@ null hypothesis that the two group connection probability matrices are the same)
         <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
         <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
         <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
         <span class="mf">0.7</span><span class="p">,</span>
@@ -680,17 +686,20 @@ null hypothesis that the two group connection probability matrices are the same)
         <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Sorted group pairs&quot;</span><span class="p">,</span>
         <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">yscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">),</span>
     <span class="p">)</span>
+    <span class="n">n_greater</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">n_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-        <span class="mf">0.5</span><span class="p">,</span>
+        <span class="mf">0.3</span><span class="p">,</span>
         <span class="mf">0.8</span><span class="p">,</span>
-        <span class="s2">&quot;Left connection stronger&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;Left connection stronger (</span><span class="si">{</span><span class="n">n_greater</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_total</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
         <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">n_lesser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">diff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-        <span class="mf">0.5</span><span class="p">,</span>
-        <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s2">&quot;Right connection stronger&quot;</span><span class="p">,</span>
+        <span class="mf">0.3</span><span class="p">,</span>
+        <span class="mf">0.15</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;Right connection stronger (</span><span class="si">{</span><span class="n">n_lesser</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_total</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
         <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
     <span class="p">)</span>
@@ -909,7 +918,6 @@ set it’s density equal to the left. If <span class="math notranslate nohighlig
 divided by number of possible edges) then</p>
 <div class="math notranslate nohighlight">
 \[c = \frac{\rho_{left}}{\rho_{right}}\]</div>
-<p>.</p>
 <p>A test for the adjusted null hypothesis above is given by using
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution</a>
 and applying a proceedure much like that of the traditional Fisher’s exact test. More
@@ -934,7 +942,7 @@ information about this test can be found in <a class="reference internal" href="
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_stochastic_block_test</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_stochastic_block_test</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">pvalue_vmin</span><span class="o">=</span><span class="n">pvalue_vmin</span><span class="p">)</span>
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm-corrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -981,8 +989,8 @@ adjustment by a density-normalizing constant, <span class="math notranslate nohi
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----
-Script took 0:01:49.377470
-Completed at 2021-11-04 09:47:40.234219
+Script took 0:01:40.113216
+Completed at 2021-11-04 11:23:04.900888
 ----
 </pre></div>
 </div>
