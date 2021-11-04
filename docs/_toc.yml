@@ -4,7 +4,7 @@ parts:
   - caption: Preliminaries
     chapters:
     - file: outline
-    - file: introduction
+    - file: define_data
   - caption: Tests
     chapters:
     - file: sbm_test

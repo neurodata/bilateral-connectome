@@ -1,8 +1,8 @@
 #%% [markdown]
-# # The data 
-# Here we describe in more detail what data we will use for the bilateral symmetry 
-# comparisons. 
-#%% 
+# # The data
+# Here we describe in more detail what data we will use for the bilateral symmetry
+# comparisons.
+#%%
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -42,6 +42,3 @@ left_adj = left_mg.sum.adj
 right_adj = right_mg.sum.adj
 left_adj = binarize(left_adj)
 right_adj = binarize(right_adj)
-
-left_labels = left_nodes[GROUP_KEY].values
-right_labels = right_nodes[GROUP_KEY].values
