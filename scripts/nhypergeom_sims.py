@@ -1,4 +1,5 @@
 #%% [markdown]
+# (page:nufe)=
 # # An exact test for non-unity null odds ratios
 #%%
 import warnings

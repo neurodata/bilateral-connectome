@@ -1,4 +1,5 @@
 #%% [markdown]
+# (page:sbm-test)=
 # # A community based test
 
 #%% [markdown]
@@ -32,7 +33,7 @@ from pkg.stats import stochastic_block_test
 from seaborn.utils import relative_luminance
 from tqdm import tqdm
 
-DISPLAY_FIGS = True
+DISPLAY_FIGS = False
 
 
 def gluefig(name, fig, **kwargs):
@@ -278,9 +279,8 @@ gluefig("sbm-uncorrected", fig)
 # **A)** The estimated group-to-group connection probabilities for the left
 # and right hemispheres appear qualitatively similar. Any estimated
 # probabilities which are zero (i.e. no edge was present between a given pair of
-# communities) is indicated explicitly with a "0" in that cell of the matrix. **B)** The
-# number of neurons in each group is also similar between the left and right hemispheres.
-# **C)** The p-values for each hypothesis test between individual elements of
+# communities) is indicated explicitly with a "0" in that cell of the matrix.
+# **B)** The p-values for each hypothesis test between individual elements of
 # the block probability matrices. In other words, each cell represents a test for
 # whether a given group-to-group connection probability is the same on the left and the
 # right sides. "X" denotes a significant p-value after Bonferroni-Holm correction,
@@ -406,67 +406,71 @@ gluefig("probs-uncorrected", fig)
 # ## Look at the community connections that were significantly different
 
 #%%
-B1 = misc["probabilities1"]
-B2 = misc["probabilities2"]
-null_odds = misc["null_odds"]
-B2 = B2 * null_odds
-index = B1.index
 
-uncorrected_pvalues = misc["uncorrected_pvalues"]
-n_tests = misc["n_tests"]
-K = B1.shape[0]
-alpha = 0.05
-hb_thresh = alpha / n_tests
-significant = uncorrected_pvalues < hb_thresh
 
-row_inds, col_inds = np.nonzero(significant.values)
+def plot_significant_probabilities(misc):
+    B1 = misc["probabilities1"]
+    B2 = misc["probabilities2"]
+    null_odds = misc["null_odds"]
+    B2 = B2 * null_odds
+    index = B1.index
+    uncorrected_pvalues = misc["uncorrected_pvalues"]
+    n_tests = misc["n_tests"]
 
-n_significant = len(row_inds)
+    alpha = 0.05
+    hb_thresh = alpha / n_tests
+    significant = uncorrected_pvalues < hb_thresh
 
-rows = []
-for row_ind, col_ind in zip(row_inds, col_inds):
-    source = index[row_ind]
-    target = index[col_ind]
-    left_p = B1.loc[source, target]
-    right_p = B2.loc[source, target]
-    pair = source + r"$\rightarrow$" + target
-    rows.append(
-        {
-            "source": source,
-            "target": target,
-            "p": left_p,
-            "side": "Left",
-            "pair": pair,
-        }
+    row_inds, col_inds = np.nonzero(significant.values)
+
+    rows = []
+    for row_ind, col_ind in zip(row_inds, col_inds):
+        source = index[row_ind]
+        target = index[col_ind]
+        left_p = B1.loc[source, target]
+        right_p = B2.loc[source, target]
+        pair = source + r"$\rightarrow$" + target
+        rows.append(
+            {
+                "source": source,
+                "target": target,
+                "p": left_p,
+                "side": "Left",
+                "pair": pair,
+            }
+        )
+        rows.append(
+            {
+                "source": source,
+                "target": target,
+                "p": right_p,
+                "side": "Right",
+                "pair": pair,
+            }
+        )
+    sig_data = pd.DataFrame(rows)
+
+    fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+    sns.pointplot(
+        data=sig_data,
+        y="p",
+        x="pair",
+        ax=ax,
+        hue="side",
+        dodge=True,
+        join=False,
+        palette=network_palette,
     )
-    rows.append(
-        {
-            "source": source,
-            "target": target,
-            "p": right_p,
-            "side": "Right",
-            "pair": pair,
-        }
-    )
-sig_data = pd.DataFrame(rows)
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.pointplot(
-    data=sig_data,
-    y="p",
-    x="pair",
-    ax=ax,
-    hue="side",
-    dodge=True,
-    join=False,
-    palette=network_palette,
-)
+    ax.get_legend().set_title("Side")
+    rotate_labels(ax)
+    ax.set(xlabel="Group pair", ylabel="Connection probability")
+    return fig, ax
 
-ax.get_legend().set_title("Side")
-rotate_labels(ax)
-ax.set(xlabel="Group pair", ylabel="Connection probability")
 
+fig, ax = plot_significant_probabilities(misc)
 gluefig("significant-p-comparison", fig)
+
 
 #%% [markdown]
 # ```{glue:figure} fig:significant-p-comparison
@@ -476,117 +480,146 @@ gluefig("significant-p-comparison", fig)
 # which were significantly different in {numref}`Figure {number} <fig:sbm-uncorrected>`.
 # In each case, the connection probability on the right hemisphere is higher.
 # ```
+
 #%%
-# #%% [markdown]
-# # ## Resample the right network to make the density the same, rerun the test
-# #%%
-# n_edges_left = np.count_nonzero(left_adj)
-# n_edges_right = np.count_nonzero(right_adj)
-# n_left = left_adj.shape[0]
-# n_right = right_adj.shape[0]
-# density_left = n_edges_left / (n_left ** 2)
-# density_right = n_edges_right / (n_right ** 2)
+#%% [markdown]
+# ## Resample the right network to make the density the same, rerun the test
+# Below, we'll see what happens when we try to make the network densities the same, and
+# then re-run the test proceedure above. First, we calculate the number of edges
+# required to set the network densities roughly the same. Then, we randomly remove that
+# number of edges from the right hemisphere network, and rerun the test. We repeat this
+# proceedure {glue:text}`n_resamples` times, and look at the distribution of p-values
+# that result.
+#%%
+n_edges_left = np.count_nonzero(left_adj)
+n_edges_right = np.count_nonzero(right_adj)
+n_left = left_adj.shape[0]
+n_right = right_adj.shape[0]
+density_left = n_edges_left / (n_left ** 2)
+density_right = n_edges_right / (n_right ** 2)
 
-# n_remove = int((density_right - density_left) * (n_right ** 2))
+n_remove = int((density_right - density_left) * (n_right ** 2))
 
-# glue("density_left", density_left, display=False)
-# glue("density_right", density_right, display=False)
-# glue("n_remove", n_remove, display=False)
+glue("density_left", density_left, display=False)
+glue("density_right", density_right, display=False)
+glue("n_remove", n_remove, display=False)
 
-# #%%
-# rows = []
-# n_resamples = 25
-# glue("n_resamples", n_resamples, display=False)
-# for i in range(n_resamples):
-#     subsampled_right_adj = remove_edges(
-#         right_adj, effect_size=n_remove, random_seed=rng
-#     )
-#     stat, pvalue, misc = stochastic_block_test(
-#         left_adj,
-#         subsampled_right_adj,
-#         labels1=left_labels,
-#         labels2=right_labels,
-#         method="fisher",
-#     )
-#     rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+#%%
+rows = []
+n_resamples = 25
+glue("n_resamples", n_resamples, display=False)
+for i in range(n_resamples):
+    subsampled_right_adj = remove_edges(
+        right_adj, effect_size=n_remove, random_seed=rng
+    )
+    stat, pvalue, misc = stochastic_block_test(
+        left_adj,
+        subsampled_right_adj,
+        labels1=left_labels,
+        labels2=right_labels,
+        method="fisher",
+    )
+    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
 
-# resample_results = pd.DataFrame(rows)
+resample_results = pd.DataFrame(rows)
 
-# #%% [markdown]
-# # ### Plot the p-values for the corrected tests
-# #%%
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.histplot(data=resample_results, x="pvalue", ax=ax)
-# ax.set(xlabel="p-value", ylabel="", yticks=[])
-# ax.spines["left"].set_visible(False)
+#%% [markdown]
+# ### Plot the p-values for the corrected tests
+#%%
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(data=resample_results, x="pvalue", ax=ax)
+ax.set(xlabel="p-value", ylabel="", yticks=[])
+ax.spines["left"].set_visible(False)
 
-# glue("fig_pvalues_corrected", fig, display=False)
-# stashfig("p-values-post-correction")
-# plt.close()
+mean_resample_pvalue = np.mean(resample_results["pvalue"])
+median_resample_pvalue = np.median(resample_results["pvalue"])
 
-# mean_resample_pvalue = np.mean(resample_results["pvalue"])
-# median_resample_pvalue = np.median(resample_results["pvalue"])
+gluefig("pvalues-corrected", fig)
 
-# #%% [markdown]
-# # ```{glue:figure} fig_pvalues_corrected
-# # :name: "fig-pvalues-corrected"
-# #
-# # Histogram of p-values after a correction for network density. For the observed networks
-# # the left hemisphere has a density of {glue:text}`density_left:0.4f`, and the right hemisphere has
-# # a density of {glue:text}`density_right:0.4f`. Here, we randomly removed exactly {glue:text}`n_remove`
-# # edges from the right hemisphere network, which makes the density of the right network
-# # match that of the left hemisphere network. Then, we re-ran the stochastic block model testing
-# # procedure from {numref}`Figure {number} <fig-sbm-uncorrected>`. This entire process
-# # was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
-# # of p-values for the overall test. Note that the p-values are no longer small, indicating
-# # that with this density correction, we now failed to reject our null hypothesis of
-# # bilateral symmetry under the stochastic block model.
-# # ```
+#%% [markdown]
+# ```{glue:figure} fig:pvalues-corrected
+# :name: "fig:pvalues-corrected"
+#
+# Histogram of p-values after a correction for network density. For the observed networks
+# the left hemisphere has a density of {glue:text}`density_left:0.4f`, and the right hemisphere has
+# a density of {glue:text}`density_right:0.4f`. Here, we randomly removed exactly {glue:text}`n_remove`
+# edges from the right hemisphere network, which makes the density of the right network
+# match that of the left hemisphere network. Then, we re-ran the stochastic block model testing
+# procedure from {numref}`Figure {number} <fig:sbm-uncorrected>`. This entire process
+# was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
+# of p-values for the overall test. Note that the p-values are no longer small, indicating
+# that with this density correction, we now failed to reject our null hypothesis of
+# bilateral symmetry under the stochastic block model.
+# ```
 
-# #%%
-# null_odds = density_left / density_right
-# stat, pvalue, misc = stochastic_block_test(
-#     left_adj,
-#     right_adj,
-#     labels1=left_labels,
-#     labels2=right_labels,
-#     method="fisher",
-#     null_odds=null_odds,
-# )
-# glue("corrected_pvalue", pvalue, display=False)
+#%% [markdown]
+# ## An alternative approach to correcting for differences in density
+# Instead of randomly resetting the density of the right hemisphere network, we can
+# actually correct each test to account for this difference. Fisher's exact test (used
+# above to compare each element of the $\hat{B}$ matrices) tests the null hypothesis:
+#
+# $$H_0: p_{left} = p_{right}, \quad H_A: p_{left} \neq p_{right}$$
+#
+# Instead, we can use a test of:
+#
+# $$H_0: p_{left} = c p_{right}, \quad H_A: p_{left} \neq c p_{right}$$
+#
+# In our case, $c$ is a constant that we fit to the entire right hemisphere network to
+# set it's density equal to the left. If $\rho$ is the network density (number of edges
+# divided by number of possible edges) then
+#
+# $$c = \frac{\rho_{left}}{\rho_{right}}$$
+# .
+#
+# A test for the adjusted null hypothesis above is given by using
+# [Fisher's noncentral hypergeometric distribution](https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
+# and applying a proceedure much like that of the traditional Fisher's exact test. More
+# information about this test can be found in [the Appendix](page:nufe).
+#%%
+null_odds = density_left / density_right
+stat, pvalue, misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method="fisher",
+    null_odds=null_odds,
+)
+glue("corrected-pvalue", pvalue, display=False)
 
-# #%%
-# fig, axs = plot_stochastic_block_test(misc)
-# glue("fig_sbm_uncorrected", fig, display=False)
-# stashfig("SBM-left-right-comparison")
-# # plt.close()
+#%%
+fig, axs = plot_stochastic_block_test(misc)
+gluefig("sbm-corrected", fig)
 
-# #%% [markdown]
-# # ## Appendix
-# #%%
+#%% [markdown]
+# ```{glue:figure} fig:sbm-corrected
+# :name: "fig:sbm-corrected"
 
-# observed1 = misc["observed1"]
-# possible1 = misc["possible1"]
-
-# xs = np.arange(K ** 2)
-# ys = observed1.values.ravel()
-# ys = np.sort(ys)
-
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.lineplot(x=xs, y=ys, ax=ax)
-# ax.set(
-#     yscale="log",
-#     xlabel="Sorted index (group-to-group connections)",
-#     ylabel="Number of edges",
-# )
-
-
-# #%% [markdown]
-# # ## End
-# #%%
-# elapsed = time.time() - t0
-# delta = datetime.timedelta(seconds=elapsed)
-# print("----")
-# print(f"Script took {delta}")
-# print(f"Completed at {datetime.datetime.now()}")
-# print("----")
+# Comparison of stochastic block model fits for the left and right hemispheres after
+# correcting for a difference in hemisphere density.
+# **A)** The estimated group-to-group connection probabilities for the left
+# and right hemispheres, after the right hemisphere probabilities were scaled by a
+# density-adjusting constant, $c$. Any estimated
+# probabilities which are zero (i.e. no edge was present between a given pair of
+# communities) is indicated explicitly with a "0" in that cell of the matrix.
+# **B)** The p-values for each hypothesis test between individual elements of
+# the block probability matrices. In other words, each cell represents a test for
+# whether a given group-to-group connection probability is the same on the left and the
+# right sides. "X" denotes a significant p-value after Bonferroni-Holm correction,
+# with $\alpha=0.05$. "B" indicates that a test was not run since the estimated probability
+# was zero in that cell on both the left and right. "L" indicates this was the case on
+# the left only, and "R" that it was the case on the right only. These individual
+# p-values were combined using Fisher's method, resulting in an overall p-value (for the
+# null hypothesis that the two group connection probability matrices are the same after
+# adjustment by a density-normalizing constant, $c$) of
+# {glue:text}`corrected-pvalue:0.2e`.
+# ```
+#%% [markdown]
+# ## End
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print("----")
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")
+print("----")
