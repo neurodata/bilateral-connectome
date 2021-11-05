@@ -52,7 +52,7 @@ from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 t0 = time.time()
 
 print(f"Using data from {DATA_VERSION}")
-os.chdir("/Users/bpedigo/JHU_code/bilateral")
+os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
 output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed")
 output_dir = Path(output_dir)
 print(f"Saving data to {output_dir}")
