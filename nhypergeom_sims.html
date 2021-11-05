@@ -224,11 +224,6 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#code-for-the-test">
-   Code for the test
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#simulation-setup">
    Simulation setup
   </a>
@@ -258,9 +253,9 @@
 <span id="page-nufe"></span><h1>An exact test for non-unity null odds ratios<a class="headerlink" href="#an-exact-test-for-non-unity-null-odds-ratios" title="Permalink to this headline">¶</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
 
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="n">set_warnings</span><span class="p">()</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -269,7 +264,8 @@
 <span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">set_theme</span><span class="p">,</span> <span class="n">subuniformity_plot</span>
 <span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">Figure</span>
 <span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span><span class="p">,</span> <span class="n">fisher_exact</span><span class="p">,</span> <span class="n">nchypergeom_fisher</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span><span class="p">,</span> <span class="n">fisher_exact</span>
+<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">fisher_exact_nonunity</span>
 
 <span class="n">set_theme</span><span class="p">()</span>
 
@@ -279,235 +275,6 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">Figure</span><span class="p">):</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="code-for-the-test">
-<h2>Code for the test<a class="headerlink" href="#code-for-the-test" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fisher_exact_nonunity</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">&quot;two-sided&quot;</span><span class="p">,</span> <span class="n">null_odds</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Perform a Fisher exact test on a 2x2 contingency table.</span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    table : array_like of ints</span>
-<span class="sd">        A 2x2 contingency table.  Elements must be non-negative integers.</span>
-<span class="sd">    alternative : {&#39;two-sided&#39;, &#39;less&#39;, &#39;greater&#39;}, optional</span>
-<span class="sd">        Defines the alternative hypothesis.</span>
-<span class="sd">        The following options are available (default is &#39;two-sided&#39;):</span>
-<span class="sd">        * &#39;two-sided&#39;</span>
-<span class="sd">        * &#39;less&#39;: one-sided</span>
-<span class="sd">        * &#39;greater&#39;: one-sided</span>
-<span class="sd">        See the Notes for more details.</span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    oddsratio : float</span>
-<span class="sd">        This is prior odds ratio and not a posterior estimate.</span>
-<span class="sd">    p_value : float</span>
-<span class="sd">        P-value, the probability of obtaining a distribution at least as</span>
-<span class="sd">        extreme as the one that was actually observed, assuming that the</span>
-<span class="sd">        null hypothesis is true.</span>
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    chi2_contingency : Chi-square test of independence of variables in a</span>
-<span class="sd">        contingency table.  This can be used as an alternative to</span>
-<span class="sd">        `fisher_exact` when the numbers in the table are large.</span>
-<span class="sd">    barnard_exact : Barnard&#39;s exact test, which is a more powerful alternative</span>
-<span class="sd">        than Fisher&#39;s exact test for 2x2 contingency tables.</span>
-<span class="sd">    boschloo_exact : Boschloo&#39;s exact test, which is a more powerful alternative</span>
-<span class="sd">        than Fisher&#39;s exact test for 2x2 contingency tables.</span>
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    *Null hypothesis and p-values*</span>
-<span class="sd">    The null hypothesis is that the input table is from the hypergeometric</span>
-<span class="sd">    distribution with parameters (as used in `hypergeom`)</span>
-<span class="sd">    ``M = a + b + c + d``, ``n = a + b`` and ``N = a + c``, where the</span>
-<span class="sd">    input table is ``[[a, b], [c, d]]``.  This distribution has support</span>
-<span class="sd">    ``max(0, N + n - M) &lt;= x &lt;= min(N, n)``, or, in terms of the values</span>
-<span class="sd">    in the input table, ``min(0, a - d) &lt;= x &lt;= a + min(b, c)``.  ``x``</span>
-<span class="sd">    can be interpreted as the upper-left element of a 2x2 table, so the</span>
-<span class="sd">    tables in the distribution have form::</span>
-<span class="sd">        [  x           n - x     ]</span>
-<span class="sd">        [N - x    M - (n + N) + x]</span>
-<span class="sd">    For example, if::</span>
-<span class="sd">        table = [6  2]</span>
-<span class="sd">                [1  4]</span>
-<span class="sd">    then the support is ``2 &lt;= x &lt;= 7``, and the tables in the distribution</span>
-<span class="sd">    are::</span>
-<span class="sd">        [2 6]   [3 5]   [4 4]   [5 3]   [6 2]  [7 1]</span>
-<span class="sd">        [5 0]   [4 1]   [3 2]   [2 3]   [1 4]  [0 5]</span>
-<span class="sd">    The probability of each table is given by the hypergeometric distribution</span>
-<span class="sd">    ``hypergeom.pmf(x, M, n, N)``.  For this example, these are (rounded to</span>
-<span class="sd">    three significant digits)::</span>
-<span class="sd">        x       2      3      4      5       6        7</span>
-<span class="sd">        p  0.0163  0.163  0.408  0.326  0.0816  0.00466</span>
-<span class="sd">    These can be computed with::</span>
-<span class="sd">        &gt;&gt;&gt; from scipy.stats import hypergeom</span>
-<span class="sd">        &gt;&gt;&gt; table = np.array([[6, 2], [1, 4]])</span>
-<span class="sd">        &gt;&gt;&gt; M = table.sum()</span>
-<span class="sd">        &gt;&gt;&gt; n = table[0].sum()</span>
-<span class="sd">        &gt;&gt;&gt; N = table[:, 0].sum()</span>
-<span class="sd">        &gt;&gt;&gt; start, end = hypergeom.support(M, n, N)</span>
-<span class="sd">        &gt;&gt;&gt; hypergeom.pmf(np.arange(start, end+1), M, n, N)</span>
-<span class="sd">        array([0.01631702, 0.16317016, 0.40792541, 0.32634033, 0.08158508,</span>
-<span class="sd">               0.004662  ])</span>
-<span class="sd">    The two-sided p-value is the probability that, under the null hypothesis,</span>
-<span class="sd">    a random table would have a probability equal to or less than the</span>
-<span class="sd">    probability of the input table.  For our example, the probability of</span>
-<span class="sd">    the input table (where ``x = 6``) is 0.0816.  The x values where the</span>
-<span class="sd">    probability does not exceed this are 2, 6 and 7, so the two-sided p-value</span>
-<span class="sd">    is ``0.0163 + 0.0816 + 0.00466 ~= 0.10256``::</span>
-<span class="sd">        &gt;&gt;&gt; from scipy.stats import fisher_exact</span>
-<span class="sd">        &gt;&gt;&gt; oddsr, p = fisher_exact(table, alternative=&#39;two-sided&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; p</span>
-<span class="sd">        0.10256410256410257</span>
-<span class="sd">    The one-sided p-value for ``alternative=&#39;greater&#39;`` is the probability</span>
-<span class="sd">    that a random table has ``x &gt;= a``, which in our example is ``x &gt;= 6``,</span>
-<span class="sd">    or ``0.0816 + 0.00466 ~= 0.08626``::</span>
-<span class="sd">        &gt;&gt;&gt; oddsr, p = fisher_exact(table, alternative=&#39;greater&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; p</span>
-<span class="sd">        0.08624708624708627</span>
-<span class="sd">    This is equivalent to computing the survival function of the</span>
-<span class="sd">    distribution at ``x = 5`` (one less than ``x`` from the input table,</span>
-<span class="sd">    because we want to include the probability of ``x = 6`` in the sum)::</span>
-<span class="sd">        &gt;&gt;&gt; hypergeom.sf(5, M, n, N)</span>
-<span class="sd">        0.08624708624708627</span>
-<span class="sd">    For ``alternative=&#39;less&#39;``, the one-sided p-value is the probability</span>
-<span class="sd">    that a random table has ``x &lt;= a``, (i.e. ``x &lt;= 6`` in our example),</span>
-<span class="sd">    or ``0.0163 + 0.163 + 0.408 + 0.326 + 0.0816 ~= 0.9949``::</span>
-<span class="sd">        &gt;&gt;&gt; oddsr, p = fisher_exact(table, alternative=&#39;less&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; p</span>
-<span class="sd">        0.9953379953379957</span>
-<span class="sd">    This is equivalent to computing the cumulative distribution function</span>
-<span class="sd">    of the distribution at ``x = 6``:</span>
-<span class="sd">        &gt;&gt;&gt; hypergeom.cdf(6, M, n, N)</span>
-<span class="sd">        0.9953379953379957</span>
-<span class="sd">    *Odds ratio*</span>
-<span class="sd">    The calculated odds ratio is different from the one R uses. This SciPy</span>
-<span class="sd">    implementation returns the (more common) &quot;unconditional Maximum</span>
-<span class="sd">    Likelihood Estimate&quot;, while R uses the &quot;conditional Maximum Likelihood</span>
-<span class="sd">    Estimate&quot;.</span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    Say we spend a few days counting whales and sharks in the Atlantic and</span>
-<span class="sd">    Indian oceans. In the Atlantic ocean we find 8 whales and 1 shark, in the</span>
-<span class="sd">    Indian ocean 2 whales and 5 sharks. Then our contingency table is::</span>
-<span class="sd">                Atlantic  Indian</span>
-<span class="sd">        whales     8        2</span>
-<span class="sd">        sharks     1        5</span>
-<span class="sd">    We use this table to find the p-value:</span>
-<span class="sd">    &gt;&gt;&gt; from scipy.stats import fisher_exact</span>
-<span class="sd">    &gt;&gt;&gt; oddsratio, pvalue = fisher_exact([[8, 2], [1, 5]])</span>
-<span class="sd">    &gt;&gt;&gt; pvalue</span>
-<span class="sd">    0.0349...</span>
-<span class="sd">    The probability that we would observe this or an even more imbalanced ratio</span>
-<span class="sd">    by chance is about 3.5%.  A commonly used significance level is 5%--if we</span>
-<span class="sd">    adopt that, we can therefore conclude that our observed imbalance is</span>
-<span class="sd">    statistically significant; whales prefer the Atlantic while sharks prefer</span>
-<span class="sd">    the Indian ocean.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dist</span> <span class="o">=</span> <span class="n">nchypergeom_fisher</span>
-
-    <span class="c1"># int32 is not enough for the algorithm</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input `table` must be of shape (2, 2).&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All values in `table` must be nonnegative.&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="c1"># If both values in a row or column are zero, the p-value is 1 and</span>
-        <span class="c1"># the odds ratio is NaN.</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">1.0</span>
-
-    <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">oddsratio</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">oddsratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-
-    <span class="n">n1</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">n2</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-    <span class="n">rv</span> <span class="o">=</span> <span class="n">dist</span><span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">binary_search</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Binary search for where to begin halves in two-sided test.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span>
-            <span class="n">minval</span> <span class="o">=</span> <span class="n">mode</span>
-            <span class="n">maxval</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">minval</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">maxval</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="n">guess</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="k">while</span> <span class="n">maxval</span> <span class="o">-</span> <span class="n">minval</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">maxval</span> <span class="o">==</span> <span class="n">minval</span> <span class="o">+</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">guess</span> <span class="o">==</span> <span class="n">minval</span><span class="p">:</span>
-                <span class="n">guess</span> <span class="o">=</span> <span class="n">maxval</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">guess</span> <span class="o">=</span> <span class="p">(</span><span class="n">maxval</span> <span class="o">+</span> <span class="n">minval</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-            <span class="n">pguess</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span>
-                <span class="n">ng</span> <span class="o">=</span> <span class="n">guess</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">ng</span> <span class="o">=</span> <span class="n">guess</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">pguess</span> <span class="o">&lt;=</span> <span class="n">pexact</span> <span class="o">&lt;</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">ng</span><span class="p">):</span>
-                <span class="k">break</span>
-            <span class="k">elif</span> <span class="n">pguess</span> <span class="o">&lt;</span> <span class="n">pexact</span><span class="p">:</span>
-                <span class="n">maxval</span> <span class="o">=</span> <span class="n">guess</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">minval</span> <span class="o">=</span> <span class="n">guess</span>
-        <span class="k">if</span> <span class="n">guess</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">guess</span> <span class="o">=</span> <span class="n">minval</span>
-        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;upper&quot;</span><span class="p">:</span>
-            <span class="k">while</span> <span class="n">guess</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pexact</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">:</span>
-                <span class="n">guess</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="k">while</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
-                <span class="n">guess</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">while</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pexact</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">:</span>
-                <span class="n">guess</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">while</span> <span class="n">guess</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">rv</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">guess</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
-                <span class="n">guess</span> <span class="o">-=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="n">guess</span>
-
-    <span class="k">if</span> <span class="n">alternative</span> <span class="o">==</span> <span class="s2">&quot;less&quot;</span><span class="p">:</span>
-        <span class="n">pvalue</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">alternative</span> <span class="o">==</span> <span class="s2">&quot;greater&quot;</span><span class="p">:</span>
-        <span class="c1"># Same formula as the &#39;less&#39; case, but with the second column.</span>
-        <span class="n">pvalue</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">alternative</span> <span class="o">==</span> <span class="s2">&quot;two-sided&quot;</span><span class="p">:</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))</span>
-        <span class="n">pexact</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
-        <span class="n">pmode</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
-
-        <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-4</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pexact</span> <span class="o">-</span> <span class="n">pmode</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">pexact</span><span class="p">,</span> <span class="n">pmode</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="mf">1.0</span>
-
-        <span class="k">elif</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">mode</span><span class="p">:</span>
-            <span class="n">plower</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="n">plower</span>
-
-            <span class="n">guess</span> <span class="o">=</span> <span class="n">binary_search</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">)</span>
-            <span class="n">pvalue</span> <span class="o">=</span> <span class="n">plower</span> <span class="o">+</span> <span class="n">dist</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">guess</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">pupper</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pexact</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="n">pupper</span>
-
-            <span class="n">guess</span> <span class="o">=</span> <span class="n">binary_search</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">)</span>
-            <span class="n">pvalue</span> <span class="o">=</span> <span class="n">pupper</span> <span class="o">+</span> <span class="n">dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">guess</span><span class="p">,</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">null_odds</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;`alternative` should be one of {&#39;two-sided&#39;, &#39;less&#39;, &#39;greater&#39;}&quot;</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-    <span class="n">pvalue</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pvalue</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">oddsratio</span><span class="p">,</span> <span class="n">pvalue</span>
-</pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -637,7 +404,7 @@ is known.</p>
 </div>
 <div class="figure align-default" id="fig-mean-pvalue-by-omega">
 <div class="cell_output docutils container">
-<img alt="_images/nhypergeom_sims_10_0.png" src="_images/nhypergeom_sims_10_0.png" />
+<img alt="_images/nhypergeom_sims_8_0.png" src="_images/nhypergeom_sims_8_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Plot of mean p-values by the true odds ratio <span class="math notranslate nohighlight">\(\omega\)</span>. Each point in the lineplot
 denotes the mean over <span class="pasted-text">200</span> trials, and the shaded region denotes 95%
@@ -679,7 +446,7 @@ odds ratio (<span class="math notranslate nohighlight">\(\omega_0\)</span>) is e
 </div>
 <div class="figure align-default" id="fig-pvalue-dist-omega-1">
 <div class="cell_output docutils container">
-<img alt="_images/nhypergeom_sims_12_0.png" src="_images/nhypergeom_sims_12_0.png" />
+<img alt="_images/nhypergeom_sims_10_0.png" src="_images/nhypergeom_sims_10_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
 <span class="math notranslate nohighlight">\(\omega = 1\)</span>. Dashed line denotes the cumulative distribution function for a
@@ -690,7 +457,7 @@ where the null that both tests are concerned with is true.</span><a class="heade
 </div>
 <div class="figure align-default" id="fig-pvalue-dist-omega-3">
 <div class="cell_output docutils container">
-<img alt="_images/nhypergeom_sims_12_1.png" src="_images/nhypergeom_sims_12_1.png" />
+<img alt="_images/nhypergeom_sims_10_1.png" src="_images/nhypergeom_sims_10_1.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
 <span class="math notranslate nohighlight">\(\omega = 3\)</span>. Dashed line denotes the cumulative distribution function for a
