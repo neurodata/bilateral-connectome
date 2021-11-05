@@ -7,6 +7,7 @@ parts:
     - file: define_data
   - caption: Tests
     chapters:
+    - file: er_unmatched_test
     - file: sbm_test
   - caption: Appendix
     chapters: 

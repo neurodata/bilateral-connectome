@@ -1,7 +1,14 @@
 #%% [markdown]
 # (page:sbm-test)=
-# # A community based test
-
+# # A group-based test
+# Here we test bilateral symmetry by making an assumption that the left and the right
+# hemispheres both come from a stochastic block model, which models the probability
+# of any potential edge as a function of the groups that the source and target nodes
+# are part of.
+#
+# For now, we use some broad cell type categorizations for each neuron to determine its
+# group. Alternatively, there are many methods for *estimating* these assignments to
+# groups for each neuron, which we do not explore here.
 #%% [markdown]
 # ## Preliminaries
 #%%
@@ -476,10 +483,30 @@ gluefig("significant-p-comparison", fig)
 # In each case, the connection probability on the right hemisphere is higher.
 # ```
 
+#%% [markdown]
+# ### What about the difference in density
+# From the series of figures above, we see that we have sufficient evidence to reject
+# the null hypothesis of bilateral symmetry under this version of the stochastic
+# block model. However, we already saw in [](er_unmatched_test) that the overall
+# densities between the two networks are different. We also see in the above that, in
+# line with that observation, the estimated group-to-group connection probabilities in
+# the figures above tend to be higher for the right hemisphere than the corresponding
+# connection probability on
+# the left hemisphere.
+#
+# This leads to another hypothesis - perhaps the connection probabilities on the left
+# hemisphere are simply a scaled-down version of those on the right. More formally, we
+# can write this as a new null hypothesis:
+#
+# $$ H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}$$
+#
+# where $c$ is the ratio of the densities, $\frac{\rho_{left}}{\rho_{right}}$.
+
 #%%
 #%% [markdown]
 # ## Resample the right network to make the density the same, rerun the test
-# Below, we'll see what happens when we try to make the network densities the same, and
+# Below, we'll see what happens when we try to make the network densities the same by
+# just randomly removing edges, and
 # then re-run the test proceedure above. First, we calculate the number of edges
 # required to set the network densities roughly the same. Then, we randomly remove that
 # number of edges from the right hemisphere network, and rerun the test. We repeat this
@@ -613,7 +640,5 @@ gluefig("sbm-corrected", fig)
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
-print("----")
 print(f"Script took {delta}")
 print(f"Completed at {datetime.datetime.now()}")
-print("----")
