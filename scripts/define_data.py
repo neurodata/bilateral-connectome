@@ -4,7 +4,7 @@
 # comparisons.
 
 #%% [markdown]
-# ## Unpaired data
+# ## Unmatched data
 # First we consider a left/right hemisphere dataset which does not require any
 # neuron-to-neuron correspondence between the two hemispheres.
 #
@@ -38,18 +38,13 @@ from pkg.utils import set_warnings
 
 set_warnings()
 
-from graspologic.utils import binarize, remove_loops
-from myst_nb import glue
-from pkg.data import (
-    DATA_VERSION,
-    load_maggot_graph,
-    select_nice_nodes,
-)
-import pandas as pd
 from pathlib import Path
 
 import networkx as nx
-
+import pandas as pd
+from graspologic.utils import binarize, remove_loops
+from myst_nb import glue
+from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 
 print(f"Using data from {DATA_VERSION}")
 
@@ -83,10 +78,10 @@ glue("n_right", right_adj.shape[0], display=False)
 left_adj = pd.DataFrame(data=left_adj, index=left_nodes.index, columns=left_nodes.index)
 left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
 nx.write_edgelist(
-    left_g, output_dir / "unpaired_left_edgelist.csv", delimiter=",", data=False
+    left_g, output_dir / "unmatched_left_edgelist.csv", delimiter=",", data=False
 )
 
-left_nodes.to_csv(output_dir / "unpaired_left_nodes.csv")
+left_nodes.to_csv(output_dir / "unmatched_left_nodes.csv")
 
 
 right_adj = pd.DataFrame(
@@ -94,7 +89,7 @@ right_adj = pd.DataFrame(
 )
 right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
 nx.write_edgelist(
-    right_g, output_dir / "unpaired_right_edgelist.csv", delimiter=",", data=False
+    right_g, output_dir / "unmatched_right_edgelist.csv", delimiter=",", data=False
 )
 
-right_nodes.to_csv(output_dir / "unpaired_right_nodes.csv")
+right_nodes.to_csv(output_dir / "unmatched_right_nodes.csv")
