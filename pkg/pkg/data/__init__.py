@@ -9,6 +9,7 @@ from .load_data import (
     load_node_palette,
     load_network_palette,
     load_navis_neurons,
+    DATA_VERSION
 )
 
 from .preprocess import select_nice_nodes
