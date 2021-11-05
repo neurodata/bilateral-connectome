@@ -5,7 +5,7 @@
 #%% [markdown]
 # ## Preliminaries
 #%%
-from pkg import set_warnings
+from pkg.utils import set_warnings
 
 set_warnings()
 

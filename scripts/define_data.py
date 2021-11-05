@@ -38,6 +38,9 @@ from pkg.utils import set_warnings
 
 set_warnings()
 
+import datetime
+import os
+import time
 from pathlib import Path
 
 import networkx as nx
@@ -46,9 +49,12 @@ from graspologic.utils import binarize, remove_loops
 from myst_nb import glue
 from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 
-print(f"Using data from {DATA_VERSION}")
+t0 = time.time()
 
-output_dir = Path("../data/processed")
+print(f"Using data from {DATA_VERSION}")
+os.chdir("/Users/bpedigo/JHU_code/bilateral")
+output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed")
+output_dir = Path(output_dir)
 print(f"Saving data to {output_dir}")
 
 #%%
@@ -67,12 +73,15 @@ right_adj = binarize(right_adj)
 left_adj = remove_loops(left_adj)
 right_adj = remove_loops(right_adj)
 
-glue("n_left", left_adj.shape[0], display=False)
-glue("n_right", right_adj.shape[0], display=False)
+n_left_unmatched = left_adj.shape[0]
+n_right_unmatched = right_adj.shape[0]
+glue("n_left_unmatched", n_left_unmatched, display=False)
+glue("n_right_unmatched", n_right_unmatched, display=False)
 
 #%% [markdown]
-# After this data cleaning, we are left with {glue:text}`n_left` neurons in the left
-# hemisphere, and {glue:text}`n_right` neurons in the right hemisphere.
+# After this data cleaning, we are left with {glue:text}`n_left_unmatched` neurons in
+# the left
+# hemisphere, and {glue:text}`n_right_unmatched` neurons in the right hemisphere.
 
 # %%
 left_adj = pd.DataFrame(data=left_adj, index=left_nodes.index, columns=left_nodes.index)
@@ -93,3 +102,68 @@ nx.write_edgelist(
 )
 
 right_nodes.to_csv(output_dir / "unmatched_right_nodes.csv")
+
+
+#%% [markdown]
+# ## Matched data
+# Next, we consider a left/right hemisphere dataset where we require each neuron in the
+# left hemisphere to be matched with a neuron in the right hemisphere. These pairings
+# were determined by matching both connectivity and morphology in previous publications.
+#
+# Not all neurons in the original dataset were matched, so there will be slightly fewer
+# neurons in this version of the data. Since we have this matched requirement, both
+# networks will necessarily be of the same size.
+#
+# All other aspects of the networks (unweighted, directed, no loops) are the same as
+# described above for the unmatched networks.
+#%%
+mg = load_maggot_graph()
+mg = select_nice_nodes(mg)
+left_mg, right_mg = mg.bisect(lcc=True, paired=True)
+left_nodes = left_mg.nodes
+right_nodes = right_mg.nodes
+
+left_adj = left_mg.sum.adj
+right_adj = right_mg.sum.adj
+
+left_adj = binarize(left_adj)
+right_adj = binarize(right_adj)
+
+left_adj = remove_loops(left_adj)
+right_adj = remove_loops(right_adj)
+
+n_left_matched = left_adj.shape[0]
+n_right_matched = right_adj.shape[0]
+
+glue("n_left_matched", n_left_matched, display=False)
+glue("n_right_matched", n_right_matched, display=False)
+
+#%% [markdown]
+# For the matched networks, we are left with {glue:text}`n_left_matched` neurons in the left
+# hemisphere, and {glue:text}`n_right_matched` neurons in the right hemisphere.
+
+# %%
+left_adj = pd.DataFrame(data=left_adj, index=left_nodes.index, columns=left_nodes.index)
+left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
+nx.write_edgelist(
+    left_g, output_dir / "matched_left_edgelist.csv", delimiter=",", data=False
+)
+
+left_nodes.to_csv(output_dir / "matched_left_nodes.csv")
+
+
+right_adj = pd.DataFrame(
+    data=right_adj, index=right_nodes.index, columns=right_nodes.index
+)
+right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
+nx.write_edgelist(
+    right_g, output_dir / "matched_right_edgelist.csv", delimiter=",", data=False
+)
+
+right_nodes.to_csv(output_dir / "matched_right_nodes.csv")
+
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")
