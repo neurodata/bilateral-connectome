@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>A community based test &#8212; Bilateral Connectome</title>
+    <title>A group-based test &#8212; Bilateral Connectome</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="An exact test for non-unity null odds ratios" href="nhypergeom_sims.html" />
-    <link rel="prev" title="Defining the data" href="define_data.html" />
+    <link rel="prev" title="A density-based test" href="er_unmatched_test.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -120,9 +120,14 @@
  </span>
 </p>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="er_unmatched_test.html">
+   A density-based test
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   A community based test
+   A group-based test
   </a>
  </li>
 </ul>
@@ -257,6 +262,13 @@
   <a class="reference internal nav-link" href="#look-at-the-community-connections-that-were-significantly-different">
    Look at the community connections that were significantly different
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-about-the-difference-in-density">
+     What about the difference in density
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
@@ -291,8 +303,15 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="a-community-based-test">
-<span id="page-sbm-test"></span><h1>A community based test<a class="headerlink" href="#a-community-based-test" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="a-group-based-test">
+<span id="page-sbm-test"></span><h1>A group-based test<a class="headerlink" href="#a-group-based-test" title="Permalink to this headline">¶</a></h1>
+<p>Here we test bilateral symmetry by making an assumption that the left and the right
+hemispheres both come from a stochastic block model, which models the probability
+of any potential edge as a function of the groups that the source and target nodes
+are part of.</p>
+<p>For now, we use some broad cell type categorizations for each neuron to determine its
+group. Alternatively, there are many methods for <em>estimating</em> these assignments to
+groups for each neuron, which we do not explore here.</p>
 <div class="section" id="preliminaries">
 <h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
@@ -408,7 +427,7 @@
 <div class="cell_output docutils container">
 <img alt="_images/sbm_test_9_0.png" src="_images/sbm_test_9_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
 the hemispheres.</span><a class="headerlink" href="#fig-group-counts" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -576,7 +595,7 @@ the hemispheres.</span><a class="headerlink" href="#fig-group-counts" title="Per
 <div class="cell_output docutils container">
 <img alt="_images/sbm_test_11_0.png" src="_images/sbm_test_11_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities for the left
 and right hemispheres appear qualitatively similar. Any estimated
 probabilities which are zero (i.e. no edge was present between a given pair of
@@ -701,7 +720,7 @@ null hypothesis that the two group connection probability matrices are the same)
 <div class="cell_output docutils container">
 <img alt="_images/sbm_test_13_0.png" src="_images/sbm_test_13_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities (<span class="math notranslate nohighlight">\(\hat{p}\)</span>), sorted by
 the mean left/right connection probability. Note the very subtle tendency for the
 left probability to be lower than the corresponding one on the right. <strong>B)</strong> The
@@ -788,14 +807,32 @@ apparent here, as there are more negative than positive values.</span><a class="
 <div class="cell_output docutils container">
 <img alt="_images/sbm_test_16_0.png" src="_images/sbm_test_16_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
-which were significantly different in <a class="reference internal" href="#fig-sbm-uncorrected"><span class="std std-numref">Figure 3</span></a>.
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
+which were significantly different in <a class="reference internal" href="#fig-sbm-uncorrected"><span class="std std-numref">Figure 4</span></a>.
 In each case, the connection probability on the right hemisphere is higher.</span><a class="headerlink" href="#fig-significant-p-comparison" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="what-about-the-difference-in-density">
+<h3>What about the difference in density<a class="headerlink" href="#what-about-the-difference-in-density" title="Permalink to this headline">¶</a></h3>
+<p>From the series of figures above, we see that we have sufficient evidence to reject
+the null hypothesis of bilateral symmetry under this version of the stochastic
+block model. However, we already saw in <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a> that the overall
+densities between the two networks are different. We also see in the above that, in
+line with that observation, the estimated group-to-group connection probabilities in
+the figures above tend to be higher for the right hemisphere than the corresponding
+connection probability on
+the left hemisphere.</p>
+<p>This leads to another hypothesis - perhaps the connection probabilities on the left
+hemisphere are simply a scaled-down version of those on the right. More formally, we
+can write this as a new null hypothesis:</p>
+<div class="math notranslate nohighlight">
+\[ H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}\]</div>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(\frac{\rho_{left}}{\rho_{right}}\)</span>.</p>
 </div>
 </div>
 <div class="section" id="resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
 <h2>Resample the right network to make the density the same, rerun the test<a class="headerlink" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test" title="Permalink to this headline">¶</a></h2>
-<p>Below, we’ll see what happens when we try to make the network densities the same, and
+<p>Below, we’ll see what happens when we try to make the network densities the same by
+just randomly removing edges, and
 then re-run the test proceedure above. First, we calculate the number of edges
 required to set the network densities roughly the same. Then, we randomly remove that
 number of edges from the right hemisphere network, and rerun the test. We repeat this
@@ -867,14 +904,14 @@ that result.</p>
 </div>
 <div class="figure align-default" id="fig-pvalues-corrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_test_23_0.png" src="_images/sbm_test_23_0.png" />
+<img alt="_images/sbm_test_24_0.png" src="_images/sbm_test_24_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Histogram of p-values after a correction for network density. For the observed networks
-the left hemisphere has a density of <span class="pasted-text">0.0164</span>, and the right hemisphere has
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Histogram of p-values after a correction for network density. For the observed networks
+the left hemisphere has a density of <span class="pasted-text">0.0165</span>, and the right hemisphere has
 a density of <span class="pasted-text">0.0177</span>. Here, we randomly removed exactly <span class="pasted-text">2697</span>
 edges from the right hemisphere network, which makes the density of the right network
 match that of the left hemisphere network. Then, we re-ran the stochastic block model testing
-procedure from <a class="reference internal" href="#fig-sbm-uncorrected"><span class="std std-numref">Figure 3</span></a>. This entire process
+procedure from <a class="reference internal" href="#fig-sbm-uncorrected"><span class="std std-numref">Figure 4</span></a>. This entire process
 was repeated <span class="pasted-text">25</span> times. The histogram above shows the distribution
 of p-values for the overall test. Note that the p-values are no longer small, indicating
 that with this density correction, we now failed to reject our null hypothesis of
@@ -931,9 +968,9 @@ information about this test can be found in <a class="reference internal" href="
 </div>
 <div class="figure align-default" id="fig-sbm-corrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_test_27_0.png" src="_images/sbm_test_27_0.png" />
+<img alt="_images/sbm_test_28_0.png" src="_images/sbm_test_28_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres after
+<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres after
 correcting for a difference in hemisphere density.
 <strong>A)</strong> The estimated group-to-group connection probabilities for the left
 and right hemispheres, after the right hemisphere probabilities were scaled by a
@@ -959,18 +996,14 @@ adjustment by a density-normalizing constant, <span class="math notranslate nohi
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;----&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;----&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----
-Script took 0:01:10.458959
-Completed at 2021-11-05 13:20:18.819249
-----
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:04.372942
+Completed at 2021-11-05 14:17:49.618154
 </pre></div>
 </div>
 </div>
@@ -1008,11 +1041,11 @@ Completed at 2021-11-05 13:20:18.819249
 <div class='prev-next-bottom'>
     
     <div id="prev">
-        <a class="left-prev" href="define_data.html" title="previous page">
+        <a class="left-prev" href="er_unmatched_test.html" title="previous page">
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Defining the data</p>
+                <p class="prevnext-title">A density-based test</p>
             </div>
         </a>
     </div>
