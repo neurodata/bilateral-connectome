@@ -5,10 +5,13 @@ parts:
     chapters:
     - file: outline
     - file: define_data
-  - caption: Tests
+  - caption: Unmatched Tests
     chapters:
     - file: er_unmatched_test
     - file: sbm_test
+  - caption: Matched Tests
+    chapters:
+    - file: er_matched_test
   - caption: Appendix
     chapters: 
     - file: nhypergeom_sims

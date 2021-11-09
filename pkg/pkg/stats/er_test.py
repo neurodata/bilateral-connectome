@@ -1,5 +1,6 @@
-from .sbm_test import stochastic_block_test
 import numpy as np
+
+from .sbm_test import stochastic_block_test
 
 
 def erdos_renyi_test(A1, A2, method="fisher"):

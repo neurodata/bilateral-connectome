@@ -86,6 +86,20 @@ def load_unmatched(side="left"):
     return adj, nodes
 
 
+def load_matched(side="left"):
+    side = side.lower()
+    dir = DATA_PATH / "processed"
+    g = nx.read_edgelist(
+        dir / f"matched_{side}_edgelist.csv",
+        create_using=nx.DiGraph,
+        delimiter=",",
+        nodetype=int,
+    )
+    nodes = pd.read_csv(dir / f"matched_{side}_nodes.csv", index_col=0)
+    adj = nx.to_numpy_array(g, nodelist=nodes.index)
+    return adj, nodes
+
+
 def load_maggot_graph(path=None, version=None):
     nodes = load_node_meta()
     g = nx.MultiDiGraph()
