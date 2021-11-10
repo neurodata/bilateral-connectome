@@ -4,6 +4,7 @@
 
 #%%
 
+from giskard.plot.utils import soft_axis_off
 from pkg.utils import set_warnings
 
 set_warnings()
@@ -164,11 +165,38 @@ for i in range(n_resamples):
     subsampled_right_adj = remove_edges(
         right_adj, effect_size=n_remove, random_seed=rng
     )
-
-    # rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+    stat, pvalue, misc = erdos_renyi_test_paired(left_adj, subsampled_right_adj)
+    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
 
 resample_results = pd.DataFrame(rows)
 
+#%%
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(data=resample_results, x="pvalue", ax=ax)
+if np.allclose(resample_results["pvalue"], 1):
+    ax.axvline(resample_results.iloc[0]["pvalue"], color="darkred", linestyle="--")
+ax.spines.left.set_visible(False)
+ax.set(yticks=[], ylabel="", xlim=(-0.05, 1.05), xticks=[0, 0.5, 1], xlabel="p-value")
+gluefig()
+
+#%%
+from pkg.stats import stochastic_block_test_paired
+
+rows = []
+n_resamples = 25
+glue("n_resamples", n_resamples)
+for i in range(n_resamples):
+    subsampled_right_adj = remove_edges(
+        right_adj, effect_size=n_remove, random_seed=rng
+    )
+    stat, pvalue, misc = stochastic_block_test_paired(
+        left_adj, subsampled_right_adj, labels=left_nodes["simple_group"]
+    )
+    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+
+resample_results = pd.DataFrame(rows)
+resample_results
 
 #%%
 elapsed = time.time() - t0
