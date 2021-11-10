@@ -4,7 +4,6 @@
 
 #%%
 
-from giskard.plot.utils import soft_axis_off
 from pkg.utils import set_warnings
 
 set_warnings()
@@ -14,17 +13,15 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import seaborn as sns
 from giskard.plot import rotate_labels
 from myst_nb import glue as default_glue
 from pkg.data import load_matched, load_network_palette, load_node_palette
 from pkg.io import savefig
-from pkg.perturb import remove_edges
 from pkg.plot import set_theme
 from pkg.stats import erdos_renyi_test_paired
 
-DISPLAY_FIGS = True
+DISPLAY_FIGS = False
 FILENAME = "er_matched_test"
 
 rng = np.random.default_rng(8888)
@@ -33,14 +30,17 @@ rng = np.random.default_rng(8888)
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
-    glue("fig:" + name, fig, display=False)
+    glue(name, fig, prefix="fig")
 
     if not DISPLAY_FIGS:
         plt.close()
 
 
-def glue(name, var):
-    default_glue(f"{FILENAME}-{name}", var, display=False)
+def glue(name, var, prefix=None):
+    savename = f"{FILENAME}-{name}"
+    if prefix is not None:
+        savename = prefix + ":" + savename
+    default_glue(savename, var, display=False)
 
 
 t0 = time.time()
@@ -128,12 +128,12 @@ kwargs = dict(
 axs[0].plot([0, 1], [0, 0], transform=axs[0].transAxes, **kwargs)
 axs[1].plot([0, 1], [1, 1], transform=axs[1].transAxes, **kwargs)
 
-gluefig("edge-count-bars", fig)
+gluefig("edge_count_bars", fig)
 
 #%% [markdown]
 
-# ```{glue:figure} fig:edge-count-bars
-# :name: "fig:edge-count-bars"
+# ```{glue:figure} fig:er_matched_test-edge_count_bars
+# :name: "fig:er_matched_test-edge_count_bars"
 
 # The number of edges in each of the four possible categories for the 2x2 paired
 # contingency table comparing paired edges. P-value for the McNemar's test comparing
@@ -142,61 +142,6 @@ gluefig("edge-count-bars", fig)
 # McNemar's test only compares the disagreeing edge counts, "Left edge only" and
 # "Right edge only".
 # ```
-
-#%%
-n_edges_left = np.count_nonzero(left_adj)
-n_edges_right = np.count_nonzero(right_adj)
-n_left = left_adj.shape[0]
-n_right = right_adj.shape[0]
-density_left = n_edges_left / (n_left ** 2)
-density_right = n_edges_right / (n_right ** 2)
-
-n_remove = int((density_right - density_left) * (n_right ** 2))
-
-glue("density_left", density_left)
-glue("density_right", density_right)
-glue("n_remove", n_remove)
-
-#%%
-rows = []
-n_resamples = 25
-glue("n_resamples", n_resamples)
-for i in range(n_resamples):
-    subsampled_right_adj = remove_edges(
-        right_adj, effect_size=n_remove, random_seed=rng
-    )
-    stat, pvalue, misc = erdos_renyi_test_paired(left_adj, subsampled_right_adj)
-    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
-
-resample_results = pd.DataFrame(rows)
-
-#%%
-
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(data=resample_results, x="pvalue", ax=ax)
-if np.allclose(resample_results["pvalue"], 1):
-    ax.axvline(resample_results.iloc[0]["pvalue"], color="darkred", linestyle="--")
-ax.spines.left.set_visible(False)
-ax.set(yticks=[], ylabel="", xlim=(-0.05, 1.05), xticks=[0, 0.5, 1], xlabel="p-value")
-gluefig()
-
-#%%
-from pkg.stats import stochastic_block_test_paired
-
-rows = []
-n_resamples = 25
-glue("n_resamples", n_resamples)
-for i in range(n_resamples):
-    subsampled_right_adj = remove_edges(
-        right_adj, effect_size=n_remove, random_seed=rng
-    )
-    stat, pvalue, misc = stochastic_block_test_paired(
-        left_adj, subsampled_right_adj, labels=left_nodes["simple_group"]
-    )
-    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
-
-resample_results = pd.DataFrame(rows)
-resample_results
 
 #%%
 elapsed = time.time() - t0
