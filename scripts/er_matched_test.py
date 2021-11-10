@@ -4,6 +4,7 @@
 
 #%%
 
+from numpy.lib.twodim_base import triu_indices
 from pkg.utils import set_warnings
 
 set_warnings()
@@ -49,8 +50,18 @@ right_adj, right_nodes = load_matched("right")
 edges1 = left_adj.ravel().astype(bool)
 edges2 = right_adj.ravel().astype(bool)
 
+
+def offdiag_indices_from(arr):
+    upper_rows, upper_cols = np.triu_indices_from(arr, k=1)
+    lower_rows, lower_cols = np.tril_indices_from(arr, k=1)
+    rows = np.concatenate(upper_rows, lower_rows)
+    cols = np.concatenate(upper_cols, lower_cols)
+    return rows, cols
+
+
 n = left_adj.shape[0]
 glue("n", n, display=False)
+
 
 n_no_edge = ((~edges1) & (~edges2)).sum()
 n_no_edge -= n  # ignore the diagonals
@@ -67,7 +78,7 @@ n_edge_sum = n_no_edge + n_both_edge + n_only_1 + n_only_2
 assert n_possible == n_edge_sum
 glue("n_possible", n_possible, display=False)
 
-cont_table = [[n_both_edge, n_only_2], [n_only_1, n_no_edge]]
+cont_table = [[0, n_only_2], [n_only_1, 0]]
 cont_table = np.array(cont_table)
 
 bunch = mcnemar(cont_table)
@@ -149,6 +160,8 @@ gluefig("edge-count-bars", fig)
 # McNemar's test only compares the disagreeing edge counts, "Left edge only" and
 # "Right edge only".
 # ```
+
+
 
 #%%
 elapsed = time.time() - t0

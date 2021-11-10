@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import chi2_contingency, fisher_exact
+from statsmodels.stats.contingency_tables import mcnemar
 from statsmodels.stats.proportion import test_proportions_2indep
 
 from .fisher_exact_nonunity import fisher_exact_nonunity
@@ -31,5 +32,26 @@ def binom_2samp(x1, n1, x2, n2, null_odds, method="agresti-caffo"):
         )
     else:
         raise ValueError()
+
+    return stat, pvalue
+
+
+def binom_2samp_paired(x, y):
+    x = x.astype(bool)
+    y = y.astype(bool)
+
+    # TODO these two don't actually matter at all for McNemar's test...
+    n_neither = ((~x) & (~y)).sum()
+    n_both = (x & y).sum()
+
+    n_only_x = (x & (~y)).sum()
+    n_only_y = ((~x) & y).sum()
+
+    cont_table = [[n_both, n_only_x], [n_only_y, n_neither]]
+    cont_table = np.array(cont_table)
+
+    bunch = mcnemar(cont_table)
+    stat = bunch.statistic
+    pvalue = bunch.pvalue
 
     return stat, pvalue
