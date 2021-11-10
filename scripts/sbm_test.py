@@ -484,7 +484,7 @@ gluefig("significant-p-comparison", fig)
 # ```
 
 #%% [markdown]
-# ### What about the difference in density
+# ## What about the difference in density?
 # From the series of figures above, we see that we have sufficient evidence to reject
 # the null hypothesis of bilateral symmetry under this version of the stochastic
 # block model. However, we already saw in [](er_unmatched_test) that the overall
@@ -504,7 +504,7 @@ gluefig("significant-p-comparison", fig)
 
 #%%
 #%% [markdown]
-# ## Resample the right network to make the density the same, rerun the test
+# ### Resample the right network to make the density the same, rerun the test
 # Below, we'll see what happens when we try to make the network densities the same by
 # just randomly removing edges, and
 # then re-run the test proceedure above. First, we calculate the number of edges
@@ -546,7 +546,7 @@ for i in range(n_resamples):
 resample_results = pd.DataFrame(rows)
 
 #%% [markdown]
-# ### Plot the p-values for the corrected tests
+# ### Plot the p-values for the density-corrected tests
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 sns.histplot(data=resample_results, x="pvalue", ax=ax)
