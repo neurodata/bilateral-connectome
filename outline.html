@@ -250,8 +250,13 @@
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tests">
-   Tests
+  <a class="reference internal nav-link" href="#unmatched-tests">
+   Unmatched Tests
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matched-tests">
+   Matched Tests
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -279,20 +284,32 @@
 <li><p>In <a class="reference internal" href="define_data.html"><span class="doc std std-doc">Defining the data</span></a> we explain what data we’ll use for our comparisons.</p></li>
 </ul>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="tests">
-<h1>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="unmatched-tests">
+<h1>Unmatched Tests<a class="headerlink" href="#unmatched-tests" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p>In (COMING SOON) <span class="xref myst"></span> we run a test for whether the Erdos-Renyi model
+<li><p>In <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we run a test for whether the Erdos-Renyi model
 fits between the two hemispheres are similar, finding that they are significantly different
 even under this simple model.</p></li>
-<li><p>In <a class="reference internal" href="sbm_test.html"><span class="doc std std-doc">A group-based test</span></a> we run a test for whether stochastic block model fits between the
+<li><p>In <a class="reference internal" href="sbm_test.html"><span class="doc std std-doc">A group-based test</span></a>, we run a test for whether stochastic block model fits between the
 two hemispheres are similar. We also present a version for this test which accounts for
 differences in edge density between the hemispheres.</p></li>
-<li><p>In (COMING SOON) <span class="xref myst"></span> we run a test for whether random dot product graph model fits
+<li><p>In (COMING SOON) <span class="xref myst"></span>, we run a test for whether random dot product graph model fits
 between the two hemispheres are similar.</p></li>
-<li><p>In (COMING SOON) we run each of these tests over perturbed versions of the left and
+<li><p>In (COMING SOON), we run each of these tests over perturbed versions of the left and
 right connectomes to analyze their power under a variety of alternatives to our null
 hypothesis of symmetry.</p></li>
+</ul>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="matched-tests">
+<h1>Matched Tests<a class="headerlink" href="#matched-tests" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>In <a class="reference internal" href="er_matched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we again test for bilateral symmetry under the
+Erdos-Renyi model, this time using the matched/known-node-correspondence data. Again,
+we find that the two hemispheres are significantly different under this model.</p></li>
+<li><p>In <span class="xref myst"></span>, we perform a test for stochastick block model fit
+symmetry using the matched data. Again, we find that the stochastic block model fits
+are significantly different, but when adjusting to correct for a difference in
+density, this difference disappears.</p></li>
 </ul>
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="appendix">
