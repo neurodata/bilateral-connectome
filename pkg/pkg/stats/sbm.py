@@ -1,11 +1,12 @@
 from collections import namedtuple
 
 import numpy as np
+from numpy.lib.utils import source
 import pandas as pd
 from graspologic.utils import remove_loops
 from scipy.stats import combine_pvalues
 
-from .binomial import binom_2samp
+from .binomial import binom_2samp, binom_2samp_paired
 
 SBMResult = namedtuple(
     "sbm_result", ["probabilities", "observed", "possible", "group_counts"]
@@ -127,4 +128,65 @@ def stochastic_block_test(
     stat, pvalue = combine_pvalues(run_pvalues, method="fisher")
     n_tests = len(run_pvalues)
     misc["n_tests"] = n_tests
+    return stat, pvalue, misc
+
+
+def offdiag_indices_from(arr):
+    upper_rows, upper_cols = np.triu_indices_from(arr, k=1)
+    lower_rows, lower_cols = np.tril_indices_from(arr, k=-1)
+    rows = np.concatenate((upper_rows, lower_rows))
+    cols = np.concatenate((upper_cols, lower_cols))
+    return rows, cols
+
+
+def stochastic_block_test_paired(A1, A2, labels):
+    index, group_indices, group_counts = np.unique(
+        labels, return_counts=True, return_inverse=True
+    )
+
+    K = len(index)
+
+    empty = np.empty((K, K), dtype=float)
+    uncorrected_pvalues = _make_adjacency_dataframe(empty.copy(), index)
+    stats = _make_adjacency_dataframe(empty.copy(), index)
+    empty = np.empty((K, K), dtype=int)
+    both = _make_adjacency_dataframe(empty.copy(), index)
+    neither = _make_adjacency_dataframe(empty.copy(), index)
+    only1 = _make_adjacency_dataframe(empty.copy(), index)
+    only2 = _make_adjacency_dataframe(empty.copy(), index)
+
+    for i, source_group in enumerate(index):
+        source_mask = group_indices == i
+        for j, target_group in enumerate(index):
+            target_mask = group_indices == j
+            A1_subgraph = A1[source_mask][:, target_mask]
+            A2_subgraph = A2[source_mask][:, target_mask]
+
+            if i == j:
+                rows, cols = offdiag_indices_from(A1_subgraph)
+                edges1 = A1_subgraph[rows, cols]
+                edges2 = A2_subgraph[rows, cols]
+            else:
+                edges1 = A1_subgraph.ravel()
+                edges2 = A2_subgraph.ravel()
+
+            curr_stat, curr_pvalue, curr_misc = binom_2samp_paired(edges1, edges2)
+
+            stats.loc[source_group, target_group] = curr_stat
+            uncorrected_pvalues.loc[source_group, target_group] = curr_pvalue
+            both.loc[source_group, target_group] = curr_misc["n_both"]
+            neither.loc[source_group, target_group] = curr_misc["n_neither"]
+            only1.loc[source_group, target_group] = curr_misc["n_only1"]
+            only2.loc[source_group, target_group] = curr_misc["n_only2"]
+
+    misc = {}
+    misc["both"] = both
+    misc["neither"] = neither
+    misc["only1"] = only1
+    misc["only2"] = only2
+    misc["uncorrected_pvalues"] = uncorrected_pvalues
+
+    run_pvalues = uncorrected_pvalues.values
+    run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
+    stat, pvalue = combine_pvalues(run_pvalues, method="fisher")
     return stat, pvalue, misc

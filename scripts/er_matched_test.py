@@ -4,7 +4,6 @@
 
 #%%
 
-from numpy.lib.twodim_base import triu_indices
 from pkg.utils import set_warnings
 
 set_warnings()
@@ -14,16 +13,20 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
 from giskard.plot import rotate_labels
-from myst_nb import glue
+from myst_nb import glue as default_glue
 from pkg.data import load_matched, load_network_palette, load_node_palette
 from pkg.io import savefig
+from pkg.perturb import remove_edges
 from pkg.plot import set_theme
-from statsmodels.stats.contingency_tables import mcnemar
+from pkg.stats import erdos_renyi_test_paired
 
-DISPLAY_FIGS = False
+DISPLAY_FIGS = True
 FILENAME = "er_matched_test"
+
+rng = np.random.default_rng(8888)
 
 
 def gluefig(name, fig, **kwargs):
@@ -33,6 +36,10 @@ def gluefig(name, fig, **kwargs):
 
     if not DISPLAY_FIGS:
         plt.close()
+
+
+def glue(name, var):
+    default_glue(f"{FILENAME}-{name}", var, display=False)
 
 
 t0 = time.time()
@@ -45,46 +52,20 @@ node_palette, NODE_KEY = load_node_palette()
 left_adj, left_nodes = load_matched("left")
 right_adj, right_nodes = load_matched("right")
 
+
 #%%
 
-edges1 = left_adj.ravel().astype(bool)
-edges2 = right_adj.ravel().astype(bool)
+stat, pvalue, misc = erdos_renyi_test_paired(left_adj, right_adj)
+glue("pvalue", pvalue)
 
-
-def offdiag_indices_from(arr):
-    upper_rows, upper_cols = np.triu_indices_from(arr, k=1)
-    lower_rows, lower_cols = np.tril_indices_from(arr, k=1)
-    rows = np.concatenate(upper_rows, lower_rows)
-    cols = np.concatenate(upper_cols, lower_cols)
-    return rows, cols
-
-
-n = left_adj.shape[0]
-glue("n", n, display=False)
-
-
-n_no_edge = ((~edges1) & (~edges2)).sum()
-n_no_edge -= n  # ignore the diagonals
-n_both_edge = (edges1 & edges2).sum()
-n_only_1 = (edges1 & (~edges2)).sum()
-n_only_2 = ((~edges1) & edges2).sum()
-glue("n_no_edge", n_no_edge, display=False)
-glue("n_both_edge", n_both_edge, display=False)
-glue("n_only_left", n_only_1, display=False)
-glue("n_only_right", n_only_2, display=False)
-
-n_possible = n ** 2 - n
-n_edge_sum = n_no_edge + n_both_edge + n_only_1 + n_only_2
-assert n_possible == n_edge_sum
-glue("n_possible", n_possible, display=False)
-
-cont_table = [[0, n_only_2], [n_only_1, 0]]
-cont_table = np.array(cont_table)
-
-bunch = mcnemar(cont_table)
-stat = bunch.statistic
-pvalue = bunch.pvalue
-glue(f"{FILENAME}-pvalue", pvalue, display=False)
+n_no_edge = misc["neither"]
+n_both_edge = misc["both"]
+n_only_left = misc["only1"]
+n_only_right = misc["only2"]
+glue("n_no_edge", n_no_edge)
+glue("n_both_edge", n_both_edge)
+glue("n_only_left", n_only_left)
+glue("n_only_right", n_only_right)
 
 #%%
 
@@ -107,12 +88,12 @@ def plot_bar(x, height, color=None, ax=None, text=True):
         ax.text(x, height, f"{height:,}", color=color, ha="center", va="bottom")
 
 
-lower_ymax = max(n_both_edge, n_only_1, n_only_2)
+lower_ymax = max(n_both_edge, n_only_left, n_only_right)
 
 ax = axs[0]
 plot_bar(0, n_both_edge, color=neutral_color, ax=ax, text=False)
-plot_bar(1, n_only_1, color=network_palette["Left"], ax=ax, text=False)
-plot_bar(2, n_only_2, color=network_palette["Right"], ax=ax, text=False)
+plot_bar(1, n_only_left, color=network_palette["Left"], ax=ax, text=False)
+plot_bar(2, n_only_right, color=network_palette["Right"], ax=ax, text=False)
 plot_bar(3, n_no_edge, color=empty_color, ax=ax)
 ax.set_ylim(n_no_edge * 0.9, n_no_edge * 1.1)
 ax.spines.bottom.set_visible(False)
@@ -122,8 +103,8 @@ ax.set_yticklabels(["1.5e6"])
 
 ax = axs[1]
 plot_bar(0, n_both_edge, color=neutral_color, ax=ax)
-plot_bar(1, n_only_1, color=network_palette["Left"], ax=ax)
-plot_bar(2, n_only_2, color=network_palette["Right"], ax=ax)
+plot_bar(1, n_only_left, color=network_palette["Left"], ax=ax)
+plot_bar(2, n_only_right, color=network_palette["Right"], ax=ax)
 plot_bar(3, n_no_edge, color=empty_color, ax=ax, text=False)
 ax.set_xticks([0, 1, 2, 3])
 ax.set_xticklabels(["Edge in\nboth", "Left edge\nonly", "Right edge\nonly", "No edge"])
@@ -161,6 +142,32 @@ gluefig("edge-count-bars", fig)
 # "Right edge only".
 # ```
 
+#%%
+n_edges_left = np.count_nonzero(left_adj)
+n_edges_right = np.count_nonzero(right_adj)
+n_left = left_adj.shape[0]
+n_right = right_adj.shape[0]
+density_left = n_edges_left / (n_left ** 2)
+density_right = n_edges_right / (n_right ** 2)
+
+n_remove = int((density_right - density_left) * (n_right ** 2))
+
+glue("density_left", density_left)
+glue("density_right", density_right)
+glue("n_remove", n_remove)
+
+#%%
+rows = []
+n_resamples = 25
+glue("n_resamples", n_resamples)
+for i in range(n_resamples):
+    subsampled_right_adj = remove_edges(
+        right_adj, effect_size=n_remove, random_seed=rng
+    )
+
+    # rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+
+resample_results = pd.DataFrame(rows)
 
 
 #%%

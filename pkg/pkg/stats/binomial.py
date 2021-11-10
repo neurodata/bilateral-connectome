@@ -36,22 +36,28 @@ def binom_2samp(x1, n1, x2, n2, null_odds, method="agresti-caffo"):
     return stat, pvalue
 
 
-def binom_2samp_paired(x, y):
-    x = x.astype(bool)
-    y = y.astype(bool)
+def binom_2samp_paired(x1, x2):
+    x1 = x1.astype(bool)
+    x2 = x2.astype(bool)
 
     # TODO these two don't actually matter at all for McNemar's test...
-    n_neither = ((~x) & (~y)).sum()
-    n_both = (x & y).sum()
+    n_both = (x1 & x2).sum()
+    n_neither = ((~x1) & (~x2)).sum()
 
-    n_only_x = (x & (~y)).sum()
-    n_only_y = ((~x) & y).sum()
+    n_only_x1 = (x1 & (~x2)).sum()
+    n_only_x2 = ((~x1) & x2).sum()
 
-    cont_table = [[n_both, n_only_x], [n_only_y, n_neither]]
+    cont_table = [[n_both, n_only_x2], [n_only_x1, n_neither]]
     cont_table = np.array(cont_table)
 
     bunch = mcnemar(cont_table)
     stat = bunch.statistic
     pvalue = bunch.pvalue
 
-    return stat, pvalue
+    misc = {}
+    misc["n_both"] = n_both
+    misc["n_neither"] = n_neither
+    misc["n_only1"] = n_only_x1
+    misc["n_only2"] = n_only_x2
+
+    return stat, pvalue, misc
