@@ -196,9 +196,6 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None):
     # plot p-values
     ax = axs[pvalue_col]
 
-    colors = im.get_children()[0].get_facecolors()
-    significant = uncorrected_pvalues < hb_thresh
-
     annot = np.full((K, K), "")
     annot[(B1.values == 0) & (B2.values == 0)] = "B"
     annot[(B1.values == 0) & (B2.values != 0)] = "L"
@@ -219,6 +216,9 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None):
     ax.set(ylabel="", xlabel="Target group")
     ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
     ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
+
+    colors = im.get_children()[0].get_facecolors()
+    significant = uncorrected_pvalues < hb_thresh
 
     # NOTE: the x's looked bad so I did this super hacky thing...
     pad = 0.2

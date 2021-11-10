@@ -12,6 +12,7 @@ parts:
   - caption: Matched Tests
     chapters:
     - file: er_matched_test
+    - file: sbm_matched_test
   - caption: Appendix
     chapters: 
     - file: nhypergeom_sims

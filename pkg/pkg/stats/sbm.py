@@ -189,4 +189,6 @@ def stochastic_block_test_paired(A1, A2, labels):
     run_pvalues = uncorrected_pvalues.values
     run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
     stat, pvalue = combine_pvalues(run_pvalues, method="fisher")
+    n_tests = len(run_pvalues)
+    misc["n_tests"] = n_tests
     return stat, pvalue, misc
