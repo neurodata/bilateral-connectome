@@ -85,36 +85,36 @@ for perturbation_name, perturb in perturbations.items():
 
 results = pd.DataFrame(rows)
 
-#%%
-fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="method", ax=ax)
-sns.lineplot(
-    data=results, x="effect_size", y="pvalue", hue="method", ax=ax, legend=False
-)
-ax.set_xlabel("Number of edges removed")
+# #%%
+# fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+# sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="method", ax=ax)
+# sns.lineplot(
+#     data=results, x="effect_size", y="pvalue", hue="method", ax=ax, legend=False
+# )
+# ax.set_xlabel("Number of edges removed")
 
 
-#%%
-fig, axs = plt.subplots(2, 1, figsize=(8, 8), sharex=True)
-ax = axs[0]
-sns.histplot(
-    data=results[results["method"] == "t"],
-    ax=ax,
-    x="pvalue",
-    hue="effect_size",
-    binwidth=0.001,
-    legend=False,
-)
-ax.set_title("t-test")
+# #%%
+# fig, axs = plt.subplots(2, 1, figsize=(8, 8), sharex=True)
+# ax = axs[0]
+# sns.histplot(
+#     data=results[results["method"] == "t"],
+#     ax=ax,
+#     x="pvalue",
+#     hue="effect_size",
+#     binwidth=0.001,
+#     legend=False,
+# )
+# ax.set_title("t-test")
 
-ax = axs[1]
-sns.histplot(
-    data=results[results["method"] == "fisher"],
-    ax=ax,
-    x="pvalue",
-    hue="effect_size",
-    binwidth=0.001,
-    legend=False,
-)
-ax.set_title("Fisher's exact")
-plt.tight_layout()
+# ax = axs[1]
+# sns.histplot(
+#     data=results[results["method"] == "fisher"],
+#     ax=ax,
+#     x="pvalue",
+#     hue="effect_size",
+#     binwidth=0.001,
+#     legend=False,
+# )
+# ax.set_title("Fisher's exact")
+# plt.tight_layout()

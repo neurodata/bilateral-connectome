@@ -64,3 +64,41 @@ def to_pandas_edgelist(g):
     edges["edge"] = list(zip(edges["source"], edges["target"], edges["key"]))
     edges.set_index("edge", inplace=True)
     return edges
+
+
+def get_paired_nodes(nodes):
+    paired_nodes = nodes[nodes["pair_id"] != -1]
+    pair_ids = paired_nodes["pair_id"]
+
+    pair_counts = pair_ids.value_counts()
+    pair_counts = pair_counts[pair_counts == 1]
+    pair_ids = pair_ids[pair_ids.isin(pair_counts.index)]
+
+    paired_nodes = paired_nodes[paired_nodes["pair_id"].isin(pair_ids)].copy()
+
+    return paired_nodes
+
+
+def get_seeds(left_nodes, right_nodes):
+    left_paired_nodes = get_paired_nodes(left_nodes)
+    right_paired_nodes = get_paired_nodes(right_nodes)
+
+    pairs_in_both = np.intersect1d(
+        left_paired_nodes["pair_id"], right_paired_nodes["pair_id"]
+    )
+    left_paired_nodes = left_paired_nodes[
+        left_paired_nodes["pair_id"].isin(pairs_in_both)
+    ]
+    right_paired_nodes = right_paired_nodes[
+        right_paired_nodes["pair_id"].isin(pairs_in_both)
+    ]
+
+    left_seeds = left_paired_nodes.sort_values("pair_id")["inds"]
+    right_seeds = right_paired_nodes.sort_values("pair_id")["inds"]
+
+    assert (
+        left_nodes.iloc[left_seeds]["pair_id"].values
+        == right_nodes.iloc[right_seeds]["pair_id"].values
+    ).all()
+
+    return (left_seeds, right_seeds)

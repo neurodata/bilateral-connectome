@@ -9,3 +9,5 @@ def set_warnings():
     warnings.filterwarnings(
         "ignore", module="beartype", category=BeartypeDecorHintPepDeprecatedWarning
     )
+
+
