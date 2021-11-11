@@ -10,8 +10,10 @@ even under this simple model.
 - In [](sbm_test.ipynb), we run a test for whether stochastic block model fits between the 
 two hemispheres are similar. We also present a version for this test which accounts for
 differences in edge density between the hemispheres. 
-- In (COMING SOON) [](rdpg_test.ipynb), we run a test for whether random dot product graph model fits
-between the two hemispheres are similar.
+- In [](rdpg_unmatched_test.ipynb), we run a test for whether random dot product graph model fits
+between the two hemispheres are similar. We find that in general, this test fails to 
+reject the null hypothesis of bilateral symmetry, but that this analysis is highly 
+sensitive to the choice of embedding dimension.s
 - In (COMING SOON), we run each of these tests over perturbed versions of the left and
 right connectomes to analyze their power under a variety of alternatives to our null
 hypothesis of symmetry.
