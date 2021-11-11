@@ -22,7 +22,7 @@ from pkg.plot import set_theme
 from pkg.stats import stochastic_block_test_paired
 from seaborn.utils import relative_luminance
 
-DISPLAY_FIGS = True
+DISPLAY_FIGS = False
 FILENAME = "sbm_matched_test"
 
 rng = np.random.default_rng(8888)
