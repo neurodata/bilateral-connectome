@@ -3,6 +3,7 @@ root: landing
 parts:
   - caption: Preliminaries
     chapters:
+    - file: introduction
     - file: outline
     - file: define_data
   - caption: Unmatched Tests
