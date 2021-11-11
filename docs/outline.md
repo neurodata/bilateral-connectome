@@ -30,3 +30,8 @@ hypothesis of symmetry.
 # Appendix
 - [](nhypergeom_sims.ipynb) describes a modified Fisher's exact test, supporting some of the work in 
 [](sbm_test.ipynb).
+- (COMING SOON) closely examines the effect of embedding dimension on the test presented in [](rdpg_unmatched_test.ipynb), demonstrating that artificially low p-values can be the 
+result of misaligned network embeddings caused by close eigenvalues. This highlights the
+importance of carefully examining the embeddings and spectra when comparing networks
+with this method, and also that overshooting the embedding dimension can be helpful to 
+avoid this problem.
