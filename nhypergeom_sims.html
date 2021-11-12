@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>An exact test for non-unity null odds ratios &#8212; Bilateral Connectome</title>
     
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -57,7 +57,10 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="A group-based test" href="sbm_matched_test.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -96,7 +99,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Preliminaries
  </span>
@@ -113,12 +116,17 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="unmatched_vs_matched.html">
+   Unmatched vs. matched networks
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="define_data.html">
    Defining the data
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Unmatched Tests
  </span>
@@ -140,7 +148,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Matched Tests
  </span>
@@ -157,7 +165,7 @@
   </a>
  </li>
 </ul>
-<p class="caption" role="heading">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Appendix
  </span>
@@ -438,7 +446,7 @@ is known.</p>
 <div class="cell_output docutils container">
 <img alt="_images/nhypergeom_sims_8_0.png" src="_images/nhypergeom_sims_8_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Plot of mean p-values by the true odds ratio <span class="math notranslate nohighlight">\(\omega\)</span>. Each point in the lineplot
+<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Plot of mean p-values by the true odds ratio <span class="math notranslate nohighlight">\(\omega\)</span>. Each point in the lineplot
 denotes the mean over <span class="pasted-text">200</span> trials, and the shaded region denotes 95%
 bootstrap CI estimates. Fisher’s Exact test
 (FE) tends to reject for non-unity odds ratios, while the modified, non-unity Fisher’s
@@ -480,7 +488,7 @@ odds ratio (<span class="math notranslate nohighlight">\(\omega_0\)</span>) is e
 <div class="cell_output docutils container">
 <img alt="_images/nhypergeom_sims_10_0.png" src="_images/nhypergeom_sims_10_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
+<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
 <span class="math notranslate nohighlight">\(\omega = 1\)</span>. Dashed line denotes the cumulative distribution function for a
 <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable. p-value in upper left is for a one-sided KS-test that
 for the null that the distribution is stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span>
@@ -491,7 +499,7 @@ where the null that both tests are concerned with is true.</span><a class="heade
 <div class="cell_output docutils container">
 <img alt="_images/nhypergeom_sims_10_1.png" src="_images/nhypergeom_sims_10_1.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
+<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
 <span class="math notranslate nohighlight">\(\omega = 3\)</span>. Dashed line denotes the cumulative distribution function for a
 <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable. p-value in upper left is for a one-sided KS-test that
 for the null that the distribution is stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span>
@@ -526,22 +534,15 @@ p-values appear stochastically smaller than a <span class="math notranslate nohi
               </div>
               
         
-            
-
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="sbm_matched_test.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">A group-based test</p>
-            </div>
-        </a>
-    </div>
-
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="sbm_matched_test.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">A group-based test</p>
+        </div>
+    </a>
 </div>
         
         </div>
@@ -562,8 +563,7 @@ p-values appear stochastically smaller than a <span class="math notranslate nohi
       </div>
     </div>
   
-  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
-  
   </body>
 </html>
