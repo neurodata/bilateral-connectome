@@ -337,7 +337,7 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="a-group-based-test">
-<span id="page-sbm-test"></span><h1>A group-based test<a class="headerlink" href="#a-group-based-test" title="Permalink to this headline">¶</a></h1>
+<h1>A group-based test<a class="headerlink" href="#a-group-based-test" title="Permalink to this headline">¶</a></h1>
 <p>Here we test bilateral symmetry by making an assumption that the left and the right
 hemispheres both come from a stochastic block model, which models the probability
 of any potential edge as a function of the groups that the source and target nodes
@@ -423,6 +423,60 @@ groups for each neuron, which we do not explore here.</p>
 </div>
 <div class="section" id="the-stochastic-block-model-2-sample-test">
 <h2>The stochastic block model 2-sample test<a class="headerlink" href="#the-stochastic-block-model-2-sample-test" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_block_model">stochastic block model</a> (SBM)
+is a popular statistical model of networks. Put simply, this model treats the
+probability of an edge occuring between node <span class="math notranslate nohighlight">\(i\)</span> and node <span class="math notranslate nohighlight">\(j\)</span> as purely a function of
+the <em>communities</em> or <em>groups</em> that node <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> belong to. Therefore, this model
+is parameterized by:</p>
+<ol class="simple">
+<li><p>An assignment of each node in the network to a group. Note that this assignment
+can be considered to be deterministic or random, depending on the specific
+framing of the model one wants to use.</p></li>
+<li><p>A set of group-to-group connection probabilities</p></li>
+</ol>
+<div class="admonition-math admonition">
+<p class="admonition-title">Math</p>
+<p>Let <span class="math notranslate nohighlight">\(n\)</span> be the number of nodes, and <span class="math notranslate nohighlight">\(K\)</span> be the number of groups in an SBM. For a
+network <span class="math notranslate nohighlight">\(A\)</span> sampled from an SBM:</p>
+<div class="math notranslate nohighlight">
+\[ A \sim SBM(B, \tau)\]</div>
+<p>We say that for all <span class="math notranslate nohighlight">\((i,j), i \neq j\)</span>, with <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> both running
+from <span class="math notranslate nohighlight">\(1 ... n\)</span> the probability of edge <span class="math notranslate nohighlight">\((i,j)\)</span> occuring is:</p>
+<div class="math notranslate nohighlight">
+\[ P[A_{ij} = 1] = P_{ij} = B_{\tau_i, \tau_j} \]</div>
+<p>where <span class="math notranslate nohighlight">\(B \in [0,1]^{K \times K}\)</span> is a matrix of group-to-group connection
+probabilities and <span class="math notranslate nohighlight">\(\tau \in \{1...K\}^n\)</span> is a vector of node-to-group assignments.
+Note that here we are assuming <span class="math notranslate nohighlight">\(\tau\)</span> is a fixed vector of assignments, though other
+formuations of the SBM allow these assignments to themselves come from a categorical
+distribution.</p>
+</div>
+<p>Assuming this model, there are a few ways that one could test for differences between
+two networks. In our case, we are interested in comparing the group-to-group
+connection probability matrices, <span class="math notranslate nohighlight">\(B\)</span>,  for the left and right hemispheres.</p>
+<div class="admonition-math admonition">
+<p class="admonition-title">Math</p>
+<p>We are interested in testing:</p>
+<div class="math notranslate nohighlight">
+\[ H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right} \]</div>
+</div>
+<p>Rather than having to compare one proportion as in <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we are
+now interedted in comparing all <span class="math notranslate nohighlight">\(K^2\)</span> probabilities between the SBM models for the
+left and right hemispheres. Thus, we will use
+<a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test">Fisher’s exact test</a> to
+compare each set of probabilities. To combine these multiple hypotheses into one, we
+will use <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_method">Fisher’s method</a> for
+combining p-values to give us a p-value for the overall test. We also can look at
+the p-values for each of the individual tests after correction for multiple
+comparisons by the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Bonferroni-Holm method
+</a>.</p>
+<p>For the current investigation, we focus on the case where <span class="math notranslate nohighlight">\(\tau\)</span> is known ahead of
+time, sometimes called the <em>A priori SBM</em>. We use some broad cell type labels which
+were described in the paper which published the data. Here, we do not explore
+estimating these assignments, though many techniques exist for doing so. We note that
+the results presented here could change depending on the group assignments which are
+used. We also do not consider tests which would compare the assignment vectors,
+<span class="math notranslate nohighlight">\(\tau\)</span>.</p>
 <div class="section" id="run-the-test">
 <h3>Run the test<a class="headerlink" href="#run-the-test" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_hide-input docutils container">
@@ -870,15 +924,18 @@ the figures above tend to be higher for the right hemisphere than the correspond
 connection probability on
 the left hemisphere.</p>
 <p>This leads to another hypothesis - perhaps the connection probabilities on the left
-hemisphere are simply a scaled-down version of those on the right. More formally, we
-can write this as a new null hypothesis:</p>
+hemisphere are simply a scaled-down version of those on the right.</p>
+<div class="admonition-math admonition">
+<p class="admonition-title">Math</p>
+<p>We can write this as a new null hypothesis:</p>
 <div class="math notranslate nohighlight">
 \[ H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}\]</div>
-<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(\frac{\rho_{left}}{\rho_{right}}\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(\frac{p_{left}}{p_{right}}\)</span>.</p>
+</div>
 <div class="section" id="resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
 <h3>Resample the right network to make the density the same, rerun the test<a class="headerlink" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test" title="Permalink to this headline">¶</a></h3>
 <p>Below, we’ll see what happens when we try to make the network densities the same by
-just randomly removing edges, and
+just randomly removing edges (uniformly across the entire network), and
 then re-run the test proceedure above. First, we calculate the number of edges
 required to set the network densities roughly the same. Then, we randomly remove that
 number of edges from the right hemisphere network, and rerun the test. We repeat this
@@ -993,8 +1050,8 @@ divided by number of possible edges) then</p>
 <div class="math notranslate nohighlight">
 \[c = \frac{\rho_{left}}{\rho_{right}}\]</div>
 <p>A test for the adjusted null hypothesis above is given by using
-[Fisher’s noncentral hypergeometric distribution]
-(<a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">https://en.wikipedia.org/wiki/Fisher’s_noncentral_hypergeometric_distribution</a>)
+<a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution
+</a>
 and applying a proceedure much like that of the traditional Fisher’s exact test. More
 information about this test can be found in <a class="reference internal" href="nhypergeom_sims.html"><span class="doc std std-doc">An exact test for non-unity null odds ratios</span></a>.</p>
 <div class="cell tag_hide-input docutils container">
@@ -1047,7 +1104,7 @@ the left only, and “R” that it was the case on the right only. These individ
 p-values were combined using Fisher’s method, resulting in an overall p-value (for the
 null hypothesis that the two group connection probability matrices are the same after
 adjustment by a density-normalizing constant, <span class="math notranslate nohighlight">\(c\)</span>) of
-<span class="pasted-text">8.64e-01</span>.</span><a class="headerlink" href="#fig-sbm-unmatched-test-sbm-corrected" title="Permalink to this image">¶</a></p>
+<span class="pasted-text">0.86</span>.</span><a class="headerlink" href="#fig-sbm-unmatched-test-sbm-corrected" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="end">
@@ -1062,8 +1119,8 @@ adjustment by a density-normalizing constant, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:01.672216
-Completed at 2021-11-12 11:23:13.449322
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:03.542596
+Completed at 2021-11-12 12:29:23.605917
 </pre></div>
 </div>
 </div>
