@@ -1,5 +1,4 @@
 #%% [markdown]
-# (page:sbm-test)=
 # # A group-based test
 # Here we test bilateral symmetry by making an assumption that the left and the right
 # hemispheres both come from a stochastic block model, which models the probability
@@ -79,6 +78,66 @@ right_labels = right_nodes[GROUP_KEY].values
 
 #%% [markdown]
 # ## The stochastic block model 2-sample test
+# A [stochastic block model](https://en.wikipedia.org/wiki/Stochastic_block_model) (SBM)
+# is a popular statistical model of networks. Put simply, this model treats the
+# probability of an edge occuring between node $i$ and node $j$ as purely a function of
+# the *communities* or *groups* that node $i$ and $j$ belong to. Therefore, this model
+# is parameterized by:
+#
+#    1. An assignment of each node in the network to a group. Note that this assignment
+#       can be considered to be deterministic or random, depending on the specific
+#       framing of the model one wants to use.
+#    2. A set of group-to-group connection probabilities
+#
+# ```{admonition} Math
+# Let $n$ be the number of nodes, and $K$ be the number of groups in an SBM. For a
+# network $A$ sampled from an SBM:
+#
+# $$ A \sim SBM(B, \tau)$$
+#
+# We say that for all $(i,j), i \neq j$, with $i$ and $j$ both running
+# from $1 ... n$ the probability of edge $(i,j)$ occuring is:
+#
+# $$ P[A_{ij} = 1] = P_{ij} = B_{\tau_i, \tau_j} $$
+#
+# where $B \in [0,1]^{K \times K}$ is a matrix of group-to-group connection
+# probabilities and $\tau \in \{1...K\}^n$ is a vector of node-to-group assignments.
+# Note that here we are assuming $\tau$ is a fixed vector of assignments, though other
+# formuations of the SBM allow these assignments to themselves come from a categorical
+# distribution.
+# ```
+#
+# Assuming this model, there are a few ways that one could test for differences between
+# two networks. In our case, we are interested in comparing the group-to-group
+# connection probability matrices, $B$,  for the left and right hemispheres.
+#
+# ```{admonition} Math
+# We are interested in testing:
+#
+# $$ H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right} $$
+#
+# ```
+#
+# Rather than having to compare one proportion as in [](er_unmatched_test.ipynb), we are
+# now interedted in comparing all $K^2$ probabilities between the SBM models for the
+# left and right hemispheres. Thus, we will use
+# [Fisher's exact test](https://en.wikipedia.org/wiki/Fisher%27s_exact_test) to
+# compare each set of probabilities. To combine these multiple hypotheses into one, we
+# will use [Fisher's method](https://en.wikipedia.org/wiki/Fisher%27s_method) for
+# combining p-values to give us a p-value for the overall test. We also can look at
+# the p-values for each of the individual tests after correction for multiple
+# comparisons by the
+# [Bonferroni-Holm method
+# ](https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method).
+#
+# For the current investigation, we focus on the case where $\tau$ is known ahead of
+# time, sometimes called the *A priori SBM*. We use some broad cell type labels which
+# were described in the paper which published the data. Here, we do not explore
+# estimating these assignments, though many techniques exist for doing so. We note that
+# the results presented here could change depending on the group assignments which are
+# used. We also do not consider tests which would compare the assignment vectors, 
+# $\tau$.
+
 #%% [markdown]
 # ### Run the test
 #%%
@@ -509,18 +568,21 @@ gluefig("significant_p_comparison", fig)
 # the left hemisphere.
 #
 # This leads to another hypothesis - perhaps the connection probabilities on the left
-# hemisphere are simply a scaled-down version of those on the right. More formally, we
-# can write this as a new null hypothesis:
+# hemisphere are simply a scaled-down version of those on the right.
+#
+# ```{admonition} Math
+# We can write this as a new null hypothesis:
 #
 # $$ H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}$$
 #
-# where $c$ is the ratio of the densities, $\frac{\rho_{left}}{\rho_{right}}$.
+# where $c$ is the ratio of the densities, $\frac{p_{left}}{p_{right}}$.
+# ```
 
 #%%
 #%% [markdown]
 # ### Resample the right network to make the density the same, rerun the test
 # Below, we'll see what happens when we try to make the network densities the same by
-# just randomly removing edges, and
+# just randomly removing edges (uniformly across the entire network), and
 # then re-run the test proceedure above. First, we calculate the number of edges
 # required to set the network densities roughly the same. Then, we randomly remove that
 # number of edges from the right hemisphere network, and rerun the test. We repeat this
@@ -618,8 +680,8 @@ gluefig("pvalues_corrected", fig)
 # $$c = \frac{\rho_{left}}{\rho_{right}}$$
 #
 # A test for the adjusted null hypothesis above is given by using
-# [Fisher's noncentral hypergeometric distribution]
-# (https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
+# [Fisher's noncentral hypergeometric distribution
+# ](https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
 # and applying a proceedure much like that of the traditional Fisher's exact test. More
 # information about this test can be found in [](nhypergeom_sims).
 #%%
@@ -660,7 +722,7 @@ gluefig("sbm_corrected", fig)
 # p-values were combined using Fisher's method, resulting in an overall p-value (for the
 # null hypothesis that the two group connection probability matrices are the same after
 # adjustment by a density-normalizing constant, $c$) of
-# {glue:text}`sbm_unmatched_test-corrected_pvalue:0.2e`.
+# {glue:text}`sbm_unmatched_test-corrected_pvalue:0.2f`.
 # ```
 #%% [markdown]
 # ## End
