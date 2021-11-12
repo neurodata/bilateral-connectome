@@ -28,7 +28,8 @@
 #   for a weighted network, and even for the unweighted case, one could consider varying
 #   thresholds of the network based on varying edge weights (which have often been
 #   employeed in connectomics studies). For now, we focus on the unweighted case purely
-#   for simplicity and the availability of more two-sample tests for unweighted networks,
+#   for simplicity and the availability of more two-sample tests for unweighted
+#   networks,
 #   though the weighted case or choice of threshold are also of great interest.
 # - **Directed**: we allow for a distinction between edges which go from neuron $i$ to
 #   neuron $j$ as opposed to from $j$ to $i$.
@@ -139,7 +140,8 @@ glue("n_left_matched", n_left_matched, display=False)
 glue("n_right_matched", n_right_matched, display=False)
 
 #%% [markdown]
-# For the matched networks, we are left with {glue:text}`n_left_matched` neurons in the left
+# For the matched networks, we are left with {glue:text}`n_left_matched` neurons in the
+# left
 # hemisphere, and {glue:text}`n_right_matched` neurons in the right hemisphere.
 
 # %%

@@ -24,7 +24,7 @@ from pkg.io import savefig
 from pkg.plot import set_theme
 
 # to deal with warning caused by networkx
-# REF: https://stackoverflow.com/questions/55109716/c-argument-looks-like-a-single-numeric-rgb-or-rgba-sequence/61479357
+# REF: https://stackoverflow.com/questions/55109716/c-argument-looks-like-a-single-numeric-rgb-or-rgba-sequence/61479357 # noqa: E501
 matplotlib_axes_logger.setLevel("ERROR")
 
 DISPLAY_FIGS = False

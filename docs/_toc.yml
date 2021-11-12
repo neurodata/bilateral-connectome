@@ -10,7 +10,7 @@ parts:
   - caption: Unmatched Tests
     chapters:
     - file: er_unmatched_test
-    - file: sbm_test
+    - file: sbm_unmatched_test
     - file: rdpg_unmatched_test
   - caption: Matched Tests
     chapters:

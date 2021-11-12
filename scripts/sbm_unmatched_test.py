@@ -25,7 +25,7 @@ import pandas as pd
 import seaborn as sns
 from giskard.plot import rotate_labels
 from matplotlib.transforms import Bbox
-from myst_nb import glue
+from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
 from pkg.perturb import remove_edges
@@ -36,14 +36,25 @@ from seaborn.utils import relative_luminance
 DISPLAY_FIGS = False
 
 
-def gluefig(name, fig, **kwargs):
-    foldername = "sbm_test"
-    savefig(name, foldername=foldername, **kwargs)
+DISPLAY_FIGS = False
 
-    glue("fig:" + name, fig, display=False)
+FILENAME = "sbm_unmatched_test"
+
+
+def gluefig(name, fig, **kwargs):
+    savefig(name, foldername=FILENAME, **kwargs)
+
+    glue(name, fig, prefix="fig")
 
     if not DISPLAY_FIGS:
         plt.close()
+
+
+def glue(name, var, prefix=None):
+    savename = f"{FILENAME}-{name}"
+    if prefix is not None:
+        savename = prefix + ":" + savename
+    default_glue(savename, var, display=False)
 
 
 # %% [markdown]
@@ -75,7 +86,7 @@ right_labels = right_nodes[GROUP_KEY].values
 stat, pvalue, misc = stochastic_block_test(
     left_adj, right_adj, labels1=left_labels, labels2=right_labels, method="fisher"
 )
-glue("uncorrected_pvalue", pvalue, display=False)
+glue("uncorrected_pvalue", pvalue)
 
 
 #%% [markdown]
@@ -99,12 +110,12 @@ ax.set(
     xticks=np.arange(len(group_counts_left)) + 0.2,
     xticklabels=group_counts_left.index,
 )
-gluefig("group-counts", fig)
+gluefig("group_counts", fig)
 
 #%% [markdown]
 
-# ```{glue:figure} fig:group-counts
-# :name: "fig:group-counts"
+# ```{glue:figure} fig:sbm_unmatched_test-group_counts
+# :name: "fig:sbm_unmatched_test-group_counts"
 
 # The number of neurons in each group in each hemisphere. Note the similarity between
 # the hemispheres.
@@ -168,7 +179,8 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None):
     ax.set_title(text, fontsize="xx-large", color=network_palette["Right"])
 
     # handle the colorbars
-    # NOTE: did it this way cause the other options weren't playing nice with auto constrain
+    # NOTE: did it this way cause the other options weren't playing nice with auto
+    # constrain
     # layouts.
 
     def shrink_axis(ax, scale=0.7):
@@ -262,14 +274,14 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None):
 
 
 fig, axs = plot_stochastic_block_test(misc)
-gluefig("sbm-uncorrected", fig)
+gluefig("sbm_uncorrected", fig)
 
 # need to save this for later for setting colorbar the same on other plot
 pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 
 #%% [markdown]
-# ```{glue:figure} fig:sbm-uncorrected
-# :name: "fig:sbm-uncorrected"
+# ```{glue:figure} fig:sbm_unmatched_test-sbm_uncorrected
+# :name: "fig:sbm_unmatched_test-sbm_uncorrected"
 
 # Comparison of stochastic block model fits for the left and right hemispheres.
 # **A)** The estimated group-to-group connection probabilities for the left
@@ -280,12 +292,13 @@ pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 # the block probability matrices. In other words, each cell represents a test for
 # whether a given group-to-group connection probability is the same on the left and the
 # right sides. "X" denotes a significant p-value after Bonferroni-Holm correction,
-# with $\alpha=0.05$. "B" indicates that a test was not run since the estimated probability
+# with $\alpha=0.05$. "B" indicates that a test was not run since the estimated
+# probability
 # was zero in that cell on both the left and right. "L" indicates this was the case on
 # the left only, and "R" that it was the case on the right only. These individual
 # p-values were combined using Fisher's method, resulting in an overall p-value (for the
 # null hypothesis that the two group connection probability matrices are the same) of
-# {glue:text}`uncorrected_pvalue:0.2e`.
+# {glue:text}`sbm_unmatched_test-uncorrected_pvalue:0.2e`.
 # ```
 
 
@@ -388,11 +401,11 @@ def plot_estimated_probabilities(misc):
 
 
 fig, ax = plot_estimated_probabilities(misc)
-gluefig("probs-uncorrected", fig)
+gluefig("probs_uncorrected", fig)
 
 #%% [markdown]
-# ```{glue:figure} fig:probs-uncorrected
-# :name: "fig:probs-uncorrected"
+# ```{glue:figure} fig:sbm_unmatched_test-probs_uncorrected
+# :name: "fig:sbm_unmatched_test-probs_uncorrected"
 
 # Comparison of estimated connection probabilities for the left and right hemispheres.
 # **A)** The estimated group-to-group connection probabilities ($\hat{p}$), sorted by
@@ -471,15 +484,16 @@ def plot_significant_probabilities(misc):
 
 
 fig, ax = plot_significant_probabilities(misc)
-gluefig("significant-p-comparison", fig)
+gluefig("significant_p_comparison", fig)
 
 
 #%% [markdown]
-# ```{glue:figure} fig:significant-p-comparison
-# :name: "fig:significant-p-comparison"
+# ```{glue:figure} fig:sbm_unmatched_test-significant_p_comparison
+# :name: "fig:sbm_unmatched_test-significant_p_comparison"
 #
 # Comparison of estimated group-to-group connection probabilities for the group-pairs
-# which were significantly different in {numref}`Figure {number} <fig:sbm-uncorrected>`.
+# which were significantly different in
+# {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>`.
 # In each case, the connection probability on the right hemisphere is higher.
 # ```
 
@@ -510,7 +524,8 @@ gluefig("significant-p-comparison", fig)
 # then re-run the test proceedure above. First, we calculate the number of edges
 # required to set the network densities roughly the same. Then, we randomly remove that
 # number of edges from the right hemisphere network, and rerun the test. We repeat this
-# proceedure {glue:text}`n_resamples` times, and look at the distribution of p-values
+# proceedure {glue:text}`sbm_unmatched_test-n_resamples` times, and look at the
+# distribution of p-values
 # that result.
 #%%
 n_edges_left = np.count_nonzero(left_adj)
@@ -522,14 +537,14 @@ density_right = n_edges_right / (n_right ** 2)
 
 n_remove = int((density_right - density_left) * (n_right ** 2))
 
-glue("density_left", density_left, display=False)
-glue("density_right", density_right, display=False)
-glue("n_remove", n_remove, display=False)
+glue("density_left", density_left)
+glue("density_right", density_right)
+glue("n_remove", n_remove)
 
 #%%
 rows = []
 n_resamples = 25
-glue("n_resamples", n_resamples, display=False)
+glue("n_resamples", n_resamples)
 for i in range(n_resamples):
     subsampled_right_adj = remove_edges(
         right_adj, effect_size=n_remove, random_seed=rng
@@ -556,20 +571,30 @@ ax.spines["left"].set_visible(False)
 mean_resample_pvalue = np.mean(resample_results["pvalue"])
 median_resample_pvalue = np.median(resample_results["pvalue"])
 
-gluefig("pvalues-corrected", fig)
+gluefig("pvalues_corrected", fig)
 
 #%% [markdown]
-# ```{glue:figure} fig:pvalues-corrected
-# :name: "fig:pvalues-corrected"
+# ```{glue:figure} fig:sbm_unmatched_test-pvalues_corrected
+# :name: "fig:sbm_unmatched_test-pvalues_corrected"
 #
-# Histogram of p-values after a correction for network density. For the observed networks
-# the left hemisphere has a density of {glue:text}`density_left:0.4f`, and the right hemisphere has
-# a density of {glue:text}`density_right:0.4f`. Here, we randomly removed exactly {glue:text}`n_remove`
+# Histogram of p-values after a correction for network density. For the observed
+# networks
+# the left hemisphere has a density of
+# {glue:text}`sbm_unmatched_test-density_left:0.4f`, and the right
+# hemisphere has
+# a density of
+# {glue:text}`sbm_unmatched_test-density_right:0.4f`. Here, we randomly removed exactly
+# {glue:text}`sbm_unmatched_test-n_remove`
 # edges from the right hemisphere network, which makes the density of the right network
-# match that of the left hemisphere network. Then, we re-ran the stochastic block model testing
-# procedure from {numref}`Figure {number} <fig:sbm-uncorrected>`. This entire process
-# was repeated {glue:text}`n_resamples` times. The histogram above shows the distribution
-# of p-values for the overall test. Note that the p-values are no longer small, indicating
+# match that of the left hemisphere network. Then, we re-ran the stochastic block model
+# testing
+# procedure from {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>`.
+# This entire process
+# was repeated {glue:text}`sbm_unmatched_test-n_resamples` times. The histogram above
+# shows the
+# distribution
+# of p-values for the overall test. Note that the p-values are no longer small,
+# indicating
 # that with this density correction, we now failed to reject our null hypothesis of
 # bilateral symmetry under the stochastic block model.
 # ```
@@ -593,9 +618,10 @@ gluefig("pvalues-corrected", fig)
 # $$c = \frac{\rho_{left}}{\rho_{right}}$$
 #
 # A test for the adjusted null hypothesis above is given by using
-# [Fisher's noncentral hypergeometric distribution](https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
+# [Fisher's noncentral hypergeometric distribution]
+# (https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
 # and applying a proceedure much like that of the traditional Fisher's exact test. More
-# information about this test can be found in [the Appendix](page:nufe).
+# information about this test can be found in [](nhypergeom_sims).
 #%%
 null_odds = density_left / density_right
 stat, pvalue, misc = stochastic_block_test(
@@ -606,15 +632,15 @@ stat, pvalue, misc = stochastic_block_test(
     method="fisher",
     null_odds=null_odds,
 )
-glue("corrected-pvalue", pvalue, display=False)
+glue("corrected_pvalue", pvalue)
 
 #%%
 fig, axs = plot_stochastic_block_test(misc, pvalue_vmin=pvalue_vmin)
-gluefig("sbm-corrected", fig)
+gluefig("sbm_corrected", fig)
 
 #%% [markdown]
-# ```{glue:figure} fig:sbm-corrected
-# :name: "fig:sbm-corrected"
+# ```{glue:figure} fig:sbm_unmatched_test-sbm_corrected
+# :name: "fig:sbm_unmatched_test-sbm_corrected"
 
 # Comparison of stochastic block model fits for the left and right hemispheres after
 # correcting for a difference in hemisphere density.
@@ -627,13 +653,14 @@ gluefig("sbm-corrected", fig)
 # the block probability matrices. In other words, each cell represents a test for
 # whether a given group-to-group connection probability is the same on the left and the
 # right sides. "X" denotes a significant p-value after Bonferroni-Holm correction,
-# with $\alpha=0.05$. "B" indicates that a test was not run since the estimated probability
+# with $\alpha=0.05$. "B" indicates that a test was not run since the estimated
+# probability
 # was zero in that cell on both the left and right. "L" indicates this was the case on
 # the left only, and "R" that it was the case on the right only. These individual
 # p-values were combined using Fisher's method, resulting in an overall p-value (for the
 # null hypothesis that the two group connection probability matrices are the same after
 # adjustment by a density-normalizing constant, $c$) of
-# {glue:text}`corrected-pvalue:0.2e`.
+# {glue:text}`sbm_unmatched_test-corrected_pvalue:0.2e`.
 # ```
 #%% [markdown]
 # ## End

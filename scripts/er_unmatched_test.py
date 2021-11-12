@@ -164,11 +164,12 @@ glue("pvalue", pvalue)
 # Comparison of estimated densities for the left and right hemisphere networks. The
 # estimated density (probability of any edge across the entire network), $\hat{p}$, for
 # the left
-# hemisphere is {glue:text}`er_unmatched_test-density_left:0.3f`, while for the right it is
-# {glue:text}`er_unmatched_test-density_right:0.3f`. Black lines denote 
+# hemisphere is {glue:text}`er_unmatched_test-density_left:0.3f`, while for the right
+# it is
+# {glue:text}`er_unmatched_test-density_right:0.3f`. Black lines denote
 # {glue:text}`er_unmatched_test-coverage_percentage`**%**
 # confidence intervals for this estimated parameter $\hat{p}$. The p-value for testing
-# the null hypothesis that these densities are the same is 
+# the null hypothesis that these densities are the same is
 # {glue:text}`er_unmatched_test-pvalue:0.3g` (two
 # sided Fisher's exact test).
 # ```
