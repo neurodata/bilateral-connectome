@@ -5,6 +5,7 @@ parts:
     chapters:
     - file: introduction
     - file: outline
+    - file: unmatched_vs_matched
     - file: define_data
   - caption: Unmatched Tests
     chapters:
