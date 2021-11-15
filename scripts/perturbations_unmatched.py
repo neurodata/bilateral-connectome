@@ -1,64 +1,71 @@
 #%% [markdown]
 # ## Preliminaries
 #%%
+from pkg.utils import set_warnings
 
-from os import uname
+set_warnings()
+
 import time
-from giskard.plot.old_matrixplot import remove_shared_ax
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from giskard.utils import get_random_seed
-from graspologic.utils import binarize
+from myst_nb import glue as default_glue
 from pkg.data import (
-    load_maggot_graph,
     load_network_palette,
     load_node_palette,
-    select_nice_nodes,
+    load_unmatched,
 )
 from pkg.io import savefig
 from pkg.perturb import add_edges, remove_edges, shuffle_edges
 from pkg.plot import set_theme
-from pkg.stats import erdos_renyi_test, stochastic_block_test
-from seaborn.utils import relative_luminance
+from pkg.stats import erdos_renyi_test, rdpg_test, stochastic_block_test
+from pkg.utils import get_seeds
+
+DISPLAY_FIGS = False
+
+FILENAME = "perturbations_unmatched"
 
 
-def stashfig(name, **kwargs):
-    foldername = "main_loop"
-    savefig(name, foldername=foldername, **kwargs)
+def gluefig(name, fig, **kwargs):
+    savefig(name, foldername=FILENAME, **kwargs)
+
+    glue(name, fig, prefix="fig")
+
+    if not DISPLAY_FIGS:
+        plt.close()
 
 
-# %% [markdown]
-# ## Load and process data
-#%%
+def glue(name, var, prefix=None):
+    savename = f"{FILENAME}-{name}"
+    if prefix is not None:
+        savename = prefix + ":" + savename
+    default_glue(savename, var, display=False)
+
 
 t0 = time.time()
 set_theme()
+rng = np.random.default_rng(8888)
 
 network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
-
-#%%
+neutral_color = sns.color_palette("Set2")[2]
 
 GROUP_KEY = "simple_group"
 
-mg = load_maggot_graph()
-mg = select_nice_nodes(mg)
-left_mg, right_mg = mg.bisect(lcc=True)
-left_nodes = left_mg.nodes
-right_nodes = right_mg.nodes
-
-left_adj = left_mg.sum.adj
-right_adj = right_mg.sum.adj
-left_adj = binarize(left_adj)
-right_adj = binarize(right_adj)
+left_adj, left_nodes = load_unmatched("left")
+right_adj, right_nodes = load_unmatched("right")
 
 left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 
 
+left_nodes["inds"] = range(len(left_nodes))
+right_nodes["inds"] = range(len(right_nodes))
+
+seeds = get_seeds(left_nodes, right_nodes)
 #%%
 random_state = np.random.default_rng(8888)
 adj = right_adj
@@ -66,12 +73,17 @@ labels1 = right_labels
 labels2 = right_labels
 n_sims = 1
 effect_sizes = [0, 20, 40, 60, 80]
+seeds = (seeds[1], seeds[1])
+
+n_components = 8
+
 rows = []
 
-tests = {"ER": erdos_renyi_test, "SBM": stochastic_block_test}
+tests = {"ER": erdos_renyi_test, "SBM": stochastic_block_test, "RDPG": rdpg_test}
 test_options = {
-    "ER": [{"method": "agresti-caffo"}],
-    "SBM": [{"labels1": labels1, "labels2": labels2, "method": "agresti-caffo"}],
+    "ER": [{}],
+    "SBM": [{"labels1": labels1, "labels2": labels2}],
+    "RDPG": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": False}],
 }
 perturbations = {
     "Remove edges (global)": remove_edges,
@@ -103,4 +115,6 @@ for perturbation_name, perturb in perturbations.items():
 results = pd.DataFrame(rows)
 results
 
-#%%
+# %%
+fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="test", ax=ax)

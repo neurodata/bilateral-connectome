@@ -1,7 +1,6 @@
 from collections import namedtuple
 
 import numpy as np
-from numpy.lib.utils import source
 import pandas as pd
 from graspologic.utils import remove_loops
 from scipy.stats import combine_pvalues
@@ -71,9 +70,7 @@ def _make_adjacency_dataframe(data, index):
     return df
 
 
-def stochastic_block_test(
-    A1, A2, labels1, labels2, null_odds=1.0, method="fisher_exact"
-):
+def stochastic_block_test(A1, A2, labels1, labels2, null_odds=1.0, method="fisher"):
 
     B1, n_observed1, n_possible1, group_counts1 = fit_sbm(A1, labels1)
     B2, n_observed2, n_possible2, group_counts2 = fit_sbm(A2, labels2)

@@ -32,8 +32,6 @@ from pkg.plot import set_theme
 from pkg.stats import stochastic_block_test
 from seaborn.utils import relative_luminance
 
-DISPLAY_FIGS = False
-
 
 DISPLAY_FIGS = False
 
@@ -55,10 +53,6 @@ def glue(name, var, prefix=None):
         savename = prefix + ":" + savename
     default_glue(savename, var, display=False)
 
-
-# %% [markdown]
-# ### Load and process data
-#%%
 
 t0 = time.time()
 set_theme()
@@ -135,7 +129,7 @@ right_labels = right_nodes[GROUP_KEY].values
 # were described in the paper which published the data. Here, we do not explore
 # estimating these assignments, though many techniques exist for doing so. We note that
 # the results presented here could change depending on the group assignments which are
-# used. We also do not consider tests which would compare the assignment vectors, 
+# used. We also do not consider tests which would compare the assignment vectors,
 # $\tau$.
 
 #%% [markdown]
