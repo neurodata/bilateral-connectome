@@ -4,6 +4,7 @@ parts:
   - caption: Preliminaries
     chapters:
     - file: introduction
+    - file: goals
     - file: outline
     - file: unmatched_vs_matched
     - file: define_data
