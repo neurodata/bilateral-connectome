@@ -266,47 +266,23 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preliminaries">
-   Preliminaries
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#load-and-process-data">
-     Load and process data
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-stochastic-block-model-2-sample-test">
-   The stochastic block model 2-sample test
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#run-the-test">
-     Run the test
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-results">
-     Plot the results
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#look-at-the-community-connections-that-were-significantly-different">
-   Look at the community connections that were significantly different
+  <a class="reference internal nav-link" href="#the-stochastic-block-model-sbm">
+   The stochastic block model (SBM)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-about-the-difference-in-density">
-   What about the difference in density?
+  <a class="reference internal nav-link" href="#testing-under-the-sbm-model">
+   Testing under the SBM model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adjusting-for-a-difference-in-density">
+   Adjusting for a difference in density
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
-     Resample the right network to make the density the same, rerun the test
+    <a class="reference internal nav-link" href="#correcting-by-subsampling-edges-for-one-network">
+     Correcting by subsampling edges for one network
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -317,13 +293,8 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#an-alternative-approach-to-correcting-for-differences-in-density">
-   An alternative approach to correcting for differences in density
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#end">
-   End
+  <a class="reference internal nav-link" href="#an-analytic-approach-to-correcting-for-differences-in-density">
+   An analytic approach to correcting for differences in density
   </a>
  </li>
 </ul>
@@ -339,15 +310,13 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="a-group-based-test">
 <h1>A group-based test<a class="headerlink" href="#a-group-based-test" title="Permalink to this headline">¶</a></h1>
-<p>Here we test bilateral symmetry by making an assumption that the left and the right
+<p>Next, we test bilateral symmetry by making an assumption that the left and the right
 hemispheres both come from a stochastic block model, which models the probability
 of any potential edge as a function of the groups that the source and target nodes
 are part of.</p>
 <p>For now, we use some broad cell type categorizations for each neuron to determine its
 group. Alternatively, there are many methods for <em>estimating</em> these assignments to
 groups for each neuron, which we do not explore here.</p>
-<div class="section" id="preliminaries">
-<h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
@@ -371,8 +340,6 @@ groups for each neuron, which we do not explore here.</p>
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">stochastic_block_test</span>
 <span class="kn">from</span> <span class="nn">seaborn.utils</span> <span class="kn">import</span> <span class="n">relative_luminance</span>
 
-<span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
-
 
 <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -393,15 +360,9 @@ groups for each neuron, which we do not explore here.</p>
     <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">savename</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">savename</span>
     <span class="n">default_glue</span><span class="p">(</span><span class="n">savename</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="load-and-process-data">
-<h3>Load and process data<a class="headerlink" href="#load-and-process-data" title="Permalink to this headline">¶</a></h3>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">set_theme</span><span class="p">()</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
 
@@ -420,11 +381,10 @@ groups for each neuron, which we do not explore here.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="the-stochastic-block-model-2-sample-test">
-<h2>The stochastic block model 2-sample test<a class="headerlink" href="#the-stochastic-block-model-2-sample-test" title="Permalink to this headline">¶</a></h2>
-<p>A <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_block_model">stochastic block model</a> (SBM)
+<div class="section" id="the-stochastic-block-model-sbm">
+<h2>The stochastic block model (SBM)<a class="headerlink" href="#the-stochastic-block-model-sbm" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_block_model"><strong>stochastic block model (SBM)</strong>
+</a>
 is a popular statistical model of networks. Put simply, this model treats the
 probability of an edge occuring between node <span class="math notranslate nohighlight">\(i\)</span> and node <span class="math notranslate nohighlight">\(j\)</span> as purely a function of
 the <em>communities</em> or <em>groups</em> that node <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> belong to. Therefore, this model
@@ -451,50 +411,68 @@ Note that here we are assuming <span class="math notranslate nohighlight">\(\tau
 formuations of the SBM allow these assignments to themselves come from a categorical
 distribution.</p>
 </div>
+</div>
+<div class="section" id="testing-under-the-sbm-model">
+<h2>Testing under the SBM model<a class="headerlink" href="#testing-under-the-sbm-model" title="Permalink to this headline">¶</a></h2>
 <p>Assuming this model, there are a few ways that one could test for differences between
 two networks. In our case, we are interested in comparing the group-to-group
 connection probability matrices, <span class="math notranslate nohighlight">\(B\)</span>,  for the left and right hemispheres.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
 <p>We are interested in testing:</p>
-<div class="math notranslate nohighlight">
-\[ H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right} \]</div>
+<div class="math notranslate nohighlight" id="equation-sbm-unmatched-null">
+<span class="eqno">(1)<a class="headerlink" href="#equation-sbm-unmatched-null" title="Permalink to this equation">¶</a></span>\[H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right}\]</div>
 </div>
 <p>Rather than having to compare one proportion as in <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we are
 now interedted in comparing all <span class="math notranslate nohighlight">\(K^2\)</span> probabilities between the SBM models for the
-left and right hemispheres. Thus, we will use
+left and right hemispheres.</p>
+<div class="admonition-math admonition">
+<p class="admonition-title">Math</p>
+<p>The hypothesis test above can be decomposed into <span class="math notranslate nohighlight">\(K^2\)</span> indpendent hypotheses.
+<span class="math notranslate nohighlight">\(B_{left}\)</span>
+and <span class="math notranslate nohighlight">\(B_{right}\)</span> are both <span class="math notranslate nohighlight">\(K \times K\)</span> matrices, where each element <span class="math notranslate nohighlight">\(b_{kl}\)</span> represents
+the probability of a connection from a neuron in group <span class="math notranslate nohighlight">\(k\)</span> to one in group <span class="math notranslate nohighlight">\(l\)</span>. We
+also know that group <span class="math notranslate nohighlight">\(k\)</span> for the left network corresponds with group <span class="math notranslate nohighlight">\(k\)</span> for the
+right. In other words, the <em>groups</em> are matched. Thus, we are interested in testing,
+for <span class="math notranslate nohighlight">\(k, l\)</span> both running from <span class="math notranslate nohighlight">\(1...K\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ H_0^{kl}: b_{left, kl} = b_{right, kl},
+\quad H_A^{kl}: b_{left, kl} \neq b_{right, kl}\]</div>
+</div>
+<p>Thus, we will use
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test">Fisher’s exact test</a> to
 compare each set of probabilities. To combine these multiple hypotheses into one, we
 will use <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_method">Fisher’s method</a> for
 combining p-values to give us a p-value for the overall test. We also can look at
 the p-values for each of the individual tests after correction for multiple
 comparisons by the
-<a class="reference external" href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Bonferroni-Holm method
-</a>.</p>
+<a class="reference external" href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Bonferroni-Holm method.
+</a></p>
 <p>For the current investigation, we focus on the case where <span class="math notranslate nohighlight">\(\tau\)</span> is known ahead of
-time, sometimes called the <em>A priori SBM</em>. We use some broad cell type labels which
-were described in the paper which published the data. Here, we do not explore
+time, sometimes called the <strong>A priori SBM</strong>. We use some broad cell type labels which
+were described in the paper which published the data to
+define the group assignments <span class="math notranslate nohighlight">\(\tau\)</span>. Here, we do not explore
 estimating these assignments, though many techniques exist for doing so. We note that
 the results presented here could change depending on the group assignments which are
 used. We also do not consider tests which would compare the assignment vectors,
-<span class="math notranslate nohighlight">\(\tau\)</span>.</p>
-<div class="section" id="run-the-test">
-<h3>Run the test<a class="headerlink" href="#run-the-test" title="Permalink to this headline">¶</a></h3>
+<span class="math notranslate nohighlight">\(\tau\)</span>. <a class="reference internal" href="#fig-sbm-unmatched-test-group-counts"><span class="std std-numref">Figure 4</span></a> shows the
+number of neurons in each group in the group assignments <span class="math notranslate nohighlight">\(\tau\)</span> for the left and
+the right hemispheres. The number of neurons in each group is quite similar between
+the two hemispheres.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
     <span class="n">left_adj</span><span class="p">,</span> <span class="n">right_adj</span><span class="p">,</span> <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span> <span class="n">labels2</span><span class="o">=</span><span class="n">right_labels</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span>
 <span class="p">)</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;uncorrected_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
+<span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_tests&quot;</span><span class="p">,</span> <span class="n">n_tests</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 </div>
 </div>
-</div>
-<div class="section" id="plot-the-results">
-<h3>Plot the results<a class="headerlink" href="#plot-the-results" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -524,7 +502,7 @@ used. We also do not consider tests which would compare the assignment vectors,
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-group-counts">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_9_0.png" src="_images/sbm_unmatched_test_9_0.png" />
+<img alt="_images/sbm_unmatched_test_6_0.png" src="_images/sbm_unmatched_test_6_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
 the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group-counts" title="Permalink to this image">¶</a></p>
@@ -691,9 +669,29 @@ the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group
 <div class="cell_output docutils container">
 </div>
 </div>
+<p>Next, we run the test for bilateral symmetry under the stochastic block model.
+<a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5</span></a> shows both the
+estimated group-to-group probability matrices, <span class="math notranslate nohighlight">\(\hat{B}_{left}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}_{right}\)</span>,
+as well as the p-values from each test comparing each element of these matrices. From
+a visual comparison of <span class="math notranslate nohighlight">\(\hat{B}_{left}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}_{right}\)</span>
+<a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">(Figure 5 A)</span></a>, we see that
+the
+group-to-group connection probabilities are qualitatively similar. Note also that some
+group-to-group connection probabilities are zero, making it non-sensical to do a
+comparision of binomial proportions. We highlight these elements in the <span class="math notranslate nohighlight">\(\hat{B}\)</span>
+matrices with an explicit “0”, noting that we did not run the corresponding test in
+these cases.</p>
+<p>In <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5 B</span></a>, we see the
+p-values from all <span class="pasted-text">283</span> that were run. After
+Bonferroni-Holm correction, 5 tests yield p-values less than 0.05, indicating that
+we reject the null hypothesis that those elements of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices are the
+same between the two hemispheres. We also combine all p-values using Fisher’s method,
+which yields an overall p-value for the entire null hypothesis in
+Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</a> of
+<span class="pasted-text">5.47e-05</span>.</p>
 <div class="figure align-default" id="fig-sbm-unmatched-test-sbm-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_11_0.png" src="_images/sbm_unmatched_test_11_0.png" />
+<img alt="_images/sbm_unmatched_test_8_0.png" src="_images/sbm_unmatched_test_8_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities for the left
@@ -712,6 +710,30 @@ p-values were combined using Fisher’s method, resulting in an overall p-value 
 null hypothesis that the two group connection probability matrices are the same) of
 <span class="pasted-text">5.47e-05</span>.</span><a class="headerlink" href="#fig-sbm-unmatched-test-sbm-uncorrected" title="Permalink to this image">¶</a></p>
 </div>
+</div>
+<div class="section" id="adjusting-for-a-difference-in-density">
+<h2>Adjusting for a difference in density<a class="headerlink" href="#adjusting-for-a-difference-in-density" title="Permalink to this headline">¶</a></h2>
+<p>From <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5</span></a>, we see that
+we have sufficient evidence to reject
+the null hypothesis of bilateral symmetry under this version of the SBM. However,
+we already saw in <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a> that the overall
+densities between the two networks are different. Could it be that this rejection of
+the null hypothesis under the SBM can be explained purely by this difference in
+density? In other words, are the group-to-group connection probabilities on the right
+simply a “scaled up” version of those on the right, where each probability is scaled
+by the same amount?</p>
+<p>In <a class="reference internal" href="#fig-sbm-unmatched-test-probs-uncorrected"><span class="std std-numref">Figure 6</span></a>,
+we plot the estimated
+probabilities on the left and the right hemispheres (i.e. each element of <span class="math notranslate nohighlight">\(\hat{B}\)</span>),
+as
+well as the difference between them. While subtle, we note that there is a slight
+tendency for the left hemisphere estimated probability to be lower than the
+corresponding one on the right. Specifically, we can also look at the group-to-group
+connection probabilities which were significantly different in
+<a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5</span></a> - these are plotted
+in <a class="reference internal" href="#fig-sbm-unmatched-test-significant-p-comparison"><span class="std std-numref">Figure 7</span></a>. Note
+that in every case, the estimated probability on the right is higher with that on the
+right.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_estimated_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
@@ -819,7 +841,7 @@ null hypothesis that the two group connection probability matrices are the same)
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-probs-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_13_0.png" src="_images/sbm_unmatched_test_13_0.png" />
+<img alt="_images/sbm_unmatched_test_11_0.png" src="_images/sbm_unmatched_test_11_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities (<span class="math notranslate nohighlight">\(\hat{p}\)</span>), sorted by
@@ -830,10 +852,6 @@ differences between corresponding group-to-group connection probabilities
 being slightly smaller than the corresponding probability on the right is more
 apparent here, as there are more negative than positive values.</span><a class="headerlink" href="#fig-sbm-unmatched-test-probs-uncorrected" title="Permalink to this image">¶</a></p>
 </div>
-</div>
-</div>
-<div class="section" id="look-at-the-community-connections-that-were-significantly-different">
-<h2>Look at the community connections that were significantly different<a class="headerlink" href="#look-at-the-community-connections-that-were-significantly-different" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_significant_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
@@ -906,43 +924,42 @@ apparent here, as there are more negative than positive values.</span><a class="
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-significant-p-comparison">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_16_0.png" src="_images/sbm_unmatched_test_16_0.png" />
+<img alt="_images/sbm_unmatched_test_13_0.png" src="_images/sbm_unmatched_test_13_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
 which were significantly different in
 <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5</span></a>.
 In each case, the connection probability on the right hemisphere is higher.</span><a class="headerlink" href="#fig-sbm-unmatched-test-significant-p-comparison" title="Permalink to this image">¶</a></p>
 </div>
-</div>
-<div class="section" id="what-about-the-difference-in-density">
-<h2>What about the difference in density?<a class="headerlink" href="#what-about-the-difference-in-density" title="Permalink to this headline">¶</a></h2>
-<p>From the series of figures above, we see that we have sufficient evidence to reject
-the null hypothesis of bilateral symmetry under this version of the stochastic
-block model. However, we already saw in <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a> that the overall
-densities between the two networks are different. We also see in the above that, in
-line with that observation, the estimated group-to-group connection probabilities in
-the figures above tend to be higher for the right hemisphere than the corresponding
-connection probability on
-the left hemisphere.</p>
-<p>This leads to another hypothesis - perhaps the connection probabilities on the left
-hemisphere are simply a scaled-down version of those on the right.</p>
+<p>These observations are consistent with the idea that perhaps the probabilities
+on the right are a scaled up version of those on the right, for some global scaling.
+We can frame this question as a new null hypothesis:</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
-<p>We can write this as a new null hypothesis:</p>
-<div class="math notranslate nohighlight">
-\[ H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}\]</div>
-<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(\frac{p_{left}}{p_{right}}\)</span>.</p>
+<p>With variables defined as in Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</a>, we can write our new
+null hypothesis as:</p>
+<div class="math notranslate nohighlight" id="equation-sbm-unmatched-null-adjusted">
+<span class="eqno">(2)<a class="headerlink" href="#equation-sbm-unmatched-null-adjusted" title="Permalink to this equation">¶</a></span>\[H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}\]</div>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(c = \frac{p_{left}}{p_{right}}\)</span>.</p>
 </div>
-<div class="section" id="resample-the-right-network-to-make-the-density-the-same-rerun-the-test">
-<h3>Resample the right network to make the density the same, rerun the test<a class="headerlink" href="#resample-the-right-network-to-make-the-density-the-same-rerun-the-test" title="Permalink to this headline">¶</a></h3>
-<p>Below, we’ll see what happens when we try to make the network densities the same by
-just randomly removing edges (uniformly across the entire network), and
-then re-run the test proceedure above. First, we calculate the number of edges
-required to set the network densities roughly the same. Then, we randomly remove that
-number of edges from the right hemisphere network, and rerun the test. We repeat this
-proceedure <span class="pasted-text">25</span> times, and look at the
-distribution of p-values
-that result.</p>
+<div class="section" id="correcting-by-subsampling-edges-for-one-network">
+<h3>Correcting by subsampling edges for one network<a class="headerlink" href="#correcting-by-subsampling-edges-for-one-network" title="Permalink to this headline">¶</a></h3>
+<p>One naive (though quite intuitive) approach to adjust our test for a difference in
+density is to simply make the densities of the two networks the same and then rerun
+our
+test. To do so, we calculated the number of edge removals (from the right hemisphere)
+required to set the network densities roughly the same. We then randomly removed
+that many edges from the right hemisphere network and
+then re-ran the SBM test proceedure above. We repeated this proceedure
+<span class="pasted-text">25</span> times, resulting in a p-value for each
+subsampling of the right network.</p>
+<p>The distribution of p-values from this process is
+shown in <a class="reference internal" href="#fig-sbm-unmatched-test-pvalues-corrected"><span class="std std-numref">Figure 8</span></a>. Whereas
+the p-value for the original null hypothesis was
+<span class="pasted-text">5.47e-05</span>, we see now that the p-values
+from our subsampled, density-adjusted test are around 0.8, indicating insufficient
+evidence to reject our density-adjusted null hypothesis of bilateral symmetry
+(Equation <a class="reference internal" href="#equation-sbm-unmatched-null-adjusted">(2)</a>).</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_edges_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
@@ -1010,7 +1027,7 @@ that result.</p>
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-pvalues-corrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_24_0.png" src="_images/sbm_unmatched_test_24_0.png" />
+<img alt="_images/sbm_unmatched_test_20_0.png" src="_images/sbm_unmatched_test_20_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Histogram of p-values after a correction for network density. For the observed
 networks
@@ -1035,10 +1052,14 @@ bilateral symmetry under the stochastic block model.</span><a class="headerlink"
 </div>
 </div>
 </div>
-<div class="section" id="an-alternative-approach-to-correcting-for-differences-in-density">
-<h2>An alternative approach to correcting for differences in density<a class="headerlink" href="#an-alternative-approach-to-correcting-for-differences-in-density" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="an-analytic-approach-to-correcting-for-differences-in-density">
+<h2>An analytic approach to correcting for differences in density<a class="headerlink" href="#an-analytic-approach-to-correcting-for-differences-in-density" title="Permalink to this headline">¶</a></h2>
 <p>Instead of randomly resetting the density of the right hemisphere network, we can
-actually correct each test to account for this difference. Fisher’s exact test (used
+actually modify the hypothesis we are testing for each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span>
+matrices to include this adjustment by some constant scale, <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<div class="admonition-math admonition">
+<p class="admonition-title">Math</p>
+<p>Fisher’s exact test (used
 above to compare each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices) tests the null hypothesis:</p>
 <div class="math notranslate nohighlight">
 \[H_0: p_{left} = p_{right}, \quad H_A: p_{left} \neq p_{right}\]</div>
@@ -1053,8 +1074,9 @@ divided by number of possible edges) then</p>
 <p>A test for the adjusted null hypothesis above is given by using
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution
 </a>
-and applying a proceedure much like that of the traditional Fisher’s exact test. More
-information about this test can be found in <a class="reference internal" href="nhypergeom_sims.html"><span class="doc std std-doc">An exact test for non-unity null odds ratios</span></a>.</p>
+and applying a proceedure much like that of the traditional Fisher’s exact test.</p>
+</div>
+<p>More information about this test can be found in <a class="reference internal" href="nhypergeom_sims.html"><span class="doc std std-doc">An exact test for non-unity null odds ratios</span></a>.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">null_odds</span> <span class="o">=</span> <span class="n">density_left</span> <span class="o">/</span> <span class="n">density_right</span>
@@ -1083,9 +1105,15 @@ information about this test can be found in <a class="reference internal" href="
 <div class="cell_output docutils container">
 </div>
 </div>
+<p><a class="reference internal" href="#fig-sbm-unmatched-test-sbm-corrected"><span class="std std-numref">Figure 9</span></a> shows the results
+of running the analytic version of the density-adjusted test based on Fisher’s
+noncentral hypergeometric distribution. Note that now only two group-to-group
+probability comparisons are significant after Bonferroni-Holm correction, and the
+overall p-value for this test of Equation <a class="reference internal" href="#equation-sbm-unmatched-null-adjusted">(2)</a> is
+<span class="pasted-text">0.86</span>.</p>
 <div class="figure align-default" id="fig-sbm-unmatched-test-sbm-corrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_28_0.png" src="_images/sbm_unmatched_test_28_0.png" />
+<img alt="_images/sbm_unmatched_test_24_0.png" src="_images/sbm_unmatched_test_24_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres after
 correcting for a difference in hemisphere density.
@@ -1107,21 +1135,17 @@ null hypothesis that the two group connection probability matrices are the same 
 adjustment by a density-normalizing constant, <span class="math notranslate nohighlight">\(c\)</span>) of
 <span class="pasted-text">0.86</span>.</span><a class="headerlink" href="#fig-sbm-unmatched-test-sbm-corrected" title="Permalink to this image">¶</a></p>
 </div>
-</div>
-<div class="section" id="end">
-<h2>End<a class="headerlink" href="#end" title="Permalink to this headline">¶</a></h2>
+<p>Taken together, these results suggest that for the unmatched networks, and using the
+known cell type labels, we reject the null hypothesis of bilateral symmetry under the
+SBM (Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</a>), but fail to reject the null hypothesis of
+bilateral symmetry under the SBM after a density adjustment (Equation
+<a class="reference internal" href="#equation-sbm-unmatched-null-adjusted">(2)</a>). Moreover, they highlight the insights that
+can be gained
+by considering multiple definitions of bilateral symmetry.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:03.542596
-Completed at 2021-11-12 12:29:23.605917
 </pre></div>
 </div>
 </div>

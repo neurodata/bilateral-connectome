@@ -266,40 +266,18 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-erdos-renyi-model">
-   The Erdos-Renyi model
+  <a class="reference internal nav-link" href="#the-erdos-renyi-er-model">
+   The Erdos-Renyi (ER) model
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preliminaries">
-   Preliminaries
+  <a class="reference internal nav-link" href="#testing-under-the-er-model">
+   Testing under the ER model
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-test-based-on-network-densities">
-   A test based on network densities
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#compute-the-density-and-other-parameters">
-     Compute the density and other parameters
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-densities">
-     Plot the densities
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#run-the-test-to-compare-proportions">
-     Run the test to compare proportions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#end">
-   End
+  <a class="reference internal nav-link" href="#reject-bilateral-symmetry-under-the-er-model">
+   Reject bilateral symmetry under the ER model
   </a>
  </li>
 </ul>
@@ -316,10 +294,12 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="a-density-based-test">
 <h1>A density-based test<a class="headerlink" href="#a-density-based-test" title="Permalink to this headline">¶</a></h1>
 <p>Here, we compare the two unmatched networks by treating each as an Erdos-Renyi network
-and simply comparing their estimated densities.</p>
-<div class="section" id="the-erdos-renyi-model">
-<h2>The Erdos-Renyi model<a class="headerlink" href="#the-erdos-renyi-model" title="Permalink to this headline">¶</a></h2>
-<p>The Erdos-Renyi (ER) model is one of the simplest network models. This model treats
+and simply compare their estimated densities.</p>
+<div class="section" id="the-erdos-renyi-er-model">
+<h2>The Erdos-Renyi (ER) model<a class="headerlink" href="#the-erdos-renyi-er-model" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model"><strong>Erdos-Renyi (ER) model</strong>
+</a>
+is one of the simplest network models. This model treats
 the probability of each potential edge in the network occuring to be the same. In
 other words, all edges between any two nodes are equally likely.</p>
 <div class="admonition-math admonition">
@@ -328,9 +308,16 @@ other words, all edges between any two nodes are equally likely.</p>
 from <span class="math notranslate nohighlight">\(1 ... n\)</span>, the probability of the edge <span class="math notranslate nohighlight">\((i, j)\)</span> occuring is:</p>
 <div class="math notranslate nohighlight">
 \[ P[A_{ij} = 1] = P_{ij} = p \]</div>
+<p>Each element of the adjacency matrix <span class="math notranslate nohighlight">\(A\)</span> is sampled independently according to a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distribution</a>:</p>
+<div class="math notranslate nohighlight">
+\[ A_{ij} \sim Bernoulli(p) \]</div>
 </div>
 <p>Thus, for this model, the only parameter of interest is the global connection
-probability, <span class="math notranslate nohighlight">\(p\)</span>. This is sometimes also referred to as the <em>network density</em>.</p>
+probability, <span class="math notranslate nohighlight">\(p\)</span>. This is sometimes also referred to as the <strong>network density</strong>.</p>
+</div>
+<div class="section" id="testing-under-the-er-model">
+<h2>Testing under the ER model<a class="headerlink" href="#testing-under-the-er-model" title="Permalink to this headline">¶</a></h2>
 <p>In order to compare two networks <span class="math notranslate nohighlight">\(A_{left}\)</span> and <span class="math notranslate nohighlight">\(A_{right}\)</span> under this model, we
 simply need to compute these network densities (<span class="math notranslate nohighlight">\(p_{left}\)</span> and <span class="math notranslate nohighlight">\(p_{right}\)</span>), and then
 run a statistical test to see if these densities are significantly different.</p>
@@ -338,7 +325,9 @@ run a statistical test to see if these densities are significantly different.</p
 <p class="admonition-title">Math</p>
 <p>Under this
 model, the total number of edges <span class="math notranslate nohighlight">\(m\)</span> comes from a <span class="math notranslate nohighlight">\(Binomial(n^2 - n, p)\)</span> distribution,
-where <span class="math notranslate nohighlight">\(n\)</span> is the number of nodes. If <span class="math notranslate nohighlight">\(m_{left}\)</span> is the number of edges on the left
+where <span class="math notranslate nohighlight">\(n\)</span> is the number of nodes. This is because the number of edges is the sum of
+independent Bernoulli trials with the same probability. If <span class="math notranslate nohighlight">\(m_{left}\)</span> is the number of
+edges on the left
 hemisphere, and <span class="math notranslate nohighlight">\(m_{right}\)</span> is the number of edges on the right, then we have:</p>
 <div class="math notranslate nohighlight">
 \[m_{left} \sim Binomial(n_{left}^2 - n_{left}, p_{left})\]</div>
@@ -350,12 +339,9 @@ hemisphere, and <span class="math notranslate nohighlight">\(m_{right}\)</span> 
 <div class="math notranslate nohighlight">
 \[H_0: p_{left} = p_{right}, \quad H_a: p_{left} \neq p_{right}\]</div>
 <p>Fortunately, the problem of testing for equal proportions is well studied.
-In our case, we’ll use Fisher’s Exact test to run this test for the null and
+In our case, we will use Fisher’s Exact test to run this test for the null and
 alternative hypotheses above.</p>
 </div>
-</div>
-<div class="section" id="preliminaries">
-<h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
@@ -409,17 +395,15 @@ alternative hypotheses above.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="a-test-based-on-network-densities">
-<h2>A test based on network densities<a class="headerlink" href="#a-test-based-on-network-densities" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="compute-the-density-and-other-parameters">
-<h3>Compute the density and other parameters<a class="headerlink" href="#compute-the-density-and-other-parameters" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_nodes_left</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">n_nodes_right</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">n_possible_left</span> <span class="o">=</span> <span class="n">n_nodes_left</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">n_nodes_left</span>
 <span class="n">n_possible_right</span> <span class="o">=</span> <span class="n">n_nodes_right</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">n_nodes_right</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_possible_left&quot;</span><span class="p">,</span> <span class="n">n_possible_left</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_possible_right&quot;</span><span class="p">,</span> <span class="n">n_possible_right</span><span class="p">)</span>
+
 <span class="n">n_edges_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
 <span class="n">n_edges_right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
 <span class="n">density_left</span> <span class="o">=</span> <span class="n">n_edges_left</span> <span class="o">/</span> <span class="n">n_possible_left</span>
@@ -436,9 +420,6 @@ alternative hypotheses above.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
-</div>
-<div class="section" id="plot-the-densities">
-<h3>Plot the densities<a class="headerlink" href="#plot-the-densities" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -474,9 +455,6 @@ alternative hypotheses above.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
-</div>
-<div class="section" id="run-the-test-to-compare-proportions">
-<h3>Run the test to compare proportions<a class="headerlink" href="#run-the-test-to-compare-proportions" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">erdos_renyi_test</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">right_adj</span><span class="p">)</span>
@@ -487,37 +465,60 @@ alternative hypotheses above.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
+</div>
+<div class="section" id="reject-bilateral-symmetry-under-the-er-model">
+<h2>Reject bilateral symmetry under the ER model<a class="headerlink" href="#reject-bilateral-symmetry-under-the-er-model" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-default" id="fig-er-unmatched-test-er-density">
 <div class="cell_output docutils container">
-<img alt="_images/er_unmatched_test_8_1.png" src="_images/er_unmatched_test_8_1.png" />
+<img alt="_images/er_unmatched_test_5_1.png" src="_images/er_unmatched_test_5_1.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of estimated densities for the left and right hemisphere networks. The
 estimated density (probability of any edge across the entire network), <span class="math notranslate nohighlight">\(\hat{p}\)</span>, for
 the left
-hemisphere is <span class="pasted-text">0.016</span>, while for the right it is
-<span class="pasted-text">0.018</span>. Black lines denote
+hemisphere is ~<span class="pasted-text">0.016</span>, while for the right
+it is
+~<span class="pasted-text">0.018</span>. Black lines denote
 <span class="pasted-text">99.0</span><strong>%</strong>
 confidence intervals for this estimated parameter <span class="math notranslate nohighlight">\(\hat{p}\)</span>. The p-value for testing
 the null hypothesis that these densities are the same is
 <span class="pasted-text">3.08e-23</span> (two
 sided Fisher’s exact test).</span><a class="headerlink" href="#fig-er-unmatched-test-er-density" title="Permalink to this image">¶</a></p>
 </div>
-</div>
-</div>
-<div class="section" id="end">
-<h2>End<a class="headerlink" href="#end" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#fig-er-unmatched-test-er-density"><span class="std std-numref">Figure 3</span></a> shows the comparison of
+the network densities between the left and right hemisphere induced subgraphs. We see
+that the density on the left is ~<span class="pasted-text">0.016</span>, and
+on the right it is ~<span class="pasted-text">0.018</span>. To determine
+whether this is a difference likely to be observed by chance under the ER model,
+we ran a two-sided Fisher’s exact test, which tests whether the success probabilities
+between two independent binomials are significantly different. This test yields a
+p-value of <span class="pasted-text">3.08e-23</span>, suggesting that we have strong
+evidence to reject this version of our hypotheis of bilateral symmetry. We note that
+while the difference between estimated densities is not massive, this low p-value
+results from the large sample size for this comparison. We note that there are
+<span class="pasted-text">2,203,740</span> and
+<span class="pasted-text">2,200,772</span> potential edges on the left and
+right,
+respectively, making the sample size for this comparison quite large.</p>
+<p>To our knowledge, when neuroscientists have considered the question of bilateral
+symmetry, they have not meant such a simple comparison of proportions. In many ways,
+the ER model is too simple to be an interesting description of connectome structure.
+However, we note that <em>even the simplest network model</em> yields a significant
+difference between brain hemispheres for this organism. It is unclear whether this
+difference in densities is biological (e.g. a result of slightly differing rates of
+development for this individual), an artifact of how the data was collected (e.g.
+technological limitations causing slightly lower reconstruction rates on the left
+hemisphere), or something else entirely. Still, the ER test results also provide
+important considerations for other tests. Almost any network statistic (e.g.
+clustering coefficient, number of triangles, etc), as well as many of the model-based
+parameters we will consider in this paper, are strongly related to the network
+density. Thus, if the densities are different, it is likely that tests based on any
+of these other test statistics will also reject the null hypothesis. Thus, we will
+need ways of telling whether an observed difference for these other tests could be
+explained by this difference in density alone.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:01.559819
-Completed at 2021-11-11 11:45:34.108878
 </pre></div>
 </div>
 </div>
