@@ -1,6 +1,8 @@
 # Outline 
 
 # Preliminaries
+- In [](unmatched_vs_matched.ipynb) we briefly explain the difference between a matched
+  and an unmatched pair of networks.
 - In [](define_data.ipynb) we explain what data we'll use for our comparisons. 
 
 # Unmatched Tests

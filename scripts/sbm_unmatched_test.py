@@ -686,8 +686,6 @@ for i in range(n_resamples):
 
 resample_results = pd.DataFrame(rows)
 
-#%% [markdown]
-# ### Plot the p-values for the density-corrected tests
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 sns.histplot(data=resample_results, x="pvalue", ax=ax)
@@ -726,7 +724,7 @@ gluefig("pvalues_corrected", fig)
 # ```
 
 #%% [markdown]
-# ## An analytic approach to correcting for differences in density
+# ### An analytic approach to correcting for differences in density
 # Instead of randomly resetting the density of the right hemisphere network, we can
 # actually modify the hypothesis we are testing for each element of the $\hat{B}$
 # matrices to include this adjustment by some constant scale, $c$.
