@@ -318,7 +318,8 @@ bilateral symmetry
 for a weighted network, and even for the unweighted case, one could consider varying
 thresholds of the network based on varying edge weights (which have often been
 employeed in connectomics studies). For now, we focus on the unweighted case purely
-for simplicity and the availability of more two-sample tests for unweighted networks,
+for simplicity and the availability of more two-sample tests for unweighted
+networks,
 though the weighted case or choice of threshold are also of great interest.</p></li>
 <li><p><strong>Directed</strong>: we allow for a distinction between edges which go from neuron <span class="math notranslate nohighlight">\(i\)</span> to
 neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to from <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
@@ -343,17 +344,11 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using data from </span><span class="si">{</span><span class="n">DATA_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral&quot;</span><span class="p">)</span>
+<span class="c1"># print(f&quot;Using data from {DATA_VERSION}&quot;)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral&quot;</span><span class="p">)</span>  <span class="c1"># TODO fix, make this less fragile</span>
 <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;bilateral-connectome/data/processed&quot;</span><span class="p">)</span>
 <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving data to </span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using data from 2021-05-24-v2
-Saving data to /Users/bpedigo/JHU_code/bilateral/bilateral-connectome/data/processed
+<span class="c1"># print(f&quot;Saving data to {output_dir}&quot;)</span>
 </pre></div>
 </div>
 </div>
@@ -451,7 +446,8 @@ described above for the unmatched networks.</p>
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>For the matched networks, we are left with <span class="pasted-text">1229</span> neurons in the left
+<p>For the matched networks, we are left with <span class="pasted-text">1229</span> neurons in the
+left
 hemisphere, and <span class="pasted-text">1229</span> neurons in the right hemisphere.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -481,14 +477,8 @@ hemisphere, and <span class="pasted-text">1229</span> neurons in the right hemis
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:31.060779
-Completed at 2021-11-05 13:16:40.420568
+<span class="c1"># print(f&quot;Script took {delta}&quot;)</span>
+<span class="c1"># print(f&quot;Completed at {datetime.datetime.now()}&quot;)</span>
 </pre></div>
 </div>
 </div>

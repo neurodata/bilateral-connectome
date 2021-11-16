@@ -421,7 +421,7 @@ connection probability matrices, <span class="math notranslate nohighlight">\(B\
 <p class="admonition-title">Math</p>
 <p>We are interested in testing:</p>
 <div class="math notranslate nohighlight" id="equation-sbm-unmatched-null">
-<span class="eqno">(1)<a class="headerlink" href="#equation-sbm-unmatched-null" title="Permalink to this equation">¶</a></span>\[H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right}\]</div>
+<span class="eqno">(1)<a class="headerlink" href="#equation-sbm-unmatched-null" title="Permalink to this equation">¶</a></span>\[H_0: B^{(L)} = B^{(R)}, \quad H_A: B^{(L)} \neq B^{(R)}\]</div>
 </div>
 <p>Rather than having to compare one proportion as in <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we are
 now interedted in comparing all <span class="math notranslate nohighlight">\(K^2\)</span> probabilities between the SBM models for the
@@ -429,15 +429,15 @@ left and right hemispheres.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
 <p>The hypothesis test above can be decomposed into <span class="math notranslate nohighlight">\(K^2\)</span> indpendent hypotheses.
-<span class="math notranslate nohighlight">\(B_{left}\)</span>
-and <span class="math notranslate nohighlight">\(B_{right}\)</span> are both <span class="math notranslate nohighlight">\(K \times K\)</span> matrices, where each element <span class="math notranslate nohighlight">\(b_{kl}\)</span> represents
+<span class="math notranslate nohighlight">\(B^{(L)}\)</span>
+and <span class="math notranslate nohighlight">\(B^{(R)}\)</span> are both <span class="math notranslate nohighlight">\(K \times K\)</span> matrices, where each element <span class="math notranslate nohighlight">\(b_{kl}\)</span> represents
 the probability of a connection from a neuron in group <span class="math notranslate nohighlight">\(k\)</span> to one in group <span class="math notranslate nohighlight">\(l\)</span>. We
 also know that group <span class="math notranslate nohighlight">\(k\)</span> for the left network corresponds with group <span class="math notranslate nohighlight">\(k\)</span> for the
 right. In other words, the <em>groups</em> are matched. Thus, we are interested in testing,
 for <span class="math notranslate nohighlight">\(k, l\)</span> both running from <span class="math notranslate nohighlight">\(1...K\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[ H_0^{kl}: b_{left, kl} = b_{right, kl},
-\quad H_A^{kl}: b_{left, kl} \neq b_{right, kl}\]</div>
+\[ H_0: b_{kl}^{(L)} = b_{kl}^{(R)},
+\quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}\]</div>
 </div>
 <p>Thus, we will use
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test">Fisher’s exact test</a> to
@@ -671,9 +671,9 @@ the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group
 </div>
 <p>Next, we run the test for bilateral symmetry under the stochastic block model.
 <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5</span></a> shows both the
-estimated group-to-group probability matrices, <span class="math notranslate nohighlight">\(\hat{B}_{left}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}_{right}\)</span>,
+estimated group-to-group probability matrices, <span class="math notranslate nohighlight">\(\hat{B}^{(L)}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}^{(R)}\)</span>,
 as well as the p-values from each test comparing each element of these matrices. From
-a visual comparison of <span class="math notranslate nohighlight">\(\hat{B}_{left}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}_{right}\)</span>
+a visual comparison of <span class="math notranslate nohighlight">\(\hat{B}^{(L)}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}^{(R)}\)</span>
 <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">(Figure 5 A)</span></a>, we see that
 the
 group-to-group connection probabilities are qualitatively similar. Note also that some
@@ -939,7 +939,7 @@ We can frame this question as a new null hypothesis:</p>
 <p>With variables defined as in Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</a>, we can write our new
 null hypothesis as:</p>
 <div class="math notranslate nohighlight" id="equation-sbm-unmatched-null-adjusted">
-<span class="eqno">(2)<a class="headerlink" href="#equation-sbm-unmatched-null-adjusted" title="Permalink to this equation">¶</a></span>\[H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-sbm-unmatched-null-adjusted" title="Permalink to this equation">¶</a></span>\[H_0: B^{(L)} = c B^{(R)}, \quad H_A: B^{(L)} \neq c B^{(R)}\]</div>
 <p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(c = \frac{p_{left}}{p_{right}}\)</span>.</p>
 </div>
 <div class="section" id="correcting-by-subsampling-edges-for-one-network">
@@ -1056,17 +1056,16 @@ matrices to include this adjustment by some constant scale, <span class="math no
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
 <p>Fisher’s exact test (used
-above to compare each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices) tests the null hypothesis:</p>
+above to compare each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices) tests the null hypotheses:</p>
 <div class="math notranslate nohighlight">
-\[H_0: p_{left} = p_{right}, \quad H_A: p_{left} \neq p_{right}\]</div>
+\[H_0: b_{kl}^{(L)} = b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}\]</div>
+<p>for each <span class="math notranslate nohighlight">\((k, l)\)</span> pair, where <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(l\)</span> are the indices of the source and target
+groups, respectively.</p>
 <p>Instead, we can use a test of:</p>
 <div class="math notranslate nohighlight">
-\[H_0: p_{left} = c p_{right}, \quad H_A: p_{left} \neq c p_{right}\]</div>
+\[H_0: b_{kl}^{(L)} = c b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq c b_{kl}^{(R)}\]</div>
 <p>In our case, <span class="math notranslate nohighlight">\(c\)</span> is a constant that we fit to the entire right hemisphere network to
-set it’s density equal to the left. If <span class="math notranslate nohighlight">\(\rho\)</span> is the network density (number of edges
-divided by number of possible edges) then</p>
-<div class="math notranslate nohighlight">
-\[c = \frac{\rho_{left}}{\rho_{right}}\]</div>
+set its density equal to the left, <span class="math notranslate nohighlight">\(c = \frac{p_{left}}{p_{right}}\)</span></p>
 <p>A test for the adjusted null hypothesis above is given by using
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution
 </a>
