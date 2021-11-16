@@ -286,16 +286,11 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plot-the-p-values-for-the-density-corrected-tests">
-     Plot the p-values for the density-corrected tests
+    <a class="reference internal nav-link" href="#an-analytic-approach-to-correcting-for-differences-in-density">
+     An analytic approach to correcting for differences in density
     </a>
    </li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#an-analytic-approach-to-correcting-for-differences-in-density">
-   An analytic approach to correcting for differences in density
-  </a>
  </li>
 </ul>
 
@@ -1005,9 +1000,6 @@ evidence to reject our density-adjusted null hypothesis of bilateral symmetry
 <div class="cell_output docutils container">
 </div>
 </div>
-</div>
-<div class="section" id="plot-the-p-values-for-the-density-corrected-tests">
-<h3>Plot the p-values for the density-corrected tests<a class="headerlink" href="#plot-the-p-values-for-the-density-corrected-tests" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -1027,7 +1019,7 @@ evidence to reject our density-adjusted null hypothesis of bilateral symmetry
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-pvalues-corrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_20_0.png" src="_images/sbm_unmatched_test_20_0.png" />
+<img alt="_images/sbm_unmatched_test_19_0.png" src="_images/sbm_unmatched_test_19_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Histogram of p-values after a correction for network density. For the observed
 networks
@@ -1051,9 +1043,8 @@ that with this density correction, we now failed to reject our null hypothesis o
 bilateral symmetry under the stochastic block model.</span><a class="headerlink" href="#fig-sbm-unmatched-test-pvalues-corrected" title="Permalink to this image">¶</a></p>
 </div>
 </div>
-</div>
 <div class="section" id="an-analytic-approach-to-correcting-for-differences-in-density">
-<h2>An analytic approach to correcting for differences in density<a class="headerlink" href="#an-analytic-approach-to-correcting-for-differences-in-density" title="Permalink to this headline">¶</a></h2>
+<h3>An analytic approach to correcting for differences in density<a class="headerlink" href="#an-analytic-approach-to-correcting-for-differences-in-density" title="Permalink to this headline">¶</a></h3>
 <p>Instead of randomly resetting the density of the right hemisphere network, we can
 actually modify the hypothesis we are testing for each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span>
 matrices to include this adjustment by some constant scale, <span class="math notranslate nohighlight">\(c\)</span>.</p>
@@ -1113,7 +1104,7 @@ overall p-value for this test of Equation <a class="reference internal" href="#e
 <span class="pasted-text">0.86</span>.</p>
 <div class="figure align-default" id="fig-sbm-unmatched-test-sbm-corrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_24_0.png" src="_images/sbm_unmatched_test_24_0.png" />
+<img alt="_images/sbm_unmatched_test_23_0.png" src="_images/sbm_unmatched_test_23_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres after
 correcting for a difference in hemisphere density.
@@ -1147,6 +1138,7 @@ by considering multiple definitions of bilateral symmetry.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>
