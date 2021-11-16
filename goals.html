@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Outline &#8212; Bilateral Connectome</title>
+    <title>Goals &#8212; Bilateral Connectome</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -54,8 +54,8 @@
     <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Unmatched vs. matched networks" href="unmatched_vs_matched.html" />
-    <link rel="prev" title="Goals" href="goals.html" />
+    <link rel="next" title="Outline" href="outline.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -110,13 +110,13 @@
    Introduction
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="goals.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    Goals
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="outline.html">
    Outline
   </a>
  </li>
@@ -222,7 +222,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/outline.md"><button type="button"
+        <a class="dropdown-buttons" href="_sources/goals.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -242,7 +242,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Foutline.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fgoals.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -263,39 +263,6 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
-            </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Outline
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preliminaries">
-   Preliminaries
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#unmatched-tests">
-   Unmatched Tests
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#matched-tests">
-   Matched Tests
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#appendix">
-   Appendix
-  </a>
- </li>
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -304,57 +271,21 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="outline">
-<h1>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="preliminaries">
-<h1>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="goals">
+<h1>Goals<a class="headerlink" href="#goals" title="Permalink to this headline">¶</a></h1>
+<p>The goals of this paper are to:</p>
 <ul class="simple">
-<li><p>In <a class="reference internal" href="unmatched_vs_matched.html"><span class="doc std std-doc">Unmatched vs. matched networks</span></a> we briefly explain the difference between a matched
-and an unmatched pair of networks.</p></li>
-<li><p>In <a class="reference internal" href="define_data.html"><span class="doc std std-doc">Defining the data</span></a> we explain what data we’ll use for our comparisons.</p></li>
-</ul>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="unmatched-tests">
-<h1>Unmatched Tests<a class="headerlink" href="#unmatched-tests" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>In <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we run a test for whether the Erdos-Renyi model
-fits between the two hemispheres are similar, finding that they are significantly different
-even under this simple model.</p></li>
-<li><p>In <a class="reference internal" href="sbm_unmatched_test.html"><span class="doc std std-doc">A group-based test</span></a>, we run a test for whether stochastic block model fits between the
-two hemispheres are similar. We also present a version for this test which accounts for
-differences in edge density between the hemispheres.</p></li>
-<li><p>In <a class="reference internal" href="rdpg_unmatched_test.html"><span class="doc std std-doc">An embedding-based test</span></a>, we run a test for whether random dot product graph model fits
-between the two hemispheres are similar. We find that in general, this test fails to
-reject the null hypothesis of bilateral symmetry, but that this analysis is highly
-sensitive to the choice of embedding dimension.s</p></li>
-<li><p>In (COMING SOON), we run each of these tests over perturbed versions of the left and
-right connectomes to analyze their power under a variety of alternatives to our null
-hypothesis of symmetry.</p></li>
-</ul>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="matched-tests">
-<h1>Matched Tests<a class="headerlink" href="#matched-tests" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>In <a class="reference internal" href="er_matched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we again test for bilateral symmetry under the
-Erdos-Renyi model, this time using the matched/known-node-correspondence data. Again,
-we find that the two hemispheres are significantly different under this model.</p></li>
-<li><p>In <a class="reference internal" href="sbm_matched_test.html"><span class="doc std std-doc">A group-based test</span></a>, we perform a test for stochastick block model fit
-symmetry using the matched data. Again, we find that the stochastic block model fits
-are significantly different, but when adjusting to correct for a difference in
-density, this difference disappears.</p></li>
-</ul>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="appendix">
-<h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="nhypergeom_sims.html"><span class="doc std std-doc">An exact test for non-unity null odds ratios</span></a> describes a modified Fisher’s exact test, supporting some of the work in
-<span class="xref myst"></span>.</p></li>
-<li><p>(COMING SOON) closely examines the effect of embedding dimension on the test presented in <a class="reference internal" href="rdpg_unmatched_test.html"><span class="doc std std-doc">An embedding-based test</span></a>, demonstrating that artificially low p-values can be the
-result of misaligned network embeddings caused by close eigenvalues. This highlights the
-importance of carefully examining the embeddings and spectra when comparing networks
-with this method, and also that overshooting the embedding dimension can be helpful to
-avoid this problem.</p></li>
+<li><p>Demonstrate how one can frame the question of bilateral symmetry (or other notions of
+comparing two networks) as a statistical hypothesis test</p></li>
+<li><p>Provide test procedures for each of the notions of bilateral symmetry above</p></li>
+<li><p>Explain the models and tests above in an intuitive way, even if the audience does not
+want to dive into the math</p></li>
+<li><p>Demonstrate how the results of these tests on real data are sensitive to these
+modeling assumptions</p></li>
+<li><p>Demonstrate that each of these tests is more or less sensitive to particular
+alternatives to the null hypothesis they are testing</p></li>
+<li><p>Provide the first statistical characterization of bilateral symmetry for a whole-brain
+connectome</p></li>
 </ul>
 </div>
 
@@ -383,17 +314,17 @@ avoid this problem.</p></li>
         
             <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="goals.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="introduction.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Goals</p>
+            <p class="prev-next-title">Introduction</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="unmatched_vs_matched.html" title="next page">
+    <a class='right-next' id="next-link" href="outline.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Unmatched vs. matched networks</p>
+        <p class="prev-next-title">Outline</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
