@@ -11,6 +11,7 @@ parts:
     - file: er_unmatched_test
     - file: sbm_test
     - file: rdpg_unmatched_test
+    - file: subgraph_unmatched_test
   - caption: Matched Tests
     chapters:
     - file: er_matched_test
