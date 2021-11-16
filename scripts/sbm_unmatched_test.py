@@ -1,6 +1,6 @@
 #%% [markdown]
 # # A group-based test
-# Here we test bilateral symmetry by making an assumption that the left and the right
+# Next, we test bilateral symmetry by making an assumption that the left and the right
 # hemispheres both come from a stochastic block model, which models the probability
 # of any potential edge as a function of the groups that the source and target nodes
 # are part of.
@@ -8,8 +8,7 @@
 # For now, we use some broad cell type categorizations for each neuron to determine its
 # group. Alternatively, there are many methods for *estimating* these assignments to
 # groups for each neuron, which we do not explore here.
-#%% [markdown]
-# ## Preliminaries
+
 #%%
 from pkg.utils import set_warnings
 
@@ -71,8 +70,9 @@ left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 
 #%% [markdown]
-# ## The stochastic block model 2-sample test
-# A [stochastic block model](https://en.wikipedia.org/wiki/Stochastic_block_model) (SBM)
+# ## The stochastic block model (SBM)
+# A [**stochastic block model (SBM)**
+# ](https://en.wikipedia.org/wiki/Stochastic_block_model)
 # is a popular statistical model of networks. Put simply, this model treats the
 # probability of an edge occuring between node $i$ and node $j$ as purely a function of
 # the *communities* or *groups* that node $i$ and $j$ belong to. Therefore, this model
@@ -100,50 +100,73 @@ right_labels = right_nodes[GROUP_KEY].values
 # formuations of the SBM allow these assignments to themselves come from a categorical
 # distribution.
 # ```
-#
+
+#%% [markdown]
+# ## Testing under the SBM model
 # Assuming this model, there are a few ways that one could test for differences between
 # two networks. In our case, we are interested in comparing the group-to-group
 # connection probability matrices, $B$,  for the left and right hemispheres.
 #
-# ```{admonition} Math
+# ````{admonition} Math
 # We are interested in testing:
 #
-# $$ H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right} $$
-#
+# ```{math}
+# :label: sbm_unmatched_null
+# H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right}
 # ```
+#
+# ````
 #
 # Rather than having to compare one proportion as in [](er_unmatched_test.ipynb), we are
 # now interedted in comparing all $K^2$ probabilities between the SBM models for the
-# left and right hemispheres. Thus, we will use
+# left and right hemispheres.
+#
+# ```{admonition} Math
+# The hypothesis test above can be decomposed into $K^2$ indpendent hypotheses.
+# $B_{left}$
+# and $B_{right}$ are both $K \times K$ matrices, where each element $b_{kl}$ represents
+# the probability of a connection from a neuron in group $k$ to one in group $l$. We
+# also know that group $k$ for the left network corresponds with group $k$ for the
+# right. In other words, the *groups* are matched. Thus, we are interested in testing,
+# for $k, l$ both running from $1...K$:
+#
+# $$ H_0^{kl}: b_{left, kl} = b_{right, kl},
+# \quad H_A^{kl}: b_{left, kl} \neq b_{right, kl}$$
+#
+# ```
+#
+# Thus, we will use
 # [Fisher's exact test](https://en.wikipedia.org/wiki/Fisher%27s_exact_test) to
 # compare each set of probabilities. To combine these multiple hypotheses into one, we
 # will use [Fisher's method](https://en.wikipedia.org/wiki/Fisher%27s_method) for
 # combining p-values to give us a p-value for the overall test. We also can look at
 # the p-values for each of the individual tests after correction for multiple
 # comparisons by the
-# [Bonferroni-Holm method
-# ](https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method).
-#
+# [Bonferroni-Holm method.
+# ](https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method)
+
+#%% [markdown]
 # For the current investigation, we focus on the case where $\tau$ is known ahead of
-# time, sometimes called the *A priori SBM*. We use some broad cell type labels which
-# were described in the paper which published the data. Here, we do not explore
+# time, sometimes called the **A priori SBM**. We use some broad cell type labels which
+# were described in the paper which published the data to
+# define the group assignments $\tau$. Here, we do not explore
 # estimating these assignments, though many techniques exist for doing so. We note that
 # the results presented here could change depending on the group assignments which are
 # used. We also do not consider tests which would compare the assignment vectors,
-# $\tau$.
+# $\tau$. {numref}`Figure {number} <fig:sbm_unmatched_test-group_counts>` shows the
+# number of neurons in each group in the group assignments $\tau$ for the left and
+# the right hemispheres. The number of neurons in each group is quite similar between
+# the two hemispheres.
 
-#%% [markdown]
-# ### Run the test
 #%%
 
 stat, pvalue, misc = stochastic_block_test(
     left_adj, right_adj, labels1=left_labels, labels2=right_labels, method="fisher"
 )
 glue("uncorrected_pvalue", pvalue)
+n_tests = misc["n_tests"]
+glue("n_tests", n_tests)
 
-
-#%% [markdown]
-# ### Plot the results
 #%%
 set_theme(font_scale=1)
 
@@ -333,9 +356,31 @@ gluefig("sbm_uncorrected", fig)
 pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 
 #%% [markdown]
+# Next, we run the test for bilateral symmetry under the stochastic block model.
+# {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>` shows both the
+# estimated group-to-group probability matrices, $\hat{B}_{left}$ and $\hat{B}_{right}$,
+# as well as the p-values from each test comparing each element of these matrices. From
+# a visual comparison of $\hat{B}_{left}$ and $\hat{B}_{right}$
+# {numref}`(Figure {number} A) <fig:sbm_unmatched_test-sbm_uncorrected>`, we see that
+# the
+# group-to-group connection probabilities are qualitatively similar. Note also that some
+# group-to-group connection probabilities are zero, making it non-sensical to do a
+# comparision of binomial proportions. We highlight these elements in the $\hat{B}$
+# matrices with an explicit "0", noting that we did not run the corresponding test in
+# these cases.
+#
+# In {numref}`Figure {number} B <fig:sbm_unmatched_test-sbm_uncorrected>`, we see the
+# p-values from all {glue:text}`sbm_unmatched_test-n_tests` that were run. After
+# Bonferroni-Holm correction, 5 tests yield p-values less than 0.05, indicating that
+# we reject the null hypothesis that those elements of the $\hat{B}$ matrices are the
+# same between the two hemispheres. We also combine all p-values using Fisher's method,
+# which yields an overall p-value for the entire null hypothesis in
+# Equation {eq}`sbm_unmatched_null` of
+# {glue:text}`sbm_unmatched_test-uncorrected_pvalue:0.2e`.
+#
 # ```{glue:figure} fig:sbm_unmatched_test-sbm_uncorrected
 # :name: "fig:sbm_unmatched_test-sbm_uncorrected"
-
+#
 # Comparison of stochastic block model fits for the left and right hemispheres.
 # **A)** The estimated group-to-group connection probabilities for the left
 # and right hemispheres appear qualitatively similar. Any estimated
@@ -353,6 +398,32 @@ pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 # null hypothesis that the two group connection probability matrices are the same) of
 # {glue:text}`sbm_unmatched_test-uncorrected_pvalue:0.2e`.
 # ```
+
+#%% [markdown]
+# ## Adjusting for a difference in density
+# From {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>`, we see that
+# we have sufficient evidence to reject
+# the null hypothesis of bilateral symmetry under this version of the SBM. However,
+# we already saw in [](er_unmatched_test) that the overall
+# densities between the two networks are different. Could it be that this rejection of
+# the null hypothesis under the SBM can be explained purely by this difference in
+# density? In other words, are the group-to-group connection probabilities on the right
+# simply a "scaled up" version of those on the right, where each probability is scaled
+# by the same amount?
+#
+# In {numref}`Figure {number} <fig:sbm_unmatched_test-probs_uncorrected>`,
+# we plot the estimated
+# probabilities on the left and the right hemispheres (i.e. each element of $\hat{B}$),
+# as
+# well as the difference between them. While subtle, we note that there is a slight
+# tendency for the left hemisphere estimated probability to be lower than the
+# corresponding one on the right. Specifically, we can also look at the group-to-group
+# connection probabilities which were significantly different in
+# {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>` - these are plotted
+# in {numref}`Figure {number} <fig:sbm_unmatched_test-significant_p_comparison>`. Note
+# that in every case, the estimated probability on the right is higher with that on the
+# right.
+#
 
 
 #%%
@@ -470,9 +541,6 @@ gluefig("probs_uncorrected", fig)
 # apparent here, as there are more negative than positive values.
 # ```
 
-# %% [markdown]
-# ## Look at the community connections that were significantly different
-
 #%%
 
 
@@ -550,39 +618,41 @@ gluefig("significant_p_comparison", fig)
 # In each case, the connection probability on the right hemisphere is higher.
 # ```
 
-#%% [markdown]
-# ## What about the difference in density?
-# From the series of figures above, we see that we have sufficient evidence to reject
-# the null hypothesis of bilateral symmetry under this version of the stochastic
-# block model. However, we already saw in [](er_unmatched_test) that the overall
-# densities between the two networks are different. We also see in the above that, in
-# line with that observation, the estimated group-to-group connection probabilities in
-# the figures above tend to be higher for the right hemisphere than the corresponding
-# connection probability on
-# the left hemisphere.
-#
-# This leads to another hypothesis - perhaps the connection probabilities on the left
-# hemisphere are simply a scaled-down version of those on the right.
-#
-# ```{admonition} Math
-# We can write this as a new null hypothesis:
-#
-# $$ H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}$$
-#
-# where $c$ is the ratio of the densities, $\frac{p_{left}}{p_{right}}$.
-# ```
 
-#%%
 #%% [markdown]
-# ### Resample the right network to make the density the same, rerun the test
-# Below, we'll see what happens when we try to make the network densities the same by
-# just randomly removing edges (uniformly across the entire network), and
-# then re-run the test proceedure above. First, we calculate the number of edges
-# required to set the network densities roughly the same. Then, we randomly remove that
-# number of edges from the right hemisphere network, and rerun the test. We repeat this
-# proceedure {glue:text}`sbm_unmatched_test-n_resamples` times, and look at the
-# distribution of p-values
-# that result.
+# These observations are consistent with the idea that perhaps the probabilities
+# on the right are a scaled up version of those on the right, for some global scaling.
+# We can frame this question as a new null hypothesis:
+#
+# ````{admonition} Math
+# With variables defined as in Equation {eq}`sbm_unmatched_null`, we can write our new
+# null hypothesis as:
+# ```{math}
+# :label: sbm_unmatched_null_adjusted
+# H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}
+# ```
+# where $c$ is the ratio of the densities, $c = \frac{p_{left}}{p_{right}}$.
+# ````
+
+#%% [markdown]
+# ### Correcting by subsampling edges for one network
+# One naive (though quite intuitive) approach to adjust our test for a difference in
+# density is to simply make the densities of the two networks the same and then rerun
+# our
+# test. To do so, we calculated the number of edge removals (from the right hemisphere)
+# required to set the network densities roughly the same. We then randomly removed
+# that many edges from the right hemisphere network and
+# then re-ran the SBM test proceedure above. We repeated this proceedure
+# {glue:text}`sbm_unmatched_test-n_resamples` times, resulting in a p-value for each
+# subsampling of the right network.
+#
+# The distribution of p-values from this process is
+# shown in {numref}`Figure {number} <fig:sbm_unmatched_test-pvalues_corrected>`. Whereas
+# the p-value for the original null hypothesis was
+# {glue:text}`sbm_unmatched_test-uncorrected_pvalue:0.2e`, we see now that the p-values
+# from our subsampled, density-adjusted test are around 0.8, indicating insufficient
+# evidence to reject our density-adjusted null hypothesis of bilateral symmetry
+# (Equation {eq}`sbm_unmatched_null_adjusted`).
 #%%
 n_edges_left = np.count_nonzero(left_adj)
 n_edges_right = np.count_nonzero(right_adj)
@@ -656,9 +726,13 @@ gluefig("pvalues_corrected", fig)
 # ```
 
 #%% [markdown]
-# ## An alternative approach to correcting for differences in density
+# ## An analytic approach to correcting for differences in density
 # Instead of randomly resetting the density of the right hemisphere network, we can
-# actually correct each test to account for this difference. Fisher's exact test (used
+# actually modify the hypothesis we are testing for each element of the $\hat{B}$
+# matrices to include this adjustment by some constant scale, $c$.
+#
+# ```{admonition} Math
+# Fisher's exact test (used
 # above to compare each element of the $\hat{B}$ matrices) tests the null hypothesis:
 #
 # $$H_0: p_{left} = p_{right}, \quad H_A: p_{left} \neq p_{right}$$
@@ -676,8 +750,10 @@ gluefig("pvalues_corrected", fig)
 # A test for the adjusted null hypothesis above is given by using
 # [Fisher's noncentral hypergeometric distribution
 # ](https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
-# and applying a proceedure much like that of the traditional Fisher's exact test. More
-# information about this test can be found in [](nhypergeom_sims).
+# and applying a proceedure much like that of the traditional Fisher's exact test.
+# ```
+#
+# More information about this test can be found in [](nhypergeom_sims).
 #%%
 null_odds = density_left / density_right
 stat, pvalue, misc = stochastic_block_test(
@@ -693,6 +769,14 @@ glue("corrected_pvalue", pvalue)
 #%%
 fig, axs = plot_stochastic_block_test(misc, pvalue_vmin=pvalue_vmin)
 gluefig("sbm_corrected", fig)
+
+#%% [markdown]
+# {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_corrected>` shows the results
+# of running the analytic version of the density-adjusted test based on Fisher's
+# noncentral hypergeometric distribution. Note that now only two group-to-group
+# probability comparisons are significant after Bonferroni-Holm correction, and the
+# overall p-value for this test of Equation {eq}`sbm_unmatched_null_adjusted` is
+# {glue:text}`sbm_unmatched_test-corrected_pvalue:0.2f`.
 
 #%% [markdown]
 # ```{glue:figure} fig:sbm_unmatched_test-sbm_corrected
@@ -718,10 +802,16 @@ gluefig("sbm_corrected", fig)
 # adjustment by a density-normalizing constant, $c$) of
 # {glue:text}`sbm_unmatched_test-corrected_pvalue:0.2f`.
 # ```
+
 #%% [markdown]
-# ## End
+# Taken together, these results suggest that for the unmatched networks, and using the
+# known cell type labels, we reject the null hypothesis of bilateral symmetry under the
+# SBM (Equation {eq}`sbm_unmatched_null`), but fail to reject the null hypothesis of
+# bilateral symmetry under the SBM after a density adjustment (Equation
+# {eq}`sbm_unmatched_null_adjusted`). Moreover, they highlight the insights that 
+# can be gained 
+# by considering multiple definitions of bilateral symmetry.
+
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
-print(f"Script took {delta}")
-print(f"Completed at {datetime.datetime.now()}")

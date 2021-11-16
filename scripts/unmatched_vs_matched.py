@@ -55,7 +55,7 @@ set_theme(font_scale=1.25)
 network_palette, NETWORK_KEY = load_network_palette()
 
 #%% [markdown]
-# ## Plot an example unmatched and matched network
+# ## Plot a example unmatched and matched network pairs
 #%%
 
 p = 0.3
