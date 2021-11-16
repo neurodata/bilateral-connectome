@@ -263,29 +263,6 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
-            </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preliminaries">
-   Preliminaries
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plot-an-example-unmatched-and-matched-network">
-   Plot an example unmatched and matched network
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#end">
-   End
-  </a>
- </li>
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -296,8 +273,6 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="unmatched-vs-matched-networks">
 <h1>Unmatched vs. matched networks<a class="headerlink" href="#unmatched-vs-matched-networks" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="preliminaries">
-<h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
@@ -319,7 +294,7 @@
 <span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
 
 <span class="c1"># to deal with warning caused by networkx</span>
-<span class="c1"># REF: https://stackoverflow.com/questions/55109716/c-argument-looks-like-a-single-numeric-rgb-or-rgba-sequence/61479357</span>
+<span class="c1"># REF: https://stackoverflow.com/questions/55109716/c-argument-looks-like-a-single-numeric-rgb-or-rgba-sequence/61479357 # noqa: E501</span>
 <span class="n">matplotlib_axes_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
 
 <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
@@ -352,9 +327,6 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="plot-an-example-unmatched-and-matched-network">
-<h2>Plot an example unmatched and matched network<a class="headerlink" href="#plot-an-example-unmatched-and-matched-network" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.3</span>
@@ -468,7 +440,7 @@
 </div>
 <div class="figure align-default" id="fig-unmatched-vs-matched-unmatched-vs-matched">
 <div class="cell_output docutils container">
-<img alt="_images/unmatched_vs_matched_4_2.png" src="_images/unmatched_vs_matched_4_2.png" />
+<img alt="_images/unmatched_vs_matched_2_2.png" src="_images/unmatched_vs_matched_2_2.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Example of a pair of unmatched networks (left) and matched networks (right). All
 networks are sampled from the
@@ -481,23 +453,11 @@ lines. These two networks have an edge correlation of  which is why
 they look similar, though not
 <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_isomorphism">isomorphic</a>.</span><a class="headerlink" href="#fig-unmatched-vs-matched-unmatched-vs-matched" title="Permalink to this image">¶</a></p>
 </div>
-</div>
-<div class="section" id="end">
-<h2>End<a class="headerlink" href="#end" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:01.628736
-Completed at 2021-11-12 10:52:34.816442
-</pre></div>
-</div>
 </div>
 </div>
 </div>
