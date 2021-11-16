@@ -1,8 +1,6 @@
 #%% [markdown]
 # # Unmatched vs. matched networks
 
-#%% [markdown]
-# ## Preliminaries
 #%%
 
 from pkg.utils import set_warnings
@@ -54,8 +52,6 @@ set_theme(font_scale=1.25)
 
 network_palette, NETWORK_KEY = load_network_palette()
 
-#%% [markdown]
-# ## Plot a example unmatched and matched network pairs
 #%%
 
 p = 0.3
@@ -180,10 +176,6 @@ gluefig("unmatched_vs_matched", fig)
 # ```
 
 
-#%% [markdown]
-# ## End
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
-print(f"Script took {delta}")
-print(f"Completed at {datetime.datetime.now()}")
