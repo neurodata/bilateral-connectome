@@ -52,11 +52,11 @@ from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 
 t0 = time.time()
 
-print(f"Using data from {DATA_VERSION}")
+# print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
 output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed")
 output_dir = Path(output_dir)
-print(f"Saving data to {output_dir}")
+# print(f"Saving data to {output_dir}")
 
 #%%
 mg = load_maggot_graph()
@@ -167,5 +167,5 @@ right_nodes.to_csv(output_dir / "matched_right_nodes.csv")
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
-print(f"Script took {delta}")
-print(f"Completed at {datetime.datetime.now()}")
+# print(f"Script took {delta}")
+# print(f"Completed at {datetime.datetime.now()}")

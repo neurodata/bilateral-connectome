@@ -112,7 +112,7 @@ right_labels = right_nodes[GROUP_KEY].values
 #
 # ```{math}
 # :label: sbm_unmatched_null
-# H_0: B_{left} = B_{right}, \quad H_A: B_{left} \neq B_{right}
+# H_0: B^{(L)} = B^{(R)}, \quad H_A: B^{(L)} \neq B^{(R)}
 # ```
 #
 # ````
@@ -123,15 +123,15 @@ right_labels = right_nodes[GROUP_KEY].values
 #
 # ```{admonition} Math
 # The hypothesis test above can be decomposed into $K^2$ indpendent hypotheses.
-# $B_{left}$
-# and $B_{right}$ are both $K \times K$ matrices, where each element $b_{kl}$ represents
+# $B^{(L)}$
+# and $B^{(R)}$ are both $K \times K$ matrices, where each element $b_{kl}$ represents
 # the probability of a connection from a neuron in group $k$ to one in group $l$. We
 # also know that group $k$ for the left network corresponds with group $k$ for the
 # right. In other words, the *groups* are matched. Thus, we are interested in testing,
 # for $k, l$ both running from $1...K$:
 #
-# $$ H_0^{kl}: b_{left, kl} = b_{right, kl},
-# \quad H_A^{kl}: b_{left, kl} \neq b_{right, kl}$$
+# $$ H_0: b_{kl}^{(L)} = b_{kl}^{(R)},
+# \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}$$
 #
 # ```
 #
@@ -358,9 +358,9 @@ pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 #%% [markdown]
 # Next, we run the test for bilateral symmetry under the stochastic block model.
 # {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>` shows both the
-# estimated group-to-group probability matrices, $\hat{B}_{left}$ and $\hat{B}_{right}$,
+# estimated group-to-group probability matrices, $\hat{B}^{(L)}$ and $\hat{B}^{(R)}$,
 # as well as the p-values from each test comparing each element of these matrices. From
-# a visual comparison of $\hat{B}_{left}$ and $\hat{B}_{right}$
+# a visual comparison of $\hat{B}^{(L)}$ and $\hat{B}^{(R)}$
 # {numref}`(Figure {number} A) <fig:sbm_unmatched_test-sbm_uncorrected>`, we see that
 # the
 # group-to-group connection probabilities are qualitatively similar. Note also that some
@@ -629,7 +629,7 @@ gluefig("significant_p_comparison", fig)
 # null hypothesis as:
 # ```{math}
 # :label: sbm_unmatched_null_adjusted
-# H_0: B_{left} = c B_{right}, \quad H_A: B_{left} \neq c B_{right}
+# H_0: B^{(L)} = c B^{(R)}, \quad H_A: B^{(L)} \neq c B^{(R)}
 # ```
 # where $c$ is the ratio of the densities, $c = \frac{p_{left}}{p_{right}}$.
 # ````
@@ -731,19 +731,19 @@ gluefig("pvalues_corrected", fig)
 #
 # ```{admonition} Math
 # Fisher's exact test (used
-# above to compare each element of the $\hat{B}$ matrices) tests the null hypothesis:
+# above to compare each element of the $\hat{B}$ matrices) tests the null hypotheses:
 #
-# $$H_0: p_{left} = p_{right}, \quad H_A: p_{left} \neq p_{right}$$
+# $$H_0: b_{kl}^{(L)} = b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}$$
+#
+# for each $(k, l)$ pair, where $k$ and $l$ are the indices of the source and target
+# groups, respectively.
 #
 # Instead, we can use a test of:
 #
-# $$H_0: p_{left} = c p_{right}, \quad H_A: p_{left} \neq c p_{right}$$
+# $$H_0: b_{kl}^{(L)} = c b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq c b_{kl}^{(R)}$$
 #
 # In our case, $c$ is a constant that we fit to the entire right hemisphere network to
-# set it's density equal to the left. If $\rho$ is the network density (number of edges
-# divided by number of possible edges) then
-#
-# $$c = \frac{\rho_{left}}{\rho_{right}}$$
+# set its density equal to the left, $c = \frac{p_{left}}{p_{right}}$
 #
 # A test for the adjusted null hypothesis above is given by using
 # [Fisher's noncentral hypergeometric distribution
