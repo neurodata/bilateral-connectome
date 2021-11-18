@@ -42,3 +42,4 @@ bibtex_bibfiles:
 parse:
   myst_enable_extensions:
     - linkify
+    - dollarmath
