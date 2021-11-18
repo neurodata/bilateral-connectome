@@ -44,6 +44,8 @@
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -326,9 +328,9 @@ employeed in connectomics studies). For now, we focus on the unweighted case pur
 for simplicity and the availability of more two-sample tests for unweighted
 networks,
 though the weighted case or choice of threshold are also of great interest.</p></li>
-<li><p><strong>Directed</strong>: we allow for a distinction between edges which go from neuron $i$ to
-neuron $j$ as opposed to from $j$ to $i$.</p></li>
-<li><p><strong>Loopless</strong>: we remove any edges which go from neuron $i$ to neuron $i$.</p></li>
+<li><p><strong>Directed</strong>: we allow for a distinction between edges which go from neuron <span class="math notranslate nohighlight">\(i\)</span> to
+neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to from <span class="math notranslate nohighlight">\(j\)</span> to <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><strong>Loopless</strong>: we remove any edges which go from neuron <span class="math notranslate nohighlight">\(i\)</span> to neuron <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
 </ul>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">

@@ -44,6 +44,8 @@
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -473,7 +475,7 @@ the block probability matrices. Each comparison was done by McNemar’s test, wh
 treats each potential edge as a potential, and examines whether the number of
 disagreeing edges between the left and right is likely to be observed by chance.
 “X” denotes a significant p-value after Bonferroni-Holm correction,
-with $\alpha=0.05$. These individual
+with <span class="math notranslate nohighlight">\(\alpha=0.05\)</span>. These individual
 p-values were combined using Fisher’s method, resulting in an overall p-value of
 <span class="pasted-text">1.15e-10</span>.</span><a class="headerlink" href="#fig-sbm-matched-test-uncorrected-pvalues" title="Permalink to this image">¶</a></p>
 </div>

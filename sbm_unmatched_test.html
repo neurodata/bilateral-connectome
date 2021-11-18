@@ -393,8 +393,8 @@ groups for each neuron, which we do not explore here.</p>
 <p>A <a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_block_model"><strong>stochastic block model (SBM)</strong>
 </a>
 is a popular statistical model of networks. Put simply, this model treats the
-probability of an edge occuring between node $i$ and node $j$ as purely a function of
-the <em>communities</em> or <em>groups</em> that node $i$ and $j$ belong to. Therefore, this model
+probability of an edge occuring between node <span class="math notranslate nohighlight">\(i\)</span> and node <span class="math notranslate nohighlight">\(j\)</span> as purely a function of
+the <em>communities</em> or <em>groups</em> that node <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> belong to. Therefore, this model
 is parameterized by:</p>
 <ol class="simple">
 <li><p>An assignment of each node in the network to a group. Note that this assignment
@@ -404,15 +404,17 @@ framing of the model one wants to use.</p></li>
 </ol>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
-<p>Let $n$ be the number of nodes, and $K$ be the number of groups in an SBM. For a
-network $A$ sampled from an SBM:</p>
-<p>$$ A \sim SBM(B, \tau)$$</p>
-<p>We say that for all $(i,j), i \neq j$, with $i$ and $j$ both running
-from $1 … n$ the probability of edge $(i,j)$ occuring is:</p>
-<p>$$ P[A_{ij} = 1] = P_{ij} = B_{\tau_i, \tau_j} $$</p>
-<p>where $B \in [0,1]^{K \times K}$ is a matrix of group-to-group connection
-probabilities and $\tau \in {1…K}^n$ is a vector of node-to-group assignments.
-Note that here we are assuming $\tau$ is a fixed vector of assignments, though other
+<p>Let <span class="math notranslate nohighlight">\(n\)</span> be the number of nodes, and <span class="math notranslate nohighlight">\(K\)</span> be the number of groups in an SBM. For a
+network <span class="math notranslate nohighlight">\(A\)</span> sampled from an SBM:</p>
+<div class="math notranslate nohighlight">
+\[ A \sim SBM(B, \tau)\]</div>
+<p>We say that for all <span class="math notranslate nohighlight">\((i,j), i \neq j\)</span>, with <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> both running
+from <span class="math notranslate nohighlight">\(1 ... n\)</span> the probability of edge <span class="math notranslate nohighlight">\((i,j)\)</span> occuring is:</p>
+<div class="math notranslate nohighlight">
+\[ P[A_{ij} = 1] = P_{ij} = B_{\tau_i, \tau_j} \]</div>
+<p>where <span class="math notranslate nohighlight">\(B \in [0,1]^{K \times K}\)</span> is a matrix of group-to-group connection
+probabilities and <span class="math notranslate nohighlight">\(\tau \in \{1...K\}^n\)</span> is a vector of node-to-group assignments.
+Note that here we are assuming <span class="math notranslate nohighlight">\(\tau\)</span> is a fixed vector of assignments, though other
 formuations of the SBM allow these assignments to themselves come from a categorical
 distribution.</p>
 </div>
@@ -421,7 +423,7 @@ distribution.</p>
 <h2>Testing under the SBM model<a class="headerlink" href="#testing-under-the-sbm-model" title="Permalink to this headline">¶</a></h2>
 <p>Assuming this model, there are a few ways that one could test for differences between
 two networks. In our case, we are interested in comparing the group-to-group
-connection probability matrices, $B$,  for the left and right hemispheres.</p>
+connection probability matrices, <span class="math notranslate nohighlight">\(B\)</span>,  for the left and right hemispheres.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
 <p>We are interested in testing:</p>
@@ -429,19 +431,20 @@ connection probability matrices, $B$,  for the left and right hemispheres.</p>
 <span class="eqno">(1)<a class="headerlink" href="#equation-sbm-unmatched-null" title="Permalink to this equation">¶</a></span>\[H_0: B^{(L)} = B^{(R)}, \quad H_A: B^{(L)} \neq B^{(R)}\]</div>
 </div>
 <p>Rather than having to compare one proportion as in <a class="reference internal" href="er_unmatched_test.html"><span class="doc std std-doc">A density-based test</span></a>, we are
-now interedted in comparing all $K^2$ probabilities between the SBM models for the
+now interedted in comparing all <span class="math notranslate nohighlight">\(K^2\)</span> probabilities between the SBM models for the
 left and right hemispheres.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
-<p>The hypothesis test above can be decomposed into $K^2$ indpendent hypotheses.
-$B^{(L)}$
-and $B^{(R)}$ are both $K \times K$ matrices, where each element $b_{kl}$ represents
-the probability of a connection from a neuron in group $k$ to one in group $l$. We
-also know that group $k$ for the left network corresponds with group $k$ for the
+<p>The hypothesis test above can be decomposed into <span class="math notranslate nohighlight">\(K^2\)</span> indpendent hypotheses.
+<span class="math notranslate nohighlight">\(B^{(L)}\)</span>
+and <span class="math notranslate nohighlight">\(B^{(R)}\)</span> are both <span class="math notranslate nohighlight">\(K \times K\)</span> matrices, where each element <span class="math notranslate nohighlight">\(b_{kl}\)</span> represents
+the probability of a connection from a neuron in group <span class="math notranslate nohighlight">\(k\)</span> to one in group <span class="math notranslate nohighlight">\(l\)</span>. We
+also know that group <span class="math notranslate nohighlight">\(k\)</span> for the left network corresponds with group <span class="math notranslate nohighlight">\(k\)</span> for the
 right. In other words, the <em>groups</em> are matched. Thus, we are interested in testing,
-for $k, l$ both running from $1…K$:</p>
-<p>$$ H_0: b_{kl}^{(L)} = b_{kl}^{(R)},
-\quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}$$</p>
+for <span class="math notranslate nohighlight">\(k, l\)</span> both running from <span class="math notranslate nohighlight">\(1...K\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ H_0: b_{kl}^{(L)} = b_{kl}^{(R)},
+\quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}\]</div>
 </div>
 <p>Thus, we will use
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test">Fisher’s exact test</a> to
@@ -452,15 +455,15 @@ the p-values for each of the individual tests after correction for multiple
 comparisons by the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Bonferroni-Holm method.
 </a></p>
-<p>For the current investigation, we focus on the case where $\tau$ is known ahead of
+<p>For the current investigation, we focus on the case where <span class="math notranslate nohighlight">\(\tau\)</span> is known ahead of
 time, sometimes called the <strong>A priori SBM</strong>. We use some broad cell type labels which
 were described in the paper which published the data to
-define the group assignments $\tau$. Here, we do not explore
+define the group assignments <span class="math notranslate nohighlight">\(\tau\)</span>. Here, we do not explore
 estimating these assignments, though many techniques exist for doing so. We note that
 the results presented here could change depending on the group assignments which are
 used. We also do not consider tests which would compare the assignment vectors,
-$\tau$. <a class="reference internal" href="#fig-sbm-unmatched-test-group-counts"><span class="std std-numref">Figure 4</span></a> shows the
-number of neurons in each group in the group assignments $\tau$ for the left and
+<span class="math notranslate nohighlight">\(\tau\)</span>. <a class="reference internal" href="#fig-sbm-unmatched-test-group-counts"><span class="std std-numref">Figure 4</span></a> shows the
+number of neurons in each group in the group assignments <span class="math notranslate nohighlight">\(\tau\)</span> for the left and
 the right hemispheres. The number of neurons in each group is quite similar between
 the two hemispheres.</p>
 <div class="cell tag_hide-input docutils container">
@@ -675,20 +678,20 @@ the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group
 </div>
 <p>Next, we run the test for bilateral symmetry under the stochastic block model.
 <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5</span></a> shows both the
-estimated group-to-group probability matrices, $\hat{B}^{(L)}$ and $\hat{B}^{(R)}$,
+estimated group-to-group probability matrices, <span class="math notranslate nohighlight">\(\hat{B}^{(L)}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}^{(R)}\)</span>,
 as well as the p-values from each test comparing each element of these matrices. From
-a visual comparison of $\hat{B}^{(L)}$ and $\hat{B}^{(R)}$
+a visual comparison of <span class="math notranslate nohighlight">\(\hat{B}^{(L)}\)</span> and <span class="math notranslate nohighlight">\(\hat{B}^{(R)}\)</span>
 <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">(Figure 5 A)</span></a>, we see that
 the
 group-to-group connection probabilities are qualitatively similar. Note also that some
 group-to-group connection probabilities are zero, making it non-sensical to do a
-comparision of binomial proportions. We highlight these elements in the $\hat{B}$
+comparision of binomial proportions. We highlight these elements in the <span class="math notranslate nohighlight">\(\hat{B}\)</span>
 matrices with an explicit “0”, noting that we did not run the corresponding test in
 these cases.</p>
 <p>In <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5 B</span></a>, we see the
 p-values from all <span class="pasted-text">283</span> that were run. After
 Bonferroni-Holm correction, 5 tests yield p-values less than 0.05, indicating that
-we reject the null hypothesis that those elements of the $\hat{B}$ matrices are the
+we reject the null hypothesis that those elements of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices are the
 same between the two hemispheres. We also combine all p-values using Fisher’s method,
 which yields an overall p-value for the entire null hypothesis in
 Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</a> of
@@ -706,7 +709,7 @@ communities) is indicated explicitly with a “0” in that cell of the matrix.
 the block probability matrices. In other words, each cell represents a test for
 whether a given group-to-group connection probability is the same on the left and the
 right sides. “X” denotes a significant p-value after Bonferroni-Holm correction,
-with $\alpha=0.05$. “B” indicates that a test was not run since the estimated
+with <span class="math notranslate nohighlight">\(\alpha=0.05\)</span>. “B” indicates that a test was not run since the estimated
 probability
 was zero in that cell on both the left and right. “L” indicates this was the case on
 the left only, and “R” that it was the case on the right only. These individual
@@ -728,7 +731,7 @@ simply a “scaled up” version of those on the right, where each probability i
 by the same amount?</p>
 <p>In <a class="reference internal" href="#fig-sbm-unmatched-test-probs-uncorrected"><span class="std std-numref">Figure 6</span></a>,
 we plot the estimated
-probabilities on the left and the right hemispheres (i.e. each element of $\hat{B}$),
+probabilities on the left and the right hemispheres (i.e. each element of <span class="math notranslate nohighlight">\(\hat{B}\)</span>),
 as
 well as the difference between them. While subtle, we note that there is a slight
 tendency for the left hemisphere estimated probability to be lower than the
@@ -848,11 +851,11 @@ right.</p>
 <img alt="_images/sbm_unmatched_test_11_0.png" src="_images/sbm_unmatched_test_11_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
-<strong>A)</strong> The estimated group-to-group connection probabilities ($\hat{p}$), sorted by
+<strong>A)</strong> The estimated group-to-group connection probabilities (<span class="math notranslate nohighlight">\(\hat{p}\)</span>), sorted by
 the mean left/right connection probability. Note the very subtle tendency for the
 left probability to be lower than the corresponding one on the right. <strong>B)</strong> The
 differences between corresponding group-to-group connection probabilities
-($\hat{p}<em>{left} - \hat{p}</em>{right}$). The trend of the left connection probabilities
+(<span class="math notranslate nohighlight">\(\hat{p}_{left} - \hat{p}_{right}\)</span>). The trend of the left connection probabilities
 being slightly smaller than the corresponding probability on the right is more
 apparent here, as there are more negative than positive values.</span><a class="headerlink" href="#fig-sbm-unmatched-test-probs-uncorrected" title="Permalink to this image">¶</a></p>
 </div>
@@ -944,7 +947,7 @@ We can frame this question as a new null hypothesis:</p>
 null hypothesis as:</p>
 <div class="math notranslate nohighlight" id="equation-sbm-unmatched-null-adjusted">
 <span class="eqno">(2)<a class="headerlink" href="#equation-sbm-unmatched-null-adjusted" title="Permalink to this equation">¶</a></span>\[H_0: B^{(L)} = c B^{(R)}, \quad H_A: B^{(L)} \neq c B^{(R)}\]</div>
-<p>where $c$ is the ratio of the densities, $c = \frac{p_{left}}{p_{right}}$.</p>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(c = \frac{p_{left}}{p_{right}}\)</span>.</p>
 </div>
 <div class="section" id="correcting-by-subsampling-edges-for-one-network">
 <h3>Correcting by subsampling edges for one network<a class="headerlink" href="#correcting-by-subsampling-edges-for-one-network" title="Permalink to this headline">¶</a></h3>
@@ -1055,19 +1058,21 @@ bilateral symmetry under the stochastic block model.</span><a class="headerlink"
 <div class="section" id="an-analytic-approach-to-correcting-for-differences-in-density">
 <h3>An analytic approach to correcting for differences in density<a class="headerlink" href="#an-analytic-approach-to-correcting-for-differences-in-density" title="Permalink to this headline">¶</a></h3>
 <p>Instead of randomly resetting the density of the right hemisphere network, we can
-actually modify the hypothesis we are testing for each element of the $\hat{B}$
-matrices to include this adjustment by some constant scale, $c$.</p>
+actually modify the hypothesis we are testing for each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span>
+matrices to include this adjustment by some constant scale, <span class="math notranslate nohighlight">\(c\)</span>.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
 <p>Fisher’s exact test (used
-above to compare each element of the $\hat{B}$ matrices) tests the null hypotheses:</p>
-<p>$$H_0: b_{kl}^{(L)} = b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}$$</p>
-<p>for each $(k, l)$ pair, where $k$ and $l$ are the indices of the source and target
+above to compare each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices) tests the null hypotheses:</p>
+<div class="math notranslate nohighlight">
+\[H_0: b_{kl}^{(L)} = b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}\]</div>
+<p>for each <span class="math notranslate nohighlight">\((k, l)\)</span> pair, where <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(l\)</span> are the indices of the source and target
 groups, respectively.</p>
 <p>Instead, we can use a test of:</p>
-<p>$$H_0: b_{kl}^{(L)} = c b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq c b_{kl}^{(R)}$$</p>
-<p>In our case, $c$ is a constant that we fit to the entire right hemisphere network to
-set its density equal to the left, $c = \frac{p_{left}}{p_{right}}$</p>
+<div class="math notranslate nohighlight">
+\[H_0: b_{kl}^{(L)} = c b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq c b_{kl}^{(R)}\]</div>
+<p>In our case, <span class="math notranslate nohighlight">\(c\)</span> is a constant that we fit to the entire right hemisphere network to
+set its density equal to the left, <span class="math notranslate nohighlight">\(c = \frac{p_{left}}{p_{right}}\)</span></p>
 <p>A test for the adjusted null hypothesis above is given by using
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution
 </a>
@@ -1116,20 +1121,20 @@ overall p-value for this test of Equation <a class="reference internal" href="#e
 correcting for a difference in hemisphere density.
 <strong>A)</strong> The estimated group-to-group connection probabilities for the left
 and right hemispheres, after the right hemisphere probabilities were scaled by a
-density-adjusting constant, $c$. Any estimated
+density-adjusting constant, <span class="math notranslate nohighlight">\(c\)</span>. Any estimated
 probabilities which are zero (i.e. no edge was present between a given pair of
 communities) is indicated explicitly with a “0” in that cell of the matrix.
 <strong>B)</strong> The p-values for each hypothesis test between individual elements of
 the block probability matrices. In other words, each cell represents a test for
 whether a given group-to-group connection probability is the same on the left and the
 right sides. “X” denotes a significant p-value after Bonferroni-Holm correction,
-with $\alpha=0.05$. “B” indicates that a test was not run since the estimated
+with <span class="math notranslate nohighlight">\(\alpha=0.05\)</span>. “B” indicates that a test was not run since the estimated
 probability
 was zero in that cell on both the left and right. “L” indicates this was the case on
 the left only, and “R” that it was the case on the right only. These individual
 p-values were combined using Fisher’s method, resulting in an overall p-value (for the
 null hypothesis that the two group connection probability matrices are the same after
-adjustment by a density-normalizing constant, $c$) of
+adjustment by a density-normalizing constant, <span class="math notranslate nohighlight">\(c\)</span>) of
 <span class="pasted-text">0.86</span>.</span><a class="headerlink" href="#fig-sbm-unmatched-test-sbm-corrected" title="Permalink to this image">¶</a></p>
 </div>
 <p>Taken together, these results suggest that for the unmatched networks, and using the
