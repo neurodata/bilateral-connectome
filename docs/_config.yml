@@ -40,6 +40,6 @@ bibtex_bibfiles:
   # - jovo_all_bib.bib
 
 parse:
-  myst_enable_extensions:
-    - linkify
+  myst_enable_extensions: #https://myst-parser.readthedocs.io/en/latest/sphinx/reference.html#sphinx-config-options
+    - linkify # automatically identify “bare” web URLs and add hyperlinks
     - dollarmath
