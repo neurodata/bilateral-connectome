@@ -1,5 +1,5 @@
 format: jb-book
-root: landing
+root: abstract
 parts:
   - caption: Preliminaries
     chapters:
