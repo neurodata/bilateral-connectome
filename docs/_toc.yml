@@ -3,7 +3,7 @@ root: landing
 parts:
   - caption: Preliminaries
     chapters:
-    - file: introduction
+    # - file: introduction
     - file: goals
     - file: outline
     - file: unmatched_vs_matched
@@ -20,3 +20,6 @@ parts:
   - caption: Appendix
     chapters: 
     - file: nhypergeom_sims
+  - caption: References
+    chapters: 
+    - file: references
