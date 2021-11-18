@@ -44,8 +44,6 @@
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -107,11 +105,6 @@
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="introduction.html">
-   Introduction
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="goals.html">
    Goals
@@ -181,6 +174,18 @@
  <li class="toctree-l1">
   <a class="reference internal" href="nhypergeom_sims.html">
    An exact test for non-unity null odds ratios
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="references.html">
+   References
   </a>
  </li>
 </ul>
@@ -309,40 +314,35 @@ the probability of each potential edge in the network occuring to be the same. I
 other words, all edges between any two nodes are equally likely.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
-<p>We say that for all <span class="math notranslate nohighlight">\((i, j), i \neq j\)</span>, with <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> both running
-from <span class="math notranslate nohighlight">\(1 ... n\)</span>, the probability of the edge <span class="math notranslate nohighlight">\((i, j)\)</span> occuring is:</p>
-<div class="math notranslate nohighlight">
-\[ P[A_{ij} = 1] = P_{ij} = p \]</div>
-<p>Each element of the adjacency matrix <span class="math notranslate nohighlight">\(A\)</span> is sampled independently according to a
+<p>We say that for all $(i, j), i \neq j$, with $i$ and $j$ both running
+from $1 … n$, the probability of the edge $(i, j)$ occuring is:</p>
+<p>$$ P[A_{ij} = 1] = P_{ij} = p $$</p>
+<p>Each element of the adjacency matrix $A$ is sampled independently according to a
 <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distribution</a>:</p>
-<div class="math notranslate nohighlight">
-\[ A_{ij} \sim Bernoulli(p) \]</div>
+<p>$$ A_{ij} \sim Bernoulli(p) $$</p>
 </div>
 <p>Thus, for this model, the only parameter of interest is the global connection
-probability, <span class="math notranslate nohighlight">\(p\)</span>. This is sometimes also referred to as the <strong>network density</strong>.</p>
+probability, $p$. This is sometimes also referred to as the <strong>network density</strong>.</p>
 </div>
 <div class="section" id="testing-under-the-er-model">
 <h2>Testing under the ER model<a class="headerlink" href="#testing-under-the-er-model" title="Permalink to this headline">¶</a></h2>
-<p>In order to compare two networks <span class="math notranslate nohighlight">\(A_{left}\)</span> and <span class="math notranslate nohighlight">\(A_{right}\)</span> under this model, we
-simply need to compute these network densities (<span class="math notranslate nohighlight">\(p_{left}\)</span> and <span class="math notranslate nohighlight">\(p_{right}\)</span>), and then
+<p>In order to compare two networks $A_{left}$ and $A_{right}$ under this model, we
+simply need to compute these network densities ($p_{left}$ and $p_{right}$), and then
 run a statistical test to see if these densities are significantly different.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
 <p>Under this
-model, the total number of edges <span class="math notranslate nohighlight">\(m\)</span> comes from a <span class="math notranslate nohighlight">\(Binomial(n^2 - n, p)\)</span> distribution,
-where <span class="math notranslate nohighlight">\(n\)</span> is the number of nodes. This is because the number of edges is the sum of
-independent Bernoulli trials with the same probability. If <span class="math notranslate nohighlight">\(m_{left}\)</span> is the number of
+model, the total number of edges $m$ comes from a $Binomial(n^2 - n, p)$ distribution,
+where $n$ is the number of nodes. This is because the number of edges is the sum of
+independent Bernoulli trials with the same probability. If $m_{left}$ is the number of
 edges on the left
-hemisphere, and <span class="math notranslate nohighlight">\(m_{right}\)</span> is the number of edges on the right, then we have:</p>
-<div class="math notranslate nohighlight">
-\[m_{left} \sim Binomial(n_{left}^2 - n_{left}, p_{left})\]</div>
+hemisphere, and $m_{right}$ is the number of edges on the right, then we have:</p>
+<p>$$m_{left} \sim Binomial(n_{left}^2 - n_{left}, p_{left})$$</p>
 <p>and independently,</p>
-<div class="math notranslate nohighlight">
-\[m_{right} \sim Binomial(n_{right}^2 - n_{right}, p_{right})\]</div>
-<p>To compare the two networks, we are just interested in a comparison of <span class="math notranslate nohighlight">\(p_{left}\)</span> vs.
-<span class="math notranslate nohighlight">\(p_{right}\)</span>. Formally, we are testing:</p>
-<div class="math notranslate nohighlight">
-\[H_0: p_{left} = p_{right}, \quad H_a: p_{left} \neq p_{right}\]</div>
+<p>$$m_{right} \sim Binomial(n_{right}^2 - n_{right}, p_{right})$$</p>
+<p>To compare the two networks, we are just interested in a comparison of $p_{left}$ vs.
+$p_{right}$. Formally, we are testing:</p>
+<p>$$H_0: p_{left} = p_{right}, \quad H_a: p_{left} \neq p_{right}$$</p>
 <p>Fortunately, the problem of testing for equal proportions is well studied.
 In our case, we will use Fisher’s Exact test to run this test for the null and
 alternative hypotheses above.</p>
@@ -478,13 +478,13 @@ alternative hypotheses above.</p>
 <img alt="_images/er_unmatched_test_5_1.png" src="_images/er_unmatched_test_5_1.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of estimated densities for the left and right hemisphere networks. The
-estimated density (probability of any edge across the entire network), <span class="math notranslate nohighlight">\(\hat{p}\)</span>, for
+estimated density (probability of any edge across the entire network), $\hat{p}$, for
 the left
 hemisphere is ~<span class="pasted-text">0.016</span>, while for the right
 it is
 ~<span class="pasted-text">0.018</span>. Black lines denote
 <span class="pasted-text">99.0</span><strong>%</strong>
-confidence intervals for this estimated parameter <span class="math notranslate nohighlight">\(\hat{p}\)</span>. The p-value for testing
+confidence intervals for this estimated parameter $\hat{p}$. The p-value for testing
 the null hypothesis that these densities are the same is
 <span class="pasted-text">3.08e-23</span> (two
 sided Fisher’s exact test).</span><a class="headerlink" href="#fig-er-unmatched-test-er-density" title="Permalink to this image">¶</a></p>

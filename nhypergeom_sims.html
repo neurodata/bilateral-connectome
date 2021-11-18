@@ -44,8 +44,6 @@
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -56,6 +54,7 @@
     <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
     <link rel="prev" title="A group-based test" href="sbm_matched_test.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
@@ -106,11 +105,6 @@
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="introduction.html">
-   Introduction
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="goals.html">
    Goals
@@ -180,6 +174,18 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    An exact test for non-unity null odds ratios
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  References
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="references.html">
+   References
   </a>
  </li>
 </ul>
@@ -329,14 +335,12 @@
 <p>Here, we investigate the performance of this test on simulated independent binomials.
 The model we use is as follows:</p>
 <p>Let</p>
-<div class="math notranslate nohighlight">
-\[X \sim Binomial(m_x, p_x)\]</div>
+<p>$$X \sim Binomial(m_x, p_x)$$</p>
 <p>independently,</p>
-<div class="math notranslate nohighlight">
-\[Y \sim Binomial(m_y, p_y)\]</div>
-<p>Fix <span class="math notranslate nohighlight">\(m_x = \)</span> <span class="pasted-text">1000</span>, <span class="math notranslate nohighlight">\(m_y = \)</span> <span class="pasted-text">2000</span>, <span class="math notranslate nohighlight">\(p_y = \)</span> <span class="pasted-text">0.01</span>.</p>
-<p>Let <span class="math notranslate nohighlight">\(p_x = \omega p_y\)</span>, where <span class="math notranslate nohighlight">\(\omega\)</span> is some positive real number, not
-not necessarily equal to 1, such that <span class="math notranslate nohighlight">\(p_x \in (0, 1)\)</span>.</p>
+<p>$$Y \sim Binomial(m_y, p_y)$$</p>
+<p>Fix $m_x = $ <span class="pasted-text">1000</span>, $m_y = $ <span class="pasted-text">2000</span>, $p_y = $ <span class="pasted-text">0.01</span>.</p>
+<p>Let $p_x = \omega p_y$, where $\omega$ is some positive real number, not
+not necessarily equal to 1, such that $p_x \in (0, 1)$.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m_x</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -368,22 +372,19 @@ not necessarily equal to 1, such that <span class="math notranslate nohighlight"
 </div>
 <div class="section" id="experiment">
 <h2>Experiment<a class="headerlink" href="#experiment" title="Permalink to this headline">¶</a></h2>
-<p>Below, we’ll sample from the model described above, varying <span class="math notranslate nohighlight">\(\omega\)</span> from
-<span class="pasted-text">0.25</span> to <span class="pasted-text">4.0</span>. For each value of <span class="math notranslate nohighlight">\(\omega\)</span>,
-we’ll draw <span class="pasted-text">200</span> samples of <span class="math notranslate nohighlight">\((x,y)\)</span> from the model described above.
+<p>Below, we’ll sample from the model described above, varying $\omega$ from
+<span class="pasted-text">0.25</span> to <span class="pasted-text">4.0</span>. For each value of $\omega$,
+we’ll draw <span class="pasted-text">200</span> samples of $(x,y)$ from the model described above.
 For each draw, we’ll test the following two hypotheses:</p>
-<div class="math notranslate nohighlight">
-\[H_0: p_x = p_y \quad H_A: p_x \neq p_y\]</div>
-<p>using Fisher’s exact test, and</p>
-<div class="math notranslate nohighlight">
-\[H_0: p_x = \omega_0 p_y \quad H_A: p_x \neq \omega_0 p_y\]</div>
-<p>using a modified version of Fisher’s exact test, which uses
+<p>$$H_0: p_x = p_y \quad H_A: p_x \neq p_y$$
+using Fisher’s exact test, and</p>
+<p>$$H_0: p_x = \omega_0 p_y \quad H_A: p_x \neq \omega_0 p_y$$
+using a modified version of Fisher’s exact test, which uses
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution</a>
 as the null distribution. Note that we can re-write this null as</p>
-<div class="math notranslate nohighlight">
-\[H_0: \frac{p_x}{p_y} = \omega_0\]</div>
-<p>to easily see that this is a test for a posited odds ratio <span class="math notranslate nohighlight">\(\omega_0\)</span>. For this
-experiment, we set <span class="math notranslate nohighlight">\(\omega_0 = \omega\)</span> - in other words, we assume the true odds ratio
+<p>$$H_0: \frac{p_x}{p_y} = \omega_0$$</p>
+<p>to easily see that this is a test for a posited odds ratio $\omega_0$. For this
+experiment, we set $\omega_0 = \omega$ - in other words, we assume the true odds ratio
 is known.</p>
 <p>Below, we’ll call the first hypothesis test <strong>FE</strong> (Fisher’s Exact), and the second
 <strong>NUFE (Non-unity Fisher’s Exact)</strong>.</p>
@@ -452,12 +453,12 @@ is known.</p>
 <div class="cell_output docutils container">
 <img alt="_images/nhypergeom_sims_8_0.png" src="_images/nhypergeom_sims_8_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Plot of mean p-values by the true odds ratio <span class="math notranslate nohighlight">\(\omega\)</span>. Each point in the lineplot
+<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Plot of mean p-values by the true odds ratio $\omega$. Each point in the lineplot
 denotes the mean over <span class="pasted-text">200</span> trials, and the shaded region denotes 95%
 bootstrap CI estimates. Fisher’s Exact test
 (FE) tends to reject for non-unity odds ratios, while the modified, non-unity Fisher’s
 exact test (NUFE) does not. Note that NUFE is testing the null hypothesis that the
-odds ratio (<span class="math notranslate nohighlight">\(\omega_0\)</span>) is equal to the true odds ratio in the simulation (<span class="math notranslate nohighlight">\(\omega\)</span>).</span><a class="headerlink" href="#fig-mean-pvalue-by-omega" title="Permalink to this image">¶</a></p>
+odds ratio ($\omega_0$) is equal to the true odds ratio in the simulation ($\omega$).</span><a class="headerlink" href="#fig-mean-pvalue-by-omega" title="Permalink to this image">¶</a></p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -495,9 +496,9 @@ odds ratio (<span class="math notranslate nohighlight">\(\omega_0\)</span>) is e
 <img alt="_images/nhypergeom_sims_10_0.png" src="_images/nhypergeom_sims_10_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 16 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
-<span class="math notranslate nohighlight">\(\omega = 1\)</span>. Dashed line denotes the cumulative distribution function for a
-<span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable. p-value in upper left is for a one-sided KS-test that
-for the null that the distribution is stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span>
+$\omega = 1$. Dashed line denotes the cumulative distribution function for a
+$Uniform(0,1)$ random variable. p-value in upper left is for a one-sided KS-test that
+for the null that the distribution is stochastically smaller than a $Uniform(0,1)$
 random variable. Note that both tests appear to have uniform p-values in the case
 where the null that both tests are concerned with is true.</span><a class="headerlink" href="#fig-pvalue-dist-omega-1" title="Permalink to this image">¶</a></p>
 </div>
@@ -506,13 +507,13 @@ where the null that both tests are concerned with is true.</span><a class="heade
 <img alt="_images/nhypergeom_sims_10_1.png" src="_images/nhypergeom_sims_10_1.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Cumulative distribution of p-values for both tests when the true odds ratio
-<span class="math notranslate nohighlight">\(\omega = 3\)</span>. Dashed line denotes the cumulative distribution function for a
-<span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable. p-value in upper left is for a one-sided KS-test that
-for the null that the distribution is stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span>
-random variable. When <span class="math notranslate nohighlight">\(\omega = 3\)</span>, the null that FE is testing is indeed false, so it
-makes sense that we see yield many small p-values. However, for <span class="math notranslate nohighlight">\(NUFE\)</span>, <span class="math notranslate nohighlight">\(H_0\)</span> is true,
-as we specified that <span class="math notranslate nohighlight">\(\omega_0 = \omega\)</span>. NUFE remains valid in this case as the
-p-values appear stochastically smaller than a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable.</span><a class="headerlink" href="#fig-pvalue-dist-omega-3" title="Permalink to this image">¶</a></p>
+$\omega = 3$. Dashed line denotes the cumulative distribution function for a
+$Uniform(0,1)$ random variable. p-value in upper left is for a one-sided KS-test that
+for the null that the distribution is stochastically smaller than a $Uniform(0,1)$
+random variable. When $\omega = 3$, the null that FE is testing is indeed false, so it
+makes sense that we see yield many small p-values. However, for $NUFE$, $H_0$ is true,
+as we specified that $\omega_0 = \omega$. NUFE remains valid in this case as the
+p-values appear stochastically smaller than a $Uniform(0,1)$ random variable.</span><a class="headerlink" href="#fig-pvalue-dist-omega-3" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 </div>
@@ -548,6 +549,13 @@ p-values appear stochastically smaller than a <span class="math notranslate nohi
             <p class="prev-next-subtitle">previous</p>
             <p class="prev-next-title">A group-based test</p>
         </div>
+    </a>
+    <a class='right-next' id="next-link" href="references.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">References</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
     </a>
 </div>
         
