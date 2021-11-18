@@ -6,7 +6,7 @@
 #######################################################################################
 # Book settings
 title                       : Bilateral Connectome  # The title of the book. Will be placed in the left navbar.
-author                      : NeuroData  # The author of the book
+author                      : Benjamin D. Pedigo  # The author of the book
 copyright                   : "2021"  # Copyright year to be placed in the footer
 logo                        : ./images/nd_logo.png  # A path to the book logo
 
@@ -30,7 +30,12 @@ repository:
 sphinx:
   config:
     language: en
-    latex_toplevel_sectioning: 'chapter'
+
+latex:
+  latex_documents:
+    targetname: bilateral-connectome.tex
+    theme: howto
+  latex_elements: "test" # does not seem to be working
 
 execute: 
   execute_notebooks: off # TODO turn back on someday

@@ -30,8 +30,7 @@ repository:
 sphinx:
   config:
     language: en
-    latex_toplevel_sectioning: 'chapter'
-    latex_theme: howto
+    latex_theme: manual
 
 latex:
   latex_documents:
