@@ -542,6 +542,16 @@ gluefig("probs_uncorrected", fig)
 # ```
 
 #%%
+B1 = misc["probabilities1"]
+B2 = misc["probabilities2"]
+null_odds = misc["null_odds"]
+B2 = B2 * null_odds
+B1_ravel = B1.values.ravel()
+B2_ravel = B2.values.ravel()
+
+B1
+
+#%%
 
 
 def plot_significant_probabilities(misc):
@@ -806,8 +816,8 @@ gluefig("sbm_corrected", fig)
 # known cell type labels, we reject the null hypothesis of bilateral symmetry under the
 # SBM (Equation {eq}`sbm_unmatched_null`), but fail to reject the null hypothesis of
 # bilateral symmetry under the SBM after a density adjustment (Equation
-# {eq}`sbm_unmatched_null_adjusted`). Moreover, they highlight the insights that 
-# can be gained 
+# {eq}`sbm_unmatched_null_adjusted`). Moreover, they highlight the insights that
+# can be gained
 # by considering multiple definitions of bilateral symmetry.
 
 #%%
