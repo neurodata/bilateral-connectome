@@ -108,8 +108,8 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="goals.html">
-   Goals
+  <a class="reference internal" href="introduction.html">
+   Introduction
   </a>
  </li>
  <li class="toctree-l1">
@@ -443,8 +443,8 @@ also know that group <span class="math notranslate nohighlight">\(k\)</span> for
 right. In other words, the <em>groups</em> are matched. Thus, we are interested in testing,
 for <span class="math notranslate nohighlight">\(k, l\)</span> both running from <span class="math notranslate nohighlight">\(1...K\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[ H_0: b_{kl}^{(L)} = b_{kl}^{(R)},
-\quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}\]</div>
+\[ H_0: B_{kl}^{(L)} = B_{kl}^{(R)},
+\quad H_A: B_{kl}^{(L)} \neq B_{kl}^{(R)}\]</div>
 </div>
 <p>Thus, we will use
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test">Fisher’s exact test</a> to
@@ -855,7 +855,7 @@ right.</p>
 the mean left/right connection probability. Note the very subtle tendency for the
 left probability to be lower than the corresponding one on the right. <strong>B)</strong> The
 differences between corresponding group-to-group connection probabilities
-(<span class="math notranslate nohighlight">\(\hat{p}_{left} - \hat{p}_{right}\)</span>). The trend of the left connection probabilities
+(<span class="math notranslate nohighlight">\(\hat{p}^{(L)} - \hat{p}^{(R)}\)</span>). The trend of the left connection probabilities
 being slightly smaller than the corresponding probability on the right is more
 apparent here, as there are more negative than positive values.</span><a class="headerlink" href="#fig-sbm-unmatched-test-probs-uncorrected" title="Permalink to this image">¶</a></p>
 </div>
@@ -947,7 +947,7 @@ We can frame this question as a new null hypothesis:</p>
 null hypothesis as:</p>
 <div class="math notranslate nohighlight" id="equation-sbm-unmatched-null-adjusted">
 <span class="eqno">(2)<a class="headerlink" href="#equation-sbm-unmatched-null-adjusted" title="Permalink to this equation">¶</a></span>\[H_0: B^{(L)} = c B^{(R)}, \quad H_A: B^{(L)} \neq c B^{(R)}\]</div>
-<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(c = \frac{p_{left}}{p_{right}}\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is the ratio of the densities, <span class="math notranslate nohighlight">\(c = \frac{p^{(L)}}{p^{(R)}}\)</span>.</p>
 </div>
 <div class="section" id="correcting-by-subsampling-edges-for-one-network">
 <h3>Correcting by subsampling edges for one network<a class="headerlink" href="#correcting-by-subsampling-edges-for-one-network" title="Permalink to this headline">¶</a></h3>
@@ -957,7 +957,7 @@ our
 test. To do so, we calculated the number of edge removals (from the right hemisphere)
 required to set the network densities roughly the same. We then randomly removed
 that many edges from the right hemisphere network and
-then re-ran the SBM test proceedure above. We repeated this proceedure
+then re-ran the SBM test procedure above. We repeated this procedure
 <span class="pasted-text">25</span> times, resulting in a p-value for each
 subsampling of the right network.</p>
 <p>The distribution of p-values from this process is
@@ -1065,18 +1065,18 @@ matrices to include this adjustment by some constant scale, <span class="math no
 <p>Fisher’s exact test (used
 above to compare each element of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices) tests the null hypotheses:</p>
 <div class="math notranslate nohighlight">
-\[H_0: b_{kl}^{(L)} = b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}\]</div>
+\[H_0: B_{kl}^{(L)} = B_{kl}^{(R)}, \quad H_A: B_{kl}^{(L)} \neq B_{kl}^{(R)}\]</div>
 <p>for each <span class="math notranslate nohighlight">\((k, l)\)</span> pair, where <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(l\)</span> are the indices of the source and target
 groups, respectively.</p>
 <p>Instead, we can use a test of:</p>
 <div class="math notranslate nohighlight">
-\[H_0: b_{kl}^{(L)} = c b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq c b_{kl}^{(R)}\]</div>
+\[H_0: B_{kl}^{(L)} = c B_{kl}^{(R)}, \quad H_A: B_{kl}^{(L)} \neq c B_{kl}^{(R)}\]</div>
 <p>In our case, <span class="math notranslate nohighlight">\(c\)</span> is a constant that we fit to the entire right hemisphere network to
-set its density equal to the left, <span class="math notranslate nohighlight">\(c = \frac{p_{left}}{p_{right}}\)</span></p>
+set its density equal to the left, <span class="math notranslate nohighlight">\(c = \frac{p^{(L)}}{p_{(R)}}\)</span></p>
 <p>A test for the adjusted null hypothesis above is given by using
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution">Fisher’s noncentral hypergeometric distribution
 </a>
-and applying a proceedure much like that of the traditional Fisher’s exact test.</p>
+and applying a procedure much like that of the traditional Fisher’s exact test.</p>
 </div>
 <p>More information about this test can be found in <a class="reference internal" href="nhypergeom_sims.html"><span class="doc std std-doc">An exact test for non-unity null odds ratios</span></a>.</p>
 <div class="cell tag_hide-input docutils container">

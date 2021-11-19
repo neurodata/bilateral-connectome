@@ -108,8 +108,8 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="goals.html">
-   Goals
+  <a class="reference internal" href="introduction.html">
+   Introduction
   </a>
  </li>
  <li class="toctree-l1">
@@ -316,40 +316,45 @@ the probability of each potential edge in the network occuring to be the same. I
 other words, all edges between any two nodes are equally likely.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
-<p>We say that for all <span class="math notranslate nohighlight">\((i, j), i \neq j\)</span>, with <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> both running
+<p>Let <span class="math notranslate nohighlight">\(n\)</span> be the number of nodes. We say that for all <span class="math notranslate nohighlight">\((i, j), i \neq j\)</span>, with <span class="math notranslate nohighlight">\(i\)</span> and
+<span class="math notranslate nohighlight">\(j\)</span> both running
 from <span class="math notranslate nohighlight">\(1 ... n\)</span>, the probability of the edge <span class="math notranslate nohighlight">\((i, j)\)</span> occuring is:</p>
 <div class="math notranslate nohighlight">
-\[ P[A_{ij} = 1] = P_{ij} = p \]</div>
-<p>Each element of the adjacency matrix <span class="math notranslate nohighlight">\(A\)</span> is sampled independently according to a
+\[ P[A_{ij} = 1] = p_{ij} = p \]</div>
+<p>Where <span class="math notranslate nohighlight">\(p\)</span> is the the global connection probability.</p>
+<p>Each element of the adjacency matrix <span class="math notranslate nohighlight">\(A\)</span> is then sampled independently according to a
 <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distribution</a>:</p>
 <div class="math notranslate nohighlight">
 \[ A_{ij} \sim Bernoulli(p) \]</div>
+<p>For a network modeled as described above, we say it is distributed</p>
+<div class="math notranslate nohighlight">
+\[ A \sim ER(n, p) \]</div>
 </div>
 <p>Thus, for this model, the only parameter of interest is the global connection
 probability, <span class="math notranslate nohighlight">\(p\)</span>. This is sometimes also referred to as the <strong>network density</strong>.</p>
 </div>
 <div class="section" id="testing-under-the-er-model">
 <h2>Testing under the ER model<a class="headerlink" href="#testing-under-the-er-model" title="Permalink to this headline">¶</a></h2>
-<p>In order to compare two networks <span class="math notranslate nohighlight">\(A_{left}\)</span> and <span class="math notranslate nohighlight">\(A_{right}\)</span> under this model, we
-simply need to compute these network densities (<span class="math notranslate nohighlight">\(p_{left}\)</span> and <span class="math notranslate nohighlight">\(p_{right}\)</span>), and then
+<p>In order to compare two networks <span class="math notranslate nohighlight">\(A^{(L)}\)</span> and <span class="math notranslate nohighlight">\(A^{(R)}\)</span> under this model, we
+simply need to compute these network densities (<span class="math notranslate nohighlight">\(p^{(L)}\)</span> and <span class="math notranslate nohighlight">\(p^{(R)}\)</span>), and then
 run a statistical test to see if these densities are significantly different.</p>
 <div class="admonition-math admonition">
 <p class="admonition-title">Math</p>
 <p>Under this
-model, the total number of edges <span class="math notranslate nohighlight">\(m\)</span> comes from a <span class="math notranslate nohighlight">\(Binomial(n^2 - n, p)\)</span> distribution,
+model, the total number of edges <span class="math notranslate nohighlight">\(m\)</span> comes from a <span class="math notranslate nohighlight">\(Binomial(n(n-1), p)\)</span> distribution,
 where <span class="math notranslate nohighlight">\(n\)</span> is the number of nodes. This is because the number of edges is the sum of
-independent Bernoulli trials with the same probability. If <span class="math notranslate nohighlight">\(m_{left}\)</span> is the number of
+independent Bernoulli trials with the same probability. If <span class="math notranslate nohighlight">\(m^{(L)}\)</span> is the number of
 edges on the left
-hemisphere, and <span class="math notranslate nohighlight">\(m_{right}\)</span> is the number of edges on the right, then we have:</p>
+hemisphere, and <span class="math notranslate nohighlight">\(m^{(R)}\)</span> is the number of edges on the right, then we have:</p>
 <div class="math notranslate nohighlight">
-\[m_{left} \sim Binomial(n_{left}^2 - n_{left}, p_{left})\]</div>
+\[m^{(L)} \sim Binomial(n^{(L)}(n^{(L)} - 1), p^{(L)})\]</div>
 <p>and independently,</p>
 <div class="math notranslate nohighlight">
-\[m_{right} \sim Binomial(n_{right}^2 - n_{right}, p_{right})\]</div>
-<p>To compare the two networks, we are just interested in a comparison of <span class="math notranslate nohighlight">\(p_{left}\)</span> vs.
-<span class="math notranslate nohighlight">\(p_{right}\)</span>. Formally, we are testing:</p>
+\[m^{(R)} \sim Binomial(n^{(R)}(n^{(R)} - 1), p^{(R)})\]</div>
+<p>To compare the two networks, we are just interested in a comparison of <span class="math notranslate nohighlight">\(p^{(L)}\)</span> vs.
+<span class="math notranslate nohighlight">\(p^{(R)}\)</span>. Formally, we are testing:</p>
 <div class="math notranslate nohighlight">
-\[H_0: p_{left} = p_{right}, \quad H_a: p_{left} \neq p_{right}\]</div>
+\[H_0: p^{(L)} = p^{(R)}, \quad H_a: p^{(L)} \neq p^{(R)}\]</div>
 <p>Fortunately, the problem of testing for equal proportions is well studied.
 In our case, we will use Fisher’s Exact test to run this test for the null and
 alternative hypotheses above.</p>
