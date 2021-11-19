@@ -6,21 +6,28 @@
 #%% [markdown]
 # ## The Erdos-Renyi (ER) model
 # The [**Erdos-Renyi (ER) model**
-# ](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model) 
+# ](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model)
 # is one of the simplest network models. This model treats
 # the probability of each potential edge in the network occuring to be the same. In
 # other words, all edges between any two nodes are equally likely.
 #
 # ```{admonition} Math
-# We say that for all $(i, j), i \neq j$, with $i$ and $j$ both running
+# Let $n$ be the number of nodes. We say that for all $(i, j), i \neq j$, with $i$ and 
+# $j$ both running
 # from $1 ... n$, the probability of the edge $(i, j)$ occuring is:
 #
-# $$ P[A_{ij} = 1] = P_{ij} = p $$
+# $$ P[A_{ij} = 1] = p_{ij} = p $$
 #
-# Each element of the adjacency matrix $A$ is sampled independently according to a
+# Where $p$ is the the global connection probability.
+#
+# Each element of the adjacency matrix $A$ is then sampled independently according to a
 # [Bernoulli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution):
 #
 # $$ A_{ij} \sim Bernoulli(p) $$
+#
+# For a network modeled as described above, we say it is distributed 
+#
+# $$ A \sim ER(n, p) $$
 #
 # ```
 #
@@ -29,28 +36,28 @@
 
 #%% [markdown]
 # ## Testing under the ER model
-# In order to compare two networks $A_{left}$ and $A_{right}$ under this model, we
-# simply need to compute these network densities ($p_{left}$ and $p_{right}$), and then
+# In order to compare two networks $A^{(L)}$ and $A^{(R)}$ under this model, we
+# simply need to compute these network densities ($p^{(L)}$ and $p^{(R)}$), and then
 # run a statistical test to see if these densities are significantly different.
 #
 # ```{admonition} Math
 # Under this
-# model, the total number of edges $m$ comes from a $Binomial(n^2 - n, p)$ distribution,
+# model, the total number of edges $m$ comes from a $Binomial(n(n-1), p)$ distribution,
 # where $n$ is the number of nodes. This is because the number of edges is the sum of
-# independent Bernoulli trials with the same probability. If $m_{left}$ is the number of
+# independent Bernoulli trials with the same probability. If $m^{(L)}$ is the number of
 # edges on the left
-# hemisphere, and $m_{right}$ is the number of edges on the right, then we have:
+# hemisphere, and $m^{(R)}$ is the number of edges on the right, then we have:
 #
-# $$m_{left} \sim Binomial(n_{left}^2 - n_{left}, p_{left})$$
+# $$m^{(L)} \sim Binomial(n^{(L)}(n^{(L)} - 1), p^{(L)})$$
 #
 # and independently,
 #
-# $$m_{right} \sim Binomial(n_{right}^2 - n_{right}, p_{right})$$
+# $$m^{(R)} \sim Binomial(n^{(R)}(n^{(R)} - 1), p^{(R)})$$
 #
-# To compare the two networks, we are just interested in a comparison of $p_{left}$ vs.
-# $p_{right}$. Formally, we are testing:
+# To compare the two networks, we are just interested in a comparison of $p^{(L)}$ vs.
+# $p^{(R)}$. Formally, we are testing:
 #
-# $$H_0: p_{left} = p_{right}, \quad H_a: p_{left} \neq p_{right}$$
+# $$H_0: p^{(L)} = p^{(R)}, \quad H_a: p^{(L)} \neq p^{(R)}$$
 #
 # Fortunately, the problem of testing for equal proportions is well studied.
 # In our case, we will use Fisher's Exact test to run this test for the null and
@@ -203,10 +210,10 @@ glue("pvalue", pvalue)
 # symmetry, they have not meant such a simple comparison of proportions. In many ways,
 # the ER model is too simple to be an interesting description of connectome structure.
 # However, we note that *even the simplest network model* yields a significant
-# difference between brain hemispheres for this organism. It is unclear whether this 
-# difference in densities is biological (e.g. a result of slightly differing rates of 
-# development for this individual), an artifact of how the data was collected (e.g. 
-# technological limitations causing slightly lower reconstruction rates on the left 
+# difference between brain hemispheres for this organism. It is unclear whether this
+# difference in densities is biological (e.g. a result of slightly differing rates of
+# development for this individual), an artifact of how the data was collected (e.g.
+# technological limitations causing slightly lower reconstruction rates on the left
 # hemisphere), or something else entirely. Still, the ER test results also provide
 # important considerations for other tests. Almost any network statistic (e.g.
 # clustering coefficient, number of triangles, etc), as well as many of the model-based

@@ -130,8 +130,8 @@ right_labels = right_nodes[GROUP_KEY].values
 # right. In other words, the *groups* are matched. Thus, we are interested in testing,
 # for $k, l$ both running from $1...K$:
 #
-# $$ H_0: b_{kl}^{(L)} = b_{kl}^{(R)},
-# \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}$$
+# $$ H_0: B_{kl}^{(L)} = B_{kl}^{(R)},
+# \quad H_A: B_{kl}^{(L)} \neq B_{kl}^{(R)}$$
 #
 # ```
 #
@@ -536,7 +536,7 @@ gluefig("probs_uncorrected", fig)
 # the mean left/right connection probability. Note the very subtle tendency for the
 # left probability to be lower than the corresponding one on the right. **B)** The
 # differences between corresponding group-to-group connection probabilities
-# ($\hat{p}_{left} - \hat{p}_{right}$). The trend of the left connection probabilities
+# ($\hat{p}^{(L)} - \hat{p}^{(R)}$). The trend of the left connection probabilities
 # being slightly smaller than the corresponding probability on the right is more
 # apparent here, as there are more negative than positive values.
 # ```
@@ -631,7 +631,7 @@ gluefig("significant_p_comparison", fig)
 # :label: sbm_unmatched_null_adjusted
 # H_0: B^{(L)} = c B^{(R)}, \quad H_A: B^{(L)} \neq c B^{(R)}
 # ```
-# where $c$ is the ratio of the densities, $c = \frac{p_{left}}{p_{right}}$.
+# where $c$ is the ratio of the densities, $c = \frac{p^{(L)}}{p^{(R)}}$.
 # ````
 
 #%% [markdown]
@@ -642,7 +642,7 @@ gluefig("significant_p_comparison", fig)
 # test. To do so, we calculated the number of edge removals (from the right hemisphere)
 # required to set the network densities roughly the same. We then randomly removed
 # that many edges from the right hemisphere network and
-# then re-ran the SBM test proceedure above. We repeated this proceedure
+# then re-ran the SBM test procedure above. We repeated this procedure
 # {glue:text}`sbm_unmatched_test-n_resamples` times, resulting in a p-value for each
 # subsampling of the right network.
 #
@@ -733,22 +733,22 @@ gluefig("pvalues_corrected", fig)
 # Fisher's exact test (used
 # above to compare each element of the $\hat{B}$ matrices) tests the null hypotheses:
 #
-# $$H_0: b_{kl}^{(L)} = b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq b_{kl}^{(R)}$$
+# $$H_0: B_{kl}^{(L)} = B_{kl}^{(R)}, \quad H_A: B_{kl}^{(L)} \neq B_{kl}^{(R)}$$
 #
 # for each $(k, l)$ pair, where $k$ and $l$ are the indices of the source and target
 # groups, respectively.
 #
 # Instead, we can use a test of:
 #
-# $$H_0: b_{kl}^{(L)} = c b_{kl}^{(R)}, \quad H_A: b_{kl}^{(L)} \neq c b_{kl}^{(R)}$$
+# $$H_0: B_{kl}^{(L)} = c B_{kl}^{(R)}, \quad H_A: B_{kl}^{(L)} \neq c B_{kl}^{(R)}$$
 #
 # In our case, $c$ is a constant that we fit to the entire right hemisphere network to
-# set its density equal to the left, $c = \frac{p_{left}}{p_{right}}$
+# set its density equal to the left, $c = \frac{p^{(L)}}{p_{(R)}}$
 #
 # A test for the adjusted null hypothesis above is given by using
 # [Fisher's noncentral hypergeometric distribution
 # ](https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
-# and applying a proceedure much like that of the traditional Fisher's exact test.
+# and applying a procedure much like that of the traditional Fisher's exact test.
 # ```
 #
 # More information about this test can be found in [](nhypergeom_sims).
