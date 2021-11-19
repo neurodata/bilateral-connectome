@@ -1,7 +1,15 @@
 #%% [markdown]
-# # Defining the data
-# Here we describe in more detail what data we will use for the bilateral symmetry
-# comparisons.
+# # Larval *Drosophila melanogaster* brain connectome
+# 
+# Recently, authors mapped a connectome of a *Drosophila melanogaster* larva. This
+# synaptic wiring diagram is comprised of 3,013 neurons and over 544,000
+# synapses. Importantly, this work yielded a complete reconstruction of both the left
+# and right hemispheres of the brain. We can represent this data as a network, with 
+# nodes representing neurons and
+# edges representing some number of synapses between them. 
+# Since there are many modeling choices to make even when deciding how to take a raw 
+# connectome and generate a network representation from it, we describe some of these 
+# choices below.
 
 #%% [markdown]
 # ## Unmatched data
@@ -22,12 +30,12 @@
 #   current analysis. For the current network of
 #   interest, four edge types are available: axo-axonic, axo-dendritic,
 #   dendro-dendritic, and dendro-axonic. We make no distinction between these four edges
-#   types. For now, we condider there to be an edge if there is at least one
+#   types. For now, we consider there to be an edge if there is at least one
 #   synapse between any two neurons (of any edge type).  One could consider notions of
 #   bilateral symmetry
 #   for a weighted network, and even for the unweighted case, one could consider varying
 #   thresholds of the network based on varying edge weights (which have often been
-#   employeed in connectomics studies). For now, we focus on the unweighted case purely
+#   employed in connectomics studies). For now, we focus on the unweighted case purely
 #   for simplicity and the availability of more two-sample tests for unweighted
 #   networks,
 #   though the weighted case or choice of threshold are also of great interest.

@@ -35,16 +35,16 @@ def savefig(
     pathname=FIG_PATH,
     bbox_inches="tight",
     pad_inches=0.5,
-    save_on=True,
     transparent=False,
     print_out=False,
+    formats=["png", "pdf", "svg"],
     **kws,
 ):
-    if save_on:
-        path = _handle_dirs(pathname, foldername, subfoldername)
-        savename = path / str(name + "." + format)
+    path = _handle_dirs(pathname, foldername, subfoldername)
+    savename = path / str(name)
+    for format in formats:
         plt.savefig(
-            savename,
+            str(savename) + "." + format,
             format=format,
             facecolor="white",
             transparent=transparent,
@@ -53,8 +53,8 @@ def savefig(
             dpi=dpi,
             **kws,
         )
-        if print_out:
-            print(f"Saved figure to {savename}")
+    if print_out:
+        print(f"Saved figure to {savename}")
 
 
 def get_out_dir(foldername=None, subfoldername=None, pathname=OUT_PATH):
