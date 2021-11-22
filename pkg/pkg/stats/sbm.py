@@ -1,5 +1,5 @@
 from collections import namedtuple
-
+import warnings
 import numpy as np
 import pandas as pd
 from graspologic.utils import remove_loops
@@ -70,7 +70,9 @@ def _make_adjacency_dataframe(data, index):
     return df
 
 
-def stochastic_block_test(A1, A2, labels1, labels2, null_odds=1.0, method="fisher"):
+def stochastic_block_test(
+    A1, A2, labels1, labels2, null_odds=1.0, method="fisher", combine_method="fisher"
+):
 
     B1, n_observed1, n_possible1, group_counts1 = fit_sbm(A1, labels1)
     B2, n_observed2, n_possible2, group_counts2 = fit_sbm(A2, labels2)
@@ -122,7 +124,19 @@ def stochastic_block_test(A1, A2, labels1, labels2, null_odds=1.0, method="fishe
     # TODO how else to combine pvalues
     run_pvalues = uncorrected_pvalues.values
     run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
-    stat, pvalue = combine_pvalues(run_pvalues, method="fisher")
+    if run_pvalues.min() == 0.0:
+        # TODO consider raising a new warning here
+        stat = np.inf
+        pvalue = 0.0
+    else:
+        stat, pvalue = combine_pvalues(run_pvalues, method=combine_method)
+    with warnings.catch_warnings(record=True) as warn:
+
+        if len(warn) > 0:
+            if issubclass(warn[-1].category, RuntimeWarning):
+
+                stat = np.inf
+                pvalue = 0.0
     n_tests = len(run_pvalues)
     misc["n_tests"] = n_tests
     return stat, pvalue, misc

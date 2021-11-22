@@ -15,7 +15,14 @@ from giskard.utils import get_random_seed
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
-from pkg.perturb import add_edges, remove_edges, shuffle_edges
+from pkg.perturb import (
+    add_edges,
+    remove_edges,
+    shuffle_edges,
+    add_edges_subgraph,
+    remove_edges_subgraph,
+    shuffle_edges_subgraph,
+)
 from pkg.plot import set_theme
 from pkg.stats import degree_test, erdos_renyi_test, rdpg_test, stochastic_block_test
 from pkg.utils import get_seeds
@@ -66,14 +73,26 @@ seeds = get_seeds(left_nodes, right_nodes)
 #%%
 random_state = np.random.default_rng(8888)
 adj = right_adj
+nodes = right_nodes
 labels1 = right_labels
 labels2 = right_labels
 n_sims = 1
 # effect_sizes = [256, 512, 2048, 4096, 8192]
-effect_sizes = np.geomspace(100, 8000, 30).astype(int)
+effect_sizes = np.linspace(100, 3000, 30).astype(int)
 seeds = (seeds[1], seeds[1])
 
 n_components = 8
+
+#%%
+
+KCs_nodes = nodes[nodes["simple_group"] == "KCs"]["inds"]
+
+
+def remove_edges_KCs_KCs(adjacency, **kwargs):
+    return remove_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
+
+
+#%%
 
 rows = []
 
@@ -86,15 +105,16 @@ tests = {
 }
 test_options = {
     "ER": [{}],
-    "SBM": [{"labels1": labels1, "labels2": labels2}],
+    "SBM": [{"labels1": labels1, "labels2": labels2, "combine_method": "tippett"}],
     "Degree": [{}],
     # "RDPG": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": False}],
     # "RDPG-n": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": True}],
 }
 perturbations = {
     "Remove edges (global)": remove_edges,
+    "Remove edges (KCs -> KCs)": remove_edges_KCs_KCs
     # "Add edges (global)": add_edges,
-    "Shuffle edges (global)": shuffle_edges,
+    # "Shuffle edges (global)": shuffle_edges,
 }
 
 n_runs = len(tests) * n_sims * len(effect_sizes)
@@ -167,7 +187,32 @@ grid = sns.FacetGrid(
     hue="test",
     height=6,
 )
-grid.map_dataframe(
-    sns.lineplot, x="effect_size", y="power_indicator", style="normalize_nodes"
-)
+grid.map_dataframe(sns.lineplot, x="effect_size", y="power_indicator")
 grid.add_legend()
+
+
+#%%
+
+
+# # source_nodes = right_nodes[right_nodes["simple_group"] == "KCs"]["inds"]
+# # # subgraph = adj[source_nodes][:, source_nodes]
+# # # remove_edges(subgraph, effect_size=100)
+# # perturb_subgraph(adj, remove_edges, source_nodes, source_nodes)
+
+# #%%
+
+# KCs_nodes = nodes[nodes["simple_group"] == "KCs"]["inds"]
+
+
+# def remove_edges_KCs_KCs(adjacency, **kwargs):
+#     return remove_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
+
+
+# new_adj = remove_edges_KCs_KCs(adj, effect_size=100)
+
+# #%%
+
+# A = np.zeros((3,3))
+# A[np.ix_([1,2], [1,2])] = np.ones((2,2))
+# A
+# # %%
