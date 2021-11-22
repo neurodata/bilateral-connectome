@@ -13,16 +13,13 @@ import pandas as pd
 import seaborn as sns
 from giskard.utils import get_random_seed
 from myst_nb import glue as default_glue
-from pkg.data import (
-    load_network_palette,
-    load_node_palette,
-    load_unmatched,
-)
+from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
 from pkg.perturb import add_edges, remove_edges, shuffle_edges
 from pkg.plot import set_theme
-from pkg.stats import erdos_renyi_test, rdpg_test, stochastic_block_test
+from pkg.stats import degree_test, erdos_renyi_test, rdpg_test, stochastic_block_test
 from pkg.utils import get_seeds
+from tqdm import tqdm
 
 DISPLAY_FIGS = False
 
@@ -72,34 +69,51 @@ adj = right_adj
 labels1 = right_labels
 labels2 = right_labels
 n_sims = 1
-effect_sizes = [0, 20, 40, 60, 80]
+# effect_sizes = [256, 512, 2048, 4096, 8192]
+effect_sizes = np.geomspace(100, 8000, 30).astype(int)
 seeds = (seeds[1], seeds[1])
 
 n_components = 8
 
 rows = []
 
-tests = {"ER": erdos_renyi_test, "SBM": stochastic_block_test, "RDPG": rdpg_test}
+tests = {
+    "ER": erdos_renyi_test,
+    "SBM": stochastic_block_test,
+    "Degree": degree_test,
+    # "RDPG": rdpg_test,
+    # "RDPG-n":rdpg_test,
+}
 test_options = {
     "ER": [{}],
     "SBM": [{"labels1": labels1, "labels2": labels2}],
-    "RDPG": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": False}],
+    "Degree": [{}],
+    # "RDPG": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": False}],
+    # "RDPG-n": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": True}],
 }
 perturbations = {
     "Remove edges (global)": remove_edges,
-    "Add edges (global)": add_edges,
+    # "Add edges (global)": add_edges,
     "Shuffle edges (global)": shuffle_edges,
 }
 
+n_runs = len(tests) * n_sims * len(effect_sizes)
+
 for perturbation_name, perturb in perturbations.items():
-    for effect_size in effect_sizes:
+    for effect_size in tqdm(effect_sizes):
         for sim in range(n_sims):
+            currtime = time.time()
             seed = get_random_seed(random_state)
             perturb_adj = perturb(adj, effect_size=effect_size, random_seed=seed)
+            perturb_elapsed = time.time() - currtime
+
             for test_name, test in tests.items():
                 option_sets = test_options[test_name]
                 for options in option_sets:
+                    currtime = time.time()
                     stat, pvalue, other = test(adj, perturb_adj, **options)
+                    test_elapsed = time.time() - currtime
+
                     row = {
                         "stat": stat,
                         "pvalue": pvalue,
@@ -108,13 +122,52 @@ for perturbation_name, perturb in perturbations.items():
                         "perturbation": perturbation_name,
                         "effect_size": effect_size,
                         "sim": sim,
+                        "perturb_elapsed": perturb_elapsed,
+                        "test_elapsed": test_elapsed,
                         **options,
                     }
                     rows.append(row)
 
 results = pd.DataFrame(rows)
-results
 
+#%%
+
+
+def check_power(pvalues, alpha=0.05):
+    n_significant = (pvalues <= alpha).sum()
+    power = (n_significant) / (len(pvalues))
+    return power
+
+
+power_results = (
+    results.groupby(["test", "perturbation", "effect_size"]).mean().reset_index()
+)
+
+power = (
+    results.groupby(["test", "perturbation", "effect_size"])["pvalue"]
+    .agg(check_power)
+    .reset_index()
+)
+power.rename(columns=dict(pvalue="power"), inplace=True)
+power_results["power"] = power["power"]
+results["power_indicator"] = (results["pvalue"] < 0.05).astype(float)
+results["power_indicator"] = results["power_indicator"] + np.random.normal(
+    0, 0.01, size=len(results)
+)
 # %%
-fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="test", ax=ax)
+# fig, ax = plt.subplots(1, 1, figsize=(10, 5))
+# sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="test", ax=ax)
+
+grid = sns.FacetGrid(
+    results,
+    col="perturbation",
+    col_wrap=3,
+    sharex=False,
+    sharey=False,
+    hue="test",
+    height=6,
+)
+grid.map_dataframe(
+    sns.lineplot, x="effect_size", y="power_indicator", style="normalize_nodes"
+)
+grid.add_legend()
