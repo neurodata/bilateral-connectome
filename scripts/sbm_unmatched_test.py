@@ -542,14 +542,20 @@ gluefig("probs_uncorrected", fig)
 # ```
 
 #%%
-B1 = misc["probabilities1"]
-B2 = misc["probabilities2"]
-null_odds = misc["null_odds"]
-B2 = B2 * null_odds
-B1_ravel = B1.values.ravel()
-B2_ravel = B2.values.ravel()
+# B1 = misc["probabilities1"]
+# B2 = misc["probabilities2"]
+# null_odds = misc["null_odds"]
+# B2 = B2 * null_odds
+# B1_ravel = B1.values.ravel()
+# B2_ravel = B2.values.ravel()
 
-B1
+# fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+# sns.scatterplot(x=B2_ravel, y=B1_ravel, color=neutral_color)
+# ax.set(yscale="log", xscale="log")
+# ax.set_xlabel("Right connection probability", color=network_palette["Right"])
+# ax.set_ylabel("Left connection probability", color=network_palette["Left"])
+# ax.plot([0.00001, 1], [0.00001, 1], color="black", linestyle="--")
+
 
 #%%
 

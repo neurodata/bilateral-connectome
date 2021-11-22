@@ -25,6 +25,8 @@ _bpedigo@jhu.edu_
 ---
 # What is a connectome?
 
+## Here is some more description
+
 --- 
 
 # Larval _Drosophila_ brain connectome
@@ -37,6 +39,10 @@ _bpedigo@jhu.edu_
 
 --- 
 # How can we compare two _networks_?
+
+![bg right width:700px](./results/figs/../../../results/figs/plot_layouts/whole-network-layout.png)
+![]()
+
 
 --- 
 # Briefly, the parameters of the data 
