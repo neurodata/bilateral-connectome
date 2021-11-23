@@ -28,9 +28,9 @@ from pkg.stats import degree_test, erdos_renyi_test, rdpg_test, stochastic_block
 from pkg.utils import get_seeds
 from tqdm import tqdm
 
-DISPLAY_FIGS = False
+DISPLAY_FIGS = True
 
-FILENAME = "perturbations_unmatched"
+FILENAME = "perturbations_unmatched_deep_dive"
 
 
 def gluefig(name, fig, **kwargs):
@@ -77,8 +77,7 @@ nodes = right_nodes
 labels1 = right_labels
 labels2 = right_labels
 n_sims = 1
-# effect_sizes = [256, 512, 2048, 4096, 8192]
-effect_sizes = np.linspace(100, 3000, 30).astype(int)
+effect_sizes = np.linspace(0, 3000, 30).astype(int)
 seeds = (seeds[1], seeds[1])
 
 n_components = 8
@@ -105,7 +104,7 @@ tests = {
 }
 test_options = {
     "ER": [{}],
-    "SBM": [{"labels1": labels1, "labels2": labels2, "combine_method": "stouffer"}],
+    "SBM": [{"labels1": labels1, "labels2": labels2, "combine_method": "fisher"}],
     "Degree": [{}],
     # "RDPG": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": False}],
     # "RDPG-n": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": True}],
@@ -133,11 +132,12 @@ for perturbation_name, perturb in perturbations.items():
                     currtime = time.time()
                     stat, pvalue, other = test(adj, perturb_adj, **options)
                     test_elapsed = time.time() - currtime
-
+                    if test_name == "SBM":
+                        uncorrected_pvalues = other["uncorrected_pvalues"]
+                        other["KCs_pvalues"] = uncorrected_pvalues.loc["KCs", "KCs"]
                     row = {
                         "stat": stat,
                         "pvalue": pvalue,
-                        "other": other,
                         "test": test_name,
                         "perturbation": perturbation_name,
                         "effect_size": effect_size,
@@ -145,6 +145,7 @@ for perturbation_name, perturb in perturbations.items():
                         "perturb_elapsed": perturb_elapsed,
                         "test_elapsed": test_elapsed,
                         **options,
+                        **other,
                     }
                     rows.append(row)
 
@@ -172,12 +173,25 @@ power.rename(columns=dict(pvalue="power"), inplace=True)
 power_results["power"] = power["power"]
 results["power_indicator"] = (results["pvalue"] < 0.05).astype(float)
 results["power_indicator"] = results["power_indicator"] + np.random.normal(
-    0, 0.01, size=len(results)
+    0, 0.0025, size=len(results)
 )
 # %%
-# fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-# sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="test", ax=ax)
-
+grid = sns.FacetGrid(
+    results,
+    col="perturbation",
+    col_wrap=min(3, len(perturbations)),
+    sharex=False,
+    sharey=False,
+    hue="test",
+    height=6,
+)
+grid.map_dataframe(sns.lineplot, x="effect_size", y="power_indicator")
+grid.add_legend(title="Test")
+grid.set_ylabels(r"Empirical power ($\alpha = 0.05$)")
+grid.set_xlabels("Effect size")
+grid.set_titles("{col_name}")
+gluefig("power", grid.figure)
+# %%
 grid = sns.FacetGrid(
     results,
     col="perturbation",
@@ -189,31 +203,45 @@ grid = sns.FacetGrid(
 )
 grid.map_dataframe(sns.lineplot, x="effect_size", y="pvalue")
 grid.add_legend(title="Test")
-grid.set_ylabels("Empirical power")
+grid.set_ylabels(r"p-value")
 grid.set_xlabels("Effect size")
 grid.set_titles("{col_name}")
+gluefig("pvalues", grid.figure)
 #%%
+subresults = results[results["perturbation"] == r"Remove edges (KCs $\rightarrow$ KCs)"]
+subresults = subresults[subresults["test"] == "SBM"].copy()
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.lineplot(
+    data=subresults,
+    x="effect_size",
+    y="KCs_pvalues",
+    ax=ax,
+    label=r"KCs $\rightarrow$ KCs",
+)
 
+mean_pvalues = []
+all_pvalues = []
+for i in range(len(subresults)):
+    row = subresults.iloc[i]
+    vals = row["uncorrected_pvalues"].values
+    mean = np.nanmean(vals)
+    mean_pvalues.append(mean)
+    for j, pvalue in enumerate(vals.ravel()):
+        all_pvalues.append(
+            {"effect_size": row["effect_size"], "pvalue": pvalue, "j": j}
+        )
 
-# # source_nodes = right_nodes[right_nodes["simple_group"] == "KCs"]["inds"]
-# # # subgraph = adj[source_nodes][:, source_nodes]
-# # # remove_edges(subgraph, effect_size=100)
-# # perturb_subgraph(adj, remove_edges, source_nodes, source_nodes)
+all_pvalues = pd.DataFrame(all_pvalues)
+subresults["mean_pvalues"] = mean_pvalues
 
-# #%%
+sns.lineplot(
+    data=subresults, x="effect_size", y="mean_pvalues", ax=ax, label="Mean p-value"
+)
 
-# KCs_nodes = nodes[nodes["simple_group"] == "KCs"]["inds"]
+ax.set(ylabel="p-value", xlabel="Effect size (# edges removed)")
 
+sns.lineplot(data=subresults, x="effect_size", y="pvalue", label="Fisher's combined")
 
-# def remove_edges_KCs_KCs(adjacency, **kwargs):
-#     return remove_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
+ax.set_title(r"Remove edges (KCs $\rightarrow$ KCs)")
 
-
-# new_adj = remove_edges_KCs_KCs(adj, effect_size=100)
-
-# #%%
-
-# A = np.zeros((3,3))
-# A[np.ix_([1,2], [1,2])] = np.ones((2,2))
-# A
-# # %%
+gluefig('split_pvalues', fig)

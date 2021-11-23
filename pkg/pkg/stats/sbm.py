@@ -130,13 +130,6 @@ def stochastic_block_test(
         pvalue = 0.0
     else:
         stat, pvalue = combine_pvalues(run_pvalues, method=combine_method)
-    with warnings.catch_warnings(record=True) as warn:
-
-        if len(warn) > 0:
-            if issubclass(warn[-1].category, RuntimeWarning):
-
-                stat = np.inf
-                pvalue = 0.0
     n_tests = len(run_pvalues)
     misc["n_tests"] = n_tests
     return stat, pvalue, misc
