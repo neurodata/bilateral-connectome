@@ -5,6 +5,9 @@ paginate: true
 style: |
     section {
         justify-content: flex-start;
+        --orange: #ed7d31;
+        --left: #66c2a5;
+        --right: #fc8d62;
     }
     img[alt~="center"] {
         display: block;
@@ -47,8 +50,8 @@ _[NeuroData lab](https://neurodata.io/)_
 
 # What is a connectome? (for *this* talk)
 
-A **connectome** is a network model of brain structure consisting of <span style="color: #ed7d31"> nodes which 
-represent individual neurons </span> and <span style="color: #4472c4"> edges which represent the presence of a synaptic 
+A **connectome** is a network model of brain structure consisting of <span style="color: black"> nodes which 
+represent individual neurons </span> and <span style="color: black"> edges which represent the presence of a synaptic 
 connection </span> between those neurons.
 
 ---
@@ -74,7 +77,7 @@ connection </span> between those neurons.
 - ~544K synapses
 - Both hemispheres of the brain reconstructed
 ![bg right:60% 95%](./results/figs/../../../results/figs/plot_layouts/whole-network-layout.png)
-- TODO say something about how we are treating as directed, unweighted, loopless
+<!-- TODO say something about how we are treating as directed, unweighted, loopless -->
 
 ---
 
@@ -84,16 +87,16 @@ section {
 }
 </style>
 
-# Are the left and the right sides of this brain *the same*?
+# Are the <span style="color: var(--left)"> left </span> and the <span style="color: var(--right)"> right </span> sides of this brain *the same*?
 
 --- 
 
 # Are these populations the same? 
 - Known as two-sample testing
-- $Y_1 \sim F_1$, $Y_2 \sim F_2$
-- $H_0: F_1 = F_2$  
+- $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$, $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
+- $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
   vs.
-  $H_A: F_1 \neq F_2$
+  $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
 
 
 ![bg right:45% w:400](./results/../../results/figs/two_sample_testing/2_sample_real_line.svg)
@@ -102,16 +105,20 @@ section {
 
 --- 
 # Are these two _networks_ the same?
+<div class="twocols">
 
-- Left side network: $A^{(L)} \sim F^{(L)}$ 
-- Right side network: $A^{(R)} \sim F^{(R)}$
+- Left side network: $\color{#66c2a5} A^{(L)} \sim F^{(L)}$ 
+- Right side network: $\color{#fc8d62} A^{(R)} \sim F^{(R)}$
 
-- $H_0: F^{(L)} = F^{(R)}$  
+- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
   vs.  
-  $H_A: F^{(L)} \neq  F^{(R)}$
+  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
+<p class="break"></p>
 
 <!-- TODO add some text here to the networks plots -->
-![bg right:45% w:400](./2_networks.png)
+![center w:500](./2_networks.png)
+
+</div>
 
 
 ---
@@ -130,7 +137,7 @@ section {
 
 <p class="break"></p>
 
-![width:600px](../results/figs/er_unmatched_test/er-density.png)
+![center width:600px](../results/figs/er_unmatched_test/er_density.svg)
 
 </div>
 
@@ -155,10 +162,13 @@ section {
   $H_0: B^{(L)} = B^{(R)}$  
   vs.  
   $H_A: B^{(L)} \neq  B^{(R)}$
+- **p-value $< 10^{-4}$** 
 
 <p class="break"></p>
 
-![w:500](sbm_uncorrected_cropped.png)
+<!-- TODO remake but without B L R etc. -->
+![w:500](sbm_uncorrected_cropped.png) 
+
 
 </div>
 
@@ -175,16 +185,50 @@ section {
 --- 
 # How sensitive are they? 
 
+---
+# Summary
+- Even for a simple question like "are the left and right the same," there are many 
+different ways to write down what we mean as a statistical hypothesis
+   - Each yields a different test procedure 
+   - Each test is sensitive to varying alternatives 
+- We may care about some differences and not others (e.g. density) and any test will need to adjust for that
+- These techniques apply anytime one wants to compare connectomes/networks
+
 --- 
 <!-- # ```graspologic``` -->
 
-![center w:700](graspologic_svg.svg)
+<div class="twocols">
 
-```
-pip install graspologic
-```
+## graspologic:
+![w:450](graspologic_svg.svg)
 
-[![h:50](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:50](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![h:50](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:50](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors)  [![h:50](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p class="break"></p>
+
+## This work:
+[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) 
+![w:600](jb_example.png)
+
+</div>
 
 ---
 # Acknowledgements
+
+<style scoped> 
+p {
+    font-size: 24px
+}
+h4 {font-size: 30px}
+</style>
+
+#### Johns Hopkins University
+Joshua Vogelstein, Carey Priebe, Mike Powell, Eric Bridgeford, Kareef Ullah, Diane Lee, Sambit Panda, Jaewon Chung, Ali Saad-Eldin
+
+#### University of Cambridge / Laboratory of Molecular Biology 
+Michael Winding, Albert Cardona, Marta Zlatic, Chris Barnes
+
+#### Microsoft Research 
+Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McLean, Carolyn Buractaon, Amber Hoak
+
+---
+# Questions?
