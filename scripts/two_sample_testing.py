@@ -1,4 +1,7 @@
 #%%
+from pkg.utils import set_warnings
+
+set_warnings()
 
 import numpy as np
 import pandas as pd
@@ -7,6 +10,7 @@ from pkg.plot import set_theme
 from pkg.io import savefig
 from myst_nb import glue as default_glue
 import matplotlib.pyplot as plt
+from pkg.data import load_network_palette
 
 DISPLAY_FIGS = False
 
@@ -31,6 +35,10 @@ def glue(name, var, prefix=None):
 
 set_theme(font_scale=1.5)
 
+palette, _ = load_network_palette()
+
+colors = [palette["Left"], palette["Right"]]
+palette = dict(zip([0, 1], colors))
 rng = np.random.default_rng(8888)
 
 x1 = rng.normal(1, 1, size=20)
@@ -46,9 +54,8 @@ data["labels"] = labels
 fig, ax = plt.subplots(1, 1, figsize=(6, 8))
 
 np.random.seed(8888)
-colors = sns.color_palette()
 pad = 0.3
-sns.stripplot(data=data, x="labels", y="y", ax=ax, s=10, jitter=pad)
+sns.stripplot(data=data, x="labels", y="y", ax=ax, s=10, jitter=pad, palette=palette)
 ax.set(yticks=[], xticklabels=["Group 1", "Group 2"], xlabel="")
 ax.plot([-pad, pad], [x1_mean, x1_mean], color=colors[0], linewidth=3)
 ax.text(

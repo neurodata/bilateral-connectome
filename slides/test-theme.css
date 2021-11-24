@@ -1,4 +1,6 @@
-/* @theme test-theme */
+/* @theme test-theme
+ * @auto-scaling true
+ */
 
 @import 'default';
 
