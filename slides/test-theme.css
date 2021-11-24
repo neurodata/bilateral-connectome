@@ -5,7 +5,7 @@
 @import 'default';
 
 div.twocols {
-    margin-top: 35px;
+    margin-top: 0px;
     column-count: 2;
 }
 div.twocols p:first-child,
