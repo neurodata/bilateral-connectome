@@ -200,7 +200,20 @@ gluefig("group_counts", fig)
 #%%
 
 
-def plot_stochastic_block_test(misc, pvalue_vmin=None):
+def shrink_axis(ax, scale=0.7):
+    pos = ax.get_position()
+    mid = (pos.ymax + pos.ymin) / 2
+    height = pos.ymax - pos.ymin
+    new_pos = Bbox(
+        [
+            [pos.xmin, mid - scale * 0.5 * height],
+            [pos.xmax, mid + scale * 0.5 * height],
+        ]
+    )
+    ax.set_position(new_pos)
+
+
+def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
     # get values
     B1 = misc["probabilities1"]
     B2 = misc["probabilities2"]
@@ -259,18 +272,6 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None):
     # constrain
     # layouts.
 
-    def shrink_axis(ax, scale=0.7):
-        pos = ax.get_position()
-        mid = (pos.ymax + pos.ymin) / 2
-        height = pos.ymax - pos.ymin
-        new_pos = Bbox(
-            [
-                [pos.xmin, mid - scale * 0.5 * height],
-                [pos.xmax, mid + scale * 0.5 * height],
-            ]
-        )
-        ax.set_position(new_pos)
-
     ax = axs[0]
     shrink_axis(ax, scale=0.5)
     _ = fig.colorbar(
@@ -284,10 +285,13 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None):
     # plot p-values
     ax = axs[pvalue_col]
 
-    annot = np.full((K, K), "")
-    annot[(B1.values == 0) & (B2.values == 0)] = "B"
-    annot[(B1.values == 0) & (B2.values != 0)] = "L"
-    annot[(B1.values != 0) & (B2.values == 0)] = "R"
+    if annot_missing:
+        annot = np.full((K, K), "")
+        annot[(B1.values == 0) & (B2.values == 0)] = "B"
+        annot[(B1.values == 0) & (B2.values != 0)] = "L"
+        annot[(B1.values != 0) & (B2.values == 0)] = "R"
+    else:
+        annot = False
     plot_pvalues = np.log10(uncorrected_pvalues)
     plot_pvalues[np.isnan(plot_pvalues)] = 0
     im = sns.heatmap(
@@ -350,10 +354,97 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None):
 
 
 fig, axs = plot_stochastic_block_test(misc)
+
 gluefig("sbm_uncorrected", fig)
 
 # need to save this for later for setting colorbar the same on other plot
 pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
+
+#%%
+
+
+def plot_pvalues(
+    ax, cax, uncorrected_pvalues, B1, B2, hb_thresh, pvalue_vmin, annot_missing=True
+):
+    K = len(B1)
+    index = B1.index
+    if annot_missing:
+        annot = np.full((K, K), "")
+        annot[(B1.values == 0) & (B2.values == 0)] = "B"
+        annot[(B1.values == 0) & (B2.values != 0)] = "L"
+        annot[(B1.values != 0) & (B2.values == 0)] = "R"
+    else:
+        annot = False
+    plot_pvalues = np.log10(uncorrected_pvalues)
+    plot_pvalues[np.isnan(plot_pvalues)] = 0
+    im = sns.heatmap(
+        plot_pvalues,
+        ax=ax,
+        annot=annot,
+        cmap="RdBu",
+        center=0,
+        square=True,
+        cbar=False,
+        fmt="s",
+        vmin=pvalue_vmin,
+    )
+    ax.set(ylabel="Source group", xlabel="Target group")
+    ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
+    ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
+
+    colors = im.get_children()[0].get_facecolors()
+    significant = uncorrected_pvalues < hb_thresh
+
+    # NOTE: the x's looked bad so I did this super hacky thing...
+    pad = 0.2
+    for idx, (is_significant, color) in enumerate(
+        zip(significant.values.ravel(), colors)
+    ):
+        if is_significant:
+            i, j = np.unravel_index(idx, (K, K))
+            # REF: seaborn heatmap
+            lum = relative_luminance(color)
+            text_color = ".15" if lum > 0.408 else "w"
+
+            xs = [j + pad, j + 1 - pad]
+            ys = [i + pad, i + 1 - pad]
+            ax.plot(xs, ys, color=text_color, linewidth=4)
+            xs = [j + 1 - pad, j + pad]
+            ys = [i + pad, i + 1 - pad]
+            ax.plot(xs, ys, color=text_color, linewidth=4)
+
+    # plot colorbar for the pvalue plot
+    # NOTE: only did it this way for consistency with the other colorbar
+    shrink_axis(cax, scale=0.5)
+    _ = fig.colorbar(
+        im.get_children()[0],
+        cax=cax,
+        fraction=1,
+        shrink=1,
+        ticklocation="right",
+    )
+
+
+width_ratios = [10, 0.5]
+fig, axs = plt.subplots(
+    1,
+    len(width_ratios),
+    figsize=(9, 9),
+    gridspec_kw=dict(
+        width_ratios=width_ratios,
+    ),
+)
+plot_pvalues(
+    axs[0],
+    axs[1],
+    misc["uncorrected_pvalues"],
+    misc["probabilities1"],
+    misc["probabilities2"],
+    0.05 / misc["n_tests"],
+    pvalue_vmin,
+    annot_missing=False,
+)
+gluefig("sbm_uncorrected_pvalues", fig)
 
 #%% [markdown]
 # Next, we run the test for bilateral symmetry under the stochastic block model.
@@ -685,7 +776,7 @@ glue("n_remove", n_remove)
 
 #%%
 rows = []
-n_resamples = 25
+n_resamples = 100
 glue("n_resamples", n_resamples)
 for i in range(n_resamples):
     subsampled_right_adj = remove_edges(
@@ -704,7 +795,7 @@ resample_results = pd.DataFrame(rows)
 
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(data=resample_results, x="pvalue", ax=ax)
+sns.histplot(data=resample_results, x="pvalue", ax=ax, color=neutral_color)
 ax.set(xlabel="p-value", ylabel="", yticks=[])
 ax.spines["left"].set_visible(False)
 

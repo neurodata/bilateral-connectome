@@ -34,7 +34,7 @@ def savefig(
     subfoldername=None,
     pathname=FIG_PATH,
     bbox_inches="tight",
-    pad_inches=0.5,
+    pad_inches=0.05,
     transparent=False,
     print_out=False,
     formats=["png", "pdf", "svg"],
