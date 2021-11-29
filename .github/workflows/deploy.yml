@@ -37,6 +37,12 @@ jobs:
         source: slides/nmc.html
         target: docs/_build/html/nmc.html
 
+    - name: Copy static PDF
+      uses: canastro/copy-file-action@master
+      with: 
+        source: slides/nmc.pdf
+        target: docs/_build/html/pdf.html
+
     # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
       uses: peaceiris/actions-gh-pages@v3.6.1
