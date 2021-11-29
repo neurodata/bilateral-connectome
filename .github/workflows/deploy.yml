@@ -41,7 +41,7 @@ jobs:
       uses: canastro/copy-file-action@master
       with: 
         source: slides/nmc.pdf
-        target: docs/_build/html/pdf.html
+        target: docs/_build/html/nmc.pdf
 
     # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
