@@ -128,7 +128,7 @@ section {
 
 - Each edge is sampled independently, same connection probability $p$ for all edges
 -  $A_{ij} \sim Bernoulli(p)$
-- Compare $\hat{p}^{(L)}$ vs $\hat{p}^{(R)}$ (binomial test)
+- Compare $\color{#66c2a5} \hat{p}^{(L)}$ vs $\color{#fc8d62} \hat{p}^{(R)}$ (binomial test)
 
 <!-- TODO fix this centering -->
 <p style="text-align: center"> 
@@ -159,9 +159,9 @@ section {
 - Connections independent, with probability set by the <span style="color: #ed7d31"> source node's group </span> and <span style="color: #4472c4"> target node's group </span>
 - $A_{ij} \sim Bernoulli(B_{\color{#ed7d31}\tau_i, \color{#4472c4}\tau_j})$
 - Compare group-to-group connection probabilities:
-  $H_0: B^{(L)} = B^{(R)}$  
+  $H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  
   vs.  
-  $H_A: B^{(L)} \neq  B^{(R)}$
+  $H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}$
 - **p-value $< 10^{-4}$** 
 
 <p class="break"></p>
@@ -174,7 +174,21 @@ section {
 
 --- 
 
-# Sum up SBM results
+# Correcting for a difference in density
+
+<div class="twocols">
+
+- Perhaps rejecting $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$ can be explained by the difference in density from the ER test?
+- New null hypothesis:
+  $H_0: \color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$  
+  where $c$ is a density-normalizing constant, $\frac{\color{#66c2a5} p^{(L)}}{\color{#fc8d62} p^{(R)}}$
+
+<p class="break"></p>
+
+![](results/figs/sbm_unmatched_test/../../../../results/figs/sbm_test/pvalues_corrected.png)
+
+</div>
+
 
 ---
 # An even more flexible model: Random dot product graph (RDPG)
@@ -200,6 +214,9 @@ different ways to write down what we mean as a statistical hypothesis
 <div class="twocols">
 
 ## graspologic:
+
+[github.com/microsoft/graspologic](https://github.com/microsoft/graspologic)
+
 ![w:450](graspologic_svg.svg)
 
 [![h:50](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:50](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors)  [![h:50](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
