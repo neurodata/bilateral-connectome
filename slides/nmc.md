@@ -193,7 +193,7 @@ section {
 - Rejecting $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$ can be explained by the difference in density?
 - New null hypothesis:
   $H_0: \color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$  
-  where $c$ is a density-adjusting constant, $\frac{\color{#66c2a5} p^{(L)}}{\color{#fc8d62} p^{(R)}}$
+  where $c$ is a density-**adjusting** constant, $\frac{\color{#66c2a5} p^{(L)}}{\color{#fc8d62} p^{(R)}}$
 - Randomly subsample edges from denser network, rerun test
 - **p-values $> 0.6$**
 
