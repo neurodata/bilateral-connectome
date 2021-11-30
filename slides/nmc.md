@@ -98,6 +98,8 @@ section {
 
 # Are the <span style="color: var(--left)"> left </span> and the <span style="color: var(--right)"> right </span> sides of this brain *the same*?
 
+<!-- TODO some subtext here? or leave as is -->
+
 --- 
 
 # Are these populations the same?
@@ -142,7 +144,7 @@ section {
 # The simplest thing: Erdos-Renyi (ER) model
 <div class="twocols">
 
-- Each edge is sampled independently, same connection probability $p$ for all edges
+- Connections independent, same connection probability $p$ for all edges
 -  $A_{ij} \sim Bernoulli(p)$
 - Compare $\color{#66c2a5} \hat{p}^{(L)}$ vs $\color{#fc8d62} \hat{p}^{(R)}$ (binomial test)
 <!-- TODO fix this centering -->
@@ -151,15 +153,15 @@ section {
 
 <p class="break"></p>
 
-![center width:600px](../results/figs/er_unmatched_test/er_density.svg)
+![center width:500px](../results/figs/er_unmatched_test/er_density.svg)
 
 </div>
 
-<style scoped>
+<!-- <style scoped>
 section {
   padding-right: -100;
 }
-</style>
+</style> -->
 <!-- ![bg right:45% w:500](../results/figs/er_unmatched_test/er-density.png "This is a caption") -->
 
 
@@ -174,8 +176,8 @@ section {
 - $A_{ij} \sim Bernoulli(B_{\color{#ed7d31}\tau_i, \color{#4472c4}\tau_j})$
 - Compare group-to-group connection probabilities:
   $H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  
-  vs.  
   $H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}$
+  (Many binomial tests)
 - **p-value $< 10^{-4}$** 
 
 <p class="break"></p>
@@ -193,7 +195,7 @@ section {
 - Rejecting $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$ can be explained by the difference in density?
 - New null hypothesis:
   $H_0: \color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$  
-  where $c$ is a density-**adjusting** constant, $\frac{\color{#66c2a5} p^{(L)}}{\color{#fc8d62} p^{(R)}}$
+  where $c$ is a density-adjusting constant, $\frac{\color{#66c2a5} p^{(L)}}{\color{#fc8d62} p^{(R)}}$
 - Randomly subsample edges from denser network, rerun test
 - **p-values $> 0.6$**
 
@@ -208,14 +210,13 @@ section {
 
 <div class="twocols">
 
-- Connections independent, probability set by dot product of <span style='color: var(--source)'> source node's latent vector </span> and <span style="color: var(--target)"> target node's latent vector </span>.
+- Connections independent, probability from dot product of <span style='color: var(--source)'> source node's latent vector </span>, <span style="color: var(--target)"> target node's latent vector </span>.
 - $A_{ij} \sim Bernoulli(\langle \color{orange} x_i, \color{blue} y_j \color{black} \rangle)$
 - Vectors from distributions
   $\color{#66c2a5} x_i^{(L)} \sim F^{(L)}$,  $\color{#fc8d62} x_i^{(R)} \sim F^{(R)}$
 - Compare distributions of latent vectors:
   $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62} F^{(R)}$  
   $H_A: \color{#66c2a5} F^{(L)} \neq \color{#fc8d62} F^{(R)}$
-
 
 <p class="break"></p>
 
@@ -282,3 +283,5 @@ Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McL
 
 ---
 # Questions?
+
+![bg opacity:.7 95%](../results/figs/plot_side_layouts/2_network_layout.png)
