@@ -176,6 +176,10 @@ glue("n_show", n_show)
 glue("eff_n_components", eff_n_components)
 gluefig("latents", fig)
 
+n_show = 3
+pg = plot_latents(Z1, Z2, palette=network_palette, n_show=n_show, s=20)
+fig = pg.figure
+gluefig(f"latents_d={n_show}", fig)
 
 #%% [markdown]
 

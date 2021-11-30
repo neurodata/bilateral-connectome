@@ -6,10 +6,10 @@ style: |
     section {
         justify-content: flex-start;
         --orange: #ed7d31;
-        --target: navy;
         --left: #66c2a5;
         --right: #fc8d62;
-        --source: #ed7d31;
+        --source: #8da0cb;
+        --target: #e78ac3;
     }
     img[alt~="center"] {
         display: block;
@@ -146,7 +146,9 @@ section {
 
 - Connections independent, same connection probability $p$ for all edges
 -  $A_{ij} \sim Bernoulli(p)$
-- Compare $\color{#66c2a5} \hat{p}^{(L)}$ vs $\color{#fc8d62} \hat{p}^{(R)}$ (binomial test)
+- Compare probabilities:
+  $H_0: \color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  
+  $H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}$
 <!-- TODO fix this centering -->
 - **p-value $< 10^{-23}$**
 
@@ -172,8 +174,8 @@ section {
 
 <div class="twocols">
 
-- Connections independent, with probability set by the <span style="color: #ed7d31"> source node's group </span> and <span style="color: #4472c4"> target node's group </span>
-- $A_{ij} \sim Bernoulli(B_{\color{#ed7d31}\tau_i, \color{#4472c4}\tau_j})$
+- Connections independent, with probability set by the <span style="color: var(--source)"> source node's group </span> and <span style="color: var(--target)"> target node's group </span>
+- $A_{ij} \sim Bernoulli(B_{\color{#8da0cb}\tau_i, \color{#e78ac3}\tau_j})$
 - Compare group-to-group connection probabilities:
   $H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  
   $H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}$
@@ -211,14 +213,16 @@ section {
 <div class="twocols">
 
 - Connections independent, probability from dot product of <span style='color: var(--source)'> source node's latent vector </span>, <span style="color: var(--target)"> target node's latent vector </span>.
-- $A_{ij} \sim Bernoulli(\langle \color{orange} x_i, \color{blue} y_j \color{black} \rangle)$
-- Vectors from distributions
-  $\color{#66c2a5} x_i^{(L)} \sim F^{(L)}$,  $\color{#fc8d62} x_i^{(R)} \sim F^{(R)}$
+- $A_{ij} \sim Bernoulli(\langle \color{#8da0cb} x_i, \color{#e78ac3} y_j \color{black} \rangle)$
+- $\color{#66c2a5} x_i^{(L)} \sim F^{(L)}$,  $\color{#fc8d62} x_i^{(R)} \sim F^{(R)}$
 - Compare distributions of latent vectors:
   $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62} F^{(R)}$  
-  $H_A: \color{#66c2a5} F^{(L)} \neq \color{#fc8d62} F^{(R)}$
+  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq \color{#fc8d62} F^{(R)}$
+- **p-value** $\approx 1$
 
 <p class="break"></p>
+
+![h:500](../results/figs/rdpg_unmatched_test/latents_d=3.png)
 
 </div>
 
@@ -227,10 +231,28 @@ Athreya et al. "Statistical inference on random dot product graphs: a survey." J
 </footer>
 
 ---
-# RDPG results 
+# To sum up so far...
 
---- 
-# How sensitive are they? 
+<style scoped>
+table {
+    height: 100%;
+    width: 100%;
+    /* margin-left: 20%; */
+    margin-right: auto;
+    font-size: 28px;
+}
+</style>
+
+
+| Model | $H_0$ (vs. $H_A \neq$)                                             |    p-value    | Interpretation |
+| ----- | ------------------------------------------------------------------ | :-----------: | -------------- |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |  $<10^{-23}$  | Reject densities the same
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |  $< 10^{-4}$  | Reject cell type connection probabilities the same
+| SBM   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | $\approx 0.7$ | Don't reject ^ after density-correction
+| RDPG  | $\color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62} F^{(R)}$  |  $\approx 1$  | Don't reject latent distributions the same
+  
+---
+# How sensitive is one of these tests?
 
 ---
 # Summary
