@@ -109,7 +109,6 @@ section {
 - Known as two-sample testing
 - $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$, $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
 - $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
-  vs.
   $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
 
 <p class="break"></p>
@@ -128,7 +127,6 @@ section {
 - Right side network: $\color{#fc8d62} A^{(R)} \sim F^{(R)}$
 
 - $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
-  vs.  
   $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
 
 <p class="break"></p>
