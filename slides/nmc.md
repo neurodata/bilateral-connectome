@@ -235,32 +235,47 @@ Athreya et al. "Statistical inference on random dot product graphs: a survey." J
 
 <style scoped>
 table {
-    height: 100%;
-    width: 100%;
-    /* margin-left: 20%; */
-    margin-right: auto;
     font-size: 28px;
+    margin-bottom: 50px;
 }
 </style>
-
 
 | Model | $H_0$ (vs. $H_A \neq$)                                             |    p-value    | Interpretation |
 | ----- | ------------------------------------------------------------------ | :-----------: | -------------- |
 | ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |  $<10^{-23}$  | Reject densities the same
 | SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |  $< 10^{-4}$  | Reject cell type connection probabilities the same
-| SBM   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | $\approx 0.7$ | Don't reject ^ after density-correction
+| SBM   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | $\approx 0.7$ | Don't reject the above after density adjustment
 | RDPG  | $\color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62} F^{(R)}$  |  $\approx 1$  | Don't reject latent distributions the same
-  
+
+**The answer to this very simple question totally depends on how you frame it!**
+
 ---
-# How sensitive is one of these tests?
+# How sensitive are these tests?
+
+<div class="twocols">
+
+- Make 2 copies of one hemisphere network
+- Apply some perturbation: 
+
+- Rerun a test for symmetry
+
+<p class="break"></p>
+
+
+
+</div>
 
 ---
 # Summary
-- Even for a simple network question like "are the left and right the same," there are many different ways to write down what we mean as a statistical hypothesis
-   - Each yields a different test procedure 
-   - Each test is sensitive to varying alternatives 
-- We may care about some differences and not others (e.g. density) and any test will need to adjust for that
-- These techniques apply anytime one wants to compare connectomes/networks
+- Many different ways to write "are the left and right the same" as a statistical hypothesis
+   - Each yields a different test procedure
+   - Each test is sensitive to varying alternatives
+- May not care about some differences (e.g. density) and any test will need to adjust
+- Techniques apply anytime one wants to compare connectomes/networks
+
+# Future work
+- Many other tests one could run (e.g. compare subgraph counts)
+- Many other alternatives one could be interested in
 
 --- 
 <!-- # ```graspologic``` -->

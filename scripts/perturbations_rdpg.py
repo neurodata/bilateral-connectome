@@ -81,7 +81,8 @@ seeds = get_seeds(right_nodes, right_nodes)
 #%%
 
 groups = np.unique(labels1)
-
+groups = groups[:-1]
+groups
 #%%
 
 
@@ -107,14 +108,15 @@ def swap_incident_edges_subgraph(adjacency, nodes, effect_size=8, random_seed=No
 
 
 rows = []
-n_sims = 5
-for group in groups[:3]:
+n_sims = 1
+groups = ["KCs", "LHNs", "MBINs", "MBONs", "PNs", "dVNCs", "sensories"]
+for group in groups[:]:
     print(group)
     group_nodes = nodes[nodes["simple_group"] == group]["inds"]
     max_effect_size = len(group_nodes)
     # for effect_size in np.linspace(0.1 * max_effect_size, max_effect_size, 10):
     effect_steps = np.geomspace(
-        start=0.1 * max_effect_size, stop=max_effect_size, dtype=int, num=5
+        start=max(2, 0.1 * max_effect_size), stop=max_effect_size, dtype=int, num=5
     )
     print(effect_steps)
     for effect_size in effect_steps:
@@ -122,23 +124,25 @@ for group in groups[:3]:
             perturb_adj = swap_incident_edges_subgraph(
                 adj, group_nodes, effect_size=effect_size, random_seed=rng
             )
-            stat, pvalue, misc = rdpg_test(
-                adj,
-                perturb_adj,
-                seeds=seeds,
-                normalize_nodes=True,
-                align_n_components=16,
-                n_components=4,
-            )
-            row = {
-                "stat": stat,
-                "pvalue": pvalue,
-                "sim": sim,
-                "effect_size": effect_size,
-                "group": group,
-                **misc,
-            }
-            rows.append(row)
+            for normalize in [True, False]:
+                stat, pvalue, misc = rdpg_test(
+                    adj,
+                    perturb_adj,
+                    seeds=seeds,
+                    normalize_nodes=normalize,
+                    align_n_components=16,
+                    n_components=4,
+                )
+                row = {
+                    "stat": stat,
+                    "pvalue": pvalue,
+                    "sim": sim,
+                    "effect_size": effect_size,
+                    "group": group,
+                    "normalize": normalize,
+                    **misc,
+                }
+                rows.append(row)
 
 #%%
 
@@ -147,3 +151,4 @@ fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 sns.lineplot(data=data, x="effect_size", hue="group", y="pvalue", palette=node_palette)
 ax.get_legend().set_title("Cell type")
 ax.set(yscale="log", xlabel="# of perturbed neurons", ylabel="p-value")
+gluefig("perturbation_pvalues_rdpg")
