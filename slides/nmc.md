@@ -278,8 +278,8 @@ table {
 ---
 
 # Future work
-- Many other tests (e.g. compare subgraph counts)
-- Studying the sets of alternatives each test is/is not sensitive to
+- Many other tests
+- Many other alternatives
 - Roadmap for future principled comparisons of connectome networks!
 
 --- 
@@ -328,3 +328,12 @@ Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McL
 # Questions?
 
 ![bg opacity:.7 95%](../results/figs/plot_side_layouts/2_network_layout.png)
+
+---
+
+# Appendix
+
+--- 
+
+![](../results/figs/unmatched_vs_matched/unmatched_vs_matched.svg)
+
