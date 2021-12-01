@@ -150,7 +150,7 @@ section {
 <div class="twocols">
 
 - Connections independent, same connection probability $p$ for all edges
--  $A_{ij} \sim Bernoulli(p)$
+- $P[i \rightarrow j] = p$
 - Compare probabilities:
   $H_0: \color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  
   $H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}$
@@ -179,8 +179,8 @@ section {
 
 <div class="twocols">
 
-- Connections independent, with probability set by the <span style="color: var(--source)"> source node's group </span> and <span style="color: var(--target)"> target node's group </span>
-- $A_{ij} \sim Bernoulli(B_{\color{#8da0cb}\tau_i, \color{#e78ac3}\tau_j})$
+- Connection probability set by the <span style="color: var(--source)"> source node's group ($\tau_i$)</span> and <span style="color: var(--target)"> target node's group ($\tau_j$)</span>
+- $P[i \rightarrow j] = B_{\color{#8da0cb} \tau_i, \color{#e78ac3}\tau_j}$
 - Compare group-to-group connection probabilities:
   $H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  
   $H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}$
@@ -216,9 +216,9 @@ section {
 
 <div class="twocols">
 
-- Connections independent, probability from dot product of <span style='color: var(--source)'> source node's latent vector</span>, <span style="color: var(--target)"> target node's latent vector</span>.
-- $A_{ij} \sim Bernoulli(\langle \color{#8da0cb} x_i, \color{#e78ac3} y_j \color{black} \rangle)$
-- $\color{#66c2a5} x_i^{(L)} \sim F^{(L)}$,  $\color{#fc8d62} x_i^{(R)} \sim F^{(R)}$
+- Probability from dot product of <span style='color: var(--source)'> source node's latent vector</span>, <span style="color: var(--target)"> target node's latent vector</span>.
+- $P[i \rightarrow j] = \langle \color{#8da0cb} x_i, \color{#e78ac3} y_j \color{black} \rangle$
+- $\color{#66c2a5} x_i^{(L)} \sim F^{(L)}$,  $\color{#fc8d62} x_i^{(R)} \sim F^{(R)}$ in $d$ dimensions
 - Compare distributions of latent vectors:
   $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62} F^{(R)}$  
   $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq \color{#fc8d62} F^{(R)}$
