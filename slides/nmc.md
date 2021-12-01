@@ -49,38 +49,42 @@ _[NeuroData lab](https://neurodata.io/)_
 
 ![bg right:50% w:600](./docs/../../docs/images/temp-maggot-brain-umap-omni-hue_key=merge_class.png)
 
----
+<!-- ---
 
 # What is a connectome? (for *this* talk)
 
 A **connectome** is a network model of brain structure consisting of <span style="color: black"> nodes which 
 represent individual neurons </span> and <span style="color: black"> edges which represent the presence of a synaptic 
-connection </span> between those neurons.
+connection </span> between those neurons. -->
 
 ---
 # Many connectomics questions require comparison
-- Understand wiring substrate of learning/memory
-- Understand links between genetics or disease and connectivity
-- Understand how different neural architectures lead to different computational abilities
+For instance,
+- Understand connectomes across evolution [1]
+- Understand connectomes across development [2]
+- Understand links between genetics and connectivity [3] 
+
 
 <p></p>
 <p></p>
 <p></p>
 
-> "Understanding statistical regularities and learning which variations are stochastic and which are secondary to an animal’s life history will help define the substrate upon which individuality rests and *require comparisons between circuit maps within and between animals.*" [1] (emphasis added)
+<!-- > "Understanding statistical regularities and learning which variations are stochastic and which are secondary to an animal’s life history will help define the substrate upon which individuality rests and *require comparisons between circuit maps within and between animals.*" [1] (emphasis added) -->
 
 <footer>
-[1] Abbott et al. "The mind of a mouse." Cell (2020)
+
+[1] Bartsotti + Correia et al. *Curr. Op. Neurobiology* (2021)
+[2] Witvliet et al. *Nature* (2021)
+[3] Valdes-Aleman et al. *Neuron* (2021)
+
 </footer>
 
 --- 
 
 # Larval _Drosophila_ brain connectome
-- ~2500 brain neurons + ~500 sensory neurons
-- ~544K synapses
-- Both hemispheres of the brain reconstructed
-
 See [Michael Windings's talk](https://conference.neuromatch.io/abstract?edition=2021-4&submission_id=recVeh4RZFFRAQnIo), 11 AM (EST) Dec 2nd
+- ~3000 neurons, ~544K synapses
+- Both hemispheres of the brain reconstructed
 
 ![bg right:60% 95%](./results/figs/../../../results/figs/plot_layouts/whole-network-layout.png)
 <!-- TODO say something about how we are treating as directed, unweighted, loopless -->
@@ -94,12 +98,12 @@ Winding et al. “The complete connectome of an insect brain.” In prep (2021)
 <style scoped>
 section {
     justify-content: center;
+    text-align: center;
 }
 </style>
 
-# Are the <span style="color: var(--left)"> left </span> and the <span style="color: var(--right)"> right </span> sides of this brain *the same*?
+# Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *the same*?
 
-<!-- TODO some subtext here? or leave as is -->
 
 --- 
 
@@ -124,12 +128,13 @@ section {
 # Are these two _networks_ the same?
 <div class="twocols">
 
-- We want a two-network sample test!
-- Left side network: $\color{#66c2a5} A^{(L)} \sim F^{(L)}$ 
-- Right side network: $\color{#fc8d62} A^{(R)} \sim F^{(R)}$
-
+- Want a two-network-sample test!
+- For simplicity (for now), consider networks to be *directed*, *unweighted*.
+- For simplicity (for now), consider the <span style='color: var(--left)'> left $\rightarrow$ left </span> and <span style='color: var(--right)'> right $\rightarrow$ right </span> (ipsilateral) connections only.
+- <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span>, <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
 - $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
   $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
+
 
 <p class="break"></p>
 
@@ -151,7 +156,7 @@ section {
   $H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}$
 <!-- TODO fix this centering -->
 - **p-value $< 10^{-23}$**
-
+- Is this a difference we care about?
 
 <p class="break"></p>
 
@@ -179,7 +184,6 @@ section {
 - Compare group-to-group connection probabilities:
   $H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  
   $H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}$
-  (Many binomial tests)
 - **p-value $< 10^{-4}$** 
 
 <p class="break"></p>
@@ -212,7 +216,7 @@ section {
 
 <div class="twocols">
 
-- Connections independent, probability from dot product of <span style='color: var(--source)'> source node's latent vector </span>, <span style="color: var(--target)"> target node's latent vector </span>.
+- Connections independent, probability from dot product of <span style='color: var(--source)'> source node's latent vector</span>, <span style="color: var(--target)"> target node's latent vector</span>.
 - $A_{ij} \sim Bernoulli(\langle \color{#8da0cb} x_i, \color{#e78ac3} y_j \color{black} \rangle)$
 - $\color{#66c2a5} x_i^{(L)} \sim F^{(L)}$,  $\color{#fc8d62} x_i^{(R)} \sim F^{(R)}$
 - Compare distributions of latent vectors:
@@ -227,15 +231,34 @@ section {
 </div>
 
 <footer>
-Athreya et al. "Statistical inference on random dot product graphs: a survey." JMLR (2017)
+Athreya et al. JMLR (2017),
+Tang et al. Bernoulli (2017)
 </footer>
 
+
+
 ---
-# To sum up so far...
+# Can we detect differences when we know they exist?
+
+<div class="twocols">
+
+- Make two copies of right hemisphere network
+- Apply some perturbation to one of them: 
+  - Ex: Shuffle edges incident to some number of nodes in some group
+- Rerun the RDPG-based test for symmetry
+
+<p class="break"></p>
+
+![110%](../results/figs/perturbations_rdpg/perturbation_pvalues_rdpg_normalize=True.png)
+
+</div>
+
+---
+# To sum up...
 
 <style scoped>
 table {
-    font-size: 28px;
+    font-size: 27px;
     margin-bottom: 50px;
 }
 </style>
@@ -249,37 +272,10 @@ table {
 
 **The answer to this very simple question totally depends on how you frame it!**
 
+- Tests are sensitive to some alternatives and not others
+- Difference you might not care about (e.g. density) need to be explicitly accounted for
+  
 ---
-# Can we detect differences when we know they exist?
-
-<div class="twocols">
-
-- Make two copies of right hemisphere network
-- Apply some perturbation: 
-  - Shuffle edges incident to some number of nodes in some group
-- Rerun the RDPG-based test for symmetry
-
-<p class="break"></p>
-
-![110%](../results/figs/perturbations_rdpg/perturbation_pvalues_rdpg_normalize=True.png)
-
-</div>
-
----
-
-<style scoped>
-h1 {
-  font-size: 1.4em;
- 
-}
-</style>
-
-# Summary
-- Many ways to write *"Are the left and right the same?"* as a statistical hypothesis
-   - Each yields a different test procedure
-   - Each test is sensitive to some alternatives and not others
-- May not care about some differences (e.g. density) and any test will need to adjust
-- Techniques apply anytime one wants to compare connectomes/networks
 
 # Future work
 - Many other tests (e.g. compare subgraph counts)
@@ -308,16 +304,16 @@ h1 {
 
 </div>
 
-<footer>Chung, Pedigo et al. "Graspy: graph statistics in Python" JMLR (2019)</footer>
+<footer>Chung, Pedigo et al. JMLR (2019)</footer>
 
 ---
 # Acknowledgements
 
 <style scoped> 
 p {
-    font-size: 24px
+    font-size: 22px
 }
-h4 {font-size: 30px}
+h4 {font-size: 28px}
 </style>
 
 #### Johns Hopkins University
@@ -326,6 +322,7 @@ Joshua Vogelstein, Carey Priebe, Mike Powell, Eric Bridgeford, Kareef Ullah, Dia
 Michael Winding, Albert Cardona, Marta Zlatic, Chris Barnes
 #### Microsoft Research 
 Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McLean, Carolyn Buractaon, Amber Hoak
+#### NMC organizers!
 
 ---
 # Questions?
