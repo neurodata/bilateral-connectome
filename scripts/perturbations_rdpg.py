@@ -49,7 +49,7 @@ def glue(name, var, prefix=None):
 
 
 t0 = time.time()
-set_theme()
+set_theme(font_scale=1.25)
 rng = np.random.default_rng(8888)
 
 network_palette, NETWORK_KEY = load_network_palette()
@@ -116,7 +116,7 @@ for group in groups[:]:
     max_effect_size = len(group_nodes)
     # for effect_size in np.linspace(0.1 * max_effect_size, max_effect_size, 10):
     effect_steps = np.geomspace(
-        start=max(2, 0.1 * max_effect_size), stop=max_effect_size, dtype=int, num=5
+        start=2, stop=min(max_effect_size, 80), dtype=int, num=5
     )
     print(effect_steps)
     for effect_size in effect_steps:
@@ -124,7 +124,7 @@ for group in groups[:]:
             perturb_adj = swap_incident_edges_subgraph(
                 adj, group_nodes, effect_size=effect_size, random_seed=rng
             )
-            for normalize in [True, False]:
+            for normalize in [True]:
                 stat, pvalue, misc = rdpg_test(
                     adj,
                     perturb_adj,
@@ -147,8 +147,34 @@ for group in groups[:]:
 #%%
 
 data = pd.DataFrame(rows)
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.lineplot(data=data, x="effect_size", hue="group", y="pvalue", palette=node_palette)
-ax.get_legend().set_title("Cell type")
+
+# normalize = False
+# fig, ax = plt.subplots(1, 1, figsize=(8, 5))
+# sns.lineplot(
+#     data=data[data["normalize"] == normalize],
+#     x="effect_size",
+#     hue="group",
+#     y="pvalue",
+#     palette=node_palette,
+# )
+# ax.get_legend().set_title("Cell type")
+# ax.set(yscale="log", xlabel="# of perturbed neurons", ylabel="p-value")
+# gluefig(f"perturbation_pvalues_rdpg_normalize={normalize}", fig)
+
+normalize = True
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+sns.lineplot(
+    data=data[data["normalize"] == normalize],
+    x="effect_size",
+    hue="group",
+    y="pvalue",
+    palette=node_palette,
+)
+# ax.get_legend().set_title("Group")
+ax.get_legend().remove()
+leg = ax.legend(loc="lower left", title="Group")
+leg._legend_box.align = "left"
 ax.set(yscale="log", xlabel="# of perturbed neurons", ylabel="p-value")
-gluefig("perturbation_pvalues_rdpg")
+# legend_upper_right(ax, title="Perturbed\ngroup")
+ax.set(xlim=(0, 80))
+gluefig(f"perturbation_pvalues_rdpg_normalize={normalize}", fig)

@@ -17,6 +17,7 @@ style: |
     }
     header {
         top: 0px;
+        margin-top: 0 auto;
     }
 
 # <style>
@@ -123,6 +124,7 @@ section {
 # Are these two _networks_ the same?
 <div class="twocols">
 
+- We want a two-network sample test!
 - Left side network: $\color{#66c2a5} A^{(L)} \sim F^{(L)}$ 
 - Right side network: $\color{#fc8d62} A^{(R)} \sim F^{(R)}$
 
@@ -139,7 +141,7 @@ section {
 
 ---
 <!-- <style scoped>section { justify-content: start; }</style> -->
-# The simplest thing: Erdos-Renyi (ER) model
+# Density-based testing: Erdos-Renyi (ER) model
 <div class="twocols">
 
 - Connections independent, same connection probability $p$ for all edges
@@ -168,7 +170,7 @@ section {
 
 --- 
 
-# Testing under the stochastic block model (SBM)
+# Group-based testing: stochastic block model (SBM)
 
 <div class="twocols">
 
@@ -238,42 +240,51 @@ table {
 }
 </style>
 
-| Model | $H_0$ (vs. $H_A \neq$)                                             |    p-value    | Interpretation |
-| ----- | ------------------------------------------------------------------ | :-----------: | -------------- |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |  $<10^{-23}$  | Reject densities the same
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |  $< 10^{-4}$  | Reject cell type connection probabilities the same
-| SBM   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | $\approx 0.7$ | Don't reject the above after density adjustment
-| RDPG  | $\color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62} F^{(R)}$  |  $\approx 1$  | Don't reject latent distributions the same
+| Model | $H_0$ (vs. $H_A \neq$)                                             |    p-value    | Interpretation                                     |
+| ----- | ------------------------------------------------------------------ | :-----------: | -------------------------------------------------- |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |  $<10^{-23}$  | Reject densities the same                          |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |  $< 10^{-4}$  | Reject cell type connection probabilities the same |
+| SBM   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | $\approx 0.7$ | Don't reject the above after density adjustment    |
+| RDPG  | $\color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62} F^{(R)}$  |  $\approx 1$  | Don't reject latent distributions the same         |
 
 **The answer to this very simple question totally depends on how you frame it!**
 
 ---
-# How sensitive are these tests?
+# Can we detect differences when we know they exist?
 
 <div class="twocols">
 
-- Make 2 copies of one hemisphere network
+- Make two copies of right hemisphere network
 - Apply some perturbation: 
-
-- Rerun a test for symmetry
+  - Shuffle edges incident to some number of nodes in some group
+- Rerun the RDPG-based test for symmetry
 
 <p class="break"></p>
 
-
+![110%](../results/figs/perturbations_rdpg/perturbation_pvalues_rdpg_normalize=True.png)
 
 </div>
 
 ---
+
+<style scoped>
+h1 {
+  font-size: 1.4em;
+ 
+}
+</style>
+
 # Summary
-- Many different ways to write "are the left and right the same" as a statistical hypothesis
+- Many ways to write *"Are the left and right the same?"* as a statistical hypothesis
    - Each yields a different test procedure
-   - Each test is sensitive to varying alternatives
+   - Each test is sensitive to some alternatives and not others
 - May not care about some differences (e.g. density) and any test will need to adjust
 - Techniques apply anytime one wants to compare connectomes/networks
 
 # Future work
-- Many other tests one could run (e.g. compare subgraph counts)
-- Many other alternatives one could be interested in
+- Many other tests (e.g. compare subgraph counts)
+- Studying the sets of alternatives each test is/is not sensitive to
+- Roadmap for future principled comparisons of connectome networks!
 
 --- 
 <!-- # ```graspologic``` -->
