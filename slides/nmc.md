@@ -258,7 +258,7 @@ Tang et al. Bernoulli (2017)
 
 <style scoped>
 table {
-    font-size: 27px;
+    font-size: 25px;
     margin-bottom: 50px;
 }
 </style>
