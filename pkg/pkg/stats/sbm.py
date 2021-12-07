@@ -124,14 +124,17 @@ def stochastic_block_test(
     # TODO how else to combine pvalues
     run_pvalues = uncorrected_pvalues.values
     run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
+    n_tests = len(run_pvalues)
+    misc["n_tests"] = n_tests
     if run_pvalues.min() == 0.0:
         # TODO consider raising a new warning here
         stat = np.inf
         pvalue = 0.0
+    elif combine_method == "min":
+        pvalue = min(run_pvalues.min() * n_tests, 1)
+        stat = pvalue
     else:
         stat, pvalue = combine_pvalues(run_pvalues, method=combine_method)
-    n_tests = len(run_pvalues)
-    misc["n_tests"] = n_tests
     return stat, pvalue, misc
 
 

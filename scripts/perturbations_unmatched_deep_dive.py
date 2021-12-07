@@ -104,7 +104,7 @@ tests = {
 }
 test_options = {
     "ER": [{}],
-    "SBM": [{"labels1": labels1, "labels2": labels2, "combine_method": "fisher"}],
+    "SBM": [{"labels1": labels1, "labels2": labels2, "combine_method": "min"}],
     "Degree": [{}],
     # "RDPG": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": False}],
     # "RDPG-n": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": True}],
@@ -244,4 +244,4 @@ sns.lineplot(data=subresults, x="effect_size", y="pvalue", label="Fisher's combi
 
 ax.set_title(r"Remove edges (KCs $\rightarrow$ KCs)")
 
-gluefig('split_pvalues', fig)
+gluefig("split_pvalues", fig)

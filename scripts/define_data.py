@@ -19,12 +19,12 @@
 # We remove all neurons who do not have at least 3 inputs and at least 3 outputs in the
 # brain network - these are mostly "young" neurons. We then take the largest connected
 # component after this removal.
-#
+
 # Then, for the networks we are going to compare, we select only the left-to-left
 # (ipsilateral) induced subgraph, and likewise for the right-to-right. Note that there
 # are conceivable ways to define a notion of bilateral symmetry which does include the
 # contralateral connections as well, but we do not consider that here.
-#
+
 # For the networks themselves, we chose to operate on networks which are:
 # - **Unweighted**: we do not consider the number of synapses between two neurons in the
 #   current analysis. For the current network of
