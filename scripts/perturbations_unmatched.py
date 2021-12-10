@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from giskard.utils import get_random_seed
+from joblib import Parallel, delayed
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
@@ -153,14 +154,12 @@ perturbations = {
     r"Remove edges (LHNs $\rightarrow$ LHNs)": remove_edges_LHNs_LHNs,
     r"Remove edges (PNs $\rightarrow$ LHNs)": remove_edges_PNs_LHNs,
     "Shuffle edges (global)": shuffle_edges,
-    "Shuffle edges (KCs $\rightarrow$ KCs)": shuffle_edges_KCs_KCs,
-    "Shuffle edges (LHNs $\rightarrow$ LHNs)": shuffle_edges_LHNs_LHNs,
-    "Shuffle edges (PNs $\rightarrow$ LHNs)": shuffle_edges_PNs_LHNs,
+    r"Shuffle edges (KCs $\rightarrow$ KCs)": shuffle_edges_KCs_KCs,
+    r"Shuffle edges (LHNs $\rightarrow$ LHNs)": shuffle_edges_LHNs_LHNs,
+    r"Shuffle edges (PNs $\rightarrow$ LHNs)": shuffle_edges_PNs_LHNs,
 }
 
 n_runs = len(tests) * n_sims * len(effect_sizes)
-
-from joblib import Parallel, delayed
 
 
 def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
