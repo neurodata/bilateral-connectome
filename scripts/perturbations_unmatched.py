@@ -80,9 +80,9 @@ adj = right_adj
 nodes = right_nodes
 labels1 = right_labels
 labels2 = right_labels
-n_sims = 1
+n_sims = 10
 # effect_sizes = [256, 512, 2048, 4096, 8192]
-effect_sizes = np.linspace(0, 2000, 11).astype(int)
+effect_sizes = np.linspace(0, 3000, 16).astype(int)
 seeds = (seeds[1], seeds[1])
 
 n_components = 8
