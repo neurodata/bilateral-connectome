@@ -193,7 +193,7 @@ results = pd.DataFrame(rows)
 
 #%%
 
-out_path = Path("bilateral-connectome/results/outputs")
+out_path = Path("bilateral-connectome/results/outputs/perturbations_unmatched")
 
 # save
 simple_results = results[
