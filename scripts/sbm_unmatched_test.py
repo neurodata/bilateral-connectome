@@ -86,14 +86,14 @@ right_labels = right_nodes[GROUP_KEY].values
 # ```{admonition} Math
 # Let $n$ be the number of nodes, and $K$ be the number of groups in an SBM. For a
 # network $A$ sampled from an SBM:
-#
+
 # $$ A \sim SBM(B, \tau)$$
-#
+
 # We say that for all $(i,j), i \neq j$, with $i$ and $j$ both running
 # from $1 ... n$ the probability of edge $(i,j)$ occuring is:
-#
+
 # $$ P[A_{ij} = 1] = P_{ij} = B_{\tau_i, \tau_j} $$
-#
+
 # where $B \in [0,1]^{K \times K}$ is a matrix of group-to-group connection
 # probabilities and $\tau \in \{1...K\}^n$ is a vector of node-to-group assignments.
 # Note that here we are assuming $\tau$ is a fixed vector of assignments, though other
@@ -106,10 +106,10 @@ right_labels = right_nodes[GROUP_KEY].values
 # Assuming this model, there are a few ways that one could test for differences between
 # two networks. In our case, we are interested in comparing the group-to-group
 # connection probability matrices, $B$,  for the left and right hemispheres.
-#
+
 # ````{admonition} Math
 # We are interested in testing:
-#
+
 # ```{math}
 # :label: sbm_unmatched_null
 # H_0: B^{(L)} = B^{(R)}, \quad H_A: B^{(L)} \neq B^{(R)}
@@ -120,7 +120,7 @@ right_labels = right_nodes[GROUP_KEY].values
 # Rather than having to compare one proportion as in [](er_unmatched_test.ipynb), we are
 # now interedted in comparing all $K^2$ probabilities between the SBM models for the
 # left and right hemispheres.
-#
+
 # ```{admonition} Math
 # The hypothesis test above can be decomposed into $K^2$ indpendent hypotheses.
 # $B^{(L)}$
@@ -129,10 +129,10 @@ right_labels = right_nodes[GROUP_KEY].values
 # also know that group $k$ for the left network corresponds with group $k$ for the
 # right. In other words, the *groups* are matched. Thus, we are interested in testing,
 # for $k, l$ both running from $1...K$:
-#
+
 # $$ H_0: B_{kl}^{(L)} = B_{kl}^{(R)},
 # \quad H_A: B_{kl}^{(L)} \neq B_{kl}^{(R)}$$
-#
+
 # ```
 #
 # Thus, we will use

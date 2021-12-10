@@ -1,1 +1,1 @@
-cp -r ./bilateral-connectome/results/figs ./bilateral-connectome/overleaf
+rsync -r --max-size=49m ./bilateral-connectome/results/figs ./bilateral-connectome/overleaf

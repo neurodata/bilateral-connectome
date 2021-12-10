@@ -15,22 +15,22 @@
 # Let $n$ be the number of nodes. We say that for all $(i, j), i \neq j$, with $i$ and 
 # $j$ both running
 # from $1 ... n$, the probability of the edge $(i, j)$ occuring is:
-#
+
 # $$ P[A_{ij} = 1] = p_{ij} = p $$
-#
+
 # Where $p$ is the the global connection probability.
-#
+
 # Each element of the adjacency matrix $A$ is then sampled independently according to a
 # [Bernoulli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution):
-#
+
 # $$ A_{ij} \sim Bernoulli(p) $$
-#
+
 # For a network modeled as described above, we say it is distributed 
-#
+
 # $$ A \sim ER(n, p) $$
-#
+
 # ```
-#
+
 # Thus, for this model, the only parameter of interest is the global connection
 # probability, $p$. This is sometimes also referred to as the **network density**.
 
@@ -39,7 +39,7 @@
 # In order to compare two networks $A^{(L)}$ and $A^{(R)}$ under this model, we
 # simply need to compute these network densities ($p^{(L)}$ and $p^{(R)}$), and then
 # run a statistical test to see if these densities are significantly different.
-#
+
 # ```{admonition} Math
 # Under this
 # model, the total number of edges $m$ comes from a $Binomial(n(n-1), p)$ distribution,
@@ -47,18 +47,18 @@
 # independent Bernoulli trials with the same probability. If $m^{(L)}$ is the number of
 # edges on the left
 # hemisphere, and $m^{(R)}$ is the number of edges on the right, then we have:
-#
+
 # $$m^{(L)} \sim Binomial(n^{(L)}(n^{(L)} - 1), p^{(L)})$$
-#
+
 # and independently,
-#
+
 # $$m^{(R)} \sim Binomial(n^{(R)}(n^{(R)} - 1), p^{(R)})$$
-#
+
 # To compare the two networks, we are just interested in a comparison of $p^{(L)}$ vs.
 # $p^{(R)}$. Formally, we are testing:
-#
+
 # $$H_0: p^{(L)} = p^{(R)}, \quad H_a: p^{(L)} \neq p^{(R)}$$
-#
+
 # Fortunately, the problem of testing for equal proportions is well studied.
 # In our case, we will use Fisher's Exact test to run this test for the null and
 # alternative hypotheses above.

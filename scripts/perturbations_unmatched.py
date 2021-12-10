@@ -5,7 +5,10 @@ from pkg.utils import set_warnings
 
 set_warnings()
 
+import pickle
 import time
+from pathlib import Path
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,10 +20,10 @@ from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
 from pkg.perturb import (
     add_edges,
-    remove_edges,
-    shuffle_edges,
     add_edges_subgraph,
+    remove_edges,
     remove_edges_subgraph,
+    shuffle_edges,
     shuffle_edges_subgraph,
 )
 from pkg.plot import set_theme
@@ -78,7 +81,7 @@ labels1 = right_labels
 labels2 = right_labels
 n_sims = 1
 # effect_sizes = [256, 512, 2048, 4096, 8192]
-effect_sizes = np.linspace(100, 3000, 30).astype(int)
+effect_sizes = np.linspace(0, 2000, 11).astype(int)
 seeds = (seeds[1], seeds[1])
 
 n_components = 8
@@ -99,28 +102,34 @@ rows = []
 tests = {
     "ER": erdos_renyi_test,
     "SBM": stochastic_block_test,
+    "SBM-m": stochastic_block_test,
     "Degree": degree_test,
-    # "RDPG": rdpg_test,
-    # "RDPG-n":rdpg_test,
+    "RDPG": rdpg_test,
+    "RDPG-n": rdpg_test,
 }
 test_options = {
-    "ER": [{}],
-    "SBM": [{"labels1": labels1, "labels2": labels2, "combine_method": "stouffer"}],
-    "Degree": [{}],
-    # "RDPG": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": False}],
-    # "RDPG-n": [{"n_components": n_components, "seeds": seeds, "normalize_nodes": True}],
+    "ER": {},
+    "SBM": {"labels1": labels1, "labels2": labels2, "combine_method": "fisher"},
+    "SBM-m": {"labels1": labels1, "labels2": labels2, "combine_method": "min"},
+    "Degree": {},
+    "RDPG": {"n_components": n_components, "seeds": seeds, "normalize_nodes": False},
+    "RDPG-n": {"n_components": n_components, "seeds": seeds, "normalize_nodes": True},
 }
 perturbations = {
     "Remove edges (global)": remove_edges,
-    r"Remove edges (KCs $\rightarrow$ KCs)": remove_edges_KCs_KCs
+    r"Remove edges (KCs $\rightarrow$ KCs)": remove_edges_KCs_KCs,
+    "Shuffle edges (global)": shuffle_edges,
     # "Add edges (global)": add_edges,
-    # "Shuffle edges (global)": shuffle_edges,
 }
 
 n_runs = len(tests) * n_sims * len(effect_sizes)
 
+from joblib import Parallel, delayed
+
+def perturb_and_run_tests()
+
 for perturbation_name, perturb in perturbations.items():
-    for effect_size in tqdm(effect_sizes):
+    for effect_size in effect_sizes:
         for sim in range(n_sims):
             currtime = time.time()
             seed = get_random_seed(random_state)
@@ -128,27 +137,57 @@ for perturbation_name, perturb in perturbations.items():
             perturb_elapsed = time.time() - currtime
 
             for test_name, test in tests.items():
-                option_sets = test_options[test_name]
-                for options in option_sets:
-                    currtime = time.time()
-                    stat, pvalue, other = test(adj, perturb_adj, **options)
-                    test_elapsed = time.time() - currtime
+                options = test_options[test_name]
 
-                    row = {
-                        "stat": stat,
-                        "pvalue": pvalue,
-                        "other": other,
-                        "test": test_name,
-                        "perturbation": perturbation_name,
-                        "effect_size": effect_size,
-                        "sim": sim,
-                        "perturb_elapsed": perturb_elapsed,
-                        "test_elapsed": test_elapsed,
-                        **options,
-                    }
-                    rows.append(row)
+                currtime = time.time()
+                stat, pvalue, other = test(adj, perturb_adj, **options)
+                test_elapsed = time.time() - currtime
+
+                row = {
+                    "stat": stat,
+                    "pvalue": pvalue,
+                    "other": other,
+                    "test": test_name,
+                    "perturbation": perturbation_name,
+                    "effect_size": effect_size,
+                    "sim": sim,
+                    "perturb_elapsed": perturb_elapsed,
+                    "test_elapsed": test_elapsed,
+                    **options,
+                }
+                rows.append(row)
+
+                print(f"{perturbation_name}-{effect_size}-{sim}-{test_name}")
 
 results = pd.DataFrame(rows)
+
+#%%
+
+out_path = Path("bilateral-connectome/results/outputs")
+
+# save
+simple_results = results[
+    [
+        "stat",
+        "pvalue",
+        "test",
+        "perturbation",
+        "effect_size",
+        "sim",
+        "perturb_elapsed",
+        "test_elapsed",
+    ]
+]
+simple_results.to_csv(out_path / "unmatched_power_simple.csv")
+
+with open(out_path / "unmatched_power_full.pickle", "wb") as f:
+    pickle.dump(results, f)
+
+# reopen
+simple_results = pd.read_csv(out_path / "unmatched_power_simple.csv", index_col=0)
+
+with open(out_path / "unmatched_power_full.pickle", "rb") as f:
+    results = pickle.load(f)
 
 #%%
 
@@ -174,6 +213,7 @@ results["power_indicator"] = (results["pvalue"] < 0.05).astype(float)
 results["power_indicator"] = results["power_indicator"] + np.random.normal(
     0, 0.01, size=len(results)
 )
+
 # %%
 # fig, ax = plt.subplots(1, 1, figsize=(10, 5))
 # sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="test", ax=ax)
@@ -192,6 +232,8 @@ grid.add_legend(title="Test")
 grid.set_ylabels("Empirical power")
 grid.set_xlabels("Effect size")
 grid.set_titles("{col_name}")
+gluefig("power-grid", grid.figure)
+
 #%%
 
 
