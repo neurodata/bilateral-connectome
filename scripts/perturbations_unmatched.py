@@ -5,6 +5,7 @@ from pkg.utils import set_warnings
 
 set_warnings()
 
+import datetime
 import pickle
 import time
 from pathlib import Path
@@ -31,7 +32,7 @@ from pkg.stats import degree_test, erdos_renyi_test, rdpg_test, stochastic_block
 from pkg.utils import get_seeds
 from tqdm import tqdm
 
-DISPLAY_FIGS = False
+DISPLAY_FIGS = True
 
 FILENAME = "perturbations_unmatched"
 
@@ -126,38 +127,67 @@ n_runs = len(tests) * n_sims * len(effect_sizes)
 
 from joblib import Parallel, delayed
 
-def perturb_and_run_tests()
 
+def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
+    currtime = time.time()
+    perturb_adj = perturb(adj, effect_size=effect_size, random_seed=seed)
+    perturb_elapsed = time.time() - currtime
+
+    rows = []
+    for test_name, test in tests.items():
+        options = test_options[test_name]
+
+        currtime = time.time()
+        stat, pvalue, other = test(adj, perturb_adj, **options)
+        test_elapsed = time.time() - currtime
+
+        row = {
+            "stat": stat,
+            "pvalue": pvalue,
+            "other": other,
+            "test": test_name,
+            "perturbation": perturbation_name,
+            "effect_size": effect_size,
+            "sim": sim,
+            "perturb_elapsed": perturb_elapsed,
+            "test_elapsed": test_elapsed,
+            **options,
+        }
+        rows.append(row)
+
+    return rows
+
+
+parameters = []
 for perturbation_name, perturb in perturbations.items():
     for effect_size in effect_sizes:
         for sim in range(n_sims):
-            currtime = time.time()
             seed = get_random_seed(random_state)
-            perturb_adj = perturb(adj, effect_size=effect_size, random_seed=seed)
-            perturb_elapsed = time.time() - currtime
+            params = {
+                "seed": seed,
+                "perturbation_name": perturbation_name,
+                "perturb": perturb,
+                "effect_size": effect_size,
+                "sim": sim,
+            }
+            parameters.append(params)
 
-            for test_name, test in tests.items():
-                options = test_options[test_name]
+overall_time = time.time()
+parallel = Parallel(n_jobs=-2, verbose=10)
+chunks_of_rows = parallel(
+    delayed(perturb_and_run_tests)(**params) for params in parameters
+)
+overall_elapsed = time.time() - overall_time
+delta = datetime.timedelta(seconds=overall_elapsed)
 
-                currtime = time.time()
-                stat, pvalue, other = test(adj, perturb_adj, **options)
-                test_elapsed = time.time() - currtime
+time.sleep(1)
+print()
+print(f"Entire set of power simulations took {delta}")
+print()
 
-                row = {
-                    "stat": stat,
-                    "pvalue": pvalue,
-                    "other": other,
-                    "test": test_name,
-                    "perturbation": perturbation_name,
-                    "effect_size": effect_size,
-                    "sim": sim,
-                    "perturb_elapsed": perturb_elapsed,
-                    "test_elapsed": test_elapsed,
-                    **options,
-                }
-                rows.append(row)
-
-                print(f"{perturbation_name}-{effect_size}-{sim}-{test_name}")
+rows = []
+for chunk in chunks_of_rows:
+    rows += chunk
 
 results = pd.DataFrame(rows)
 
@@ -259,3 +289,14 @@ gluefig("power-grid", grid.figure)
 # A[np.ix_([1,2], [1,2])] = np.ones((2,2))
 # A
 # # %%
+
+To get started you need Poetry's bin directory (/home/bpedigo/.local/bin) in your `PATH`
+environment variable.
+
+Add `export PATH="/home/bpedigo/.local/bin:$PATH"` to your shell configuration file.
+
+Alternatively, you can call Poetry explicitly with `/home/bpedigo/.local/bin/poetry`.
+
+You can test that everything is set up by executing:
+
+`poetry --version`
