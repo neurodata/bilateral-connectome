@@ -288,15 +288,4 @@ gluefig("power-grid", grid.figure)
 # A = np.zeros((3,3))
 # A[np.ix_([1,2], [1,2])] = np.ones((2,2))
 # A
-# # %%
-
-To get started you need Poetry's bin directory (/home/bpedigo/.local/bin) in your `PATH`
-environment variable.
-
-Add `export PATH="/home/bpedigo/.local/bin:$PATH"` to your shell configuration file.
-
-Alternatively, you can call Poetry explicitly with `/home/bpedigo/.local/bin/poetry`.
-
-You can test that everything is set up by executing:
-
-`poetry --version`
+# # %
