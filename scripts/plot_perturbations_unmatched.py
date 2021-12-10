@@ -111,7 +111,24 @@ grid = sns.FacetGrid(
 )
 grid.map_dataframe(sns.lineplot, x="effect_size", y="pvalue")
 grid.add_legend(title="Test")
+grid.set_ylabels("p-value")
+grid.set_xlabels("Effect size")
+grid.set_titles("{col_name}")
+gluefig("pvalue-grid", grid.figure)
+
+#%%
+grid = sns.FacetGrid(
+    results,
+    col="perturbation",
+    col_wrap=min(3, len(perturbations)),
+    sharex=False,
+    sharey=False,
+    hue="test",
+    height=6,
+)
+grid.map_dataframe(sns.lineplot, x="effect_size", y="power_indicator")
+grid.add_legend(title="Test")
 grid.set_ylabels("Empirical power")
 grid.set_xlabels("Effect size")
 grid.set_titles("{col_name}")
-gluefig("power-grid", grid.figure)
+gluefig("pvalue-grid", grid.figure)

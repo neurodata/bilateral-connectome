@@ -15,6 +15,10 @@ def _input_checks(adjacency, random_seed, effect_size, max_tries):
     if max_tries is None:
         max_tries = effect_size * 10
 
+    n_nonzero = np.count_nonzero(adjacency)
+    if effect_size > n_nonzero:
+        adjacency = None
+
     return adjacency, rng, max_tries
 
 
@@ -22,6 +26,9 @@ def remove_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
     adjacency, rng, max_tries = _input_checks(
         adjacency, random_seed, effect_size, max_tries
     )
+
+    if adjacency is None:
+        return adjacency
 
     row_inds, col_inds = np.nonzero(adjacency)
 
@@ -39,6 +46,9 @@ def add_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
     adjacency, rng, max_tries = _input_checks(
         adjacency, random_seed, effect_size, max_tries
     )
+
+    if adjacency is None:
+        return adjacency
 
     n_source = adjacency.shape[0]
     n_target = adjacency.shape[1]
@@ -70,6 +80,9 @@ def shuffle_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
         adjacency, effect_size=effect_size, random_seed=seed, max_tries=max_tries
     )
 
+    if adjacency is None:
+        return adjacency
+
     seed = get_random_seed(rng)
     adjacency = add_edges(
         adjacency, effect_size=effect_size, random_seed=seed, max_tries=max_tries
@@ -82,6 +95,8 @@ def perturb_subgraph(adjacency, perturb_func, source_nodes, target_nodes, **kwar
     adjacency = adjacency.copy()
     A_subgraph = adjacency[source_nodes][:, target_nodes]
     A_subgraph_perturbed = perturb_func(A_subgraph, **kwargs)
+    if A_subgraph_perturbed is None:
+        return None
     # ix_ seems necessary here for assignment into
     adjacency[np.ix_(source_nodes, target_nodes)] = A_subgraph_perturbed
     return adjacency

@@ -96,6 +96,37 @@ def remove_edges_KCs_KCs(adjacency, **kwargs):
     return remove_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
 
 
+LHNs_nodes = nodes[nodes["simple_group"] == "LHNs"]["inds"]
+
+
+def remove_edges_LHNs_LHNs(adjacency, **kwargs):
+    return remove_edges_subgraph(adjacency, LHNs_nodes, LHNs_nodes, **kwargs)
+
+
+PNs_nodes = nodes[nodes["simple_group"] == "PNs"]["inds"]
+
+
+def remove_edges_PNs_LHNs(adjacency, **kwargs):
+    return remove_edges_subgraph(adjacency, PNs_nodes, LHNs_nodes, **kwargs)
+
+
+# shuffling
+def shuffle_edges_KCs_KCs(adjacency, **kwargs):
+    return shuffle_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
+
+
+def shuffle_edges_LHNs_LHNs(adjacency, **kwargs):
+    return shuffle_edges_subgraph(adjacency, LHNs_nodes, LHNs_nodes, **kwargs)
+
+
+def shuffle_edges_PNs_LHNs(adjacency, **kwargs):
+    return shuffle_edges_subgraph(adjacency, PNs_nodes, LHNs_nodes, **kwargs)
+
+
+#%%
+
+nodes["simple_group"].value_counts()
+
 #%%
 
 rows = []
@@ -119,8 +150,12 @@ test_options = {
 perturbations = {
     "Remove edges (global)": remove_edges,
     r"Remove edges (KCs $\rightarrow$ KCs)": remove_edges_KCs_KCs,
+    r"Remove edges (LHNs $\rightarrow$ LHNs)": remove_edges_LHNs_LHNs,
+    r"Remove edges (PNs $\rightarrow$ LHNs)": remove_edges_PNs_LHNs,
     "Shuffle edges (global)": shuffle_edges,
-    # "Add edges (global)": add_edges,
+    "Shuffle edges (KCs $\rightarrow$ KCs)": shuffle_edges_KCs_KCs,
+    "Shuffle edges (LHNs $\rightarrow$ LHNs)": shuffle_edges_LHNs_LHNs,
+    "Shuffle edges (PNs $\rightarrow$ LHNs)": shuffle_edges_PNs_LHNs,
 }
 
 n_runs = len(tests) * n_sims * len(effect_sizes)
@@ -132,6 +167,9 @@ def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
     currtime = time.time()
     perturb_adj = perturb(adj, effect_size=effect_size, random_seed=seed)
     perturb_elapsed = time.time() - currtime
+
+    if perturb_adj is None:
+        return []
 
     rows = []
     for test_name, test in tests.items():
