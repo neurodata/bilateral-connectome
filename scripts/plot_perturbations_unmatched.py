@@ -69,6 +69,8 @@ simple_results = pd.read_csv(result_path / "unmatched_power_simple.csv", index_c
 with open(result_path / "unmatched_power_full.pickle", "rb") as f:
     results = pickle.load(f)
 
+
+
 #%%
 
 
@@ -103,7 +105,7 @@ perturbations = results["perturbation"].unique()
 grid = sns.FacetGrid(
     results,
     col="perturbation",
-    col_wrap=min(3, len(perturbations)),
+    col_wrap=min(4, len(perturbations)),
     sharex=False,
     sharey=False,
     hue="test",
@@ -113,7 +115,7 @@ grid.map_dataframe(sns.lineplot, x="effect_size", y="pvalue")
 grid.add_legend(title="Test")
 grid.set_ylabels("p-value")
 grid.set_xlabels("Effect size")
-# grid.set_titles("{col_name}")
+grid.set_titles("{col_name}")
 gluefig("pvalue-grid", grid.figure)
 
 #%%

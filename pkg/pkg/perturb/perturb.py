@@ -15,20 +15,17 @@ def _input_checks(adjacency, random_seed, effect_size, max_tries):
     if max_tries is None:
         max_tries = effect_size * 10
 
-    n_nonzero = np.count_nonzero(adjacency)
-    if effect_size > n_nonzero:
-        adjacency = None
-
     return adjacency, rng, max_tries
 
 
 def remove_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
+    n_nonzero = np.count_nonzero(adjacency)
+    if effect_size > n_nonzero:
+        return None
+
     adjacency, rng, max_tries = _input_checks(
         adjacency, random_seed, effect_size, max_tries
     )
-
-    if adjacency is None:
-        return adjacency
 
     row_inds, col_inds = np.nonzero(adjacency)
 
@@ -47,11 +44,12 @@ def add_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
         adjacency, random_seed, effect_size, max_tries
     )
 
-    if adjacency is None:
-        return adjacency
-
     n_source = adjacency.shape[0]
     n_target = adjacency.shape[1]
+    n_possible = n_source * n_target
+    if effect_size > n_possible:  # technicall should be - n if on main diagonal
+        return
+
     n_edges_added = 0
     tries = 0
     while n_edges_added < effect_size and tries < max_tries:
@@ -81,7 +79,7 @@ def shuffle_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
     )
 
     if adjacency is None:
-        return adjacency
+        return
 
     seed = get_random_seed(rng)
     adjacency = add_edges(
