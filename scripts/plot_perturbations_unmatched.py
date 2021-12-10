@@ -98,6 +98,8 @@ results["power_indicator"] = results["power_indicator"] + np.random.normal(
 # fig, ax = plt.subplots(1, 1, figsize=(10, 5))
 # sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="test", ax=ax)
 
+perturbations = results["perturbation"].unique()
+
 grid = sns.FacetGrid(
     results,
     col="perturbation",
