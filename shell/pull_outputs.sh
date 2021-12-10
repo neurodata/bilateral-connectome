@@ -1,0 +1,1 @@
+rsync -zvhr  bpedigo@synaptomes1.neurodata.io:/data/bpedigo/bilateral/bilateral-connectome/results/outputs ./bilateral-connectome/results
