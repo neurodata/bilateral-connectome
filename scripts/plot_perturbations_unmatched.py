@@ -70,7 +70,6 @@ with open(result_path / "unmatched_power_full.pickle", "rb") as f:
     results = pickle.load(f)
 
 
-
 #%%
 
 
@@ -107,15 +106,16 @@ grid = sns.FacetGrid(
     col="perturbation",
     col_wrap=min(4, len(perturbations)),
     sharex=False,
-    sharey=False,
+    sharey=True,
     hue="test",
-    height=6,
+    height=4,
 )
 grid.map_dataframe(sns.lineplot, x="effect_size", y="pvalue")
 grid.add_legend(title="Test")
 grid.set_ylabels("p-value")
 grid.set_xlabels("Effect size")
 grid.set_titles("{col_name}")
+grid.set(ylim=(-0.01, 1.01))
 gluefig("pvalue-grid", grid.figure)
 
 #%%

@@ -32,6 +32,7 @@ from pkg.plot import set_theme
 from pkg.stats import degree_test, erdos_renyi_test, rdpg_test, stochastic_block_test
 from pkg.utils import get_seeds
 from tqdm import tqdm
+import re
 
 DISPLAY_FIGS = True
 
@@ -134,7 +135,7 @@ rows = []
 
 tests = {
     "ER": erdos_renyi_test,
-    "SBM": stochastic_block_test,
+    "SBM-f": stochastic_block_test,
     "SBM-m": stochastic_block_test,
     "Degree": degree_test,
     "RDPG": rdpg_test,
@@ -142,7 +143,7 @@ tests = {
 }
 test_options = {
     "ER": {},
-    "SBM": {"labels1": labels1, "labels2": labels2, "combine_method": "fisher"},
+    "SBM-f": {"labels1": labels1, "labels2": labels2, "combine_method": "fisher"},
     "SBM-m": {"labels1": labels1, "labels2": labels2, "combine_method": "min"},
     "Degree": {},
     "RDPG": {"n_components": n_components, "seeds": seeds, "normalize_nodes": False},
@@ -150,13 +151,13 @@ test_options = {
 }
 perturbations = {
     "Remove edges (global)": remove_edges,
-    r"Remove edges (KCs $\rightarrow$ KCs)": remove_edges_KCs_KCs,
-    r"Remove edges (LHNs $\rightarrow$ LHNs)": remove_edges_LHNs_LHNs,
-    r"Remove edges (PNs $\rightarrow$ LHNs)": remove_edges_PNs_LHNs,
+    r"Remove edges (KCs$\rightarrow$KCs)": remove_edges_KCs_KCs,
+    r"Remove edges (LHNs$\rightarrow$LHNs)": remove_edges_LHNs_LHNs,
+    r"Remove edges (PNs$\rightarrow$LHNs)": remove_edges_PNs_LHNs,
     "Shuffle edges (global)": shuffle_edges,
-    r"Shuffle edges (KCs $\rightarrow$ KCs)": shuffle_edges_KCs_KCs,
-    r"Shuffle edges (LHNs $\rightarrow$ LHNs)": shuffle_edges_LHNs_LHNs,
-    r"Shuffle edges (PNs $\rightarrow$ LHNs)": shuffle_edges_PNs_LHNs,
+    r"Shuffle edges (KCs$\rightarrow$KCs)": shuffle_edges_KCs_KCs,
+    r"Shuffle edges (LHNs$\rightarrow$LHNs)": shuffle_edges_LHNs_LHNs,
+    r"Shuffle edges (PNs$\rightarrow$LHNs)": shuffle_edges_PNs_LHNs,
 }
 
 n_runs = len(tests) * n_sims * len(effect_sizes)
@@ -166,6 +167,9 @@ def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
     currtime = time.time()
     perturb_adj = perturb(adj, effect_size=effect_size, random_seed=seed)
     perturb_elapsed = time.time() - currtime
+
+    target = re.search("\((.*?)\)", perturbation_name).group(1)
+    perturbation_type = perturbation_name.split(" ")[0]
 
     if perturb_adj is None:
         return []
@@ -188,6 +192,8 @@ def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
             "sim": sim,
             "perturb_elapsed": perturb_elapsed,
             "test_elapsed": test_elapsed,
+            "target": target.capitalize(),
+            "perturbation_type": perturbation_type,
             **options,
         }
         rows.append(row)
