@@ -99,13 +99,13 @@ results["power_indicator"] = results["power_indicator"] + np.random.normal(
 # fig, ax = plt.subplots(1, 1, figsize=(10, 5))
 # sns.scatterplot(data=results, x="effect_size", y="pvalue", hue="test", ax=ax)
 
-perturbations = results["perturbation"].unique()
+# results["pvalue"] = results["pvalue"].map(lambda x: max(x, 1e-8))
 
 grid = sns.FacetGrid(
     results,
-    col="perturbation",
-    col_wrap=min(4, len(perturbations)),
-    sharex=False,
+    col="target",
+    row="perturbation_type",
+    sharex="col",
     sharey=True,
     hue="test",
     height=4,
@@ -116,21 +116,22 @@ grid.set_ylabels("p-value")
 grid.set_xlabels("Effect size")
 grid.set_titles("{col_name}")
 grid.set(ylim=(-0.01, 1.01))
+# grid.set(yscale="log")
 gluefig("pvalue-grid", grid.figure)
 
-#%%
-grid = sns.FacetGrid(
-    results,
-    col="perturbation",
-    col_wrap=min(3, len(perturbations)),
-    sharex=False,
-    sharey=False,
-    hue="test",
-    height=6,
-)
-grid.map_dataframe(sns.lineplot, x="effect_size", y="power_indicator")
-grid.add_legend(title="Test")
-grid.set_ylabels("Empirical power")
-grid.set_xlabels("Effect size")
-# grid.set_titles("{col_name}")
-gluefig("pvalue-grid", grid.figure)
+# #%%
+# grid = sns.FacetGrid(
+#     results,
+#     col="perturbation",
+#     col_wrap=min(3, len(perturbations)),
+#     sharex=False,
+#     sharey=False,
+#     hue="test",
+#     height=6,
+# )
+# grid.map_dataframe(sns.lineplot, x="effect_size", y="power_indicator")
+# grid.add_legend(title="Test")
+# grid.set_ylabels("Empirical power")
+# grid.set_xlabels("Effect size")
+# # grid.set_titles("{col_name}")
+# gluefig("pvalue-grid", grid.figure)

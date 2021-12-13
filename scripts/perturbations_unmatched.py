@@ -149,11 +149,11 @@ test_options = {
     "RDPG-n": {"n_components": n_components, "seeds": seeds, "normalize_nodes": True},
 }
 perturbations = {
-    "Remove edges (global)": remove_edges,
+    "Remove edges (Global)": remove_edges,
     r"Remove edges (KCs$\rightarrow$KCs)": remove_edges_KCs_KCs,
     r"Remove edges (LHNs$\rightarrow$LHNs)": remove_edges_LHNs_LHNs,
     r"Remove edges (PNs$\rightarrow$LHNs)": remove_edges_PNs_LHNs,
-    "Shuffle edges (global)": shuffle_edges,
+    "Shuffle edges (Global)": shuffle_edges,
     r"Shuffle edges (KCs$\rightarrow$KCs)": shuffle_edges_KCs_KCs,
     r"Shuffle edges (LHNs$\rightarrow$LHNs)": shuffle_edges_LHNs_LHNs,
     r"Shuffle edges (PNs$\rightarrow$LHNs)": shuffle_edges_PNs_LHNs,
@@ -191,7 +191,7 @@ def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
             "sim": sim,
             "perturb_elapsed": perturb_elapsed,
             "test_elapsed": test_elapsed,
-            "target": target.capitalize(),
+            "target": target,
             "perturbation_type": perturbation_type,
             **options,
         }
