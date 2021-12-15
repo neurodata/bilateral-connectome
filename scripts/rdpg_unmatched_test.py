@@ -261,6 +261,25 @@ with tqdm(total=n_tests) as pbar:
 results = pd.DataFrame(rows)
 
 #%%
+
+from pathlib import Path
+import pickle
+
+out_path = Path("bilateral-connectome/results/outputs/rdpg_unmatched_test")
+
+# save
+results.to_csv(out_path / "ldt_results.csv")
+
+with open(out_path / "ldt_results.pickle", "wb") as f:
+    pickle.dump(results, f)
+
+# reopen
+simple_results = pd.read_csv(out_path / "ldt_results.csv", index_col=0)
+
+with open(out_path / "ldt_results.pickle", "rb") as f:
+    results = pickle.load(f)
+
+#%%
 square_results = results.pivot(
     index="test_n_components", columns="align_n_components", values="pvalue"
 )
