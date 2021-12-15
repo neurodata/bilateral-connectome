@@ -82,7 +82,7 @@ adj = right_adj
 nodes = right_nodes
 labels1 = right_labels
 labels2 = right_labels
-n_sims = 1
+n_sims = 50
 effect_sizes = np.arange(0, 3000, 50)
 seeds = (seeds[1], seeds[1])
 
