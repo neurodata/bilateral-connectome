@@ -91,31 +91,42 @@ n_components = 8
 #%%
 
 KCs_nodes = nodes[nodes["simple_group"] == "KCs"]["inds"]
+LHNs_nodes = nodes[nodes["simple_group"] == "LHNs"]["inds"]
+PNs_nodes = nodes[nodes["simple_group"] == "PNs"]["inds"]
+non_PNs_nodes = nodes[nodes["simple_group"] != "PNs"]["inds"]
 
 
 def remove_edges_KCs_KCs(adjacency, **kwargs):
     return remove_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
 
 
-LHNs_nodes = nodes[nodes["simple_group"] == "LHNs"]["inds"]
-
-
 def remove_edges_LHNs_LHNs(adjacency, **kwargs):
     return remove_edges_subgraph(adjacency, LHNs_nodes, LHNs_nodes, **kwargs)
-
-
-PNs_nodes = nodes[nodes["simple_group"] == "PNs"]["inds"]
 
 
 def remove_edges_PNs_LHNs(adjacency, **kwargs):
     return remove_edges_subgraph(adjacency, PNs_nodes, LHNs_nodes, **kwargs)
 
 
-non_PNs_nodes = nodes[nodes["simple_group"] != "PNs"]["inds"]
-
-
 def remove_edges_PNs_star(adjacency, **kwargs):
     return remove_edges_subgraph(adjacency, PNs_nodes, non_PNs_nodes, **kwargs)
+
+
+# adding
+def add_edges_KCs_KCs(adjacency, **kwargs):
+    return add_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
+
+
+def add_edges_LHNs_LHNs(adjacency, **kwargs):
+    return add_edges_subgraph(adjacency, LHNs_nodes, LHNs_nodes, **kwargs)
+
+
+def add_edges_PNs_LHNs(adjacency, **kwargs):
+    return add_edges_subgraph(adjacency, PNs_nodes, LHNs_nodes, **kwargs)
+
+
+def add_edges_PNs_star(adjacency, **kwargs):
+    return add_edges_subgraph(adjacency, PNs_nodes, non_PNs_nodes, **kwargs)
 
 
 # shuffling
@@ -165,6 +176,11 @@ perturbations = {
     r"Remove edges (LHNs$\rightarrow$LHNs)": remove_edges_LHNs_LHNs,
     r"Remove edges (PNs$\rightarrow$LHNs)": remove_edges_PNs_LHNs,
     r"Remove edges (PNs$\rightarrow\ast$)": remove_edges_PNs_star,
+    "Add edges (Global)": add_edges,
+    r"Add edges (KCs$\rightarrow$KCs)": add_edges_KCs_KCs,
+    r"Add edges (LHNs$\rightarrow$LHNs)": add_edges_LHNs_LHNs,
+    r"Add edges (PNs$\rightarrow$LHNs)": add_edges_PNs_LHNs,
+    r"Add edges (PNs$\rightarrow\ast$)": add_edges_PNs_star,
     "Shuffle edges (Global)": shuffle_edges,
     r"Shuffle edges (KCs$\rightarrow$KCs)": shuffle_edges_KCs_KCs,
     r"Shuffle edges (LHNs$\rightarrow$LHNs)": shuffle_edges_LHNs_LHNs,

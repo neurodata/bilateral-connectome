@@ -104,6 +104,20 @@ results["power_indicator"] = results["power_indicator"] + np.random.normal(
 
 # results["pvalue"] = results["pvalue"].map(lambda x: max(x, 1e-8))
 
+blues = sns.color_palette("Blues", 8)
+oranges = sns.color_palette("Oranges", 8)
+greens = sns.color_palette("Greens", 8)
+palette = {
+    "ER": blues[-1],
+    "SBM-f": oranges[-2],
+    "SBM-m": oranges[-4],
+    "RDPG": greens[-1],
+    "RDPG-n": greens[-4],
+}
+dashes = {"": "", "f": "", "m": (1, 1), "n": (2, 1)}
+
+
+set_theme(font_scale=1.25)
 grid = sns.FacetGrid(
     results,
     col="target",
@@ -112,8 +126,12 @@ grid = sns.FacetGrid(
     sharey=True,
     hue="test",
     height=4,
+    palette=palette,
 )
-grid.map_dataframe(sns.lineplot, x="effect_size", y="pvalue")
+
+grid.map_dataframe(
+    sns.lineplot, x="effect_size", y="pvalue", style="model_postfix", dashes=dashes
+)
 grid.add_legend(
     title="Test",
     ncol=results["test"].nunique(),
@@ -130,8 +148,8 @@ grid.set_ylabels("p-value")
 grid.set_xlabels("# of edges")
 grid.set_titles("{col_name}")
 grid.set(ylim=(-0.01, 1.01))
-grid.figure.text(-0.025, 0.70, "Remove\nedges", fontsize="x-large")
-grid.figure.text(-0.025, 0.25, "Shuffle\nedges", fontsize="x-large")
+grid.figure.text(-0.03, 0.70, "Remove\nedges", fontsize="x-large")
+grid.figure.text(-0.03, 0.25, "Shuffle\nedges", fontsize="x-large")
 gluefig("pvalue-grid", grid.figure)
 
 #%%
