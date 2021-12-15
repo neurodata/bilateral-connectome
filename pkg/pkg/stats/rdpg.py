@@ -58,8 +58,8 @@ def rdpg_test(
     )
     misc["align_time"] = time.time() - currtime
 
-    Z1 = np.concatenate((X1, Y1), axis=1)
-    Z2 = np.concatenate((X2, Y2), axis=1)
+    Z1 = np.concatenate((X1[:, :n_components], Y1[:, :n_components]), axis=1)
+    Z2 = np.concatenate((X2[:, :n_components], Y2[:, :n_components]), axis=1)
 
     misc["Z1"] = Z1
     misc["Z2"] = Z2

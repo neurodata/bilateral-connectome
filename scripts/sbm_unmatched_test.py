@@ -161,11 +161,29 @@ right_labels = right_nodes[GROUP_KEY].values
 #%%
 
 stat, pvalue, misc = stochastic_block_test(
-    left_adj, right_adj, labels1=left_labels, labels2=right_labels, method="fisher"
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method="fisher",
+    combine_method="fisher",
 )
 glue("uncorrected_pvalue", pvalue)
 n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
+print(pvalue)
+
+#%%
+min_stat, min_pvalue, min_misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method="fisher",
+    combine_method="min",
+)
+glue("uncorrected_pvalue_min", pvalue)
+print(min_pvalue)
 
 #%%
 set_theme(font_scale=1)
@@ -782,20 +800,37 @@ for i in range(n_resamples):
     subsampled_right_adj = remove_edges(
         right_adj, effect_size=n_remove, random_seed=rng
     )
-    stat, pvalue, misc = stochastic_block_test(
-        left_adj,
-        subsampled_right_adj,
-        labels1=left_labels,
-        labels2=right_labels,
-        method="fisher",
-    )
-    rows.append({"stat": stat, "pvalue": pvalue, "misc": misc, "resample": i})
+    for combine_method in ["fisher", "min"]:
+        # TODO it is kinda silly to run this test twice but oh well...
+        stat, pvalue, misc = stochastic_block_test(
+            left_adj,
+            subsampled_right_adj,
+            labels1=left_labels,
+            labels2=right_labels,
+            method="fisher",
+            combine_method=combine_method,
+        )
+        rows.append(
+            {
+                "stat": stat,
+                "pvalue": pvalue,
+                "misc": misc,
+                "resample": i,
+                "combine_method": combine_method,
+            }
+        )
 
 resample_results = pd.DataFrame(rows)
 
 #%%
+
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(data=resample_results, x="pvalue", ax=ax, color=neutral_color)
+sns.histplot(
+    data=resample_results[resample_results["combine_method"] == "fisher"],
+    x="pvalue",
+    ax=ax,
+    color=neutral_color,
+)
 ax.set(xlabel="p-value", ylabel="", yticks=[])
 ax.spines["left"].set_visible(False)
 
@@ -829,6 +864,103 @@ gluefig("pvalues_corrected", fig)
 # that with this density correction, we now failed to reject our null hypothesis of
 # bilateral symmetry under the stochastic block model.
 # ```
+
+#%%
+
+colors = sns.color_palette("Set2")
+method_palette = {"fisher": colors[2], "min": colors[3]}
+
+fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+# ax = axs[0]
+sns.kdeplot(
+    data=resample_results,
+    x="pvalue",
+    ax=ax,
+    # color=neutral_color,
+    hue="combine_method",
+    clip=(0, 1),
+    palette=method_palette,
+    fill=True,
+    log_scale=False,
+    linewidth=1,
+)
+# sns.histplot(
+#     data=resample_results,
+#     x="pvalue",
+#     ax=ax,
+#     # color=neutral_color,
+#     hue="combine_method",
+#     bins=100,
+#     stat="density",
+#     element="step",
+#     palette=method_palette,
+# )
+ax.set(xlabel="p-value", ylabel="", yticks=[])
+ax.spines["left"].set_visible(False)
+ax.axvline(0.05, color="dimgrey", linestyle=":")
+ax.text(
+    0.07, ax.get_ylim()[1], r"$\alpha = 0.05$", ha="left", va="top", color="dimgrey"
+)
+
+
+legend = ax.get_legend()
+handles = legend.legendHandles
+# labels = legend.get_texts()
+# labels = [label.get_text() for label in labels]
+new_labels = ["Fisher", "Bonferroni"]
+ax.get_legend().remove()
+ax.legend(handles=handles, labels=new_labels, title="Method")
+
+medians = resample_results.groupby("combine_method")["pvalue"].median()
+
+ax.axvline(medians.loc["fisher"], color=method_palette["fisher"], ymax=0.5)
+ax.axvline(medians.loc["min"], color=method_palette["min"], ymax=0.5)
+
+fisher_median = np.round(medians.loc["fisher"], 2)
+min_median = np.round(medians.loc["min"], 3)
+
+xticks = [0.5, 1]
+
+xticks.append(fisher_median)
+xticks.append(min_median)
+
+from matplotlib import ticker
+
+ax.xaxis.set_major_formatter(ticker.StrMethodFormatter("{x}"))
+ax.set_xticks(xticks)
+
+plt.draw()
+ticklabels = ax.get_xticklabels()
+
+for tick in ticklabels:
+    text = tick.get_text()
+    if text == str(min_median):
+        tick.set_color(method_palette["min"])
+    elif text == str(fisher_median):
+        tick.set_color(method_palette["fisher"])
+
+ticklabels = ax.get_xticklabels()
+
+ticks = ax.xaxis.get_major_ticks()
+# ticks[3].tick1line.set_markersize(10)
+
+fig.set_facecolor("w")
+# ax = axs[1]
+# sns.histplot(
+#     data=resample_results[resample_results["combine_method"] == "min"],
+#     x="pvalue",
+#     ax=ax,
+#     color=neutral_color,
+# )
+# ax.set(xlabel="p-value", ylabel="", yticks=[])
+# ax.spines["left"].set_visible(False)
+
+# mean_resample_pvalue = np.mean(resample_results["pvalue"])
+# median_resample_pvalue = np.median(resample_results["pvalue"])
+
+gluefig("pvalues_corrected_both", fig)
+
+# %%
 
 #%% [markdown]
 # ### An analytic approach to correcting for differences in density
@@ -870,6 +1002,19 @@ stat, pvalue, misc = stochastic_block_test(
     null_odds=null_odds,
 )
 glue("corrected_pvalue", pvalue)
+print(pvalue)
+
+min_stat, min_pvalue, min_misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method="fisher",
+    combine_method='min',
+    null_odds=null_odds,
+)
+glue("corrected_pvalue_min", min_pvalue)
+print(min_pvalue)
 
 #%%
 fig, axs = plot_stochastic_block_test(misc, pvalue_vmin=pvalue_vmin)
