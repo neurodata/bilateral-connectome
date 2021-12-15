@@ -39,6 +39,10 @@ def remove_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
 # TODO
 # @jit(nopython=True)
 # https://numba-how-to.readthedocs.io/en/latest/numpy.html
+
+# TODO add an induced option
+# TODO deal with max number of edges properly
+# TODO put down edges all at once rather than this silly thing
 def add_edges(adjacency, effect_size=100, random_seed=None, max_tries=None):
     adjacency, rng, max_tries = _input_checks(
         adjacency, random_seed, effect_size, max_tries
