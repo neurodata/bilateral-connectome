@@ -183,6 +183,9 @@ def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
     target = re.search("\((.*?)\)", perturbation_name).group(1)
     perturbation_type = perturbation_name.split(" ")[0]
 
+    model_base = perturbation_name.split("-")[0]
+    model_postfix = perturbation_name.split("-")[1]
+
     if perturb_adj is None:
         return []
 
@@ -206,6 +209,8 @@ def perturb_and_run_tests(seed, perturbation_name, perturb, effect_size, sim):
             "test_elapsed": test_elapsed,
             "target": target,
             "perturbation_type": perturbation_type,
+            "model_base": model_base,
+            "model_postfix": model_postfix,
             **options,
         }
         rows.append(row)

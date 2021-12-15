@@ -69,6 +69,9 @@ simple_results = pd.read_csv(result_path / "unmatched_power_simple.csv", index_c
 with open(result_path / "unmatched_power_full.pickle", "rb") as f:
     results = pickle.load(f)
 
+#%%
+# filter
+results = results[results["test"] != "Degree"].copy()
 
 #%%
 
@@ -111,13 +114,49 @@ grid = sns.FacetGrid(
     height=4,
 )
 grid.map_dataframe(sns.lineplot, x="effect_size", y="pvalue")
-grid.add_legend(title="Test")
+grid.add_legend(
+    title="Test",
+    ncol=results["test"].nunique(),
+    loc="lower left",
+    bbox_to_anchor=(0.05, 0.96),
+    title_fontsize="x-large",
+)
+leg = grid._legend
+leg._legend_box.align = "left"
+title = leg.get_title()
+title.set_fontsize("large")
+
 grid.set_ylabels("p-value")
-grid.set_xlabels("Effect size")
+grid.set_xlabels("# of edges")
 grid.set_titles("{col_name}")
 grid.set(ylim=(-0.01, 1.01))
-# grid.set(yscale="log")
+grid.figure.text(-0.025, 0.70, "Remove\nedges", fontsize="x-large")
+grid.figure.text(-0.025, 0.25, "Shuffle\nedges", fontsize="x-large")
 gluefig("pvalue-grid", grid.figure)
+
+#%%
+# grid = sns.FacetGrid(
+#     results,
+#     col="target",
+#     row="perturbation_type",
+#     sharex="col",
+#     sharey=True,
+#     hue="test",
+#     height=4,
+# )
+# grid.map_dataframe(sns.lineplot, x="effect_size", y="pvalue")
+# grid.add_legend(
+#     title="Test",
+#     ncol=results["test"].nunique(),
+#     loc="lower left",
+#     bbox_to_anchor=(0.05, 0.95),
+# )
+# grid.set_ylabels("p-value")
+# grid.set_xlabels("Effect size")
+# grid.set_titles("{col_name}")
+# grid.set(ylim=(-0.01, 1.01))
+# gluefig("pvalue-grid", grid.figure)
+
 
 # #%%
 # grid = sns.FacetGrid(
