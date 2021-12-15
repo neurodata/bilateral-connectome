@@ -82,8 +82,8 @@ adj = right_adj
 nodes = right_nodes
 labels1 = right_labels
 labels2 = right_labels
-n_sims = 10
-effect_sizes = np.arange(0, 3000, 100)
+n_sims = 1
+effect_sizes = np.arange(0, 3000, 50)
 seeds = (seeds[1], seeds[1])
 
 n_components = 8
@@ -111,6 +111,13 @@ def remove_edges_PNs_LHNs(adjacency, **kwargs):
     return remove_edges_subgraph(adjacency, PNs_nodes, LHNs_nodes, **kwargs)
 
 
+non_PNs_nodes = nodes[nodes["simple_group"] != "PNs"]["inds"]
+
+
+def remove_edges_PNs_star(adjacency, **kwargs):
+    return remove_edges_subgraph(adjacency, PNs_nodes, non_PNs_nodes, **kwargs)
+
+
 # shuffling
 def shuffle_edges_KCs_KCs(adjacency, **kwargs):
     return shuffle_edges_subgraph(adjacency, KCs_nodes, KCs_nodes, **kwargs)
@@ -122,6 +129,10 @@ def shuffle_edges_LHNs_LHNs(adjacency, **kwargs):
 
 def shuffle_edges_PNs_LHNs(adjacency, **kwargs):
     return shuffle_edges_subgraph(adjacency, PNs_nodes, LHNs_nodes, **kwargs)
+
+
+def shuffle_edges_PNs_star(adjacency, **kwargs):
+    return shuffle_edges_subgraph(adjacency, PNs_nodes, non_PNs_nodes, **kwargs)
 
 
 #%%
@@ -153,10 +164,12 @@ perturbations = {
     r"Remove edges (KCs$\rightarrow$KCs)": remove_edges_KCs_KCs,
     r"Remove edges (LHNs$\rightarrow$LHNs)": remove_edges_LHNs_LHNs,
     r"Remove edges (PNs$\rightarrow$LHNs)": remove_edges_PNs_LHNs,
+    r"Remove edges (PNs$\rightarrow\ast$)": remove_edges_PNs_star,
     "Shuffle edges (Global)": shuffle_edges,
     r"Shuffle edges (KCs$\rightarrow$KCs)": shuffle_edges_KCs_KCs,
     r"Shuffle edges (LHNs$\rightarrow$LHNs)": shuffle_edges_LHNs_LHNs,
     r"Shuffle edges (PNs$\rightarrow$LHNs)": shuffle_edges_PNs_LHNs,
+    r"Shuffle edges (PNs$\rightarrow\ast$)": shuffle_edges_PNs_star,
 }
 
 n_runs = len(tests) * n_sims * len(effect_sizes)
@@ -213,6 +226,8 @@ for perturbation_name, perturb in perturbations.items():
                 "sim": sim,
             }
             parameters.append(params)
+
+print(f"Total number of jobs: {len(parameters)}")
 
 overall_time = time.time()
 parallel = Parallel(n_jobs=-2, verbose=10)
