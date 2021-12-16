@@ -64,10 +64,12 @@ neutral_color = sns.color_palette("Set2")[2]
 result_path = Path("bilateral-connectome/results/outputs/perturbations_unmatched")
 
 # reopen
-simple_results = pd.read_csv(result_path / "unmatched_power_simple.csv", index_col=0)
+results = pd.read_csv(result_path / "unmatched_power_simple.csv", index_col=0)
 
 with open(result_path / "unmatched_power_full.pickle", "rb") as f:
     results = pickle.load(f)
+
+results.columns
 
 #%%
 # filter
