@@ -66,10 +66,11 @@ result_path = Path("bilateral-connectome/results/outputs/perturbations_unmatched
 # reopen
 results = pd.read_csv(result_path / "unmatched_power_simple.csv", index_col=0)
 
-with open(result_path / "unmatched_power_full.pickle", "rb") as f:
-    results = pickle.load(f)
+results["model_postfix"] = results["model_postfix"].fillna("")
+# with open(result_path / "unmatched_power_full.pickle", "rb") as f:
+#     results = pickle.load(f)
 
-results.columns
+# results.columns
 
 #%%
 # filter
@@ -111,7 +112,7 @@ oranges = sns.color_palette("Oranges", 8)
 greens = sns.color_palette("Greens", 8)
 palette = {
     "ER": blues[-1],
-    "SBM-f": oranges[-2],
+    "SBM-f": oranges[-3],
     "SBM-m": oranges[-4],
     "RDPG": greens[-1],
     "RDPG-n": greens[-4],
@@ -152,7 +153,49 @@ grid.set_titles("{col_name}")
 grid.set(ylim=(-0.01, 1.01))
 grid.figure.text(-0.03, 0.70, "Remove\nedges", fontsize="x-large")
 grid.figure.text(-0.03, 0.25, "Shuffle\nedges", fontsize="x-large")
+
+mean_results = (
+    results.groupby(["test", "perturbation", "effect_size"]).mean().reset_index()
+)
+detected_results = mean_results[mean_results["pvalue"] < 0.05]
+first_detected_results = detected_results.groupby(["test", "perturbation"]).first()
+
+# for (perturbation_type, target), ax in grid._axes_dict.items():
+#     perturbation = perturbation_type + " edges (" + target + ")"
+#     for test in results["test"].unique():
+#         try:
+#             effect_size = first_detected_results.loc[
+#                 (test, perturbation), "effect_size"
+#             ]
+#             ax.plot([effect_size, effect_size], [0, 1], color=palette[test])
+#         except KeyError:
+#             pass
+
+axs = grid.axes
+for ax in axs[1, :]:
+    ax.set_title("")
+
 gluefig("pvalue-grid", grid.figure)
+
+#%%
+
+
+grid = sns.FacetGrid(
+    first_detected_results,
+    col="target",
+    row="perturbation",
+    sharex=False,
+    sharey=False,
+    hue="test",
+    height=4,
+    palette=palette,
+)
+
+grid.map_dataframe(
+    sns.barplot,
+    x="test",
+    y="effect_size",  # style="model_postfix", dashes=dashes
+)
 
 #%%
 # grid = sns.FacetGrid(
