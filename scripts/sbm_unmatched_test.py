@@ -711,6 +711,9 @@ def plot_significant_probabilities(misc):
         )
     sig_data = pd.DataFrame(rows)
 
+    mean_ps = sig_data.groupby("pair")["p"].mean()
+    pair_orders = mean_ps.sort_values(ascending=False).index
+
     fig, ax = plt.subplots(1, 1, figsize=(8, 6))
     sns.pointplot(
         data=sig_data,
@@ -718,12 +721,21 @@ def plot_significant_probabilities(misc):
         x="pair",
         ax=ax,
         hue="side",
-        dodge=True,
+        hue_order=["Right", "Left"],
+        order=pair_orders,
+        dodge=False,
         join=False,
         palette=network_palette,
+        markers="_",
+        scale=1.75,
     )
 
-    ax.get_legend().set_title("Side")
+    ax.set_yscale("log")
+    ax.set_ylim((0.01, 1))
+
+    leg = ax.get_legend()
+    leg.set_title("Hemisphere")
+    leg.set_frame_on(True)
     rotate_labels(ax)
     ax.set(xlabel="Group pair", ylabel="Connection probability")
     return fig, ax
@@ -1010,7 +1022,7 @@ min_stat, min_pvalue, min_misc = stochastic_block_test(
     labels1=left_labels,
     labels2=right_labels,
     method="fisher",
-    combine_method='min',
+    combine_method="min",
     null_odds=null_odds,
 )
 glue("corrected_pvalue_min", min_pvalue)
