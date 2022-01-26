@@ -79,9 +79,9 @@ base_probs = B_base[inds]
 n_possible_matrix = misc["possible1"].values
 ns = n_possible_matrix[inds]
 
-n_sims = 50
-n_perturb_range = np.linspace(0, 100, 6, dtype=int)[1:]
-perturb_size_range = np.round(np.linspace(0, 0.4, 6), decimals=3)[1:]
+n_sims = 100
+n_perturb_range = np.linspace(0, 125, 6, dtype=int)[1:]
+perturb_size_range = np.round(np.linspace(0, 0.5, 6), decimals=3)[1:]
 print(f"Perturb sizes: {perturb_size_range}")
 print(f"Perturb number range: {n_perturb_range}")
 n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
@@ -205,6 +205,13 @@ total_elapsed = time.time() - t0
 print("Done!")
 print(f"Total experiment took: {datetime.timedelta(seconds=total_elapsed)}")
 results = pd.DataFrame(simple_rows)
+#%%
+
+from pathlib import Path
+
+save_path = Path("bilateral-connectome/results/outputs/compare_sbm_methods_sim")
+
+results.to_csv(save_path)
 
 #%%
 fig, axs = plt.subplots(
@@ -237,6 +244,8 @@ for i, perturb_size in enumerate(perturb_size_range):
 
 ax.set(yscale="log")
 
+gluefig("example-perturbations", fig)
+
 #%%
 
 
@@ -267,6 +276,8 @@ ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
 cax = fig.axes[1]
 cax.text(1, 1, "Bonferroni more sensitive", transform=cax.transAxes, va="top")
 ax.set_title("Fisher - Bonferroni pvalue", fontsize="x-large")
+
+gluefig("pvalue_diff_matrix", fig)
 #%%
 fig, axs = plt.subplots(2, 3, figsize=(15, 10))
 
@@ -316,6 +327,8 @@ axs[0, 0].set_title(f"Perturbation size = {perturb_size_range[0]}")
 for i, label in enumerate(labels):
     labels[i] = label.capitalize()
 axs.flat[-1].legend(handles=handles, labels=labels, title="Method")
+
+gluefig("perturbation_pvalues_lineplots", fig)
 
 #%%
 # sns.histplot(
