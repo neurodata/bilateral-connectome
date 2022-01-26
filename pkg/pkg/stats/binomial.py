@@ -15,7 +15,7 @@ def binom_2samp(x1, n1, x2, n2, null_odds, method="fisher"):
 
     cont_table = np.array([[x1, n1 - x1], [x2, n2 - x2]])
     if method == "fisher" and null_odds == 1.0:
-        stat, pvalue = fisher_exact(cont_table)
+        stat, pvalue = fisher_exact(cont_table, alternative="two-sided")
     elif method == "fisher" and null_odds != 1.0:
         stat, pvalue = fisher_exact_nonunity(cont_table, null_odds=null_odds)
     elif method == "chi2":

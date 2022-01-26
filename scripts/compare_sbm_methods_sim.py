@@ -79,9 +79,9 @@ base_probs = B_base[inds]
 n_possible_matrix = misc["possible1"].values
 ns = n_possible_matrix[inds]
 
-n_sims = 2
+n_sims = 50
 n_perturb_range = np.linspace(0, 100, 6, dtype=int)[1:]
-perturb_size_range = np.round(np.linspace(0, 0.2, 6), decimals=3)[1:]
+perturb_size_range = np.round(np.linspace(0, 0.4, 6), decimals=3)[1:]
 print(f"Perturb sizes: {perturb_size_range}")
 print(f"Perturb number range: {n_perturb_range}")
 n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
@@ -207,6 +207,37 @@ print(f"Total experiment took: {datetime.timedelta(seconds=total_elapsed)}")
 results = pd.DataFrame(simple_rows)
 
 #%%
+fig, axs = plt.subplots(
+    len(perturb_size_range), len(n_perturb_range), figsize=(20, 20), sharey=True
+)
+
+for i, perturb_size in enumerate(perturb_size_range):
+    for j, n_perturb in enumerate(n_perturb_range):
+        ax = axs[i, j]
+        perturb_probs = example_perturb_probs[(perturb_size, n_perturb)]
+        mask = base_probs != perturb_probs
+        show_base_probs = base_probs[mask]
+        show_perturb_probs = perturb_probs[mask]
+        sort_inds = np.argsort(-show_base_probs)
+        show_base_probs = show_base_probs[sort_inds]
+        show_perturb_probs = show_perturb_probs[sort_inds]
+
+        sns.scatterplot(
+            x=np.arange(len(show_base_probs)), y=show_perturb_probs, ax=ax, s=10
+        )
+        sns.lineplot(
+            x=np.arange(len(show_base_probs)),
+            y=show_base_probs,
+            ax=ax,
+            linewidth=1,
+            zorder=-1,
+            color="orange",
+        )
+        ax.set(xticks=[])
+
+ax.set(yscale="log")
+
+#%%
 
 
 fisher_results = results[results["method"] == "fisher"]
@@ -222,9 +253,6 @@ mean_diffs_square = mean_diffs.pivot(
     index="perturb_size", columns="n_perturb", values="pvalue"
 )
 
-
-# norm = colors.SymLogNorm(linthresh=0.001, linscale=0.001, vmin=-1, vmax=1)
-
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 sns.heatmap(
     mean_diffs_square,
@@ -232,27 +260,62 @@ sns.heatmap(
     ax=ax,
     yticklabels=perturb_size_range,
     xticklabels=n_perturb_range,
-    center=1,
+    square=True,
+    center=0,
 )
 ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
-
+cax = fig.axes[1]
+cax.text(1, 1, "Bonferroni more sensitive", transform=cax.transAxes, va="top")
+ax.set_title("Fisher - Bonferroni pvalue", fontsize="x-large")
 #%%
+fig, axs = plt.subplots(2, 3, figsize=(15, 10))
 
+method_palette = {"fisher": fisher_color, "min": min_color}
 
-#%%
+for i, perturb_size in enumerate(perturb_size_range):
+    ax = axs.flat[i]
+    plot_results = results[results["perturb_size"] == perturb_size]
+    sns.lineplot(
+        data=plot_results,
+        x="n_perturb",
+        y="pvalue",
+        hue="method",
+        style="method",
+        palette=method_palette,
+        ax=ax,
+    )
+    ax.set(yscale="log")
+    ax.get_legend().remove()
+    ax.axhline(0.05, color="dimgrey", linestyle=":")
+    ax.axhline(0.005, color="dimgrey", linestyle="--")
+    ax.set(ylabel="", xlabel="", title=f"{perturb_size}")
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+handles, labels = ax.get_legend_handles_labels()
 
-sns.lineplot(
-    data=results[(results["perturb_size"] == 0.0) | (results["n_perturb"] == 0)],
-    x="n_perturb",
-    y="pvalue",
-    ax=ax,
-    hue="perturb_size",
-    style="method",
+ax.annotate(
+    0.05,
+    xy=(ax.get_xlim()[1], 0.05),
+    xytext=(30, 10),
+    textcoords="offset points",
+    arrowprops=dict(arrowstyle="-"),
 )
+ax.annotate(
+    0.005,
+    xy=(ax.get_xlim()[1], 0.005),
+    xytext=(30, -40),
+    textcoords="offset points",
+    arrowprops=dict(arrowstyle="-"),
+)
+axs.flat[-1].axis("off")
 
-ax.set_yscale("log")
+[ax.set(ylabel="p-value") for ax in axs[:, 0]]
+[ax.set(xlabel="Number perturbed") for ax in axs[1, :]]
+
+axs[0, 0].set_title(f"Perturbation size = {perturb_size_range[0]}")
+
+for i, label in enumerate(labels):
+    labels[i] = label.capitalize()
+axs.flat[-1].legend(handles=handles, labels=labels, title="Method")
 
 #%%
 # sns.histplot(
@@ -276,147 +339,147 @@ subuniformity_plot(null_min_results["pvalue"], ax=ax)
 ax.set_title("Min-Bonferroni", fontsize="x-large")
 ax.set(ylabel="")
 
-# %%
-# ## Work in progress below on actually sampling the SBMs
+# # %%
+# # ## Work in progress below on actually sampling the SBMs
 
-#%%
+# #%%
 
-seed = None
-rng = np.random.default_rng(seed)
-B_base = misc["probabilities1"].values.copy()
-# B2 = misc["probabilities2"]
-n_elements = np.count_nonzero(B_base)
-n_perturb_range = np.linspace(0, 100, 6, dtype=int)
-perturb_size_range = np.round(np.linspace(0, 0.2, 6), decimals=3)
-
-
-print(perturb_size_range)
-print(n_perturb_range)
+# seed = None
+# rng = np.random.default_rng(seed)
+# B_base = misc["probabilities1"].values.copy()
+# # B2 = misc["probabilities2"]
+# n_elements = np.count_nonzero(B_base)
+# n_perturb_range = np.linspace(0, 100, 6, dtype=int)
+# perturb_size_range = np.round(np.linspace(0, 0.2, 6), decimals=3)
 
 
-B_mod = B_base.copy()
-i_indices, j_indices = np.nonzero(B_base)
-
-rows = []
-
-##
-
-n_sims = 20
-progress_steps = 0.05
-n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
-progress_counter = 0
-last_progress = 0
-for perturb_size in perturb_size_range:
-    for n_perturb in n_perturb_range:
-        for sim in range(n_sims):
-            progress_counter += 1
-            progress_prop = progress_counter / n_runs
-            if progress_prop - progress_steps > last_progress:
-                print(f"{progress_prop:.2f}")
-                last_progress = progress_prop
-
-            B_mod = B_base.copy()
-
-            choice_indices = rng.choice(len(i_indices), size=n_perturb, replace=False)
-
-            choice_i_indices = i_indices[choice_indices]
-            choice_j_indices = j_indices[choice_indices]
-
-            for (i, j) in zip(choice_i_indices, choice_j_indices):
-                prob = B_mod[i, j]
-                new_prob = rng.normal(prob, scale=prob * perturb_size)
-
-                if new_prob > 1:
-                    new_prob = 1
-                elif new_prob < 0:
-                    new_prob = 0
-
-                B_mod[i, j] = new_prob
-
-            ns = misc["group_counts1"].values
-
-            sbm_sample_base, labels = sbm(
-                ns, B_base, directed=True, loops=False, return_labels=True
-            )
-            sbm_sample_mod = sbm(ns, B_mod, directed=True, loops=False)
-
-            for method in ["fisher", "min"]:
-                stat, pvalue, misc = stochastic_block_test(
-                    sbm_sample_base,
-                    sbm_sample_mod,
-                    labels,
-                    labels,
-                    combine_method=method,
-                )
-                row = {
-                    "method": method,
-                    "pvalue": pvalue,
-                    "stat": stat,
-                    "n_perturb": n_perturb,
-                    "perturb_size": perturb_size,
-                    "sim": sim,
-                }
-                rows.append(row)
-print("Done!")
-results = pd.DataFrame(rows)
-results
-#%%
+# print(perturb_size_range)
+# print(n_perturb_range)
 
 
-fisher_results = results[results["method"] == "fisher"]
-min_results = results[results["method"] == "min"]
+# B_mod = B_base.copy()
+# i_indices, j_indices = np.nonzero(B_base)
 
-fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean()
-min_means = min_results.groupby(["perturb_size", "n_perturb"]).mean()
+# rows = []
 
-mean_diffs = fisher_means["pvalue"] - min_means["pvalue"]
-mean_diffs = mean_diffs.to_frame().reset_index()
+# ##
 
-mean_diffs_square = mean_diffs.pivot(
-    index="perturb_size", columns="n_perturb", values="pvalue"
-)
+# n_sims = 20
+# progress_steps = 0.05
+# n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
+# progress_counter = 0
+# last_progress = 0
+# for perturb_size in perturb_size_range:
+#     for n_perturb in n_perturb_range:
+#         for sim in range(n_sims):
+#             progress_counter += 1
+#             progress_prop = progress_counter / n_runs
+#             if progress_prop - progress_steps > last_progress:
+#                 print(f"{progress_prop:.2f}")
+#                 last_progress = progress_prop
+
+#             B_mod = B_base.copy()
+
+#             choice_indices = rng.choice(len(i_indices), size=n_perturb, replace=False)
+
+#             choice_i_indices = i_indices[choice_indices]
+#             choice_j_indices = j_indices[choice_indices]
+
+#             for (i, j) in zip(choice_i_indices, choice_j_indices):
+#                 prob = B_mod[i, j]
+#                 new_prob = rng.normal(prob, scale=prob * perturb_size)
+
+#                 if new_prob > 1:
+#                     new_prob = 1
+#                 elif new_prob < 0:
+#                     new_prob = 0
+
+#                 B_mod[i, j] = new_prob
+
+#             ns = misc["group_counts1"].values
+
+#             sbm_sample_base, labels = sbm(
+#                 ns, B_base, directed=True, loops=False, return_labels=True
+#             )
+#             sbm_sample_mod = sbm(ns, B_mod, directed=True, loops=False)
+
+#             for method in ["fisher", "min"]:
+#                 stat, pvalue, misc = stochastic_block_test(
+#                     sbm_sample_base,
+#                     sbm_sample_mod,
+#                     labels,
+#                     labels,
+#                     combine_method=method,
+#                 )
+#                 row = {
+#                     "method": method,
+#                     "pvalue": pvalue,
+#                     "stat": stat,
+#                     "n_perturb": n_perturb,
+#                     "perturb_size": perturb_size,
+#                     "sim": sim,
+#                 }
+#                 rows.append(row)
+# print("Done!")
+# results = pd.DataFrame(rows)
+# results
+# #%%
 
 
-# norm = colors.SymLogNorm(linthresh=0.001, linscale=0.001, vmin=-1, vmax=1)
+# fisher_results = results[results["method"] == "fisher"]
+# min_results = results[results["method"] == "min"]
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-sns.heatmap(
-    mean_diffs_square,
-    cmap="RdBu",
-    ax=ax,
-    yticklabels=perturb_size_range,
-    xticklabels=n_perturb_range,
-    center=1,
-)
-ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
+# fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean()
+# min_means = min_results.groupby(["perturb_size", "n_perturb"]).mean()
 
-#%%
+# mean_diffs = fisher_means["pvalue"] - min_means["pvalue"]
+# mean_diffs = mean_diffs.to_frame().reset_index()
+
+# mean_diffs_square = mean_diffs.pivot(
+#     index="perturb_size", columns="n_perturb", values="pvalue"
+# )
 
 
-#%%
+# # norm = colors.SymLogNorm(linthresh=0.001, linscale=0.001, vmin=-1, vmax=1)
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+# sns.heatmap(
+#     mean_diffs_square,
+#     cmap="RdBu",
+#     ax=ax,
+#     yticklabels=perturb_size_range,
+#     xticklabels=n_perturb_range,
+#     center=1,
+# )
+# ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
 
-sns.lineplot(
-    data=results[results["perturb_size"] == 0.04],
-    x="n_perturb",
-    y="pvalue",
-    ax=ax,
-    hue="perturb_size",
-    style="method",
-)
-
-ax.set_yscale("log")
-# ax.set(ylim=(1e-10, 1.1))
-
-#%%
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.lineplot(
-    data=mean_diffs[mean_diffs["perturb_size"] == 0.12], x="n_perturb", y="pvalue"
-)
-ax.axhline(0)
-#%%
+# #%%
 
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(x=probs, ax=ax)
+# #%%
+
+# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+
+# sns.lineplot(
+#     data=results[results["perturb_size"] == 0.04],
+#     x="n_perturb",
+#     y="pvalue",
+#     ax=ax,
+#     hue="perturb_size",
+#     style="method",
+# )
+
+# ax.set_yscale("log")
+# # ax.set(ylim=(1e-10, 1.1))
+
+# #%%
+# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# sns.lineplot(
+#     data=mean_diffs[mean_diffs["perturb_size"] == 0.12], x="n_perturb", y="pvalue"
+# )
+# ax.axhline(0)
+# #%%
+
+
+# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# sns.histplot(x=probs, ax=ax)
