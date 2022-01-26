@@ -1,3 +1,6 @@
+#%% [markdown]
+# # Fisher's method vs. min (after multiple comparison's correction)
+
 #%%
 from pkg.utils import set_warnings
 
@@ -21,9 +24,10 @@ import matplotlib.colors as colors
 from scipy.stats import binom, combine_pvalues
 from pkg.stats import binom_2samp
 import matplotlib.colors as colors
+from pathlib import Path
 
 
-DISPLAY_FIGS = False
+DISPLAY_FIGS = True
 
 FILENAME = "compare_sbm_methods_sim"
 
@@ -70,6 +74,48 @@ stat, pvalue, misc = stochastic_block_test(
     method="fisher",
     combine_method="fisher",
 )
+#%% [markdown]
+# ## Model for simulations
+# We have fit a stochastic block model to the left and right hemispheres. Say the
+# probabilities of group-to-group connections *on the left* are stored in the matrix
+# $B$, so that $B_{kl}$ is the probability of an edge from group $k$ to $l$.
+#
+# Let $\tilde{B}$ be a *perturbed* matrix of probabilities. We are interested in testing
+# $H_0: B = \tilde{B}$ vs. $H_a: ... \neq ...$. To do so, we compare each
+# $H_0: B_{kl} = \tilde{B}_{kl}$ using Fisher's exact test. This results in p-values for
+# each $(k,l)$ comparison, $\{p_{1,1}, p_{1,2}...p_{K,K}\}$.
+#
+# Now, we still are after an overall test for the equality $B = \tilde{B}$. Thus, we
+# need a way to combine p-values $\{p_{1,1}, p_{1,2}...p_{K,K}\}$ to get an *overall*
+# p-value for our test comparing the stochastic block model probabilities. One way is
+# Fisher's method; another is to take the
+# minimum p-value out of a collection of p-values which have been corrected for multiple
+# comparisons (say, via Bonferroni or Holm-Bonferroni).
+#
+# To compare how these two alternative methods of combining p-values work, we did the
+# following simulation:
+#
+# - Let $t$ be the number of probabilities to perturb.
+# - Let $\delta$ represent the strength of the perturbation (see model below).
+# - For each trial:
+#    - Randomly select $t$ probabilities without replacement from the elements of $B$
+#    - For each of these elements, $\tilde{B}_{kl} = TN(B_{kl}, \delta B_{kl})$ where
+#      $TN$ is a truncated normal distribution, such that probabilities don't end up
+#      outside of [0, 1].
+#    - For each element *not* perturbed, $\tilde{B}_{kl} = B_{kl}$
+#    - Sample the number of edges from each block under each model. In other words, let
+#      $m_{kl}$ be the number of edges in the $(k,l)$-th block, and let $n_k, n_l$ be
+#      the number of edges in the $k$-th and $l$-th blocks, respectively. Then, we have
+#
+#      $$m_{kl} \sim Binomial(n_k n_l, B_{kl})$$
+#
+#      and likewise but with $\tilde{B}_{kl}$ for $\tilde{m}_{kl}$.
+#    - Run Fisher's exact test to generate a $p_{kl}$ for each $(k,l)$.
+#    - Run Fisher's method for combining p-values, or take the minimum p-value after
+#      Bonferroni correction.
+# - These trials were repeated for $\delta \in \{0.1, 0.2, 0.3, 0.4, 0.5\}$ and
+# $t \in \{25, 50, 75, 100, 125\}$. For each $(\delta, t)$ we ran 100 replicates of the
+# model/test above.
 
 #%%
 
@@ -88,163 +134,169 @@ n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
 print(f"Number of runs: {n_runs}")
 
 #%%
-t0 = time.time()
-mean_itertimes = 0
-n_time_first = 5
-progress_steps = 0.05
-progress_counter = 0
-last_progress = -0.05
-simple_rows = []
-example_perturb_probs = {}
-for perturb_size in perturb_size_range:
-    for n_perturb in n_perturb_range:
-        for sim in range(n_sims):
-            itertime = time.time()
 
-            # just a way to track progress
-            progress_counter += 1
-            progress_prop = progress_counter / n_runs
-            if progress_prop - progress_steps > last_progress:
-                print(f"{progress_prop:.2f}")
-                last_progress = progress_prop
-
-            # choose some elements to perturb
-            currtime = time.time()
-            perturb_probs = base_probs.copy()
-            choice_indices = rng.choice(
-                len(perturb_probs), size=n_perturb, replace=False
-            )
-
-            # pertub em
-            for index in choice_indices:
-                prob = base_probs[index]
-
-                new_prob = -1
-                while new_prob <= 0 or new_prob >= 1:
-                    new_prob = rng.normal(prob, scale=prob * perturb_size)
-
-                perturb_probs[index] = new_prob
-
-            if sim == 0:
-                example_perturb_probs[(perturb_size, n_perturb)] = perturb_probs
-
-            perturb_elapsed = time.time() - currtime
-
-            # sample some new binomial data
-            currtime = time.time()
-
-            base_samples = binom.rvs(ns, base_probs)
-            perturb_samples = binom.rvs(ns, perturb_probs)
-            sample_elapsed = time.time() - currtime
-
-            currtime = time.time()
-
-            # test on the new data
-            def tester(cell):
-                stat, pvalue = binom_2samp(
-                    base_samples[cell],
-                    ns[cell],
-                    perturb_samples[cell],
-                    ns[cell],
-                    null_odds=1,
-                    method="fisher",
-                )
-                return pvalue
-
-            pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
-            pvalue_collection = np.array(pvalue_collection)
-            n_overall = len(pvalue_collection)
-            pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
-            n_tests = len(pvalue_collection)
-            n_skipped = n_overall - n_tests
-            test_elapsed = time.time() - currtime
-
-            # combine pvalues
-            currtime = time.time()
-            row = {
-                "perturb_size": perturb_size,
-                "n_perturb": n_perturb,
-                "sim": sim,
-                "n_tests": n_tests,
-                "n_skipped": n_skipped,
-            }
-            for method in ["fisher", "min"]:
-                row = row.copy()
-                if method == "min":
-                    overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
-                    row["pvalue"] = overall_pvalue
-                elif method == "fisher":
-                    stat, overall_pvalue = combine_pvalues(
-                        pvalue_collection, method="fisher"
-                    )
-                    row["pvalue"] = overall_pvalue
-
-                row["method"] = method
-                simple_rows.append(row)
-
-            combine_elapsed = time.time() - currtime
-
-            if progress_counter < n_time_first:
-                print("-----")
-                print(f"Perturb took {perturb_elapsed:0.3f}s")
-                print(f"Sample took {sample_elapsed:0.3f}s")
-                print(f"Test took {test_elapsed:0.3f}s")
-                print(f"Combine took {combine_elapsed:0.3f}s")
-                print("-----")
-                iter_elapsed = time.time() - itertime
-                mean_itertimes += iter_elapsed / n_time_first
-            elif progress_counter == n_time_first:
-                projected_time = mean_itertimes * n_runs
-                projected_time = datetime.timedelta(seconds=projected_time)
-                print("---")
-                print(f"Projected time: {projected_time}")
-                print("---")
-
-total_elapsed = time.time() - t0
-
-print("Done!")
-print(f"Total experiment took: {datetime.timedelta(seconds=total_elapsed)}")
-results = pd.DataFrame(simple_rows)
-#%%
-
-from pathlib import Path
-
-save_path = Path("bilateral-connectome/results/outputs/compare_sbm_methods_sim")
-
-results.to_csv(save_path)
-
-#%%
-fig, axs = plt.subplots(
-    len(perturb_size_range), len(n_perturb_range), figsize=(20, 20), sharey=True
+RERUN_SIM = False
+save_path = Path(
+    "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
+    "outputs/compare_sbm_methods_sim/results.csv"
 )
 
-for i, perturb_size in enumerate(perturb_size_range):
-    for j, n_perturb in enumerate(n_perturb_range):
-        ax = axs[i, j]
-        perturb_probs = example_perturb_probs[(perturb_size, n_perturb)]
-        mask = base_probs != perturb_probs
-        show_base_probs = base_probs[mask]
-        show_perturb_probs = perturb_probs[mask]
-        sort_inds = np.argsort(-show_base_probs)
-        show_base_probs = show_base_probs[sort_inds]
-        show_perturb_probs = show_perturb_probs[sort_inds]
+if RERUN_SIM:
+    t0 = time.time()
+    mean_itertimes = 0
+    n_time_first = 5
+    progress_steps = 0.05
+    progress_counter = 0
+    last_progress = -0.05
+    simple_rows = []
+    example_perturb_probs = {}
+    for perturb_size in perturb_size_range:
+        for n_perturb in n_perturb_range:
+            for sim in range(n_sims):
+                itertime = time.time()
 
-        sns.scatterplot(
-            x=np.arange(len(show_base_probs)), y=show_perturb_probs, ax=ax, s=10
-        )
-        sns.lineplot(
-            x=np.arange(len(show_base_probs)),
-            y=show_base_probs,
-            ax=ax,
-            linewidth=1,
-            zorder=-1,
-            color="orange",
-        )
-        ax.set(xticks=[])
+                # just a way to track progress
+                progress_counter += 1
+                progress_prop = progress_counter / n_runs
+                if progress_prop - progress_steps > last_progress:
+                    print(f"{progress_prop:.2f}")
+                    last_progress = progress_prop
 
-ax.set(yscale="log")
+                # choose some elements to perturb
+                currtime = time.time()
+                perturb_probs = base_probs.copy()
+                choice_indices = rng.choice(
+                    len(perturb_probs), size=n_perturb, replace=False
+                )
 
-gluefig("example-perturbations", fig)
+                # pertub em
+                for index in choice_indices:
+                    prob = base_probs[index]
+
+                    new_prob = -1
+                    while new_prob <= 0 or new_prob >= 1:
+                        new_prob = rng.normal(prob, scale=prob * perturb_size)
+
+                    perturb_probs[index] = new_prob
+
+                if sim == 0:
+                    example_perturb_probs[(perturb_size, n_perturb)] = perturb_probs
+
+                perturb_elapsed = time.time() - currtime
+
+                # sample some new binomial data
+                currtime = time.time()
+
+                base_samples = binom.rvs(ns, base_probs)
+                perturb_samples = binom.rvs(ns, perturb_probs)
+                sample_elapsed = time.time() - currtime
+
+                currtime = time.time()
+
+                # test on the new data
+                def tester(cell):
+                    stat, pvalue = binom_2samp(
+                        base_samples[cell],
+                        ns[cell],
+                        perturb_samples[cell],
+                        ns[cell],
+                        null_odds=1,
+                        method="fisher",
+                    )
+                    return pvalue
+
+                pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
+                pvalue_collection = np.array(pvalue_collection)
+                n_overall = len(pvalue_collection)
+                pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
+                n_tests = len(pvalue_collection)
+                n_skipped = n_overall - n_tests
+                test_elapsed = time.time() - currtime
+
+                # combine pvalues
+                currtime = time.time()
+                row = {
+                    "perturb_size": perturb_size,
+                    "n_perturb": n_perturb,
+                    "sim": sim,
+                    "n_tests": n_tests,
+                    "n_skipped": n_skipped,
+                }
+                for method in ["fisher", "min"]:
+                    row = row.copy()
+                    if method == "min":
+                        overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
+                        row["pvalue"] = overall_pvalue
+                    elif method == "fisher":
+                        stat, overall_pvalue = combine_pvalues(
+                            pvalue_collection, method="fisher"
+                        )
+                        row["pvalue"] = overall_pvalue
+
+                    row["method"] = method
+                    simple_rows.append(row)
+
+                combine_elapsed = time.time() - currtime
+
+                if progress_counter < n_time_first:
+                    print("-----")
+                    print(f"Perturb took {perturb_elapsed:0.3f}s")
+                    print(f"Sample took {sample_elapsed:0.3f}s")
+                    print(f"Test took {test_elapsed:0.3f}s")
+                    print(f"Combine took {combine_elapsed:0.3f}s")
+                    print("-----")
+                    iter_elapsed = time.time() - itertime
+                    mean_itertimes += iter_elapsed / n_time_first
+                elif progress_counter == n_time_first:
+                    projected_time = mean_itertimes * n_runs
+                    projected_time = datetime.timedelta(seconds=projected_time)
+                    print("---")
+                    print(f"Projected time: {projected_time}")
+                    print("---")
+
+    total_elapsed = time.time() - t0
+
+    print("Done!")
+    print(f"Total experiment took: {datetime.timedelta(seconds=total_elapsed)}")
+    results = pd.DataFrame(simple_rows)
+
+    results.to_csv(save_path)
+else:
+    results = pd.read_csv(save_path, index_col=0)
+
+#%%
+if RERUN_SIM:
+    fig, axs = plt.subplots(
+        len(perturb_size_range), len(n_perturb_range), figsize=(20, 20), sharey=True
+    )
+
+    for i, perturb_size in enumerate(perturb_size_range):
+        for j, n_perturb in enumerate(n_perturb_range):
+            ax = axs[i, j]
+            perturb_probs = example_perturb_probs[(perturb_size, n_perturb)]
+            mask = base_probs != perturb_probs
+            show_base_probs = base_probs[mask]
+            show_perturb_probs = perturb_probs[mask]
+            sort_inds = np.argsort(-show_base_probs)
+            show_base_probs = show_base_probs[sort_inds]
+            show_perturb_probs = show_perturb_probs[sort_inds]
+
+            sns.scatterplot(
+                x=np.arange(len(show_base_probs)), y=show_perturb_probs, ax=ax, s=10
+            )
+            sns.lineplot(
+                x=np.arange(len(show_base_probs)),
+                y=show_base_probs,
+                ax=ax,
+                linewidth=1,
+                zorder=-1,
+                color="orange",
+            )
+            ax.set(xticks=[])
+
+    ax.set(yscale="log")
+
+    gluefig("example-perturbations", fig)
 
 #%%
 
@@ -262,6 +314,8 @@ mean_diffs_square = mean_diffs.pivot(
     index="perturb_size", columns="n_perturb", values="pvalue"
 )
 
+v = np.max(np.abs(mean_diffs_square.values))
+
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 sns.heatmap(
     mean_diffs_square,
@@ -271,12 +325,16 @@ sns.heatmap(
     xticklabels=n_perturb_range,
     square=True,
     center=0,
+    vmin=-v,
+    vmax=v,
+    cbar_kws=dict(shrink=0.7),
 )
 ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
 cax = fig.axes[1]
-cax.text(1, 1, "Bonferroni more sensitive", transform=cax.transAxes, va="top")
-ax.set_title("Fisher - Bonferroni pvalue", fontsize="x-large")
-
+cax.text(4, 1, "Min more\nsensitive", transform=cax.transAxes, va="top")
+cax.text(4, 0, "Fisher more\nsensitive", transform=cax.transAxes, va="bottom")
+ax.set_title("(Fisher - Min) pvalues", fontsize="x-large")
+DISPLAY_FIGS = True
 gluefig("pvalue_diff_matrix", fig)
 #%%
 fig, axs = plt.subplots(2, 3, figsize=(15, 10))
@@ -301,6 +359,10 @@ for i, perturb_size in enumerate(perturb_size_range):
     ax.axhline(0.005, color="dimgrey", linestyle="--")
     ax.set(ylabel="", xlabel="", title=f"{perturb_size}")
 
+    ylim = ax.get_ylim()
+    if ylim[0] < 1e-25:
+        ax.set_ylim((1e-25, ylim[1]))
+
 handles, labels = ax.get_legend_handles_labels()
 
 ax.annotate(
@@ -321,6 +383,7 @@ axs.flat[-1].axis("off")
 
 [ax.set(ylabel="p-value") for ax in axs[:, 0]]
 [ax.set(xlabel="Number perturbed") for ax in axs[1, :]]
+axs[0, -1].set(xlabel="Number perturbed")
 
 axs[0, 0].set_title(f"Perturbation size = {perturb_size_range[0]}")
 
@@ -330,27 +393,24 @@ axs.flat[-1].legend(handles=handles, labels=labels, title="Method")
 
 gluefig("perturbation_pvalues_lineplots", fig)
 
-#%%
-# sns.histplot(
-#     x=results[(results["perturb_size"] == 0.0) & (results["method"] == "min")]["pvalue"]
-# )
+# #%%
 
-from giskard.plot import subuniformity_plot
+# from giskard.plot import subuniformity_plot
 
-null_results = results[(results["perturb_size"] == 0.0) | (results["n_perturb"] == 0)]
-null_fisher_results = null_results[null_results["method"] == "fisher"]
-null_min_results = null_results[null_results["method"] == "min"]
+# null_results = results[(results["perturb_size"] == 0.0) | (results["n_perturb"] == 0)]
+# null_fisher_results = null_results[null_results["method"] == "fisher"]
+# null_min_results = null_results[null_results["method"] == "min"]
 
-fig, axs = plt.subplots(1, 2, figsize=(10, 5), sharey=True, sharex=True)
+# fig, axs = plt.subplots(1, 2, figsize=(10, 5), sharey=True, sharex=True)
 
-ax = axs[0]
-subuniformity_plot(null_fisher_results["pvalue"], ax=ax)
-ax.set_title("Fisher", fontsize="x-large")
+# ax = axs[0]
+# subuniformity_plot(null_fisher_results["pvalue"], ax=ax)
+# ax.set_title("Fisher", fontsize="x-large")
 
-ax = axs[1]
-subuniformity_plot(null_min_results["pvalue"], ax=ax)
-ax.set_title("Min-Bonferroni", fontsize="x-large")
-ax.set(ylabel="")
+# ax = axs[1]
+# subuniformity_plot(null_min_results["pvalue"], ax=ax)
+# ax.set_title("Min-Bonferroni", fontsize="x-large")
+# ax.set(ylabel="")
 
 # # %%
 # # ## Work in progress below on actually sampling the SBMs
