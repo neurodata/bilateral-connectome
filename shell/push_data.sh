@@ -1,0 +1,2 @@
+rsync -zvhr ./bilateral-connectome/data/2021-05-24-v2 bpedigo@synaptomes1.neurodata.io:/data/bpedigo/bilateral/bilateral-connectome/data
+rsync -zvhr ./bilateral-connectome/data/processed bpedigo@synaptomes1.neurodata.io:/data/bpedigo/bilateral/bilateral-connectome/data

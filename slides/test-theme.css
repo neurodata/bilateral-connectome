@@ -1,0 +1,64 @@
+/* @theme test-theme
+ * @auto-scaling true
+ */
+
+@import 'default';
+
+div.twocols {
+    margin-top: 0px;
+    column-count: 2;
+}
+div.twocols p:first-child,
+div.twocols h1:first-child,
+div.twocols h2:first-child,
+div.twocols ul:first-child,
+div.twocols ul li:first-child,
+div.twocols ul li p:first-child {
+    margin-top: 0 !important;
+}
+div.twocols p.break {
+    break-before: column;
+    margin-top: 0;
+}
+
+
+/* h1 {
+    position: sticky;
+    border-bottom: none;
+    top: 7%;
+    left: 5%;
+    color: #246;
+    font-size: 1.6em;
+    margin-bottom: 10px;
+    margin-right: 10%;
+} */
+
+/* h2 {
+    margin-top: 0px;
+    position: relative;
+} */
+
+/* div.colwrap {
+    background-color: inherit;
+    color: inherit;
+    width: 100%;
+    height: 100%;
+}
+div.colwrap div h1:first-child, div.colwrap div h2:first-child {
+    margin-top: 0px !important;
+}
+div.colwrap div.left, div.colwrap div.right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    padding: 70px 35px 70px 70px;
+}
+div.colwrap div.left {
+    right: 50%;
+    left: 0;
+}
+div.colwrap div.right {
+    left: 50%;
+    right: 0;
+} */
+  

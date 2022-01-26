@@ -1,13 +1,15 @@
 # Outline 
 
 # Preliminaries
+- In [](unmatched_vs_matched.ipynb) we briefly explain the difference between a matched
+  and an unmatched pair of networks.
 - In [](define_data.ipynb) we explain what data we'll use for our comparisons. 
 
 # Unmatched Tests
 - In [](er_unmatched_test.ipynb), we run a test for whether the Erdos-Renyi model
 fits between the two hemispheres are similar, finding that they are significantly different 
 even under this simple model.
-- In [](sbm_test.ipynb), we run a test for whether stochastic block model fits between the 
+- In [](sbm_unmatched_test.ipynb), we run a test for whether stochastic block model fits between the 
 two hemispheres are similar. We also present a version for this test which accounts for
 differences in edge density between the hemispheres. 
 - In [](rdpg_unmatched_test.ipynb), we run a test for whether random dot product graph model fits

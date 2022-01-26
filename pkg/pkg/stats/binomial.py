@@ -6,7 +6,7 @@ from statsmodels.stats.proportion import test_proportions_2indep
 from .fisher_exact_nonunity import fisher_exact_nonunity
 
 
-def binom_2samp(x1, n1, x2, n2, null_odds, method="agresti-caffo"):
+def binom_2samp(x1, n1, x2, n2, null_odds, method="fisher"):
     if x1 == 0 or x2 == 0:
         # logging.warn("One or more counts were 0, not running test and returning nan")
         return np.nan, np.nan

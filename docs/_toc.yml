@@ -1,15 +1,17 @@
 format: jb-book
-root: landing
+root: abstract
 parts:
   - caption: Preliminaries
     chapters:
     - file: introduction
+    # - file: goals
     - file: outline
+    - file: unmatched_vs_matched
     - file: define_data
   - caption: Unmatched Tests
     chapters:
     - file: er_unmatched_test
-    - file: sbm_test
+    - file: sbm_unmatched_test
     - file: rdpg_unmatched_test
     - file: subgraph_unmatched_test
   - caption: Matched Tests
@@ -19,3 +21,10 @@ parts:
   - caption: Appendix
     chapters: 
     - file: nhypergeom_sims
+  - caption: References
+    chapters: 
+    - file: references
+  - caption: Slides
+    chapters:
+    - url: https://docs.neurodata.io/bilateral-connectome/nmc.pdf
+      title: neuromatch 4.0

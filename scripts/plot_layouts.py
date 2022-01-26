@@ -345,5 +345,3 @@ print("----")
 print(f"Script took {delta}")
 print(f"Completed at {datetime.datetime.now()}")
 print("----")
-
-# %%

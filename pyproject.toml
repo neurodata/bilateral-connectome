@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "bilateral-connectome"
+version = "0.1.0"
+description = ""
+authors = ["Benjamin D. Pedigo <bpedigo@jhu.edu>"]
+
+[tool.poetry.dependencies]
+python = "3.9.*"
+scikit-learn = "^0.24.2"
+umap-learn = "^0.5.1"
+anytree = "^2.8.0"
+pkg = {path = "pkg", develop = true}
+graspologic = {path = "../graspologic", develop = true}
+giskard = {path = "../giskard", develop = true}
+statsmodels = "^0.13.0"
+jupyter-client = "6.1.12" # https://github.com/jupyter/jupyter_client/issues/637
+
+[tool.poetry.dev-dependencies]
+black = "^21.9b0"
+flake8 = "^3.9.2"
+rope = "^0.20.1"
+jupyter = "^1.0.0"
+jupyter-book = "^0.12.1"
+ghp-import = "^2.0.1"
+ipykernel = "^6.6.0"
