@@ -119,7 +119,7 @@ stat, pvalue, misc = stochastic_block_test(
 # model/test above.
 
 #%% [markdown]
-# ## Results under the null
+# ## P-values under the null
 
 #%%
 
@@ -216,7 +216,7 @@ gluefig("null_distributions", fig)
 
 
 #%% [markdown]
-# ## Results under the alternative
+# ## P-values under the alternative
 
 #%%
 
@@ -508,7 +508,7 @@ gluefig("perturbation_pvalues_lineplots", fig)
 # ```
 
 #%% [markdown]
-# ## Power
+# ## Power under the alternative
 
 #%%
 alpha = 0.05
@@ -545,7 +545,7 @@ from matplotlib.transforms import Bbox
 set_theme(font_scale=1.5)
 # set up plot
 pad = 0.5
-width_ratios = [1, pad*1.2, 10, pad, 10, 1.3*pad, 10, 1]
+width_ratios = [1, pad * 1.2, 10, pad, 10, 1.3 * pad, 10, 1]
 fig, axs = plt.subplots(
     1,
     len(width_ratios),
@@ -652,145 +652,20 @@ axs[fisher_col].set(
 axs[min_col].set(xlabel=xlabel, ylabel="")
 axs[ratio_col].set(xlabel=xlabel, ylabel="")
 
-fig.text(0.09, 0.86, 'A)', fontweight="bold", fontsize=50)
-fig.text(0.64, 0.86, 'B)', fontweight="bold", fontsize=50)
-# gluefig('relative_power', fig)
+fig.text(0.09, 0.86, "A)", fontweight="bold", fontsize=50)
+fig.text(0.64, 0.86, "B)", fontweight="bold", fontsize=50)
+gluefig("relative_power", fig)
 
 #%% [markdown]
-# {glue:figure} fig:compare_sbm_methods_sim-relative_power
+# ```{glue:figure} fig:compare_sbm_methods_sim-relative_power
 #
-# Comparison of power for Fisher's and the Min method. **A)** The power under the 
+# Comparison of power for Fisher's and the Min method. **A)** The power under the
 # alternative described in the text for both Fisher's method and the Min method. In both
-# heatmaps, the x-axis represents an increasing number of blocks which are perturbed, 
+# heatmaps, the x-axis represents an increasing number of blocks which are perturbed,
 # and the y-axis represents an increasing magnitude for each perturbation. **B)** The
 # log of the ratio of powers (Fisher's / Min) for each alternative. Note that positive
-# (purple) values would represent that Fisher's is more powerful, and negative (green) 
-# would represent that the Min method is more powerful. 
-
-
-# sns.heatmap(
-#     mean_diffs_square,
-#     cmap="RdBu",
-#     ax=ax,
-#     yticklabels=perturb_size_range,
-#     xticklabels=n_perturb_range,
-#     square=True,
-#     center=1,
-#     vmin=0,
-#     vmax=2,
-#     cbar_kws=dict(shrink=0.7),
-# # )
-# cax = fig.axes[-1]
-# 
-# ax.set_title("(Fisher / Min) power", fontsize="x-large")
-# ax.invert_yaxis()
-
-#
-
-
-# heatmap_kws = dict(
-#     cmap="Blues", square=True, cbar=False, vmax=p_max, fmt="s", xticklabels=True
-# )
-
-# # heatmap of left connection probabilities
-# annot = np.full((K, K), "")
-# annot[B1.values == 0] = 0
-# ax = axs[left_col]
-# sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
-# ax.set(ylabel="Source group", xlabel="Target group")
-# ax.set_title(r"$\hat{B}$ left", fontsize="xx-large", color=network_palette["Left"])
-
-# # heatmap of right connection probabilities
-# annot = np.full((K, K), "")
-# annot[B2.values == 0] = 0
-# ax = axs[right_col]
-# im = sns.heatmap(B2, ax=ax, annot=annot, **heatmap_kws)
-# ax.set(ylabel="", xlabel="Target group")
-# text = r"$\hat{B}$ right"
-# if null_odds != 1:
-#     text = r"$c$" + text
-# ax.set_title(text, fontsize="xx-large", color=network_palette["Right"])
-
-# # handle the colorbars
-# # NOTE: did it this way cause the other options weren't playing nice with auto
-# # constrain
-# # layouts.
-
-# ax = axs[0]
-# shrink_axis(ax, scale=0.5)
-# _ = fig.colorbar(
-#     im.get_children()[0],
-#     cax=ax,
-#     fraction=1,
-#     shrink=1,
-#     ticklocation="left",
-# )
-
-# # plot p-values
-# ax = axs[pvalue_col]
-
-# if annot_missing:
-#     annot = np.full((K, K), "")
-#     annot[(B1.values == 0) & (B2.values == 0)] = "B"
-#     annot[(B1.values == 0) & (B2.values != 0)] = "L"
-#     annot[(B1.values != 0) & (B2.values == 0)] = "R"
-# else:
-#     annot = False
-# plot_pvalues = np.log10(uncorrected_pvalues)
-# plot_pvalues[np.isnan(plot_pvalues)] = 0
-# im = sns.heatmap(
-#     plot_pvalues,
-#     ax=ax,
-#     annot=annot,
-#     cmap="RdBu",
-#     center=0,
-#     square=True,
-#     cbar=False,
-#     fmt="s",
-#     vmin=pvalue_vmin,
-# )
-# ax.set(ylabel="", xlabel="Target group")
-# ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-# ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
-
-# colors = im.get_children()[0].get_facecolors()
-# significant = uncorrected_pvalues < hb_thresh
-
-# # NOTE: the x's looked bad so I did this super hacky thing...
-# pad = 0.2
-# for idx, (is_significant, color) in enumerate(
-#     zip(significant.values.ravel(), colors)
-# ):
-#     if is_significant:
-#         i, j = np.unravel_index(idx, (K, K))
-#         # REF: seaborn heatmap
-#         lum = relative_luminance(color)
-#         text_color = ".15" if lum > 0.408 else "w"
-
-#         xs = [j + pad, j + 1 - pad]
-#         ys = [i + pad, i + 1 - pad]
-#         ax.plot(xs, ys, color=text_color, linewidth=4)
-#         xs = [j + 1 - pad, j + pad]
-#         ys = [i + pad, i + 1 - pad]
-#         ax.plot(xs, ys, color=text_color, linewidth=4)
-
-# # plot colorbar for the pvalue plot
-# # NOTE: only did it this way for consistency with the other colorbar
-# ax = axs[7]
-# shrink_axis(ax, scale=0.5)
-# _ = fig.colorbar(
-#     im.get_children()[0],
-#     cax=ax,
-#     fraction=1,
-#     shrink=1,
-#     ticklocation="right",
-# )
-
-# fig.text(0.11, 0.85, "A)", fontweight="bold", fontsize=50)
-# fig.text(0.63, 0.85, "B)", fontweight="bold", fontsize=50)
-
-
-# return fig, axs
-
-# %%
-#
+# (purple) values would represent that Fisher's is more powerful, and negative (green)
+# represent that the Min method is more powerful. Notice that the Min method appears
+# to have more power for subtler (fewer or smaller perturbations) alternatives, and
+# nearly equal power for more obvious alternatives.
+# ```
