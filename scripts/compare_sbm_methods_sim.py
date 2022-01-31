@@ -27,7 +27,7 @@ import matplotlib.colors as colors
 from pathlib import Path
 
 
-DISPLAY_FIGS = True
+DISPLAY_FIGS = False
 
 FILENAME = "compare_sbm_methods_sim"
 
@@ -56,6 +56,7 @@ network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
 fisher_color = sns.color_palette("Set2")[2]
 min_color = sns.color_palette("Set2")[3]
+method_palette = {"fisher": fisher_color, "min": min_color}
 
 GROUP_KEY = "simple_group"
 
@@ -75,7 +76,7 @@ stat, pvalue, misc = stochastic_block_test(
     combine_method="fisher",
 )
 #%% [markdown]
-# ## Model for simulations
+# ## Model for simulations (alternative)
 # We have fit a stochastic block model to the left and right hemispheres. Say the
 # probabilities of group-to-group connections *on the left* are stored in the matrix
 # $B$, so that $B_{kl}$ is the probability of an edge from group $k$ to $l$.
@@ -117,6 +118,9 @@ stat, pvalue, misc = stochastic_block_test(
 # $t \in \{25, 50, 75, 100, 125\}$. For each $(\delta, t)$ we ran 100 replicates of the
 # model/test above.
 
+#%% [markdown]
+# ## Results under the null
+
 #%%
 
 B_base = misc["probabilities1"].values
@@ -124,6 +128,97 @@ inds = np.nonzero(B_base)
 base_probs = B_base[inds]
 n_possible_matrix = misc["possible1"].values
 ns = n_possible_matrix[inds]
+
+n_null_sims = 100
+
+RERUN_NULL = False
+save_path = Path(
+    "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
+    "outputs/compare_sbm_methods_sim/null_results.csv"
+)
+
+if RERUN_NULL:
+    null_rows = []
+    for sim in tqdm(range(n_null_sims)):
+        base_samples = binom.rvs(ns, base_probs)
+        perturb_samples = binom.rvs(ns, base_probs)
+
+        # test on the new data
+        def tester(cell):
+            stat, pvalue = binom_2samp(
+                base_samples[cell],
+                ns[cell],
+                perturb_samples[cell],
+                ns[cell],
+                null_odds=1,
+                method="fisher",
+            )
+            return pvalue
+
+        pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
+        n_overall = len(pvalue_collection)
+        pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
+        n_tests = len(pvalue_collection)
+        n_skipped = n_overall - n_tests
+
+        row = {
+            "sim": sim,
+            "n_tests": n_tests,
+            "n_skipped": n_skipped,
+        }
+        for method in ["fisher", "min"]:
+            row = row.copy()
+            if method == "min":
+                overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
+                row["pvalue"] = overall_pvalue
+            elif method == "fisher":
+                stat, overall_pvalue = combine_pvalues(
+                    pvalue_collection, method="fisher"
+                )
+                row["pvalue"] = overall_pvalue
+
+            row["method"] = method
+            null_rows.append(row)
+
+    null_results = pd.DataFrame(null_rows)
+    null_results.to_csv(save_path)
+else:
+    null_results = pd.read_csv(save_path, index_col=0)
+
+#%%
+from giskard.plot import subuniformity_plot
+
+fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+for i, method in enumerate(["fisher", "min"]):
+    ax = axs[i]
+    method_null_results = null_results[null_results["method"] == method]
+    subuniformity_plot(
+        method_null_results["pvalue"],
+        ax=ax,
+        color=method_palette[method],
+        element="step",
+    )
+    ax.set_title(method.capitalize())
+
+gluefig("null_distributions", fig)
+
+#%% [markdown]
+# ```{glue:figure} fig:compare_sbm_methods_sim-null_distributions
+#
+# Distributions of p-values under the null for Fisher's method (left) and the Min method
+# (right) from a simulation with 100 resamples under the null. Dotted line indicates
+# the CDF of a $Uniform(0,1)$ random variable. The
+# p-values in the upper left of each panel is for a 1-sample KS test, where the null is
+# that the variable is distributed $Uniform(0,1)$ against the alternative that its CDF
+# is larger than that of a $Uniform(0,1)$ random variable (i.e. that it is superuniform).
+# Note that both methods appear empirically valid, but Fisher's appears highly conservative.
+# ```
+
+
+#%% [markdown]
+# ## Results under the alternative
+
+#%%
 
 n_sims = 100
 n_perturb_range = np.linspace(0, 125, 6, dtype=int)[1:]
@@ -298,6 +393,7 @@ if RERUN_SIM:
 
     gluefig("example-perturbations", fig)
 
+
 #%%
 
 
@@ -314,32 +410,33 @@ mean_diffs_square = mean_diffs.pivot(
     index="perturb_size", columns="n_perturb", values="pvalue"
 )
 
-v = np.max(np.abs(mean_diffs_square.values))
+# v = np.max(np.abs(mean_diffs_square.values))
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-sns.heatmap(
-    mean_diffs_square,
-    cmap="RdBu",
-    ax=ax,
-    yticklabels=perturb_size_range,
-    xticklabels=n_perturb_range,
-    square=True,
-    center=0,
-    vmin=-v,
-    vmax=v,
-    cbar_kws=dict(shrink=0.7),
-)
-ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
-cax = fig.axes[1]
-cax.text(4, 1, "Min more\nsensitive", transform=cax.transAxes, va="top")
-cax.text(4, 0, "Fisher more\nsensitive", transform=cax.transAxes, va="bottom")
-ax.set_title("(Fisher - Min) pvalues", fontsize="x-large")
-DISPLAY_FIGS = True
-gluefig("pvalue_diff_matrix", fig)
+# fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+# sns.heatmap(
+#     mean_diffs_square,
+#     cmap="RdBu",
+#     ax=ax,
+#     yticklabels=perturb_size_range,
+#     xticklabels=n_perturb_range,
+#     square=True,
+#     center=0,
+#     vmin=-v,
+#     vmax=v,
+#     cbar_kws=dict(shrink=0.7),
+# )
+# ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
+# cax = fig.axes[1]
+# cax.text(4, 1, "Min more\nsensitive", transform=cax.transAxes, va="top")
+# cax.text(4, 0, "Fisher more\nsensitive", transform=cax.transAxes, va="bottom")
+# ax.set_title("(Fisher - Min) pvalues", fontsize="x-large")
+
+# DISPLAY_FIGS = True
+# gluefig("pvalue_diff_matrix", fig)
+
 #%%
 fig, axs = plt.subplots(2, 3, figsize=(15, 10))
 
-method_palette = {"fisher": fisher_color, "min": min_color}
 
 for i, perturb_size in enumerate(perturb_size_range):
     ax = axs.flat[i]
@@ -393,166 +490,307 @@ axs.flat[-1].legend(handles=handles, labels=labels, title="Method")
 
 gluefig("perturbation_pvalues_lineplots", fig)
 
-# #%%
+#%% [markdown]
+# ```{glue:figure} fig:compare_sbm_methods_sim-perturbation_pvalues_lineplots
+#
+# p-values under the alternative for two different methods for combining p-values:
+# [**Fisher's method**](https://en.wikipedia.org/wiki/Fisher%27s_method) (performed on the
+# *uncorrected* p-values) and simply taking
+# the minimum p-value after [Bonferroni correction](https://en.wikipedia.org/wiki/Bonferroni_correction) (here, called **Min**).
+# The alternative is specified by changing the number of probabilities which are perturbed
+# (x-axis in each panel) as well as the size of the perturbations which are done
+# to each probability (panels show increasing perturbation size). Dotted and dashed
+# lines indicate significance thresholds for $\alpha = \{0.05, 0.005\}$, respectively.
+# Note that in this simulation, even for large numbers of small perturbations (i.e. upper
+# left panel), the Min method has smaller p-values. Fisher's method displays smaller p-values
+# than Min only when there are many (>50) large perturbations, but by this point both
+# methods yield extremely small p-values.
+# ```
 
-# from giskard.plot import subuniformity_plot
+#%% [markdown]
+# ## Power
 
-# null_results = results[(results["perturb_size"] == 0.0) | (results["n_perturb"] == 0)]
-# null_fisher_results = null_results[null_results["method"] == "fisher"]
-# null_min_results = null_results[null_results["method"] == "min"]
+#%%
+alpha = 0.05
+results["detected"] = 0
+results.loc[results[(results["pvalue"] < alpha)].index, "detected"] = 1
 
-# fig, axs = plt.subplots(1, 2, figsize=(10, 5), sharey=True, sharex=True)
+#%%
+fisher_results = results[results["method"] == "fisher"]
+min_results = results[results["method"] == "min"]
 
-# ax = axs[0]
-# subuniformity_plot(null_fisher_results["pvalue"], ax=ax)
-# ax.set_title("Fisher", fontsize="x-large")
+fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean()
+min_means = min_results.groupby(["perturb_size", "n_perturb"]).mean()
 
-# ax = axs[1]
-# subuniformity_plot(null_min_results["pvalue"], ax=ax)
-# ax.set_title("Min-Bonferroni", fontsize="x-large")
-# ax.set(ylabel="")
+fisher_power_square = fisher_means.reset_index().pivot(
+    index="perturb_size", columns="n_perturb", values="detected"
+)
+min_power_square = min_means.reset_index().pivot(
+    index="perturb_size", columns="n_perturb", values="detected"
+)
 
-# # %%
-# # ## Work in progress below on actually sampling the SBMs
+mean_diffs = fisher_means["detected"] / min_means["detected"]
 
-# #%%
+mean_diffs = mean_diffs.to_frame().reset_index()
 
-# seed = None
-# rng = np.random.default_rng(seed)
-# B_base = misc["probabilities1"].values.copy()
-# # B2 = misc["probabilities2"]
-# n_elements = np.count_nonzero(B_base)
-# n_perturb_range = np.linspace(0, 100, 6, dtype=int)
-# perturb_size_range = np.round(np.linspace(0, 0.2, 6), decimals=3)
+ratios_square = mean_diffs.pivot(
+    index="perturb_size", columns="n_perturb", values="detected"
+)
 
+v = np.max(np.abs(mean_diffs_square.values))
 
-# print(perturb_size_range)
-# print(n_perturb_range)
+# fig, axs = plt.subplots(1, 3, figsize=(12, 4), sharex=True, sharey=True)
+from matplotlib.transforms import Bbox
 
-
-# B_mod = B_base.copy()
-# i_indices, j_indices = np.nonzero(B_base)
-
-# rows = []
-
-# ##
-
-# n_sims = 20
-# progress_steps = 0.05
-# n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
-# progress_counter = 0
-# last_progress = 0
-# for perturb_size in perturb_size_range:
-#     for n_perturb in n_perturb_range:
-#         for sim in range(n_sims):
-#             progress_counter += 1
-#             progress_prop = progress_counter / n_runs
-#             if progress_prop - progress_steps > last_progress:
-#                 print(f"{progress_prop:.2f}")
-#                 last_progress = progress_prop
-
-#             B_mod = B_base.copy()
-
-#             choice_indices = rng.choice(len(i_indices), size=n_perturb, replace=False)
-
-#             choice_i_indices = i_indices[choice_indices]
-#             choice_j_indices = j_indices[choice_indices]
-
-#             for (i, j) in zip(choice_i_indices, choice_j_indices):
-#                 prob = B_mod[i, j]
-#                 new_prob = rng.normal(prob, scale=prob * perturb_size)
-
-#                 if new_prob > 1:
-#                     new_prob = 1
-#                 elif new_prob < 0:
-#                     new_prob = 0
-
-#                 B_mod[i, j] = new_prob
-
-#             ns = misc["group_counts1"].values
-
-#             sbm_sample_base, labels = sbm(
-#                 ns, B_base, directed=True, loops=False, return_labels=True
-#             )
-#             sbm_sample_mod = sbm(ns, B_mod, directed=True, loops=False)
-
-#             for method in ["fisher", "min"]:
-#                 stat, pvalue, misc = stochastic_block_test(
-#                     sbm_sample_base,
-#                     sbm_sample_mod,
-#                     labels,
-#                     labels,
-#                     combine_method=method,
-#                 )
-#                 row = {
-#                     "method": method,
-#                     "pvalue": pvalue,
-#                     "stat": stat,
-#                     "n_perturb": n_perturb,
-#                     "perturb_size": perturb_size,
-#                     "sim": sim,
-#                 }
-#                 rows.append(row)
-# print("Done!")
-# results = pd.DataFrame(rows)
-# results
-# #%%
+set_theme(font_scale=1.5)
+# set up plot
+pad = 0.5
+width_ratios = [1, pad*1.2, 10, pad, 10, 1.3*pad, 10, 1]
+fig, axs = plt.subplots(
+    1,
+    len(width_ratios),
+    figsize=(30, 10),
+    gridspec_kw=dict(
+        width_ratios=width_ratios,
+    ),
+)
+fisher_col = 2
+min_col = 4
+ratio_col = 6
 
 
-# fisher_results = results[results["method"] == "fisher"]
-# min_results = results[results["method"] == "min"]
+def shrink_axis(ax, scale=0.7):
+    pos = ax.get_position()
+    mid = (pos.ymax + pos.ymin) / 2
+    height = pos.ymax - pos.ymin
+    new_pos = Bbox(
+        [
+            [pos.xmin, mid - scale * 0.5 * height],
+            [pos.xmax, mid + scale * 0.5 * height],
+        ]
+    )
+    ax.set_position(new_pos)
 
-# fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean()
-# min_means = min_results.groupby(["perturb_size", "n_perturb"]).mean()
 
-# mean_diffs = fisher_means["pvalue"] - min_means["pvalue"]
-# mean_diffs = mean_diffs.to_frame().reset_index()
+def power_heatmap(
+    data, ax=None, center=0, vmin=0, vmax=1, cmap="RdBu_r", cbar=False, **kwargs
+):
+    out = sns.heatmap(
+        data,
+        ax=ax,
+        yticklabels=perturb_size_range,
+        xticklabels=n_perturb_range,
+        square=True,
+        center=center,
+        vmin=vmin,
+        vmax=vmax,
+        cbar_kws=dict(shrink=0.7),
+        cbar=cbar,
+        cmap=cmap,
+        **kwargs,
+    )
+    ax.invert_yaxis()
+    return out
 
-# mean_diffs_square = mean_diffs.pivot(
-#     index="perturb_size", columns="n_perturb", values="pvalue"
+
+ax = axs[fisher_col]
+im = power_heatmap(fisher_power_square, ax=ax)
+ax.set_title("Fisher's method", fontsize="large")
+
+ax = axs[0]
+shrink_axis(ax, scale=0.5)
+_ = fig.colorbar(
+    im.get_children()[0],
+    cax=ax,
+    fraction=1,
+    shrink=1,
+    ticklocation="left",
+)
+ax.set_title("Power\n" + r"($\alpha=0.05$)", pad=25)
+
+ax = axs[min_col]
+power_heatmap(min_power_square, ax=ax)
+ax.set_title("Min method", fontsize="large")
+ax.set(yticks=[])
+
+pal = sns.diverging_palette(145, 300, s=60, as_cmap=True)
+
+ax = axs[ratio_col]
+im = power_heatmap(np.log10(ratios_square), ax=ax, vmin=-2, vmax=2, center=0, cmap=pal)
+# ax.set_title(r'$log_10(\frac{\text{Power}_{Fisher}}{\text{Power}_{Min}})$')
+# ax.set_title(
+#     r"$log_{10}($Fisher power$)$" + "\n" + r" - $log_{10}($Min power$)$",
+#     fontsize="large",
 # )
+ax.set(yticks=[])
+
+ax = axs[-1]
+shrink_axis(ax, scale=0.5)
+_ = fig.colorbar(
+    im.get_children()[0],
+    cax=ax,
+    fraction=1,
+    shrink=1,
+    ticklocation="right",
+)
+ax.text(2, 1, "Fisher more\nsensitive", transform=ax.transAxes, va="top")
+ax.text(2, 0.5, "Equal power", transform=ax.transAxes, va="center")
+ax.text(2, 0, "Min more\nsensitive", transform=ax.transAxes, va="bottom")
+ax.set_title("Log10\npower\nratio", pad=20)
+
+# remove dummy axes
+for i in range(len(width_ratios)):
+    if not axs[i].has_data():
+        axs[i].set_visible(False)
+
+xlabel = r"# perturbed blocks $\rightarrow$"
+ylabel = r"Perturbation size $\rightarrow$"
+axs[fisher_col].set(
+    xlabel=xlabel,
+    ylabel=ylabel,
+)
+axs[min_col].set(xlabel=xlabel, ylabel="")
+axs[ratio_col].set(xlabel=xlabel, ylabel="")
+
+fig.text(0.09, 0.86, 'A)', fontweight="bold", fontsize=50)
+fig.text(0.64, 0.86, 'B)', fontweight="bold", fontsize=50)
+# gluefig('relative_power', fig)
+
+#%% [markdown]
+# {glue:figure} fig:compare_sbm_methods_sim-relative_power
+#
+# Comparison of power for Fisher's and the Min method. **A)** The power under the 
+# alternative described in the text for both Fisher's method and the Min method. In both
+# heatmaps, the x-axis represents an increasing number of blocks which are perturbed, 
+# and the y-axis represents an increasing magnitude for each perturbation. **B)** The
+# log of the ratio of powers (Fisher's / Min) for each alternative. Note that positive
+# (purple) values would represent that Fisher's is more powerful, and negative (green) 
+# would represent that the Min method is more powerful. 
 
 
-# # norm = colors.SymLogNorm(linthresh=0.001, linscale=0.001, vmin=-1, vmax=1)
-
-# fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 # sns.heatmap(
 #     mean_diffs_square,
 #     cmap="RdBu",
 #     ax=ax,
 #     yticklabels=perturb_size_range,
 #     xticklabels=n_perturb_range,
+#     square=True,
 #     center=1,
+#     vmin=0,
+#     vmax=2,
+#     cbar_kws=dict(shrink=0.7),
+# # )
+# cax = fig.axes[-1]
+# 
+# ax.set_title("(Fisher / Min) power", fontsize="x-large")
+# ax.invert_yaxis()
+
+#
+
+
+# heatmap_kws = dict(
+#     cmap="Blues", square=True, cbar=False, vmax=p_max, fmt="s", xticklabels=True
 # )
-# ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
 
-# #%%
+# # heatmap of left connection probabilities
+# annot = np.full((K, K), "")
+# annot[B1.values == 0] = 0
+# ax = axs[left_col]
+# sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
+# ax.set(ylabel="Source group", xlabel="Target group")
+# ax.set_title(r"$\hat{B}$ left", fontsize="xx-large", color=network_palette["Left"])
 
+# # heatmap of right connection probabilities
+# annot = np.full((K, K), "")
+# annot[B2.values == 0] = 0
+# ax = axs[right_col]
+# im = sns.heatmap(B2, ax=ax, annot=annot, **heatmap_kws)
+# ax.set(ylabel="", xlabel="Target group")
+# text = r"$\hat{B}$ right"
+# if null_odds != 1:
+#     text = r"$c$" + text
+# ax.set_title(text, fontsize="xx-large", color=network_palette["Right"])
 
-# #%%
+# # handle the colorbars
+# # NOTE: did it this way cause the other options weren't playing nice with auto
+# # constrain
+# # layouts.
 
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# ax = axs[0]
+# shrink_axis(ax, scale=0.5)
+# _ = fig.colorbar(
+#     im.get_children()[0],
+#     cax=ax,
+#     fraction=1,
+#     shrink=1,
+#     ticklocation="left",
+# )
 
-# sns.lineplot(
-#     data=results[results["perturb_size"] == 0.04],
-#     x="n_perturb",
-#     y="pvalue",
+# # plot p-values
+# ax = axs[pvalue_col]
+
+# if annot_missing:
+#     annot = np.full((K, K), "")
+#     annot[(B1.values == 0) & (B2.values == 0)] = "B"
+#     annot[(B1.values == 0) & (B2.values != 0)] = "L"
+#     annot[(B1.values != 0) & (B2.values == 0)] = "R"
+# else:
+#     annot = False
+# plot_pvalues = np.log10(uncorrected_pvalues)
+# plot_pvalues[np.isnan(plot_pvalues)] = 0
+# im = sns.heatmap(
+#     plot_pvalues,
 #     ax=ax,
-#     hue="perturb_size",
-#     style="method",
+#     annot=annot,
+#     cmap="RdBu",
+#     center=0,
+#     square=True,
+#     cbar=False,
+#     fmt="s",
+#     vmin=pvalue_vmin,
+# )
+# ax.set(ylabel="", xlabel="Target group")
+# ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
+# ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
+
+# colors = im.get_children()[0].get_facecolors()
+# significant = uncorrected_pvalues < hb_thresh
+
+# # NOTE: the x's looked bad so I did this super hacky thing...
+# pad = 0.2
+# for idx, (is_significant, color) in enumerate(
+#     zip(significant.values.ravel(), colors)
+# ):
+#     if is_significant:
+#         i, j = np.unravel_index(idx, (K, K))
+#         # REF: seaborn heatmap
+#         lum = relative_luminance(color)
+#         text_color = ".15" if lum > 0.408 else "w"
+
+#         xs = [j + pad, j + 1 - pad]
+#         ys = [i + pad, i + 1 - pad]
+#         ax.plot(xs, ys, color=text_color, linewidth=4)
+#         xs = [j + 1 - pad, j + pad]
+#         ys = [i + pad, i + 1 - pad]
+#         ax.plot(xs, ys, color=text_color, linewidth=4)
+
+# # plot colorbar for the pvalue plot
+# # NOTE: only did it this way for consistency with the other colorbar
+# ax = axs[7]
+# shrink_axis(ax, scale=0.5)
+# _ = fig.colorbar(
+#     im.get_children()[0],
+#     cax=ax,
+#     fraction=1,
+#     shrink=1,
+#     ticklocation="right",
 # )
 
-# ax.set_yscale("log")
-# # ax.set(ylim=(1e-10, 1.1))
-
-# #%%
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.lineplot(
-#     data=mean_diffs[mean_diffs["perturb_size"] == 0.12], x="n_perturb", y="pvalue"
-# )
-# ax.axhline(0)
-# #%%
+# fig.text(0.11, 0.85, "A)", fontweight="bold", fontsize=50)
+# fig.text(0.63, 0.85, "B)", fontweight="bold", fontsize=50)
 
 
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.histplot(x=probs, ax=ax)
+# return fig, axs
+
+# %%
+#
