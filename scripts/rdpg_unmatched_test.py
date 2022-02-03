@@ -196,6 +196,7 @@ def plot_latents(
         title=title,
         size=s,
         palette=palette,
+        legend_name='Hemisphere',
     )
 
     # pg._legend.remove()
