@@ -8,23 +8,21 @@ set_warnings()
 
 import datetime
 import time
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from giskard.plot import subuniformity_plot
+from matplotlib.transforms import Bbox
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
 from pkg.plot import set_theme
-from pkg.stats import stochastic_block_test
-from graspologic.simulations import sbm
+from pkg.stats import binom_2samp, stochastic_block_test
+from scipy.stats import binom, combine_pvalues, ks_1samp, uniform
 from tqdm import tqdm
-import matplotlib.colors as colors
-from scipy.stats import binom, combine_pvalues
-from pkg.stats import binom_2samp
-import matplotlib.colors as colors
-from pathlib import Path
 
 
 DISPLAY_FIGS = False
@@ -56,7 +54,8 @@ network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
 fisher_color = sns.color_palette("Set2")[2]
 min_color = sns.color_palette("Set2")[3]
-method_palette = {"fisher": fisher_color, "min": min_color}
+eric_color = sns.color_palette("Set2")[4]
+method_palette = {"fisher": fisher_color, "min": min_color, "eric": eric_color}
 
 GROUP_KEY = "simple_group"
 
@@ -131,7 +130,7 @@ ns = n_possible_matrix[inds]
 
 n_null_sims = 100
 
-RERUN_NULL = False
+RERUN_NULL = True
 save_path = Path(
     "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
     "outputs/compare_sbm_methods_sim/null_results.csv"
@@ -166,7 +165,7 @@ if RERUN_NULL:
             "n_tests": n_tests,
             "n_skipped": n_skipped,
         }
-        for method in ["fisher", "min"]:
+        for method in ["fisher", "min", "eric"]:
             row = row.copy()
             if method == "min":
                 overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
@@ -176,7 +175,11 @@ if RERUN_NULL:
                     pvalue_collection, method="fisher"
                 )
                 row["pvalue"] = overall_pvalue
-
+            elif method == "eric":
+                stat, overall_pvalue = ks_1samp(
+                    pvalue_collection, uniform(0, 1).cdf, alternative="greater"
+                )
+                row["pvalue"] = overall_pvalue
             row["method"] = method
             null_rows.append(row)
 
@@ -186,10 +189,9 @@ else:
     null_results = pd.read_csv(save_path, index_col=0)
 
 #%%
-from giskard.plot import subuniformity_plot
 
-fig, axs = plt.subplots(1, 2, figsize=(10, 5))
-for i, method in enumerate(["fisher", "min"]):
+fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+for i, method in enumerate(["fisher", "min", "eric"]):
     ax = axs[i]
     method_null_results = null_results[null_results["method"] == method]
     subuniformity_plot(
@@ -235,6 +237,21 @@ save_path = Path(
     "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
     "outputs/compare_sbm_methods_sim/results.csv"
 )
+uncorrected_pvalue_path = Path(
+    "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
+    "outputs/compare_sbm_methods_sim/uncorrected_pvalues.csv"
+)
+import csv
+
+fieldnames = [
+    "perturb_size",
+    "n_perturb",
+    "sim",
+    "n_tests",
+    "n_skipped",
+    "uncorrected_pvalues",
+]
+
 
 if RERUN_SIM:
     t0 = time.time()
@@ -245,6 +262,14 @@ if RERUN_SIM:
     last_progress = -0.05
     simple_rows = []
     example_perturb_probs = {}
+
+    with open(uncorrected_pvalue_path, "w") as f:
+        f.truncate()
+
+    with open(uncorrected_pvalue_path, "a") as f:
+        writer = csv.DictWriter(f, fieldnames)
+        writer.writeheader()
+
     for perturb_size in perturb_size_range:
         for n_perturb in n_perturb_range:
             for sim in range(n_sims):
@@ -317,7 +342,15 @@ if RERUN_SIM:
                     "n_tests": n_tests,
                     "n_skipped": n_skipped,
                 }
-                for method in ["fisher", "min"]:
+
+                pvalue_row = row.copy()
+                pvalue_row["uncorrected_pvalues"] = list(pvalue_collection)
+
+                with open(uncorrected_pvalue_path, "a") as f:
+                    writer = csv.DictWriter(f, fieldnames)
+                    writer.writerow(pvalue_row)
+
+                for method in ["fisher", "min", "eric"]:
                     row = row.copy()
                     if method == "min":
                         overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
@@ -327,7 +360,11 @@ if RERUN_SIM:
                             pvalue_collection, method="fisher"
                         )
                         row["pvalue"] = overall_pvalue
-
+                    elif method == "eric":
+                        stat, overall_pvalue = ks_1samp(
+                            pvalue_collection, uniform(0, 1).cdf, alternative="greater"
+                        )
+                        row["pvalue"] = overall_pvalue
                     row["method"] = method
                     simple_rows.append(row)
 
@@ -540,7 +577,6 @@ ratios_square = mean_diffs.pivot(
 v = np.max(np.abs(mean_diffs_square.values))
 
 # fig, axs = plt.subplots(1, 3, figsize=(12, 4), sharex=True, sharey=True)
-from matplotlib.transforms import Bbox
 
 set_theme(font_scale=1.5)
 # set up plot
