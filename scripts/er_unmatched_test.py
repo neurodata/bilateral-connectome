@@ -12,7 +12,7 @@
 # other words, all edges between any two nodes are equally likely.
 #
 # ```{admonition} Math
-# Let $n$ be the number of nodes. We say that for all $(i, j), i \neq j$, with $i$ and 
+# Let $n$ be the number of nodes. We say that for all $(i, j), i \neq j$, with $i$ and
 # $j$ both running
 # from $1 ... n$, the probability of the edge $(i, j)$ occuring is:
 
@@ -25,7 +25,7 @@
 
 # $$ A_{ij} \sim Bernoulli(p) $$
 
-# For a network modeled as described above, we say it is distributed 
+# For a network modeled as described above, we say it is distributed
 
 # $$ A \sim ER(n, p) $$
 
@@ -156,7 +156,7 @@ ax.plot([0, 0], [left_lower, left_upper], color="black", linewidth=4)
 ax.plot([1, 1], [right_lower, right_upper], color="black", linewidth=4)
 
 ax.set(
-    xlabel="Network",
+    xlabel="Hemisphere",
     xticks=[0, 1],
     xticklabels=["Left", "Right"],
     ylabel=r"Estimated density ($\hat{p}$)",
