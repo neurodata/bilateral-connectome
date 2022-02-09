@@ -636,6 +636,8 @@ def plot_estimated_probabilities(misc):
 fig, ax = plot_estimated_probabilities(misc)
 gluefig("probs_uncorrected", fig)
 
+#%%
+
 #%% [markdown]
 # ```{glue:figure} fig:sbm_unmatched_test-probs_uncorrected
 # :name: "fig:sbm_unmatched_test-probs_uncorrected"
