@@ -1,8 +1,9 @@
 #%% [markdown]
-# # Fisher's method vs. min (after multiple comparison's correction)
+# # Comparing methods for SBM testing
 
 #%%
 from pkg.utils import set_warnings
+from sklearn.metrics import normalized_mutual_info_score
 
 set_warnings()
 
@@ -28,7 +29,7 @@ from tqdm import tqdm
 
 DISPLAY_FIGS = True
 
-FILENAME = "more_sbm_methods_sim"
+FILENAME = "revamp_sbm_methods_sim"
 
 
 def gluefig(name, fig, **kwargs):
@@ -126,14 +127,6 @@ stat, pvalue, misc = stochastic_block_test(
 from scipy.stats import chi2, beta
 
 
-# diffs = list(pvalues[1:] - pvalues[:-1]) + [1 - pvalues[-1]]
-# rng = np.random.default_rng()
-# uniform_samples = rng.uniform(size=len(diffs))
-# moves = uniform_samples * diffs
-# pvalues += moves
-# # pvalues
-
-
 def random_shift_pvalues(pvalues, rng=None):
     pvalues = np.sort(pvalues)  # already makes a copy
     diffs = list(pvalues[1:] - pvalues[:-1])
@@ -198,7 +191,7 @@ def my_combine_pvalues(pvalues, method="fisher", pad_high=0, n_resamples=100):
     elif method == "eric":
         stat, pvalue = ks_1samp(pvalues, uniform(0, 1).cdf, alternative="greater")
     elif method == "min":
-        pvalue = min(pvalue_collection.min() * n_tests, 1)
+        pvalue = min(pvalues.min() * len(pvalues), 1)
         stat = pvalue
     else:
         raise NotImplementedError()
@@ -208,108 +201,83 @@ def my_combine_pvalues(pvalues, method="fisher", pad_high=0, n_resamples=100):
 
 #%%
 
-B_base = misc["probabilities1"].values
-inds = np.nonzero(B_base)
-base_probs = B_base[inds]
-n_possible_matrix = misc["possible1"].values
-ns = n_possible_matrix[inds]
 
-n_null_sims = 50
+# combine_methods = ["fisher", "fisher-discrete-random", "min"]
+# test_methods = ["fisher"]
 
-RERUN_NULL = True
-save_path = Path(
-    "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
-    "outputs/compare_sbm_methods_sim/null_results.csv"
-)
-uncorrected_pvalue_path = Path(
-    "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
-    "outputs/compare_sbm_methods_sim/null_uncorrected_pvalues.csv"
-)
-fieldnames = ["sim", "n_tests", "n_skipped", "uncorrected_pvalues", "test_method"]
+# if RERUN_NULL:
+#     null_rows = []
 
-combine_methods = [
-    "fisher",
-    "pearson",
-    "tippett",
-    "stouffer",
-    "mudholkar_george",
-    "min",
-]
-test_methods = ["fisher"]
+#     with open(uncorrected_pvalue_path, "w") as f:
+#         f.truncate()
 
-if RERUN_NULL:
-    null_rows = []
+#     with open(uncorrected_pvalue_path, "a") as f:
+#         writer = csv.DictWriter(f, fieldnames)
+#         writer.writeheader()
 
-    with open(uncorrected_pvalue_path, "w") as f:
-        f.truncate()
+#     for sim in tqdm(range(n_null_sims)):
+#         base_samples = binom.rvs(ns, base_probs)
+#         perturb_samples = binom.rvs(ns, base_probs)
 
-    with open(uncorrected_pvalue_path, "a") as f:
-        writer = csv.DictWriter(f, fieldnames)
-        writer.writeheader()
+#         for test_method in test_methods:
+#             # test on the new data
+#             def tester(cell):
+#                 stat, pvalue = binom_2samp(
+#                     base_samples[cell],
+#                     ns[cell],
+#                     perturb_samples[cell],
+#                     ns[cell],
+#                     null_odds=1,
+#                     method=test_method,
+#                 )
+#                 return pvalue
 
-    for sim in tqdm(range(n_null_sims)):
-        base_samples = binom.rvs(ns, base_probs)
-        perturb_samples = binom.rvs(ns, base_probs)
+#             pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
+#             n_overall = len(pvalue_collection)
+#             pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
+#             n_tests = len(pvalue_collection)
+#             n_skipped = n_overall - n_tests
 
-        for test_method in test_methods:
-            # test on the new data
-            def tester(cell):
-                stat, pvalue = binom_2samp(
-                    base_samples[cell],
-                    ns[cell],
-                    perturb_samples[cell],
-                    ns[cell],
-                    null_odds=1,
-                    method=test_method,
-                )
-                return pvalue
+#             row = {
+#                 "sim": sim,
+#                 "n_tests": n_tests,
+#                 "n_skipped": n_skipped,
+#                 "test_method": test_method,
+#             }
 
-            pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
-            n_overall = len(pvalue_collection)
-            pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
-            n_tests = len(pvalue_collection)
-            n_skipped = n_overall - n_tests
+#             pvalue_row = row.copy()
+#             pvalue_row["uncorrected_pvalues"] = list(pvalue_collection)
 
-            row = {
-                "sim": sim,
-                "n_tests": n_tests,
-                "n_skipped": n_skipped,
-                "test_method": test_method,
-            }
+#             with open(uncorrected_pvalue_path, "a") as f:
+#                 writer = csv.DictWriter(f, fieldnames)
+#                 writer.writerow(pvalue_row)
 
-            pvalue_row = row.copy()
-            pvalue_row["uncorrected_pvalues"] = list(pvalue_collection)
+#             for combine_method in combine_methods:
+#                 row = row.copy()
+#                 _, overall_pvalue = my_combine_pvalues(
+#                     pvalue_collection, method=combine_method, pad_high=0
+#                 )
+#                 row["pvalue"] = overall_pvalue
+#                 row["method"] = combine_method
+#                 null_rows.append(row)
 
-            with open(uncorrected_pvalue_path, "a") as f:
-                writer = csv.DictWriter(f, fieldnames)
-                writer.writerow(pvalue_row)
+#     null_results = pd.DataFrame(null_rows)
+#     null_results.to_csv(save_path)
+# else:
+#     null_results = pd.read_csv(save_path, index_col=0)
 
-            for combine_method in combine_methods:
-                row = row.copy()
-                _, overall_pvalue = my_combine_pvalues(
-                    pvalue_collection, method=combine_method, pad_high=0
-                )
-                row["pvalue"] = overall_pvalue
-                row["method"] = combine_method
-                null_rows.append(row)
+# #%%
 
-    null_results = pd.DataFrame(null_rows)
-    null_results.to_csv(save_path)
-else:
-    null_results = pd.read_csv(save_path, index_col=0)
+# pvalue_collection
 
-#%%
+# scipy_combine_pvalues(pvalue_collection, method="fisher")
 
-pvalue_collection
+# shifted_pvalue_collection = random_shift_pvalues(pvalue_collection)
 
-scipy_combine_pvalues(pvalue_collection, method="fisher")
+# scipy_combine_pvalues(shifted_pvalue_collection, method="fisher")
 
-shifted_pvalue_collection = random_shift_pvalues(pvalue_collection)
-
-scipy_combine_pvalues(shifted_pvalue_collection, method="fisher")
-
-print(pvalue_collection.min())
-print(shifted_pvalue_collection.min())
+# print(pvalue_collection.min())
+# print(shifted_pvalue_collection.min())
 
 # fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 # sns.histplot(x=pvalue_collection, color='orange')
@@ -317,19 +285,19 @@ print(shifted_pvalue_collection.min())
 
 #%%
 
-fig, axs = plt.subplots(2, 3, figsize=(15, 10))
-for i, method in enumerate(combine_methods):
-    ax = axs.flat[i]
-    method_null_results = null_results[null_results["method"] == method]
-    subuniformity_plot(
-        method_null_results["pvalue"],
-        ax=ax,
-        # color=method_palette[method],
-        element="step",
-    )
-    ax.set_title(method.capitalize())
+# fig, axs = plt.subplots(2, 3, figsize=(15, 10))
+# for i, method in enumerate(combine_methods):
+#     ax = axs.flat[i]
+#     method_null_results = null_results[null_results["method"] == method]
+#     subuniformity_plot(
+#         method_null_results["pvalue"],
+#         ax=ax,
+#         # color=method_palette[method],
+#         element="step",
+#     )
+#     ax.set_title(method.capitalize())
 
-gluefig("null_distributions", fig)
+# gluefig("null_distributions", fig)
 
 #%% [markdown]
 # ```{glue:figure} fig:compare_sbm_methods_sim-null_distributions
@@ -349,24 +317,176 @@ gluefig("null_distributions", fig)
 
 #%%
 
-n_sims = 100
-n_perturb_range = np.linspace(0, 125, 6, dtype=int)[1:]
-perturb_size_range = np.round(np.linspace(0, 0.5, 6), decimals=3)[1:]
-print(f"Perturb sizes: {perturb_size_range}")
-print(f"Perturb number range: {n_perturb_range}")
-n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
-print(f"Number of runs: {n_runs}")
+# get the data for running the simulation
+
 
 #%%
 
-RERUN_SIM = False
+# pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
+# pvalue_collection = np.array(pvalue_collection)
+# n_overall = len(pvalue_collection)
+# pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
+# n_tests = len(pvalue_collection)
+# n_skipped = n_overall - n_tests
+
+# # combine pvalues
+# row = {
+#     "perturb_size": perturb_size,
+#     "n_perturb": n_perturb,
+#     "sim": sim,
+#     "n_tests": n_tests,
+#     "n_skipped": n_skipped,
+# }
+
+# pvalue_row = row.copy()
+# pvalue_row["uncorrected_pvalues"] = list(pvalue_collection)
+
+# with open(uncorrected_pvalue_path, "a") as f:
+#     writer = csv.DictWriter(f, fieldnames)
+#     writer.writerow(pvalue_row)
+
+# for method in ["fisher", "min", "eric"]:
+#     row = row.copy()
+#     if method == "min":
+#         overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
+#         row["pvalue"] = overall_pvalue
+#     elif method == "fisher":
+#         stat, overall_pvalue = combine_pvalues(
+#             pvalue_collection, method="fisher"
+#         )
+#         row["pvalue"] = overall_pvalue
+#     elif method == "eric":
+#         stat, overall_pvalue = ks_1samp(
+#             pvalue_collection, uniform(0, 1).cdf, alternative="greater"
+#         )
+#         row["pvalue"] = overall_pvalue
+#     row["method"] = method
+#     simple_rows.append(row)
+# test on the new data
+# def tester(cell):
+#     stat, pvalue = binom_2samp(
+#         base_samples[cell],
+#         ns[cell],
+#         perturb_samples[cell],
+#         ns[cell],
+#         null_odds=1,
+#         method="fisher",
+#     )
+#     return pvalue
+#%%
+
+
+def bootstrap_sample(counts, n_possible):
+    probs = counts / n_possible
+    return binom.rvs(n_possible, probs)
+
+
+def compute_test_statistic(counts1, n_possible1, counts2, n_possible2):
+    probs1 = counts1 / n_possible1
+    probs2 = counts2 / n_possible2
+    stat = np.linalg.norm(probs1 - probs2)
+    return stat
+
+
+def bootstrap_test(counts1, n_possible1, counts2, n_possible2, n_bootstraps=200):
+    counts1 = np.array(counts1)
+    n_possible1 = np.array(n_possible1)
+    counts2 = np.array(counts2)
+    n_possible2 = np.array(n_possible2)
+
+    stat = compute_test_statistic(counts1, n_possible1, counts2, n_possible2)
+
+    pooled_counts = (counts1 + counts2) / 2
+    pooled_n_possible = (n_possible1 + n_possible2) / 2  # roughly correct?
+    pooled_n_possible = pooled_n_possible.astype(int)
+    null_stats = []
+    for i in range(n_bootstraps):
+        # TODO I think these should use the slightly different counts here actually
+        bootstrap_counts1 = bootstrap_sample(pooled_counts, pooled_n_possible)
+        bootstrap_counts2 = bootstrap_sample(pooled_counts, pooled_n_possible)
+        null_stat = compute_test_statistic(
+            bootstrap_counts1, pooled_n_possible, bootstrap_counts2, pooled_n_possible
+        )
+        null_stats.append(null_stat)
+    null_stats = np.sort(null_stats)
+    # stat_ind = np.searchsorted(null_stats, stat)
+    # pvalue = 1 - stat_ind / n_bootstraps  # TODO some kind of cont. correction here
+
+    pvalue = (1 + (null_stats >= stat).sum()) / (1 + n_bootstraps)
+
+    misc = {}
+
+    return stat, pvalue, misc
+
+
+bootstrap_test([10], [100], [30], [100], n_bootstraps=1000)
+
+#%%
+
+
+def multi_binom_2samp(
+    counts1,
+    n_possible1,
+    counts2,
+    n_possible2,
+    test_method="fisher",
+    methods=["fisher"],
+    discrete_correct=False,
+):
+    pvalue_collection = []
+    for i in range(len(counts1)):
+        sub_stat, sub_pvalue = binom_2samp(
+            counts1[i],
+            n_possible1[i],
+            counts2[i],
+            n_possible2[i],
+            null_odds=1,
+            method="fisher",
+        )
+        pvalue_collection.append(sub_pvalue)
+
+    pvalue_collection = np.array(pvalue_collection)
+    n_overall = len(pvalue_collection)
+    pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
+    n_tests = len(pvalue_collection)
+    n_skipped = n_overall - n_tests
+
+
+    rows = []
+    for method in methods:
+        stat, pvalue = my_combine_pvalues(pvalue_collection, method=method)
+        rows.append({'stat':stat, 'pvalue':pvalue, 'method':method})
+    
+
+    return pvalue_collection, rows
+
+
+def run_test(
+    counts1, n_possible1, counts2, n_possible2, method="fisher", n_bootstraps=1000
+):
+    counts1 = counts1.copy()
+    n_possible1 = n_possible1.copy()
+    counts2 = counts2.copy()
+    n_possible2 = n_possible2.copy()
+    if method == "bootstrap":
+        stat, pvalue, misc = bootstrap_test(
+            counts1, n_possible1, counts2, n_possible2, n_bootstraps=n_bootstraps
+        )
+    elif method in ["fisher", "min"]:
+        stat, pvalue, misc = multi_binom_2samp(
+            counts1, n_possible1, counts2, n_possible2, method=method
+        )
+    return stat, pvalue, misc
+
+
+RERUN_SIM = True
 save_path = Path(
     "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
-    "outputs/compare_sbm_methods_sim/results.csv"
+    f"outputs/{FILENAME}/results.csv"
 )
 uncorrected_pvalue_path = Path(
     "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
-    "outputs/compare_sbm_methods_sim/uncorrected_pvalues.csv"
+    f"outputs/{FILENAME}/uncorrected_pvalues.csv"
 )
 
 fieldnames = [
@@ -378,6 +498,24 @@ fieldnames = [
     "uncorrected_pvalues",
 ]
 
+# methods = ["fisher", "min", "bootstrap"]
+methods = ["bootstrap", "min"]
+
+B_base = misc["probabilities1"].values
+inds = np.nonzero(B_base)
+base_probs = B_base[inds]
+n_possible_matrix = misc["possible1"].values
+ns = n_possible_matrix[inds]
+
+# n_null_sims = 100
+n_sims = 50
+n_perturb_range = np.linspace(0, 125, 6, dtype=int)[:3]
+perturb_size_range = np.round(np.linspace(0, 0.5, 6), decimals=3)[:3]
+print(f"Perturb sizes: {perturb_size_range}")
+print(f"Perturb number range: {n_perturb_range}")
+n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
+print(f"Number of runs: {n_runs}")
+
 
 if RERUN_SIM:
     t0 = time.time()
@@ -386,7 +524,7 @@ if RERUN_SIM:
     progress_steps = 0.05
     progress_counter = 0
     last_progress = -0.05
-    simple_rows = []
+    rows = []
     example_perturb_probs = {}
 
     with open(uncorrected_pvalue_path, "w") as f:
@@ -398,6 +536,7 @@ if RERUN_SIM:
 
     for perturb_size in perturb_size_range:
         for n_perturb in n_perturb_range:
+            # if (perturb_size == 0) or (n_perturb == 0):
             for sim in range(n_sims):
                 itertime = time.time()
 
@@ -409,7 +548,6 @@ if RERUN_SIM:
                     last_progress = progress_prop
 
                 # choose some elements to perturb
-                currtime = time.time()
                 perturb_probs = base_probs.copy()
                 choice_indices = rng.choice(
                     len(perturb_probs), size=n_perturb, replace=False
@@ -425,84 +563,30 @@ if RERUN_SIM:
 
                     perturb_probs[index] = new_prob
 
+                # store some of the perturbed ones as examples
                 if sim == 0:
                     example_perturb_probs[(perturb_size, n_perturb)] = perturb_probs
 
-                perturb_elapsed = time.time() - currtime
-
                 # sample some new binomial data
-                currtime = time.time()
-
                 base_samples = binom.rvs(ns, base_probs)
                 perturb_samples = binom.rvs(ns, perturb_probs)
-                sample_elapsed = time.time() - currtime
 
-                currtime = time.time()
-
-                # test on the new data
-                def tester(cell):
-                    stat, pvalue = binom_2samp(
-                        base_samples[cell],
-                        ns[cell],
-                        perturb_samples[cell],
-                        ns[cell],
-                        null_odds=1,
-                        method="fisher",
+                for method in methods:
+                    stat, pvalue, test_misc = run_test(
+                        base_samples, ns, perturb_samples, ns, method=method
                     )
-                    return pvalue
-
-                pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
-                pvalue_collection = np.array(pvalue_collection)
-                n_overall = len(pvalue_collection)
-                pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
-                n_tests = len(pvalue_collection)
-                n_skipped = n_overall - n_tests
-                test_elapsed = time.time() - currtime
-
-                # combine pvalues
-                currtime = time.time()
-                row = {
-                    "perturb_size": perturb_size,
-                    "n_perturb": n_perturb,
-                    "sim": sim,
-                    "n_tests": n_tests,
-                    "n_skipped": n_skipped,
-                }
-
-                pvalue_row = row.copy()
-                pvalue_row["uncorrected_pvalues"] = list(pvalue_collection)
-
-                with open(uncorrected_pvalue_path, "a") as f:
-                    writer = csv.DictWriter(f, fieldnames)
-                    writer.writerow(pvalue_row)
-
-                for method in ["fisher", "min", "eric"]:
-                    row = row.copy()
-                    if method == "min":
-                        overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
-                        row["pvalue"] = overall_pvalue
-                    elif method == "fisher":
-                        stat, overall_pvalue = combine_pvalues(
-                            pvalue_collection, method="fisher"
-                        )
-                        row["pvalue"] = overall_pvalue
-                    elif method == "eric":
-                        stat, overall_pvalue = ks_1samp(
-                            pvalue_collection, uniform(0, 1).cdf, alternative="greater"
-                        )
-                        row["pvalue"] = overall_pvalue
-                    row["method"] = method
-                    simple_rows.append(row)
-
-                combine_elapsed = time.time() - currtime
+                    row = {
+                        "perturb_size": perturb_size,
+                        "n_perturb": n_perturb,
+                        "sim": sim,
+                        "stat": stat,
+                        "pvalue": pvalue,
+                        "method": method,
+                        **test_misc,
+                    }
+                    rows.append(row)
 
                 if progress_counter < n_time_first:
-                    print("-----")
-                    print(f"Perturb took {perturb_elapsed:0.3f}s")
-                    print(f"Sample took {sample_elapsed:0.3f}s")
-                    print(f"Test took {test_elapsed:0.3f}s")
-                    print(f"Combine took {combine_elapsed:0.3f}s")
-                    print("-----")
                     iter_elapsed = time.time() - itertime
                     mean_itertimes += iter_elapsed / n_time_first
                 elif progress_counter == n_time_first:
@@ -516,11 +600,24 @@ if RERUN_SIM:
 
     print("Done!")
     print(f"Total experiment took: {datetime.timedelta(seconds=total_elapsed)}")
-    results = pd.DataFrame(simple_rows)
-
+    results = pd.DataFrame(rows)
     results.to_csv(save_path)
 else:
     results = pd.read_csv(save_path, index_col=0)
+#%%
+
+null_results = results[(results["n_perturb"] == 0) | (results["perturb_size"] == 0)]
+
+n_methods = len(methods)
+n_cols = min(n_methods, 3)
+n_rows = int(np.ceil(n_methods / n_cols))
+fig, axs = plt.subplots(n_rows, n_cols, squeeze=False, figsize=(n_cols * 5, n_rows * 5))
+
+for i, method in enumerate(methods):
+    ax = axs.flat[i]
+    method_null_results = null_results[null_results["method"] == method]
+    subuniformity_plot(method_null_results["pvalue"], ax=ax)
+    ax.set_title(method.capitalize())
 
 #%%
 if RERUN_SIM:
@@ -610,7 +707,7 @@ for i, perturb_size in enumerate(perturb_size_range):
         y="pvalue",
         hue="method",
         style="method",
-        palette=method_palette,
+        # palette=method_palette,
         ax=ax,
     )
     ax.set(yscale="log")
