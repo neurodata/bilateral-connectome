@@ -4,3 +4,4 @@ from .sbm import fit_sbm, stochastic_block_test, stochastic_block_test_paired
 from .rdpg import rdpg_test
 from .degree import degree_test
 from .binomial import binom_2samp
+from .combine import combine_pvalues

@@ -1,11 +1,11 @@
 from collections import namedtuple
-import warnings
+
 import numpy as np
 import pandas as pd
 from graspologic.utils import remove_loops
-from scipy.stats import combine_pvalues
 
 from .binomial import binom_2samp, binom_2samp_paired
+from .combine import combine_pvalues
 
 SBMResult = namedtuple(
     "sbm_result", ["probabilities", "observed", "possible", "group_counts"]
@@ -130,9 +130,6 @@ def stochastic_block_test(
         # TODO consider raising a new warning here
         stat = np.inf
         pvalue = 0.0
-    elif combine_method == "min":
-        pvalue = min(run_pvalues.min() * n_tests, 1)
-        stat = pvalue
     else:
         stat, pvalue = combine_pvalues(run_pvalues, method=combine_method)
     return stat, pvalue, misc
