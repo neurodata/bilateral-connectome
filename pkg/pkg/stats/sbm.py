@@ -71,7 +71,7 @@ def _make_adjacency_dataframe(data, index):
 
 
 def stochastic_block_test(
-    A1, A2, labels1, labels2, null_odds=1.0, method="fisher", combine_method="fisher"
+    A1, A2, labels1, labels2, null_odds=1.0, method="fisher", combine_method="tippett"
 ):
 
     B1, n_observed1, n_possible1, group_counts1 = fit_sbm(A1, labels1)
