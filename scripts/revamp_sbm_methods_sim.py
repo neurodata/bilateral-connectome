@@ -120,7 +120,7 @@ stat, pvalue, misc = stochastic_block_test(
 # ## P-values under the null
 
 #%% [markdown]
-# ```{glue:figure} fig:compare_sbm_methods_sim-null_distributions
+# ```{glue:figure} fig:revamp_sbm_methods_sim-null_distributions
 #
 # Distributions of p-values under the null for each method. Dotted line indicates
 # the CDF of a $Uniform(0,1)$ random variable. The
@@ -603,7 +603,7 @@ axs.flat[-1].legend(handles=handles, labels=labels, title="Method")
 gluefig("perturbation_pvalues_lineplots", fig)
 
 #%% [markdown]
-# ```{glue:figure} fig:compare_sbm_methods_sim-perturbation_pvalues_lineplots
+# ```{glue:figure} fig:revamp_sbm_methods_sim-perturbation_pvalues_lineplots
 #
 # p-values under the alternative for two different methods for combining p-values:
 # [**Fisher's method**](https://en.wikipedia.org/wiki/Fisher%27s_method) (performed on the
@@ -768,7 +768,7 @@ fig.text(0.64, 0.86, "B)", fontweight="bold", fontsize=50)
 gluefig("relative_power", fig)
 
 #%% [markdown]
-# ```{glue:figure} fig:compare_sbm_methods_sim-relative_power
+# ```{glue:figure} fig:revamp_sbm_methods_sim-relative_power
 #
 # Comparison of power for Fisher's and Tippett's method. **A)** The power under the
 # alternative described in the text for both Fisher's method and Tippett's method. In both
