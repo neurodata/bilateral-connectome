@@ -20,7 +20,7 @@ parts:
   - caption: Appendix
     chapters: 
     - file: nhypergeom_sims
-    - file: compare_sbm_methods_sim
+    - file: revamp_sbm_methods_sim
   - caption: References
     chapters: 
     - file: references

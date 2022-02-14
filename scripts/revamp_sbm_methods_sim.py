@@ -27,7 +27,7 @@ from scipy.stats import combine_pvalues as scipy_combine_pvalues
 from scipy.stats import ks_1samp, uniform
 from tqdm import tqdm
 
-DISPLAY_FIGS = True
+DISPLAY_FIGS = False
 
 FILENAME = "revamp_sbm_methods_sim"
 
@@ -90,9 +90,7 @@ stat, pvalue, misc = stochastic_block_test(
 # Now, we still are after an overall test for the equality $B = \tilde{B}$. Thus, we
 # need a way to combine p-values $\{p_{1,1}, p_{1,2}...p_{K,K}\}$ to get an *overall*
 # p-value for our test comparing the stochastic block model probabilities. One way is
-# Fisher's method; another is to take the
-# minimum p-value out of a collection of p-values which have been corrected for multiple
-# comparisons (say, via Bonferroni or Holm-Bonferroni).
+# Fisher's method; another is Tippett's method.
 #
 # To compare how these two alternative methods of combining p-values work, we did the
 # following simulation:
@@ -113,8 +111,7 @@ stat, pvalue, misc = stochastic_block_test(
 #
 #      and likewise but with $\tilde{B}_{kl}$ for $\tilde{m}_{kl}$.
 #    - Run Fisher's exact test to generate a $p_{kl}$ for each $(k,l)$.
-#    - Run Fisher's method for combining p-values, or take the minimum p-value after
-#      Bonferroni correction.
+#    - Run Fisher's or Tippett's method for combining p-values
 # - These trials were repeated for $\delta \in \{0.1, 0.2, 0.3, 0.4, 0.5\}$ and
 # $t \in \{25, 50, 75, 100, 125\}$. For each $(\delta, t)$ we ran 100 replicates of the
 # model/test above.
@@ -125,13 +122,12 @@ stat, pvalue, misc = stochastic_block_test(
 #%% [markdown]
 # ```{glue:figure} fig:compare_sbm_methods_sim-null_distributions
 #
-# Distributions of p-values under the null for Fisher's method (left) and the Min method
-# (right) from a simulation with 100 resamples under the null. Dotted line indicates
+# Distributions of p-values under the null for each method. Dotted line indicates
 # the CDF of a $Uniform(0,1)$ random variable. The
 # p-values in the upper left of each panel is for a 1-sample KS test, where the null is
 # that the variable is distributed $Uniform(0,1)$ against the alternative that its CDF
 # is larger than that of a $Uniform(0,1)$ random variable (i.e. that it is superuniform).
-# Note that both methods appear empirically valid, but Fisher's appears highly conservative.
+# Note that all methods appear empirically valid, some appear highly conservative.
 # ```
 
 #%% [markdown]
@@ -335,7 +331,7 @@ def compare_individual_probabilities(counts1, n_possible1, counts2, n_possible2)
 
 #%%
 
-RERUN_SIM = True
+RERUN_SIM = False
 save_path = Path(
     "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
     f"outputs/{FILENAME}/results.csv"
@@ -492,6 +488,8 @@ else:
     results = pd.read_csv(save_path, index_col=0)
 #%%
 
+method_palette = dict(zip(methods, sns.color_palette()))
+
 null_results = results[(results["n_perturb"] == 0) | (results["perturb_size"] == 0)]
 
 n_methods = len(methods)
@@ -502,9 +500,16 @@ fig, axs = plt.subplots(n_rows, n_cols, squeeze=False, figsize=(n_cols * 5, n_ro
 for i, method in enumerate(methods):
     ax = axs.flat[i]
     method_null_results = null_results[null_results["method"] == method]
-    subuniformity_plot(method_null_results["pvalue"], ax=ax)
+    subuniformity_plot(
+        method_null_results["pvalue"],
+        ax=ax,
+        color=method_palette[method],
+        bins=np.linspace(0, 1, 100),
+    )
     ax.set_title(method.capitalize())
 plt.tight_layout()
+gluefig("null_distributions", fig)
+
 #%%
 if RERUN_SIM:
     fig, axs = plt.subplots(
@@ -537,53 +542,13 @@ if RERUN_SIM:
 
     ax.set(yscale="log")
 
-    gluefig("example-perturbations", fig)
+    gluefig("example_perturbations", fig)
 
-
-#%%
-
-
-fisher_results = results[results["method"] == "fisher"]
-min_results = results[results["method"] == "min"]
-
-fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean()
-min_means = min_results.groupby(["perturb_size", "n_perturb"]).mean()
-
-mean_diffs = fisher_means["pvalue"] - min_means["pvalue"]
-mean_diffs = mean_diffs.to_frame().reset_index()
-
-mean_diffs_square = mean_diffs.pivot(
-    index="perturb_size", columns="n_perturb", values="pvalue"
-)
-
-# v = np.max(np.abs(mean_diffs_square.values))
-
-# fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-# sns.heatmap(
-#     mean_diffs_square,
-#     cmap="RdBu",
-#     ax=ax,
-#     yticklabels=perturb_size_range,
-#     xticklabels=n_perturb_range,
-#     square=True,
-#     center=0,
-#     vmin=-v,
-#     vmax=v,
-#     cbar_kws=dict(shrink=0.7),
-# )
-# ax.set(xlabel="Number of perturbed blocks", ylabel="Size of perturbation")
-# cax = fig.axes[1]
-# cax.text(4, 1, "Min more\nsensitive", transform=cax.transAxes, va="top")
-# cax.text(4, 0, "Fisher more\nsensitive", transform=cax.transAxes, va="bottom")
-# ax.set_title("(Fisher - Min) pvalues", fontsize="x-large")
-
-# DISPLAY_FIGS = True
-# gluefig("pvalue_diff_matrix", fig)
 
 #%%
 fig, axs = plt.subplots(2, 3, figsize=(15, 10))
 
-
+lower = 1e-20
 for i, perturb_size in enumerate(perturb_size_range[1:]):
     ax = axs.flat[i]
     plot_results = results[results["perturb_size"] == perturb_size]
@@ -593,7 +558,7 @@ for i, perturb_size in enumerate(perturb_size_range[1:]):
         y="pvalue",
         hue="method",
         style="method",
-        # palette=method_palette,
+        palette=method_palette,
         ax=ax,
     )
     ax.set(yscale="log")
@@ -601,10 +566,11 @@ for i, perturb_size in enumerate(perturb_size_range[1:]):
     ax.axhline(0.05, color="dimgrey", linestyle=":")
     ax.axhline(0.005, color="dimgrey", linestyle="--")
     ax.set(ylabel="", xlabel="", title=f"{perturb_size}")
-
     ylim = ax.get_ylim()
-    if ylim[0] < 1e-25:
-        ax.set_ylim((1e-25, ylim[1]))
+    if ylim[0] < lower:
+        ax.set_ylim((lower, 1.05))
+    else:
+        ax.set_ylim((ylim[0], 1.05))
 
 handles, labels = ax.get_legend_handles_labels()
 
@@ -628,7 +594,7 @@ axs.flat[-1].axis("off")
 [ax.set(xlabel="Number perturbed") for ax in axs[1, :]]
 axs[0, -1].set(xlabel="Number perturbed")
 
-axs[0, 0].set_title(f"Perturbation size = {perturb_size_range[0]}")
+axs[0, 0].set_title(f"Perturbation size = {perturb_size_range[1]}")
 
 for i, label in enumerate(labels):
     labels[i] = label.capitalize()
@@ -641,20 +607,20 @@ gluefig("perturbation_pvalues_lineplots", fig)
 #
 # p-values under the alternative for two different methods for combining p-values:
 # [**Fisher's method**](https://en.wikipedia.org/wiki/Fisher%27s_method) (performed on the
-# *uncorrected* p-values) and simply taking
-# the minimum p-value after [Bonferroni correction](https://en.wikipedia.org/wiki/Bonferroni_correction) (here, called **Min**).
+# *uncorrected* p-values) and Tippett's method.
 # The alternative is specified by changing the number of probabilities which are perturbed
 # (x-axis in each panel) as well as the size of the perturbations which are done
 # to each probability (panels show increasing perturbation size). Dotted and dashed
 # lines indicate significance thresholds for $\alpha = \{0.05, 0.005\}$, respectively.
 # Note that in this simulation, even for large numbers of small perturbations (i.e. upper
-# left panel), the Min method has smaller p-values. Fisher's method displays smaller p-values
-# than Min only when there are many (>50) large perturbations, but by this point both
+# left panel), Tippett's method has smaller p-values. Fisher's method displays smaller p-values
+# than Tippett's only when there are many (>50) large perturbations, but by this point both
 # methods yield extremely small p-values.
 # ```
 
 #%% [markdown]
 # ## Power under the alternative
+
 
 #%%
 alpha = 0.05
@@ -663,7 +629,7 @@ results.loc[results[(results["pvalue"] < alpha)].index, "detected"] = 1
 
 #%%
 fisher_results = results[results["method"] == "fisher"]
-min_results = results[results["method"] == "min"]
+min_results = results[results["method"] == "tippett"]
 
 fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean()
 min_means = min_results.groupby(["perturb_size", "n_perturb"]).mean()
@@ -683,7 +649,7 @@ ratios_square = mean_diffs.pivot(
     index="perturb_size", columns="n_perturb", values="detected"
 )
 
-v = np.max(np.abs(mean_diffs_square.values))
+v = np.max(np.abs(mean_diffs.values))
 
 # fig, axs = plt.subplots(1, 3, figsize=(12, 4), sharex=True, sharey=True)
 
@@ -721,10 +687,10 @@ def power_heatmap(
     data, ax=None, center=0, vmin=0, vmax=1, cmap="RdBu_r", cbar=False, **kwargs
 ):
     out = sns.heatmap(
-        data,
+        data.values[1:, 1:],
         ax=ax,
-        yticklabels=perturb_size_range,
-        xticklabels=n_perturb_range,
+        yticklabels=perturb_size_range[1:],
+        xticklabels=n_perturb_range[1:],
         square=True,
         center=center,
         vmin=vmin,
@@ -755,7 +721,7 @@ ax.set_title("Power\n" + r"($\alpha=0.05$)", pad=25)
 
 ax = axs[min_col]
 power_heatmap(min_power_square, ax=ax)
-ax.set_title("Min method", fontsize="large")
+ax.set_title("Tippett's method", fontsize="large")
 ax.set(yticks=[])
 
 pal = sns.diverging_palette(145, 300, s=60, as_cmap=True)
@@ -780,7 +746,7 @@ _ = fig.colorbar(
 )
 ax.text(2, 1, "Fisher more\nsensitive", transform=ax.transAxes, va="top")
 ax.text(2, 0.5, "Equal power", transform=ax.transAxes, va="center")
-ax.text(2, 0, "Min more\nsensitive", transform=ax.transAxes, va="bottom")
+ax.text(2, 0, "Tippett's more\nsensitive", transform=ax.transAxes, va="bottom")
 ax.set_title("Log10\npower\nratio", pad=20)
 
 # remove dummy axes
@@ -804,13 +770,13 @@ gluefig("relative_power", fig)
 #%% [markdown]
 # ```{glue:figure} fig:compare_sbm_methods_sim-relative_power
 #
-# Comparison of power for Fisher's and the Min method. **A)** The power under the
-# alternative described in the text for both Fisher's method and the Min method. In both
+# Comparison of power for Fisher's and Tippett's method. **A)** The power under the
+# alternative described in the text for both Fisher's method and Tippett's method. In both
 # heatmaps, the x-axis represents an increasing number of blocks which are perturbed,
 # and the y-axis represents an increasing magnitude for each perturbation. **B)** The
-# log of the ratio of powers (Fisher's / Min) for each alternative. Note that positive
+# log of the ratio of powers (Fisher's / Tippett's) for each alternative. Note that positive
 # (purple) values would represent that Fisher's is more powerful, and negative (green)
-# represent that the Min method is more powerful. Notice that the Min method appears
+# represent that Tippett's method is more powerful. Notice that Tippett's method appears
 # to have more power for subtler (fewer or smaller perturbations) alternatives, and
 # nearly equal power for more obvious alternatives.
 # ```
