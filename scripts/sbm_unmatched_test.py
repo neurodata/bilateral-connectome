@@ -304,7 +304,7 @@ def heatmap_grouped(Bhat, palette=None, ax=None, pad=0, color_size="5%"):
 fig, axs = plt.subplots(2, 3, figsize=(12, 8))
 ax = axs[0, 0]
 networkplot_grouped(A1, node_data, palette=palette, ax=ax)
-ax.set_title("Group neurons\nby cell type")
+ax.set_title("Group neurons\nby cell type", fontsize="large")
 ax.set_ylabel(
     "Left",
     color=network_palette["Left"],
@@ -329,7 +329,7 @@ ax = axs[0, 1]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(Bhat1, palette=palette, ax=ax)
-top_ax.set_title("Fit stochastic\nblock models")
+top_ax.set_title("Fit stochastic\nblock models", fontsize="large")
 
 ax = axs[1, 1]
 _, _, misc = stochastic_block_test(A2, A2, node_data["labels"], node_data["labels"])
@@ -432,34 +432,35 @@ ax.annotate(
         facecolor="black",
     ),
 )
-y = 0.34
+y = 0.32
 ax.text(0.2, y, r"$H_0$:", fontsize="large")
-ax.text(0.38, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
-ax.text(0.49, y, r"$=$", fontsize="large")
+ax.text(0.42, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
+ax.text(0.55, y, r"$=$", fontsize="large")
 ax.text(
-    0.61, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large"
+    0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large"
 )
 y = y - 0.1
 ax.text(0.2, y, r"$H_A$:", fontsize="large")
-ax.text(0.38, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
-ax.text(0.49, y, r"$\neq$", fontsize="large")
+ax.text(0.42, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
+ax.text(0.55, y, r"$\neq$", fontsize="large")
 ax.text(
-    0.61, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large"
+    0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large"
 )
 patch = mpl.patches.Rectangle(
     xy=(0.18, y - 0.03),
-    width=0.6,
-    height=0.195,
+    width=0.7,
+    height=0.21,
     facecolor="white",
     edgecolor="lightgrey",
 )
 ax.add_patch(patch)
 
 
-ax.set(title="Compare estimated\nprobabilities")
+ax.set_title("Compare estimated\nprobabilities", fontsize="large")
 ax.set(xlim=(0, 1), ylim=(0, 1))
 ax.axis("off")
 
+DISPLAY_FIGS = True
 gluefig("sbm_methods_explain", fig)
 
 # ax = axs[0, 2]
@@ -802,33 +803,6 @@ plot_pvalues(
 )
 gluefig("sbm_uncorrected_pvalues", fig)
 
-#%%
-from svgutils.compose import Figure, Panel, SVG, Text
-from pathlib import Path
-
-total_width = 1000
-total_height = 500
-
-FIG_PATH = Path("bilateral-connectome/results/figs")
-FIG_PATH = FIG_PATH / FILENAME
-
-sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
-sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
-sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
-
-sbm_methods_explain = Panel(
-    sbm_methods_explain_svg,
-    Text("A)", 5, 20, size=15, weight="bold"),
-)
-
-sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
-sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 2)
-sbm_uncorrected = Panel(
-    sbm_uncorrected_svg, Text("B)", 5, 20, size=15, weight="bold")
-).move(335, 0)
-
-Figure(total_width, total_height, sbm_methods_explain, sbm_uncorrected)
-
 
 #%% [markdown]
 # Next, we run the test for bilateral symmetry under the stochastic block model.
@@ -1002,7 +976,6 @@ def plot_estimated_probabilities(misc):
 fig, ax = plot_estimated_probabilities(misc)
 gluefig("probs_uncorrected", fig)
 
-#%%
 
 #%% [markdown]
 # ```{glue:figure} fig:sbm_unmatched_test-probs_uncorrected
@@ -1113,6 +1086,55 @@ def plot_significant_probabilities(misc):
 fig, ax = plot_significant_probabilities(misc)
 gluefig("significant_p_comparison", fig)
 
+
+#%%
+from svgutils.compose import Figure, Panel, SVG, Text
+from pathlib import Path
+
+total_width = 1000
+total_height = 500
+
+FIG_PATH = Path("bilateral-connectome/results/figs")
+FIG_PATH = FIG_PATH / FILENAME
+
+sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
+sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
+sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
+
+sbm_methods_explain = Panel(
+    sbm_methods_explain_svg,
+    Text("A)", 5, 20, size=15, weight="bold"),
+)
+
+sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
+sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 2)
+sbm_uncorrected = Panel(
+    sbm_uncorrected_svg, Text("B)", 5, 20, size=15, weight="bold")
+).move(335, 0)
+
+sbm_uncorrected_pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
+sbm_uncorrected_pvalues.scale(1 / sbm_uncorrected_pvalues.height * total_height / 2)
+sbm_uncorrected_pvalues = Panel(
+    sbm_uncorrected_pvalues, Text("C)", 5, 0, size=15, weight="bold")
+).move(0, 250)
+
+significant_p_comparison = SVG(FIG_PATH / "significant_p_comparison.svg")
+significant_p_comparison.scale(1 / significant_p_comparison.height * total_height / 2)
+significant_p_comparison = Panel(
+    significant_p_comparison, Text("D)", 5, 0, size=15, weight="bold")
+).move(335, 250)
+
+
+fig = Figure(
+    750,
+    450,
+    sbm_methods_explain,
+    sbm_uncorrected,
+    sbm_uncorrected_pvalues,
+    significant_p_comparison,
+)
+fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
+fig
 
 #%% [markdown]
 # ```{glue:figure} fig:sbm_unmatched_test-significant_p_comparison
