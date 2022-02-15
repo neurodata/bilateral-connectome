@@ -12,6 +12,7 @@
 #%%
 from heapq import merge
 from graspologic.plot.plot import networkplot
+from pkg.io.io import FIG_PATH
 from pkg.plot.bound import bound_points
 from pkg.utils import set_warnings
 
@@ -447,7 +448,11 @@ ax.text(
     0.61, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large"
 )
 patch = mpl.patches.Rectangle(
-    xy=(0.18, y - 0.03), width=0.6, height=0.195, facecolor="white", edgecolor="lightgrey"
+    xy=(0.18, y - 0.03),
+    width=0.6,
+    height=0.195,
+    facecolor="white",
+    edgecolor="lightgrey",
 )
 ax.add_patch(patch)
 
@@ -456,7 +461,7 @@ ax.set(title="Compare estimated\nprobabilities")
 ax.set(xlim=(0, 1), ylim=(0, 1))
 ax.axis("off")
 
-gluefig('sbm_methods_explain', fig)
+gluefig("sbm_methods_explain", fig)
 
 # ax = axs[0, 2]
 # ax.axis('off')
@@ -538,7 +543,6 @@ ax.set(
 gluefig("group_counts", fig)
 
 #%%
-
 
 #%% [markdown]
 
@@ -797,6 +801,19 @@ plot_pvalues(
     annot_missing=False,
 )
 gluefig("sbm_uncorrected_pvalues", fig)
+
+#%%
+from svgutils.compose import Figure, Panel, SVG, Text
+from pathlib import Path
+
+FIG_PATH = Path("bilateral-connectome/results/figs")
+FIG_PATH = FIG_PATH / FILENAME
+sbm_methods_explain = Panel(SVG(FIG_PATH / "sbm_methods_explain.svg"))
+sbm_uncorrected = Panel(SVG(FIG_PATH / "sbm_uncorrected.svg")).move(800, 0)
+
+fig = Figure("21cm", "10cm", sbm_methods_explain.scale(0.01), sbm_uncorrected.scale(0.01))
+fig.save(FIG_PATH / "test_compose.svg")
+
 
 #%% [markdown]
 # Next, we run the test for bilateral symmetry under the stochastic block model.
