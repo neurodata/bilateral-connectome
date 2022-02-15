@@ -10,8 +10,7 @@
 # groups for each neuron, which we do not explore here.
 
 #%%
-from heapq import merge
-from graspologic.plot.plot import networkplot
+from graspologic.plot import networkplot
 from pkg.io.io import FIG_PATH
 from pkg.plot.bound import bound_points
 from pkg.utils import set_warnings
@@ -586,19 +585,19 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
 
     # set up plot
     pad = 2
-    width_ratios = [0.5, pad + 0.8, 10, pad - 0.4, 10, pad + 0.9, 10, 0.5]
+    width_ratios = [0.5, pad + 0.8, 10, 0.01, 10]
     set_theme(font_scale=1.25)
     fig, axs = plt.subplots(
         1,
         len(width_ratios),
-        figsize=(30, 10),
+        figsize=(20, 10),
         gridspec_kw=dict(
             width_ratios=width_ratios,
         ),
     )
     left_col = 2
     right_col = 4
-    pvalue_col = 6
+    # pvalue_col = 6
 
     heatmap_kws = dict(
         cmap="Blues", square=True, cbar=False, vmax=p_max, fmt="s", xticklabels=True
@@ -622,6 +621,7 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
     if null_odds != 1:
         text = r"$c$" + text
     ax.set_title(text, fontsize="xx-large", color=network_palette["Right"])
+    ax.set(yticks=[], yticklabels=[])
 
     # handle the colorbars
     # NOTE: did it this way cause the other options weren't playing nice with auto
@@ -639,67 +639,67 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
     )
 
     # plot p-values
-    ax = axs[pvalue_col]
+    # ax = axs[pvalue_col]
 
-    if annot_missing:
-        annot = np.full((K, K), "")
-        annot[(B1.values == 0) & (B2.values == 0)] = "B"
-        annot[(B1.values == 0) & (B2.values != 0)] = "L"
-        annot[(B1.values != 0) & (B2.values == 0)] = "R"
-    else:
-        annot = False
-    plot_pvalues = np.log10(uncorrected_pvalues)
-    plot_pvalues[np.isnan(plot_pvalues)] = 0
-    im = sns.heatmap(
-        plot_pvalues,
-        ax=ax,
-        annot=annot,
-        cmap="RdBu",
-        center=0,
-        square=True,
-        cbar=False,
-        fmt="s",
-        vmin=pvalue_vmin,
-    )
-    ax.set(ylabel="", xlabel="Target group")
-    ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-    ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
+    # if annot_missing:
+    #     annot = np.full((K, K), "")
+    #     annot[(B1.values == 0) & (B2.values == 0)] = "B"
+    #     annot[(B1.values == 0) & (B2.values != 0)] = "L"
+    #     annot[(B1.values != 0) & (B2.values == 0)] = "R"
+    # else:
+    #     annot = False
+    # plot_pvalues = np.log10(uncorrected_pvalues)
+    # plot_pvalues[np.isnan(plot_pvalues)] = 0
+    # im = sns.heatmap(
+    #     plot_pvalues,
+    #     ax=ax,
+    #     annot=annot,
+    #     cmap="RdBu",
+    #     center=0,
+    #     square=True,
+    #     cbar=False,
+    #     fmt="s",
+    #     vmin=pvalue_vmin,
+    # )
+    # ax.set(ylabel="", xlabel="Target group")
+    # ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
+    # ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
 
-    colors = im.get_children()[0].get_facecolors()
-    significant = uncorrected_pvalues < hb_thresh
+    # colors = im.get_children()[0].get_facecolors()
+    # significant = uncorrected_pvalues < hb_thresh
 
-    # NOTE: the x's looked bad so I did this super hacky thing...
-    pad = 0.2
-    for idx, (is_significant, color) in enumerate(
-        zip(significant.values.ravel(), colors)
-    ):
-        if is_significant:
-            i, j = np.unravel_index(idx, (K, K))
-            # REF: seaborn heatmap
-            lum = relative_luminance(color)
-            text_color = ".15" if lum > 0.408 else "w"
+    # # NOTE: the x's looked bad so I did this super hacky thing...
+    # pad = 0.2
+    # for idx, (is_significant, color) in enumerate(
+    #     zip(significant.values.ravel(), colors)
+    # ):
+    #     if is_significant:
+    #         i, j = np.unravel_index(idx, (K, K))
+    #         # REF: seaborn heatmap
+    #         lum = relative_luminance(color)
+    #         text_color = ".15" if lum > 0.408 else "w"
 
-            xs = [j + pad, j + 1 - pad]
-            ys = [i + pad, i + 1 - pad]
-            ax.plot(xs, ys, color=text_color, linewidth=4)
-            xs = [j + 1 - pad, j + pad]
-            ys = [i + pad, i + 1 - pad]
-            ax.plot(xs, ys, color=text_color, linewidth=4)
+    #         xs = [j + pad, j + 1 - pad]
+    #         ys = [i + pad, i + 1 - pad]
+    #         ax.plot(xs, ys, color=text_color, linewidth=4)
+    #         xs = [j + 1 - pad, j + pad]
+    #         ys = [i + pad, i + 1 - pad]
+    #         ax.plot(xs, ys, color=text_color, linewidth=4)
 
-    # plot colorbar for the pvalue plot
-    # NOTE: only did it this way for consistency with the other colorbar
-    ax = axs[7]
-    shrink_axis(ax, scale=0.5)
-    _ = fig.colorbar(
-        im.get_children()[0],
-        cax=ax,
-        fraction=1,
-        shrink=1,
-        ticklocation="right",
-    )
+    # # plot colorbar for the pvalue plot
+    # # NOTE: only did it this way for consistency with the other colorbar
+    # ax = axs[7]
+    # shrink_axis(ax, scale=0.5)
+    # _ = fig.colorbar(
+    #     im.get_children()[0],
+    #     cax=ax,
+    #     fraction=1,
+    #     shrink=1,
+    #     ticklocation="right",
+    # )
 
-    fig.text(0.11, 0.85, "A)", fontweight="bold", fontsize=50)
-    fig.text(0.63, 0.85, "B)", fontweight="bold", fontsize=50)
+    # # fig.text(0.11, 0.85, "A)", fontweight="bold", fontsize=50)
+    # # fig.text(0.63, 0.85, "B)", fontweight="bold", fontsize=50)
 
     # remove dummy axes
     for i in range(len(width_ratios)):
@@ -806,13 +806,28 @@ gluefig("sbm_uncorrected_pvalues", fig)
 from svgutils.compose import Figure, Panel, SVG, Text
 from pathlib import Path
 
+total_width = 1000
+total_height = 500
+
 FIG_PATH = Path("bilateral-connectome/results/figs")
 FIG_PATH = FIG_PATH / FILENAME
-sbm_methods_explain = Panel(SVG(FIG_PATH / "sbm_methods_explain.svg"))
-sbm_uncorrected = Panel(SVG(FIG_PATH / "sbm_uncorrected.svg")).move(800, 0)
 
-fig = Figure("21cm", "10cm", sbm_methods_explain.scale(0.01), sbm_uncorrected.scale(0.01))
-fig.save(FIG_PATH / "test_compose.svg")
+sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
+sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
+sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
+
+sbm_methods_explain = Panel(
+    sbm_methods_explain_svg,
+    Text("A)", 5, 20, size=15, weight="bold"),
+)
+
+sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
+sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 2)
+sbm_uncorrected = Panel(
+    sbm_uncorrected_svg, Text("B)", 5, 20, size=15, weight="bold")
+).move(335, 0)
+
+Figure(total_width, total_height, sbm_methods_explain, sbm_uncorrected)
 
 
 #%% [markdown]
@@ -1433,6 +1448,53 @@ gluefig("sbm_corrected", fig)
 # {eq}`sbm_unmatched_null_adjusted`). Moreover, they highlight the insights that
 # can be gained
 # by considering multiple definitions of bilateral symmetry.
+
+#%%
+left_nodes["inds"] = range(len(left_nodes))
+sub_left_nodes = left_nodes[left_nodes[GROUP_KEY] != "KCs"]
+sub_left_inds = sub_left_nodes["inds"].values
+right_nodes["inds"] = range(len(right_nodes))
+sub_right_nodes = right_nodes[right_nodes[GROUP_KEY] != "KCs"]
+sub_right_inds = sub_right_nodes["inds"].values
+
+sub_left_adj = left_adj[np.ix_(sub_left_inds, sub_left_inds)]
+sub_right_adj = right_adj[np.ix_(sub_right_inds, sub_right_inds)]
+sub_left_labels = sub_left_nodes[GROUP_KEY]
+sub_right_labels = sub_right_nodes[GROUP_KEY]
+
+from pkg.stats import erdos_renyi_test
+
+stat, pvalue, misc = erdos_renyi_test(sub_left_adj, sub_right_adj)
+print(pvalue)
+
+stat, pvalue, misc = stochastic_block_test(
+    sub_left_adj,
+    sub_right_adj,
+    labels1=sub_left_labels,
+    labels2=sub_right_labels,
+    method="fisher",
+    combine_method="tippett",
+)
+print(pvalue)
+
+n_edges_left = np.count_nonzero(sub_left_adj)
+n_edges_right = np.count_nonzero(sub_right_adj)
+n_left = sub_left_adj.shape[0]
+n_right = sub_right_adj.shape[0]
+density_left = n_edges_left / (n_left ** 2)
+density_right = n_edges_right / (n_right ** 2)
+
+null_odds = density_left / density_right
+stat, pvalue, misc = stochastic_block_test(
+    sub_left_adj,
+    sub_right_adj,
+    labels1=sub_left_labels,
+    labels2=sub_right_labels,
+    method="fisher",
+    null_odds=null_odds,
+    combine_method="tippett",
+)
+print(pvalue)
 
 #%%
 elapsed = time.time() - t0
