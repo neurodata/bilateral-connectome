@@ -143,7 +143,7 @@ def offdiag_indices_from(arr):
     return rows, cols
 
 
-def stochastic_block_test_paired(A1, A2, labels):
+def stochastic_block_test_paired(A1, A2, labels,):
     index, group_indices, group_counts = np.unique(
         labels, return_counts=True, return_inverse=True
     )
@@ -192,7 +192,7 @@ def stochastic_block_test_paired(A1, A2, labels):
 
     run_pvalues = uncorrected_pvalues.values
     run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
-    stat, pvalue = combine_pvalues(run_pvalues, method="fisher")
+    stat, pvalue = combine_pvalues(run_pvalues, method="tippett")
     n_tests = len(run_pvalues)
     misc["n_tests"] = n_tests
     return stat, pvalue, misc

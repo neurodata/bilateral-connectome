@@ -5,3 +5,4 @@ from .manual_colors import (
     plot_colors,
 )
 from .theme import set_theme
+from .bound import bound_points, fit_bounding_contour, draw_bounding_contour
