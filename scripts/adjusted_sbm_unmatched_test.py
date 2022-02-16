@@ -16,15 +16,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import rotate_labels
-from matplotlib.transforms import Bbox
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
 from pkg.perturb import remove_edges
 from pkg.plot import set_theme
 from pkg.stats import stochastic_block_test
-from seaborn.utils import relative_luminance
 
 
 DISPLAY_FIGS = True
@@ -67,12 +64,11 @@ right_labels = right_nodes[GROUP_KEY].values
 #%%
 
 from graspologic.simulations import sbm
-from graspologic.plot import networkplot, heatmap, adjplot
-import networkx as nx
-from pkg.plot import bound_points
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+from graspologic.plot import networkplot
+from pkg.plot import networkplot_grouped, heatmap_grouped
 import matplotlib as mpl
-from matplotlib.colors import ListedColormap
+from giskard.plot import merge_axes
+
 
 np.random.seed(888888)
 ns = [5, 6, 7]
@@ -84,50 +80,35 @@ node_data["labels"] = labels + 1
 palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
 
 
-
-
-def remove_shared_ax(ax):
-    """
-    Remove ax from its sharex and sharey
-    """
-    # Remove ax from the Grouper object
-    shax = ax.get_shared_x_axes()
-    shay = ax.get_shared_y_axes()
-    shax.remove(ax)
-    shay.remove(ax)
-
-    # Set a new ticker with the respective new locator and formatter
-    for axis in [ax.xaxis, ax.yaxis]:
-        ticker = mpl.axis.Ticker()
-        axis.major = ticker
-        axis.minor = ticker
-        # No ticks and no labels
-        loc = mpl.ticker.NullLocator()
-        fmt = mpl.ticker.NullFormatter()
-        axis.set_major_locator(loc)
-        axis.set_major_formatter(fmt)
-        axis.set_minor_locator(loc)
-        axis.set_minor_formatter(fmt)
-
-
-
-
-def heatmap_grouped(Bhat, palette=None, ax=None, pad=0, color_size="5%"):
-
-    heatmap(Bhat, ax=ax, cmap="Blues", vmin=0, vmax=1, center=None, cbar=False)
-    divider = make_axes_locatable(ax)
-    top_ax = divider.append_axes("top", size=color_size, pad=pad, sharex=ax)
-    remove_shared_ax(top_ax)
-    draw_colors(top_ax, "x", labels=[1, 2, 3], palette=palette)
-    color_ax = divider.append_axes("left", size=color_size, pad=pad, sharex=ax)
-    remove_shared_ax(color_ax)
-    draw_colors(color_ax, "y", labels=[1, 2, 3], palette=palette)
-    return top_ax
-
-
-fig, axs = plt.subplots(1, 4, figsize=(16, 4))
+fig, axs = plt.subplots(
+    1, 4, figsize=(13, 4), gridspec_kw=dict(width_ratios=[1, 0.5, 0.5, 1])
+)
 ax = axs[0]
-networkplot_grouped(A1, node_data, palette=palette, ax=ax)
+node_data = networkplot_grouped(A1, node_data, palette=palette, ax=ax)
+
+n_select = 10
+row_inds, col_inds = np.nonzero(A1)
+np.random.seed(8888)
+choice_inds = np.random.choice(len(row_inds), size=n_select)
+for i in choice_inds:
+    source_node = row_inds[i]
+    target_node = col_inds[i]
+    x1, y1 = node_data.loc[source_node, ["x", "y"]]
+    x2, y2 = node_data.loc[target_node, ["x", "y"]]
+    x = (x1 + x2) / 2
+    y = (y1 + y2) / 2
+    ax.text(
+        x,
+        y,
+        "x",
+        va="center",
+        ha="center",
+        color="darkred",
+        fontsize="medium",
+        zorder=2,
+    )
+
+
 ax.set_title("Randomly subsample\nedges", fontsize="medium")
 ax.set_ylabel(
     "Right",
@@ -142,21 +123,43 @@ ax.set_ylabel(
 ax = axs[1]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
-top_ax = heatmap_grouped(Bhat1, palette=palette, ax=ax)
-top_ax.set_title("Fit stochastic\nblock models", fontsize="medium")
+top_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
+top_ax.set_title("Adjust connection probabilities", fontsize="medium", x=1.2, y=6)
+
+
+ax = axs[2]
+Bhat1 = misc["probabilities1"].values
+top_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
+
+ax.annotate(
+    "",
+    xy=(0, 1.5),
+    xytext=(-1, 1.5),
+    arrowprops=dict(
+        arrowstyle="simple",
+        shrinkB=9,
+        facecolor="black",
+    ),
+    zorder=1,
+)
+
+ax = axs[3]
+ax.set_title("Rerun SBM testing")
+ax.axis("off")
 
 fig.set_facecolor("w")
 
-from giskard.plot import merge_axes
+gluefig("adjusted_methods_explain", fig)
 
-vmin = 0
-vmax = 1
 
-cmap = mpl.cm.get_cmap("Blues")
-normlize = mpl.colors.Normalize(vmin, vmax)
-cmin, cmax = normlize([vmin, vmax])
-cc = np.linspace(cmin, cmax, 256)
-cmap = mpl.colors.ListedColormap(cmap(cc))
+# vmin = 0
+# vmax = 1
+
+# cmap = mpl.cm.get_cmap("Blues")
+# normlize = mpl.colors.Normalize(vmin, vmax)
+# cmin, cmax = normlize([vmin, vmax])
+# cc = np.linspace(cmin, cmax, 256)
+# cmap = mpl.colors.ListedColormap(cmap(cc))
 
 # ax = merge_axes(fig, axs, rows=None, cols=2)
 # node_sizes=(20, 200),
@@ -303,9 +306,6 @@ cmap = mpl.colors.ListedColormap(cmap(cc))
 # ax.add_patch(patch)
 
 
-gluefig("adjusted_methods_explain", fig)
-
-
 #%%
 n_edges_left = np.count_nonzero(left_adj)
 n_edges_right = np.count_nonzero(right_adj)
@@ -360,37 +360,16 @@ else:
     resample_results = pd.read_csv(OUT_PATH / "resample_results.csv", index_col=0)
 
 #%%
-
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(
-    data=resample_results[resample_results["combine_method"] == "tippett"],
-    x="pvalue",
-    ax=ax,
-    color=neutral_color,
-    bins=30,
-    kde=True,
-    # kde_kws=dict(clip=[0, 1]),
-    log_scale=True,
-    stat="density",
+stat, pvalue, misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method="fisher",
+    null_odds=1,
+    combine_method="tippett",
 )
-ax.set(xlabel="p-value", ylabel="", yticks=[])
-ax.spines["left"].set_visible(False)
-ax.axvline(0.05, linestyle=":", color="black")
-ylim = ax.get_ylim()
-ax.text(0.06, ylim[1] * 0.9, r"$\alpha = 0.05$")
-
-mean_resample_pvalue = np.mean(resample_results["pvalue"])
-median_resample_pvalue = np.median(resample_results["pvalue"])
-ax.axvline(median_resample_pvalue, color="darkred", linewidth=2)
-ax.text(
-    median_resample_pvalue - 0.0025,
-    ylim[1] * 0.9,
-    f"Median = {median_resample_pvalue:0.2f}",
-    ha="right",
-    color="darkred",
-)
-gluefig("resampled_pvalues_distribution", fig)
-
+pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 
 #%%
 null_odds = density_left / density_right
@@ -406,6 +385,102 @@ stat, pvalue, misc = stochastic_block_test(
 glue("corrected_pvalue", pvalue)
 print(pvalue)
 print(f"{pvalue:.2g}")
+
+
+#%%
+
+set_theme(font_scale=1.25)
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(
+    data=resample_results[resample_results["combine_method"] == "tippett"],
+    x="pvalue",
+    ax=ax,
+    color=neutral_color,
+    # bins=30,
+    kde=True,
+    # kde_kws=dict(clip=[0, 1]),
+    log_scale=True,
+    stat="density",
+)
+ax.set(xlabel="p-value", ylabel="", yticks=[])
+ax.spines["left"].set_visible(False)
+ax.axvline(0.05, linestyle=":", color="black")
+ylim = ax.get_ylim()
+ax.text(0.06, ylim[1] * 0.9, r"$\alpha = 0.05$")
+
+median_resample_pvalue = np.median(resample_results["pvalue"])
+
+colors = sns.color_palette("Set2")
+
+from matplotlib.patheffects import Stroke, Normal
+
+
+def nice_text(
+    x,
+    y,
+    s,
+    ax=None,
+    color="black",
+    fontsize=None,
+    transform=None,
+    ha="left",
+    va="center",
+    linewidth=4,
+    linecolor="black",
+):
+    if transform is None:
+        transform = ax.transData
+    text = ax.text(
+        x,
+        y,
+        s,
+        color=color,
+        fontsize=fontsize,
+        transform=transform,
+        ha=ha,
+        va=va,
+    )
+    text.set_path_effects([Stroke(linewidth=linewidth, foreground=linecolor), Normal()])
+
+
+color = colors[3]
+ax.axvline(median_resample_pvalue, color=color, linewidth=3)
+# ax.text(
+#     median_resample_pvalue - 0.0025,
+#     ylim[1] * 0.9,
+#     f"Median = {median_resample_pvalue:0.2g}",
+#     ha="right",
+#     color=color,
+# )
+ax.text(
+    median_resample_pvalue - 0.0025,
+    ylim[1] * 0.9,
+    f"Median = {median_resample_pvalue:0.2g}",
+    color=color,
+    ha="right",
+)
+
+color = colors[4]
+ax.axvline(pvalue, 0, 0.5, color=color, linewidth=3)
+ax.text(
+    pvalue - 0.0002,
+    ylim[1] * 0.43,
+    f"Analytic = {pvalue:0.2g}",
+    ha="right",
+    color=color,
+)
+
+gluefig("resampled_pvalues_distribution", fig)
+
+#%%
+
+from pkg.plot import plot_pvalues
+
+# TODO get the actual pvalue vmin
+
+fig, axs = plot_pvalues(misc, pvalue_vmin)
+
+gluefig("sbm_uncorrected_pvalues", fig)
 
 # #%%
 # left_nodes["inds"] = range(len(left_nodes))
@@ -461,15 +536,15 @@ from pathlib import Path
 
 
 total_width = 1000
-total_height = 1500
+total_height = 700
 
 FIG_PATH = Path("bilateral-connectome/results/figs")
 FIG_PATH = FIG_PATH / FILENAME
 
 fontsize = 35
 
-sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
-sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 4
+sbm_methods_explain_svg = SVG(FIG_PATH / "adjusted_methods_explain.svg")
+sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
 sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
 
 sbm_methods_explain = Panel(
@@ -477,36 +552,28 @@ sbm_methods_explain = Panel(
     Text("A)", 5, 20, size=fontsize, weight="bold"),
 )
 
-sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
-sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 3)
-sbm_uncorrected = Panel(
-    sbm_uncorrected_svg, Text("B)", 5, 20, size=fontsize, weight="bold")
-).move(0, 330)
 
-sbm_uncorrected_pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
-sbm_uncorrected_pvalues.scale(1 / sbm_uncorrected_pvalues.height * total_height / 3)
-sbm_uncorrected_pvalues = Panel(
-    sbm_uncorrected_pvalues, Text("C)", 5, 0, size=fontsize, weight="bold")
-).move(0, 750)
-
-significant_p_comparison = SVG(FIG_PATH / "significant_p_comparison.svg")
-significant_p_comparison.scale(
-    1 / significant_p_comparison.height * total_height / 3
-).scale(0.9)
-significant_p_comparison = Panel(
-    significant_p_comparison.move(20, 20),
-    Text("D)", 0, 0, size=fontsize, weight="bold"),
-).move(475, 750)
-
-fig = Figure(
-    810,
-    1170,
-    sbm_methods_explain,
-    sbm_uncorrected,
-    sbm_uncorrected_pvalues,
-    significant_p_comparison,
+resampled_pvalues_distribution = SVG(FIG_PATH / "resampled_pvalues_distribution.svg")
+resampled_pvalues_distribution.scale(
+    1 / resampled_pvalues_distribution.height * total_height / 2
 )
-fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
+
+resampled_pvalues_distribution = Panel(
+    resampled_pvalues_distribution,
+    Text("B)", 5, 20, size=fontsize, weight="bold"),
+).move(0, 300)
+
+
+pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
+pvalues.scale(1 / pvalues.height * total_height / 2)
+
+pvalues = Panel(
+    pvalues.move(50, 30),
+    Text("C)", 5, 20, size=fontsize, weight="bold"),
+).move(400, 300)
+
+fig = Figure(850, 625, sbm_methods_explain, resampled_pvalues_distribution, pvalues)
+fig.save(FIG_PATH / "adjusted_sbm_composite.svg")
 fig
 
 

@@ -5,9 +5,11 @@ import seaborn as sns
 from .theme import set_theme
 from .utils import shrink_axis
 import networkx as nx
-from graspologic.plot import networkplot
+from graspologic.plot import networkplot, heatmap
 from seaborn.utils import relative_luminance
 from .bound import bound_points
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from .utils import draw_colors, remove_shared_ax
 
 
 def plot_stochastic_block_probabilities(misc, network_palette):
@@ -17,13 +19,8 @@ def plot_stochastic_block_probabilities(misc, network_palette):
     null_odds = misc["null_odds"]
     B2 = B2 * null_odds
 
-    index = B1.index
     p_max = max(B1.values.max(), B2.values.max())
-    uncorrected_pvalues = misc["uncorrected_pvalues"]
-    n_tests = misc["n_tests"]
     K = B1.shape[0]
-    alpha = 0.05
-    hb_thresh = alpha / n_tests
 
     # set up plot
     pad = 2
@@ -90,8 +87,31 @@ def plot_stochastic_block_probabilities(misc, network_palette):
 
 
 def plot_pvalues(
-    ax, cax, uncorrected_pvalues, B1, B2, hb_thresh, pvalue_vmin, annot_missing=True
+    misc,
+    pvalue_vmin,
+    ax=None,
+    cax=None,
+    annot_missing=True,
 ):
+    if ax is None:
+        width_ratios = [0.5, 3, 10]
+        fig, axs = plt.subplots(
+            1,
+            3,
+            figsize=(10, 10),
+            gridspec_kw=dict(
+                width_ratios=width_ratios,
+            ),
+        )
+        axs[1].remove()
+        ax = axs[-1]
+        cax = axs[0]
+
+    uncorrected_pvalues = misc["uncorrected_pvalues"]
+    B1 = misc["probabilities1"]
+    B2 = misc["probabilities2"]
+    hb_thresh = 0.05 / misc["n_tests"]
+
     K = len(B1)
     index = B1.index
     if annot_missing:
@@ -152,6 +172,8 @@ def plot_pvalues(
     )
     cax.set_title(r"$log_{10}$" + "\np-value", pad=20)
 
+    return fig, axs
+
 
 def networkplot_grouped(A, node_data, palette=None, ax=None):
     g = nx.from_numpy_array(A)
@@ -183,3 +205,16 @@ def networkplot_grouped(A, node_data, palette=None, ax=None):
     )
     ax.set(xlabel="", ylabel="")
     ax.spines[["left", "bottom"]].set_visible(False)
+    return node_data
+
+
+def heatmap_grouped(Bhat, labels, palette=None, ax=None, pad=0, color_size="5%"):
+    heatmap(Bhat, ax=ax, cmap="Blues", vmin=0, vmax=1, center=None, cbar=False)
+    divider = make_axes_locatable(ax)
+    top_ax = divider.append_axes("top", size=color_size, pad=pad, sharex=ax)
+    remove_shared_ax(top_ax)
+    draw_colors(top_ax, "x", labels=labels, palette=palette)
+    color_ax = divider.append_axes("left", size=color_size, pad=pad, sharex=ax)
+    remove_shared_ax(color_ax)
+    draw_colors(color_ax, "y", labels=labels, palette=palette)
+    return top_ax

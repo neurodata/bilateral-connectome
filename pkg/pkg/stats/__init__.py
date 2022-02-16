@@ -5,3 +5,4 @@ from .rdpg import rdpg_test
 from .degree import degree_test
 from .binomial import binom_2samp
 from .combine import combine_pvalues
+from .utils import compute_density, compute_density_adjustment

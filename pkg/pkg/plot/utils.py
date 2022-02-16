@@ -1,7 +1,8 @@
-from matplotlib.transforms import Bbox
+import matplotlib as mpl
 import numpy as np
 import seaborn as sns
 from matplotlib.colors import ListedColormap
+from matplotlib.transforms import Bbox
 
 
 def shrink_axis(ax, scale=0.7):
@@ -65,3 +66,27 @@ def draw_colors(ax, ax_type="x", labels=None, palette="tab10"):
         square=False,
     )
     return ax
+
+
+def remove_shared_ax(ax):
+    """
+    Remove ax from its sharex and sharey
+    """
+    # Remove ax from the Grouper object
+    shax = ax.get_shared_x_axes()
+    shay = ax.get_shared_y_axes()
+    shax.remove(ax)
+    shay.remove(ax)
+
+    # Set a new ticker with the respective new locator and formatter
+    for axis in [ax.xaxis, ax.yaxis]:
+        ticker = mpl.axis.Ticker()
+        axis.major = ticker
+        axis.minor = ticker
+        # No ticks and no labels
+        loc = mpl.ticker.NullLocator()
+        fmt = mpl.ticker.NullFormatter()
+        axis.set_major_locator(loc)
+        axis.set_major_formatter(fmt)
+        axis.set_minor_locator(loc)
+        axis.set_minor_formatter(fmt)
