@@ -301,14 +301,14 @@ def heatmap_grouped(Bhat, palette=None, ax=None, pad=0, color_size="5%"):
     return top_ax
 
 
-fig, axs = plt.subplots(2, 3, figsize=(12, 8))
+fig, axs = plt.subplots(2, 4, figsize=(16, 6))
 ax = axs[0, 0]
 networkplot_grouped(A1, node_data, palette=palette, ax=ax)
-ax.set_title("Group neurons\nby cell type", fontsize="large")
+ax.set_title("Group neurons\nby cell type", fontsize="medium")
 ax.set_ylabel(
     "Left",
     color=network_palette["Left"],
-    size="x-large",
+    size="large",
     rotation=0,
     ha="right",
     labelpad=10,
@@ -319,7 +319,7 @@ networkplot_grouped(A2, node_data, palette=palette, ax=ax)
 ax.set_ylabel(
     "Right",
     color=network_palette["Right"],
-    size="x-large",
+    size="large",
     rotation=0,
     ha="right",
     labelpad=10,
@@ -329,7 +329,7 @@ ax = axs[0, 1]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(Bhat1, palette=palette, ax=ax)
-top_ax.set_title("Fit stochastic\nblock models", fontsize="large")
+top_ax.set_title("Fit stochastic\nblock models", fontsize="medium")
 
 ax = axs[1, 1]
 _, _, misc = stochastic_block_test(A2, A2, node_data["labels"], node_data["labels"])
@@ -436,16 +436,12 @@ y = 0.32
 ax.text(0.2, y, r"$H_0$:", fontsize="large")
 ax.text(0.42, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
 ax.text(0.55, y, r"$=$", fontsize="large")
-ax.text(
-    0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large"
-)
+ax.text(0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large")
 y = y - 0.1
 ax.text(0.2, y, r"$H_A$:", fontsize="large")
 ax.text(0.42, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
 ax.text(0.55, y, r"$\neq$", fontsize="large")
-ax.text(
-    0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large"
-)
+ax.text(0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large")
 patch = mpl.patches.Rectangle(
     xy=(0.18, y - 0.03),
     width=0.7,
@@ -456,11 +452,48 @@ patch = mpl.patches.Rectangle(
 ax.add_patch(patch)
 
 
-ax.set_title("Compare estimated\nprobabilities", fontsize="large")
-ax.set(xlim=(0, 1), ylim=(0, 1))
+ax.set_title("Compare estimated\nprobabilities", fontsize="medium")
+ax.set(xlim=(0, 1), ylim=(0.18, 1))
 ax.axis("off")
 
-DISPLAY_FIGS = True
+ax = merge_axes(fig, axs, rows=None, cols=3)
+ax.axis("off")
+ax.set_title("Combine p-values\nfor overall test", fontsize="medium")
+
+ax.plot([0, 0.4], [0.9, 0.7], color='black')
+ax.plot([0, 0.4], [0.5, 0.7], color='black')
+ax.set(xlim=(0, 1), ylim=(0.18, 1))
+ax.text(0.42, 0.7, r'$p = ...$', va='center', ha='left')
+
+ax.annotate(
+    "",
+    xy=(0.64, 0.68),
+    xytext=(0.5, 0.41),
+    arrowprops=dict(
+        arrowstyle="simple",
+        facecolor="black",
+    ),
+)
+y = 0.32
+ax.text(0.2, y, r"$H_0$:", fontsize="large")
+ax.text(0.42, y, r"$\hat{B}^{L}$", color=network_palette["Left"], fontsize="large")
+ax.text(0.55, y, r"$=$", fontsize="large")
+ax.text(0.7, y, r"$\hat{B}^{R}$", color=network_palette["Right"], fontsize="large")
+y = y - 0.1
+ax.text(0.2, y, r"$H_A$:", fontsize="large")
+ax.text(0.42, y, r"$\hat{B}^{L}$", color=network_palette["Left"], fontsize="large")
+ax.text(0.55, y, r"$\neq$", fontsize="large")
+ax.text(0.7, y, r"$\hat{B}^{R}$", color=network_palette["Right"], fontsize="large")
+patch = mpl.patches.Rectangle(
+    xy=(0.18, y - 0.03),
+    width=0.7,
+    height=0.21,
+    facecolor="white",
+    edgecolor="lightgrey",
+)
+ax.add_patch(patch)
+
+
 gluefig("sbm_methods_explain", fig)
 
 # ax = axs[0, 2]
@@ -586,7 +619,7 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
 
     # set up plot
     pad = 2
-    width_ratios = [0.5, pad + 0.8, 10, 0.01, 10]
+    width_ratios = [0.5, pad + 0.8, 10, pad, 10]
     set_theme(font_scale=1.25)
     fig, axs = plt.subplots(
         1,
@@ -622,7 +655,7 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
     if null_odds != 1:
         text = r"$c$" + text
     ax.set_title(text, fontsize="xx-large", color=network_palette["Right"])
-    ax.set(yticks=[], yticklabels=[])
+    # ax.set(yticks=[], yticklabels=[])
 
     # handle the colorbars
     # NOTE: did it this way cause the other options weren't playing nice with auto
@@ -638,6 +671,7 @@ def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
         shrink=1,
         ticklocation="left",
     )
+    ax.set_title("Estimated\nprobability")
 
     # plot p-values
     # ax = axs[pvalue_col]
@@ -747,7 +781,7 @@ def plot_pvalues(
     )
     ax.set(ylabel="Source group", xlabel="Target group")
     ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-    ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
+    ax.set_title(r"Probability comparison", fontsize="x-large")
 
     colors = im.get_children()[0].get_facecolors()
     significant = uncorrected_pvalues < hb_thresh
@@ -778,22 +812,24 @@ def plot_pvalues(
         cax=cax,
         fraction=1,
         shrink=1,
-        ticklocation="right",
+        ticklocation="left",
     )
+    cax.set_title(r"$log_{10}$" + "\np-value", pad=20)
 
 
-width_ratios = [10, 0.5]
+width_ratios = [0.5, 3, 10]
 fig, axs = plt.subplots(
     1,
-    len(width_ratios),
-    figsize=(9, 9),
+    3,
+    figsize=(10, 10),
     gridspec_kw=dict(
         width_ratios=width_ratios,
     ),
 )
+axs[1].remove()
 plot_pvalues(
+    axs[2],
     axs[0],
-    axs[1],
     misc["uncorrected_pvalues"],
     misc["probabilities1"],
     misc["probabilities2"],
@@ -1055,7 +1091,7 @@ def plot_significant_probabilities(misc):
     mean_ps = sig_data.groupby("pair")["p"].mean()
     pair_orders = mean_ps.sort_values(ascending=False).index
 
-    fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
     sns.pointplot(
         data=sig_data,
         y="p",
@@ -1091,43 +1127,93 @@ gluefig("significant_p_comparison", fig)
 from svgutils.compose import Figure, Panel, SVG, Text
 from pathlib import Path
 
+# total_width = 1000
+# total_height = 500
+
+# FIG_PATH = Path("bilateral-connectome/results/figs")
+# FIG_PATH = FIG_PATH / FILENAME
+
+# sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
+# sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
+# sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
+
+# sbm_methods_explain = Panel(
+#     sbm_methods_explain_svg,
+#     Text("A)", 5, 20, size=15, weight="bold"),
+# )
+
+# sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
+# sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 2)
+# sbm_uncorrected = Panel(
+#     sbm_uncorrected_svg, Text("B)", 5, 20, size=15, weight="bold")
+# ).move(335, 0)
+
+# sbm_uncorrected_pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
+# sbm_uncorrected_pvalues.scale(1 / sbm_uncorrected_pvalues.height * total_height / 2)
+# sbm_uncorrected_pvalues = Panel(
+#     sbm_uncorrected_pvalues, Text("C)", 5, 0, size=15, weight="bold")
+# ).move(0, 250)
+
+# significant_p_comparison = SVG(FIG_PATH / "significant_p_comparison.svg")
+# significant_p_comparison.scale(1 / significant_p_comparison.height * total_height / 2)
+# significant_p_comparison = Panel(
+#     significant_p_comparison, Text("D)", 5, 0, size=15, weight="bold")
+# ).move(335, 250)
+
+
+# fig = Figure(
+#     750,
+#     450,
+#     sbm_methods_explain,
+#     sbm_uncorrected,
+#     sbm_uncorrected_pvalues,
+#     significant_p_comparison,
+# )
+# fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
+# fig
+
+#%%
 total_width = 1000
-total_height = 500
+total_height = 1500
 
 FIG_PATH = Path("bilateral-connectome/results/figs")
 FIG_PATH = FIG_PATH / FILENAME
 
+fontsize = 35
+
 sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
-sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
+sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 4
 sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
 
 sbm_methods_explain = Panel(
     sbm_methods_explain_svg,
-    Text("A)", 5, 20, size=15, weight="bold"),
+    Text("A)", 5, 20, size=fontsize, weight="bold"),
 )
 
 sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
-sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 2)
+sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 3)
 sbm_uncorrected = Panel(
-    sbm_uncorrected_svg, Text("B)", 5, 20, size=15, weight="bold")
-).move(335, 0)
+    sbm_uncorrected_svg, Text("B)", 5, 20, size=fontsize, weight="bold")
+).move(0, 330)
 
 sbm_uncorrected_pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
-sbm_uncorrected_pvalues.scale(1 / sbm_uncorrected_pvalues.height * total_height / 2)
+sbm_uncorrected_pvalues.scale(1 / sbm_uncorrected_pvalues.height * total_height / 3)
 sbm_uncorrected_pvalues = Panel(
-    sbm_uncorrected_pvalues, Text("C)", 5, 0, size=15, weight="bold")
-).move(0, 250)
+    sbm_uncorrected_pvalues, Text("C)", 5, 0, size=fontsize, weight="bold")
+).move(0, 750)
 
 significant_p_comparison = SVG(FIG_PATH / "significant_p_comparison.svg")
-significant_p_comparison.scale(1 / significant_p_comparison.height * total_height / 2)
+significant_p_comparison.scale(
+    1 / significant_p_comparison.height * total_height / 3
+).scale(0.9)
 significant_p_comparison = Panel(
-    significant_p_comparison, Text("D)", 5, 0, size=15, weight="bold")
-).move(335, 250)
-
+    significant_p_comparison.move(20, 20),
+    Text("D)", 0, 0, size=fontsize, weight="bold"),
+).move(475, 750)
 
 fig = Figure(
-    750,
-    450,
+    810,
+    1170,
     sbm_methods_explain,
     sbm_uncorrected,
     sbm_uncorrected_pvalues,
