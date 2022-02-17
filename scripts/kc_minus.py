@@ -107,3 +107,4 @@ stat, pvalue, misc = stochastic_block_test(
 )
 print(pvalue)
 glue("asbm_pvalue", pvalue)
+glue("asbm_pvalue_formatted", f"{pvalue:.2g}")
