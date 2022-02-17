@@ -1,15 +1,15 @@
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 import seaborn as sns
-
-from .theme import set_theme
-from .utils import shrink_axis
-import networkx as nx
-from graspologic.plot import networkplot, heatmap
-from seaborn.utils import relative_luminance
-from .bound import bound_points
+from graspologic.plot import heatmap, networkplot
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-from .utils import draw_colors, remove_shared_ax
+from seaborn.utils import relative_luminance
+
+from .bound import bound_points
+from .theme import set_theme
+from .utils import draw_colors, remove_shared_ax, shrink_axis
 
 
 def plot_stochastic_block_probabilities(misc, network_palette):
@@ -218,3 +218,58 @@ def heatmap_grouped(Bhat, labels, palette=None, ax=None, pad=0, color_size="5%")
     remove_shared_ax(color_ax)
     draw_colors(color_ax, "y", labels=labels, palette=palette)
     return top_ax
+
+
+def compare_probability_row(
+    source, target, Bhat1, Bhat2, y, cmap=None, palette=None, ax=None
+):
+    x1 = 0.1
+    x2 = 0.25
+    sns.scatterplot(
+        x=[x1, x2],
+        y=[y, y],
+        hue=[source, target],
+        linewidth=1,
+        edgecolor="black",
+        palette=palette,
+        ax=ax,
+        legend=False,
+        s=100,
+    )
+    # ax.arrow(x1, y, x2 - x1, 0, arrowprops=dict(arrowstyle='->'))
+    ax.annotate(
+        "",
+        xy=(x2, y),
+        xytext=(x1, y),
+        arrowprops=dict(
+            arrowstyle="simple",
+            connectionstyle="arc3,rad=-0.7",
+            facecolor="black",
+            shrinkA=5,
+            shrinkB=5,
+            # mutation_scale=,
+        ),
+    )
+
+    x3 = 0.4
+
+    size = 0.1
+    phat = Bhat1[source - 1, target - 1]
+    color = cmap(phat)
+    patch = mpl.patches.Rectangle(
+        (x3, y - size / 4), width=size, height=size / 2, facecolor=color
+    )
+    ax.add_patch(patch)
+
+    text = ax.text(0.645, y, "?", ha="center", va="center")
+    text.set_bbox(dict(facecolor="white", edgecolor="white"))
+
+    x4 = 0.8
+    phat = Bhat2[source - 1, target - 1]
+    color = cmap(phat)
+    patch = mpl.patches.Rectangle(
+        (x4, y - size / 4), width=size, height=size / 2, facecolor=color
+    )
+    ax.add_patch(patch)
+
+    ax.plot([x3, x4], [y, y], linewidth=2.5, linestyle=":", color="grey", zorder=-1)

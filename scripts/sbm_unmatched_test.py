@@ -14,18 +14,30 @@ import datetime
 import time
 from pathlib import Path
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import rotate_labels
-from graspologic.plot import networkplot
+from giskard.plot import merge_axes, rotate_labels
+from graspologic.plot import heatmap, networkplot
+from graspologic.simulations import sbm
+from matplotlib.colors import ListedColormap
 from matplotlib.transforms import Bbox
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, savefig
 from pkg.perturb import remove_edges
-from pkg.plot import bound_points, set_theme
+from pkg.plot import (
+    bound_points,
+    compare_probability_row,
+    heatmap_grouped,
+    networkplot_grouped,
+    set_theme,
+)
+from pkg.plot.utils import make_sequential_colormap
 from pkg.stats import stochastic_block_test
 from seaborn.utils import relative_luminance
 from svgutils.compose import SVG, Figure, Panel, Text
@@ -158,13 +170,6 @@ right_labels = right_nodes[GROUP_KEY].values
 
 #%%
 
-import matplotlib as mpl
-import networkx as nx
-from graspologic.plot import heatmap, networkplot
-from graspologic.simulations import sbm
-from matplotlib.colors import ListedColormap
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-from pkg.plot import bound_points
 
 np.random.seed(888888)
 ns = [5, 6, 7]
@@ -175,126 +180,6 @@ A2 = sbm(ns, B, directed=True, loops=False)
 node_data = pd.DataFrame(index=np.arange(A1.shape[0]))
 node_data["labels"] = labels + 1
 palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
-
-
-def networkplot_grouped(A, node_data, palette=None, ax=None):
-    g = nx.from_numpy_array(A)
-    pos = nx.kamada_kawai_layout(g)
-    node_data["x"] = [pos[node][0] for node in node_data.index]
-    node_data["y"] = [pos[node][1] for node in node_data.index]
-
-    networkplot(
-        A,
-        node_data=node_data,
-        node_hue="labels",
-        x="x",
-        y="y",
-        edge_linewidth=1.0,
-        palette=palette,
-        node_sizes=(20, 200),
-        node_kws=dict(linewidth=1, edgecolor="black"),
-        node_alpha=1.0,
-        edge_kws=dict(color="black"),
-        ax=ax,
-    )
-
-    bound_points(
-        node_data[["x", "y"]].values,
-        point_data=node_data,
-        ax=ax,
-        label="labels",
-        palette=palette,
-    )
-    ax.set(xlabel="", ylabel="")
-    ax.spines[["left", "bottom"]].set_visible(False)
-
-
-def remove_shared_ax(ax):
-    """
-    Remove ax from its sharex and sharey
-    """
-    # Remove ax from the Grouper object
-    shax = ax.get_shared_x_axes()
-    shay = ax.get_shared_y_axes()
-    shax.remove(ax)
-    shay.remove(ax)
-
-    # Set a new ticker with the respective new locator and formatter
-    for axis in [ax.xaxis, ax.yaxis]:
-        ticker = mpl.axis.Ticker()
-        axis.major = ticker
-        axis.minor = ticker
-        # No ticks and no labels
-        loc = mpl.ticker.NullLocator()
-        fmt = mpl.ticker.NullFormatter()
-        axis.set_major_locator(loc)
-        axis.set_major_formatter(fmt)
-        axis.set_minor_locator(loc)
-        axis.set_minor_formatter(fmt)
-
-
-def draw_colors(ax, ax_type="x", labels=None, palette="tab10"):
-    r"""
-    Draw colormap onto the axis to separate the data
-    Parameters
-    ----------
-    ax : matplotlib axes object
-        Axes in which to draw the colormap
-    ax_type : char, optional
-        Setting either the x or y axis, by default "x"
-    meta : pd.DataFrame, pd.Series, list of pd.Series or np.array, optional
-        Metadata of the matrix such as class, cell type, etc., by default None
-    divider : AxesLocator, optional
-        Divider used to add new axes to the plot
-    color : str, list of str, or array_like, optional
-        Attribute in meta by which to draw colorbars, by default None
-    palette : str or dict, optional
-        Colormap of the colorbar, by default "tab10"
-    Returns
-    -------
-    ax : matplotlib axes object
-        Axes in which to draw the color map
-    """
-
-    uni_classes = np.unique(labels)
-    # Create the color dictionary
-    color_dict = palette
-
-    # Make the colormap
-    class_map = dict(zip(uni_classes, range(len(uni_classes))))
-    color_sorted = np.vectorize(color_dict.get)(uni_classes)
-    color_sorted = np.array(color_sorted).T
-    lc = ListedColormap(color_sorted)
-    class_indicator = np.vectorize(class_map.get)(labels)
-
-    if ax_type == "x":
-        class_indicator = class_indicator.reshape(1, len(labels))
-    elif ax_type == "y":
-        class_indicator = class_indicator.reshape(len(labels), 1)
-    sns.heatmap(
-        class_indicator,
-        cmap=lc,
-        cbar=False,
-        yticklabels=False,
-        xticklabels=False,
-        ax=ax,
-        square=False,
-    )
-    return ax
-
-
-def heatmap_grouped(Bhat, palette=None, ax=None, pad=0, color_size="5%"):
-
-    heatmap(Bhat, ax=ax, cmap="Blues", vmin=0, vmax=1, center=None, cbar=False)
-    divider = make_axes_locatable(ax)
-    top_ax = divider.append_axes("top", size=color_size, pad=pad, sharex=ax)
-    remove_shared_ax(top_ax)
-    draw_colors(top_ax, "x", labels=[1, 2, 3], palette=palette)
-    color_ax = divider.append_axes("left", size=color_size, pad=pad, sharex=ax)
-    remove_shared_ax(color_ax)
-    draw_colors(color_ax, "y", labels=[1, 2, 3], palette=palette)
-    return top_ax
-
 
 fig, axs = plt.subplots(2, 4, figsize=(16, 6))
 ax = axs[0, 0]
@@ -323,99 +208,31 @@ ax.set_ylabel(
 ax = axs[0, 1]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
-top_ax = heatmap_grouped(Bhat1, palette=palette, ax=ax)
+top_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title("Fit stochastic\nblock models", fontsize="medium")
 
 ax = axs[1, 1]
 _, _, misc = stochastic_block_test(A2, A2, node_data["labels"], node_data["labels"])
 Bhat2 = misc["probabilities1"].values
-heatmap_grouped(Bhat2, palette=palette, ax=ax)
+heatmap_grouped(Bhat2, [1, 2, 3], palette=palette, ax=ax)
 
-fig.set_facecolor("w")
 
-from giskard.plot import merge_axes
-
-vmin = 0
-vmax = 1
-
-cmap = mpl.cm.get_cmap("Blues")
-normlize = mpl.colors.Normalize(vmin, vmax)
-cmin, cmax = normlize([vmin, vmax])
-cc = np.linspace(cmin, cmax, 256)
-cmap = mpl.colors.ListedColormap(cmap(cc))
+cmap = make_sequential_colormap("Blues")
 
 ax = merge_axes(fig, axs, rows=None, cols=2)
-# node_sizes=(20, 200),
-#         node_kws=dict(linewidth=1, edgecolor="black"),
-#         node_alpha=1.0,
-#         edge_kws=dict(color="black"),
-
-
-def compare_probability_row(source, target, y):
-
-    x1 = 0.1
-    x2 = 0.25
-    sns.scatterplot(
-        x=[x1, x2],
-        y=[y, y],
-        hue=[source, target],
-        linewidth=1,
-        edgecolor="black",
-        palette=palette,
-        ax=ax,
-        legend=False,
-        s=100,
-    )
-    # ax.arrow(x1, y, x2 - x1, 0, arrowprops=dict(arrowstyle='->'))
-    ax.annotate(
-        "",
-        xy=(x2, y),
-        xytext=(x1, y),
-        arrowprops=dict(
-            arrowstyle="simple",
-            connectionstyle="arc3,rad=-0.7",
-            facecolor="black",
-            shrinkA=5,
-            shrinkB=5,
-            # mutation_scale=,
-        ),
-    )
-
-    x3 = 0.4
-
-    size = 0.1
-    phat = Bhat1[source - 1, target - 1]
-    color = cmap(phat)
-    patch = mpl.patches.Rectangle(
-        (x3, y - size / 4), width=size, height=size / 2, facecolor=color
-    )
-    ax.add_patch(patch)
-
-    text = ax.text(0.645, y, "?", ha="center", va="center")
-    text.set_bbox(dict(facecolor="white", edgecolor="white"))
-
-    x4 = 0.8
-    phat = Bhat2[source - 1, target - 1]
-    color = cmap(phat)
-    patch = mpl.patches.Rectangle(
-        (x4, y - size / 4), width=size, height=size / 2, facecolor=color
-    )
-    ax.add_patch(patch)
-
-    ax.plot([x3, x4], [y, y], linewidth=2.5, linestyle=":", color="grey", zorder=-1)
-
+ax.set(xlim=(0, 1), ylim=(0.18, 1))
 
 ax.text(0.4, 0.93, r"$\hat{B}^{(L)}$", color=network_palette["Left"])
 ax.text(0.8, 0.93, r"$\hat{B}^{(R)}$", color=network_palette["Right"])
-compare_probability_row(1, 1, 0.9)
-compare_probability_row(1, 2, 0.85)
-compare_probability_row(1, 3, 0.8)
-compare_probability_row(2, 1, 0.75)
-compare_probability_row(2, 2, 0.7)
-compare_probability_row(2, 3, 0.65)
-compare_probability_row(3, 1, 0.6)
-compare_probability_row(3, 2, 0.55)
-compare_probability_row(3, 3, 0.5)
+compare_probability_row(1, 1, Bhat1, Bhat2, 0.9, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(1, 2, Bhat1, Bhat2, 0.85, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(1, 3, Bhat1, Bhat2, 0.8, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(2, 1, Bhat1, Bhat2, 0.75, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(2, 2, Bhat1, Bhat2, 0.7, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(2, 3, Bhat1, Bhat2, 0.65, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(3, 1, Bhat1, Bhat2, 0.6, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(3, 2, Bhat1, Bhat2, 0.55, cmap=cmap, palette=palette, ax=ax)
+compare_probability_row(3, 3, Bhat1, Bhat2, 0.5, cmap=cmap, palette=palette, ax=ax)
 
 
 ax.annotate(
@@ -427,28 +244,118 @@ ax.annotate(
         facecolor="black",
     ),
 )
-y = 0.32
-ax.text(0.2, y, r"$H_0$:", fontsize="large")
-ax.text(0.42, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
-ax.text(0.55, y, r"$=$", fontsize="large")
-ax.text(0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large")
+
+
+def get_text_points(text, transformer, renderer):
+    bbox = text.get_window_extent(renderer=renderer)
+    bbox_points = bbox.get_points()
+    out_points = transformer.transform(bbox_points)
+    return out_points
+
+
+def get_text_width(text, transformer, renderer):
+    points = get_text_points(text, transformer, renderer)
+    width = points[1][0] - points[0][0]
+    return width
+
+
+def multicolor_text(x, y, texts, colors, ax=None, space_scale=1.0, **kwargs):
+    fig = ax.get_figure()
+    renderer = fig.canvas.get_renderer()
+    transformer = ax.transData.inverted()
+
+    # make this dummy text to get proper space width, then delete
+    text = ax.text(0.5, 0.5, " ")
+    space_width = get_text_width(text, transformer, renderer)
+    space_width *= space_scale
+    text.remove()
+
+    # TODO make the spacing "smart"
+    text_objs = []
+    for text, color in zip(texts, colors):
+        text_obj = ax.text(x, y, text, color=color, **kwargs)
+        text_width = get_text_width(text_obj, transformer, renderer)
+        x += text_width
+        x += space_width
+        text_objs.append(text_obj)
+
+    return text_objs
+
+
+def get_texts_points(texts, ax=None):
+    fig = ax.get_figure()
+    renderer = fig.canvas.get_renderer()
+    transformer = ax.transData.inverted()
+
+    x_maxs = []
+    x_mins = []
+    y_maxs = []
+    y_mins = []
+    for text in texts:
+        points = get_text_points(text, transformer, renderer)
+        x_maxs.append(points[1][0])
+        x_mins.append(points[0][0])
+        y_maxs.append(points[1][1])
+        y_mins.append(points[0][1])
+
+    x_max = max(x_maxs)
+    x_min = min(x_mins)
+    y_max = max(y_maxs)
+    y_min = min(y_mins)
+    return x_min, x_max, y_min, y_max
+
+
+def bound_texts(texts, ax=None, xpad=0, ypad=0, **kwargs):
+    x_min, x_max, y_min, y_max = get_texts_points(texts, ax=ax)
+    xy = (x_min - xpad, y_min - ypad)
+    width = x_max - x_min + 2 * xpad
+    height = y_max - y_min + 2 * ypad
+    patch = mpl.patches.Rectangle(xy=xy, width=width, height=height, **kwargs)
+    ax.add_patch(patch)
+
+
+y = 0.34
+texts = multicolor_text(
+    0.2,
+    y,
+    [r"$H_0$:", r"$\hat{B}^{L}_{ij}$", r"$=$", r"$\hat{B}^{R}_{ij}$"],
+    ["black", network_palette["Left"], "black", network_palette["Right"]],
+    fontsize="large",
+    ax=ax,
+)
+
 y = y - 0.1
-ax.text(0.2, y, r"$H_A$:", fontsize="large")
-ax.text(0.42, y, r"$\hat{B}^{L}_{ij}$", color=network_palette["Left"], fontsize="large")
-ax.text(0.55, y, r"$\neq$", fontsize="large")
-ax.text(0.7, y, r"$\hat{B}^{R}_{ij}$", color=network_palette["Right"], fontsize="large")
-patch = mpl.patches.Rectangle(
-    xy=(0.18, y - 0.03),
-    width=0.7,
-    height=0.21,
+texts += multicolor_text(
+    0.2,
+    y,
+    [r"$H_A$:", r"$\hat{B}^{L}_{ij}$", r"$\neq$", r"$\hat{B}^{R}_{ij}$"],
+    ["black", network_palette["Left"], "black", network_palette["Right"]],
+    fontsize="large",
+    ax=ax,
+)
+
+bound_texts(
+    texts,
+    ax=ax,
+    xpad=0.03,
+    ypad=0.01,
     facecolor="white",
     edgecolor="lightgrey",
 )
-ax.add_patch(patch)
+
+
+# patch = mpl.patches.Rectangle(
+#     xy=(0.18, y - 0.03),
+#     width=0.7,
+#     height=0.21,
+#     facecolor="white",
+#     edgecolor="lightgrey",
+# )
+# ax.add_patch(patch)
 
 
 ax.set_title("Compare estimated\nprobabilities", fontsize="medium")
-ax.set(xlim=(0, 1), ylim=(0.18, 1))
+
 ax.axis("off")
 
 ax = merge_axes(fig, axs, rows=None, cols=3)
@@ -469,57 +376,38 @@ ax.annotate(
         facecolor="black",
     ),
 )
-y = 0.32
-ax.text(0.2, y, r"$H_0$:", fontsize="large")
-ax.text(0.42, y, r"$\hat{B}^{L}$", color=network_palette["Left"], fontsize="large")
-ax.text(0.55, y, r"$=$", fontsize="large")
-ax.text(0.7, y, r"$\hat{B}^{R}$", color=network_palette["Right"], fontsize="large")
+
+y = 0.34
+texts = multicolor_text(
+    0.2,
+    y,
+    [r"$H_0$:", r"$\hat{B}^{L}$", r"$=$", r"$\hat{B}^{R}$"],
+    ["black", network_palette["Left"], "black", network_palette["Right"]],
+    fontsize="large",
+    ax=ax,
+)
+
 y = y - 0.1
-ax.text(0.2, y, r"$H_A$:", fontsize="large")
-ax.text(0.42, y, r"$\hat{B}^{L}$", color=network_palette["Left"], fontsize="large")
-ax.text(0.55, y, r"$\neq$", fontsize="large")
-ax.text(0.7, y, r"$\hat{B}^{R}$", color=network_palette["Right"], fontsize="large")
-patch = mpl.patches.Rectangle(
-    xy=(0.18, y - 0.03),
-    width=0.7,
-    height=0.21,
+texts += multicolor_text(
+    0.2,
+    y,
+    [r"$H_A$:", r"$\hat{B}^{L}$", r"$\neq$", r"$\hat{B}^{R}$"],
+    ["black", network_palette["Left"], "black", network_palette["Right"]],
+    fontsize="large",
+    ax=ax,
+)
+
+bound_texts(
+    texts,
+    ax=ax,
+    xpad=0.03,
+    ypad=0.01,
     facecolor="white",
     edgecolor="lightgrey",
 )
-ax.add_patch(patch)
 
-
+fig.set_facecolor("w")
 gluefig("sbm_methods_explain", fig)
-
-# ax = axs[0, 2]
-# ax.axis('off')
-
-# ax = axs[1, 2]
-# ax.axis("off")
-
-# ax = axs[1, 0]
-# networkplot(
-#     A2,
-#     node_data=node_data,
-#     node_hue="labels",
-#     x="x",
-#     y="y",
-#     edge_linewidth=1.0,
-#     palette=palette,
-#     node_sizes=(20, 200),
-#     node_kws=dict(linewidth=1, edgecolor="black"),
-#     node_alpha=1.0,
-#     edge_kws=dict(color="black"),
-#     ax=ax,
-# )
-
-# bound_points(
-#     node_data[["x", "y"]].values,
-#     point_data=node_data,
-#     ax=ax,
-#     label="labels",
-#     palette=palette,
-# )
 
 
 #%%
@@ -745,7 +633,7 @@ gluefig("sbm_uncorrected", fig)
 
 # need to save this for later for setting colorbar the same on other plot
 pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
-glue('pvalue_vmin', pvalue_vmin)
+glue("pvalue_vmin", pvalue_vmin)
 
 #%%
 

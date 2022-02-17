@@ -104,7 +104,9 @@ def stochastic_block_test(
 
     if density_adjustment:
         adjustment_factor = compute_density_adjustment(A1, A2)
-
+    else:
+        adjustment_factor = 1.0
+        
     for i in index:
         for j in index:
             curr_stat, curr_pvalue = binom_2samp(

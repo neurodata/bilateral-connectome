@@ -6,10 +6,11 @@ from .manual_colors import (
 )
 from .theme import set_theme
 from .bound import bound_points, fit_bounding_contour, draw_bounding_contour
-from .utils import shrink_axis, draw_colors, remove_shared_ax
+from .utils import shrink_axis, draw_colors, remove_shared_ax, make_sequential_colormap
 from .sbm import (
     plot_stochastic_block_probabilities,
     plot_pvalues,
     heatmap_grouped,
     networkplot_grouped,
+    compare_probability_row,
 )

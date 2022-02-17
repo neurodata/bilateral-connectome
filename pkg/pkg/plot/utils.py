@@ -90,3 +90,13 @@ def remove_shared_ax(ax):
         axis.set_major_formatter(fmt)
         axis.set_minor_locator(loc)
         axis.set_minor_formatter(fmt)
+
+
+def make_sequential_colormap(cmap="Blues", vmin=0, vmax=1):
+    # REF: basically taken from seaborn somewhere
+    cmap = mpl.cm.get_cmap(cmap)
+    normlize = mpl.colors.Normalize(vmin, vmax)
+    cmin, cmax = normlize([vmin, vmax])
+    cc = np.linspace(cmin, cmax, 256)
+    cmap = mpl.colors.ListedColormap(cmap(cc))
+    return cmap
