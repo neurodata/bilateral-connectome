@@ -2,7 +2,7 @@ from scipy.stats import nchypergeom_fisher
 import numpy as np
 
 
-def fisher_exact_nonunity(table, alternative="two-sided", null_odds=1):
+def fisher_exact_nonunity(table, alternative="two-sided", null_ratio=1):
     """Perform a Fisher exact test on a 2x2 contingency table.
     Parameters
     ----------
@@ -15,8 +15,8 @@ def fisher_exact_nonunity(table, alternative="two-sided", null_odds=1):
         * 'less': one-sided
         * 'greater': one-sided
         See the Notes for more details.
-    null_odds : float, optional (default=1)
-        A (possibly non-unity) null odds ratio.
+    null_ratio : float, optional (default=1)
+        A (possibly non-unity) null probability ratio.
     Returns
     -------
     oddsratio : float
@@ -148,7 +148,7 @@ def fisher_exact_nonunity(table, alternative="two-sided", null_odds=1):
     n2 = c[1, 0] + c[1, 1]
     n = c[0, 0] + c[1, 0]
 
-    rv = dist(n1 + n2, n1, n, null_odds)
+    rv = dist(n1 + n2, n1, n, null_ratio)
 
     def binary_search(n, n1, n2, side):
         """Binary search for where to begin halves in two-sided test."""
@@ -196,27 +196,27 @@ def fisher_exact_nonunity(table, alternative="two-sided", null_odds=1):
         pvalue = rv.sf(c[0, 0] - 1)
     elif alternative == "two-sided":
         mode = int((n + 1) * (n1 + 1) / (n1 + n2 + 2))
-        pexact = dist.pmf(c[0, 0], n1 + n2, n1, n, null_odds)
-        pmode = dist.pmf(mode, n1 + n2, n1, n, null_odds)
+        pexact = dist.pmf(c[0, 0], n1 + n2, n1, n, null_ratio)
+        pmode = dist.pmf(mode, n1 + n2, n1, n, null_ratio)
 
         epsilon = 1 - 1e-4
         if np.abs(pexact - pmode) / np.maximum(pexact, pmode) <= 1 - epsilon:
             return oddsratio, 1.0
 
         elif c[0, 0] < mode:
-            plower = dist.cdf(c[0, 0], n1 + n2, n1, n, null_odds)
-            if dist.pmf(n, n1 + n2, n1, n, null_odds) > pexact / epsilon:
+            plower = dist.cdf(c[0, 0], n1 + n2, n1, n, null_ratio)
+            if dist.pmf(n, n1 + n2, n1, n, null_ratio) > pexact / epsilon:
                 return oddsratio, plower
 
             guess = binary_search(n, n1, n2, "upper")
-            pvalue = plower + dist.sf(guess - 1, n1 + n2, n1, n, null_odds)
+            pvalue = plower + dist.sf(guess - 1, n1 + n2, n1, n, null_ratio)
         else:
-            pupper = dist.sf(c[0, 0] - 1, n1 + n2, n1, n, null_odds)
-            if dist.pmf(0, n1 + n2, n1, n, null_odds) > pexact / epsilon:
+            pupper = dist.sf(c[0, 0] - 1, n1 + n2, n1, n, null_ratio)
+            if dist.pmf(0, n1 + n2, n1, n, null_ratio) > pexact / epsilon:
                 return oddsratio, pupper
 
             guess = binary_search(n, n1, n2, "lower")
-            pvalue = pupper + dist.cdf(guess, n1 + n2, n1, n, null_odds)
+            pvalue = pupper + dist.cdf(guess, n1 + n2, n1, n, null_ratio)
     else:
         msg = "`alternative` should be one of {'two-sided', 'less', 'greater'}"
         raise ValueError(msg)

@@ -10,30 +10,25 @@
 # groups for each neuron, which we do not explore here.
 
 #%%
-from graspologic.plot import networkplot
-from pkg.io.io import FIG_PATH
-from pkg.plot.bound import bound_points
-from pkg.utils import set_warnings
-
-set_warnings()
-
 import datetime
 import time
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from giskard.plot import rotate_labels
+from graspologic.plot import networkplot
 from matplotlib.transforms import Bbox
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import savefig
+from pkg.io import FIG_PATH, savefig
 from pkg.perturb import remove_edges
-from pkg.plot import set_theme
+from pkg.plot import bound_points, set_theme
 from pkg.stats import stochastic_block_test
 from seaborn.utils import relative_luminance
-
+from svgutils.compose import SVG, Figure, Panel, Text
 
 DISPLAY_FIGS = False
 
@@ -163,13 +158,13 @@ right_labels = right_nodes[GROUP_KEY].values
 
 #%%
 
-from graspologic.simulations import sbm
-from graspologic.plot import networkplot, heatmap, adjplot
-import networkx as nx
-from pkg.plot import bound_points
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib as mpl
+import networkx as nx
+from graspologic.plot import heatmap, networkplot
+from graspologic.simulations import sbm
 from matplotlib.colors import ListedColormap
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from pkg.plot import bound_points
 
 np.random.seed(888888)
 ns = [5, 6, 7]
@@ -460,10 +455,10 @@ ax = merge_axes(fig, axs, rows=None, cols=3)
 ax.axis("off")
 ax.set_title("Combine p-values\nfor overall test", fontsize="medium")
 
-ax.plot([0, 0.4], [0.9, 0.7], color='black')
-ax.plot([0, 0.4], [0.5, 0.7], color='black')
+ax.plot([0, 0.4], [0.9, 0.7], color="black")
+ax.plot([0, 0.4], [0.5, 0.7], color="black")
 ax.set(xlim=(0, 1), ylim=(0.18, 1))
-ax.text(0.42, 0.7, r'$p = ...$', va='center', ha='left')
+ax.text(0.42, 0.7, r"$p = ...$", va="center", ha="left")
 
 ax.annotate(
     "",
@@ -750,6 +745,7 @@ gluefig("sbm_uncorrected", fig)
 
 # need to save this for later for setting colorbar the same on other plot
 pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
+glue('pvalue_vmin', pvalue_vmin)
 
 #%%
 
@@ -1124,59 +1120,21 @@ gluefig("significant_p_comparison", fig)
 
 
 #%%
-from svgutils.compose import Figure, Panel, SVG, Text
-from pathlib import Path
 
-# total_width = 1000
-# total_height = 500
-
-# FIG_PATH = Path("bilateral-connectome/results/figs")
-# FIG_PATH = FIG_PATH / FILENAME
-
-# sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
-# sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
-# sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
-
-# sbm_methods_explain = Panel(
-#     sbm_methods_explain_svg,
-#     Text("A)", 5, 20, size=15, weight="bold"),
-# )
-
-# sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
-# sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 2)
-# sbm_uncorrected = Panel(
-#     sbm_uncorrected_svg, Text("B)", 5, 20, size=15, weight="bold")
-# ).move(335, 0)
-
-# sbm_uncorrected_pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
-# sbm_uncorrected_pvalues.scale(1 / sbm_uncorrected_pvalues.height * total_height / 2)
-# sbm_uncorrected_pvalues = Panel(
-#     sbm_uncorrected_pvalues, Text("C)", 5, 0, size=15, weight="bold")
-# ).move(0, 250)
-
-# significant_p_comparison = SVG(FIG_PATH / "significant_p_comparison.svg")
-# significant_p_comparison.scale(1 / significant_p_comparison.height * total_height / 2)
-# significant_p_comparison = Panel(
-#     significant_p_comparison, Text("D)", 5, 0, size=15, weight="bold")
-# ).move(335, 250)
-
-
-# fig = Figure(
-#     750,
-#     450,
-#     sbm_methods_explain,
-#     sbm_uncorrected,
-#     sbm_uncorrected_pvalues,
-#     significant_p_comparison,
-# )
-# fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
-# fig
+#%% [markdown]
+# ```{glue:figure} fig:sbm_unmatched_test-significant_p_comparison
+# :name: "fig:sbm_unmatched_test-significant_p_comparison"
+#
+# Comparison of estimated group-to-group connection probabilities for the group-pairs
+# which were significantly different in
+# {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>`.
+# In each case, the connection probability on the right hemisphere is higher.
+# ```
 
 #%%
 total_width = 1000
 total_height = 1500
 
-FIG_PATH = Path("bilateral-connectome/results/figs")
 FIG_PATH = FIG_PATH / FILENAME
 
 fontsize = 35
@@ -1221,343 +1179,6 @@ fig = Figure(
 )
 fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
 fig
-
-#%% [markdown]
-# ```{glue:figure} fig:sbm_unmatched_test-significant_p_comparison
-# :name: "fig:sbm_unmatched_test-significant_p_comparison"
-#
-# Comparison of estimated group-to-group connection probabilities for the group-pairs
-# which were significantly different in
-# {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>`.
-# In each case, the connection probability on the right hemisphere is higher.
-# ```
-
-
-#%% [markdown]
-# These observations are consistent with the idea that perhaps the probabilities
-# on the right are a scaled up version of those on the right, for some global scaling.
-# We can frame this question as a new null hypothesis:
-#
-# ````{admonition} Math
-# With variables defined as in Equation {eq}`sbm_unmatched_null`, we can write our new
-# null hypothesis as:
-# ```{math}
-# :label: sbm_unmatched_null_adjusted
-# H_0: B^{(L)} = c B^{(R)}, \quad H_A: B^{(L)} \neq c B^{(R)}
-# ```
-# where $c$ is the ratio of the densities, $c = \frac{p^{(L)}}{p^{(R)}}$.
-# ````
-
-#%% [markdown]
-# ### Correcting by subsampling edges for one network
-# One naive (though quite intuitive) approach to adjust our test for a difference in
-# density is to simply make the densities of the two networks the same and then rerun
-# our
-# test. To do so, we calculated the number of edge removals (from the right hemisphere)
-# required to set the network densities roughly the same. We then randomly removed
-# that many edges from the right hemisphere network and
-# then re-ran the SBM test procedure above. We repeated this procedure
-# {glue:text}`sbm_unmatched_test-n_resamples` times, resulting in a p-value for each
-# subsampling of the right network.
-#
-# The distribution of p-values from this process is
-# shown in {numref}`Figure {number} <fig:sbm_unmatched_test-pvalues_corrected>`. Whereas
-# the p-value for the original null hypothesis was
-# {glue:text}`sbm_unmatched_test-uncorrected_pvalue:0.2e`, we see now that the p-values
-# from our subsampled, density-adjusted test are around 0.8, indicating insufficient
-# evidence to reject our density-adjusted null hypothesis of bilateral symmetry
-# (Equation {eq}`sbm_unmatched_null_adjusted`).
-#%%
-n_edges_left = np.count_nonzero(left_adj)
-n_edges_right = np.count_nonzero(right_adj)
-n_left = left_adj.shape[0]
-n_right = right_adj.shape[0]
-density_left = n_edges_left / (n_left ** 2)
-density_right = n_edges_right / (n_right ** 2)
-
-n_remove = int((density_right - density_left) * (n_right ** 2))
-
-glue("density_left", density_left)
-glue("density_right", density_right)
-glue("n_remove", n_remove)
-
-#%%
-rows = []
-n_resamples = 100
-glue("n_resamples", n_resamples)
-for i in range(n_resamples):
-    subsampled_right_adj = remove_edges(
-        right_adj, effect_size=n_remove, random_seed=rng
-    )
-    for combine_method in ["tippett"]:  # ["fisher", "min"]:
-        # TODO it is kinda silly to run this test twice but oh well...
-        stat, pvalue, misc = stochastic_block_test(
-            left_adj,
-            subsampled_right_adj,
-            labels1=left_labels,
-            labels2=right_labels,
-            method="fisher",
-            combine_method=combine_method,
-        )
-        rows.append(
-            {
-                "stat": stat,
-                "pvalue": pvalue,
-                "misc": misc,
-                "resample": i,
-                "combine_method": combine_method,
-            }
-        )
-
-resample_results = pd.DataFrame(rows)
-
-#%%
-
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(
-    data=resample_results[resample_results["combine_method"] == "tippett"],
-    x="pvalue",
-    ax=ax,
-    color=neutral_color,
-    bins=40,
-    kde=True,
-    # kde_kws=dict(clip=[0, 1]),
-    log_scale=True,
-)
-ax.set(xlabel="p-value", ylabel="", yticks=[])
-ax.spines["left"].set_visible(False)
-ax.axvline(0.05, linestyle=":", color="black")
-mean_resample_pvalue = np.mean(resample_results["pvalue"])
-median_resample_pvalue = np.median(resample_results["pvalue"])
-
-gluefig("pvalues_corrected", fig)
-
-#%% [markdown]
-# ```{glue:figure} fig:sbm_unmatched_test-pvalues_corrected
-# :name: "fig:sbm_unmatched_test-pvalues_corrected"
-#
-# Histogram of p-values after a correction for network density. For the observed
-# networks
-# the left hemisphere has a density of
-# {glue:text}`sbm_unmatched_test-density_left:0.4f`, and the right
-# hemisphere has
-# a density of
-# {glue:text}`sbm_unmatched_test-density_right:0.4f`. Here, we randomly removed exactly
-# {glue:text}`sbm_unmatched_test-n_remove`
-# edges from the right hemisphere network, which makes the density of the right network
-# match that of the left hemisphere network. Then, we re-ran the stochastic block model
-# testing
-# procedure from {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_uncorrected>`.
-# This entire process
-# was repeated {glue:text}`sbm_unmatched_test-n_resamples` times. The histogram above
-# shows the
-# distribution
-# of p-values for the overall test. Note that the p-values are no longer small,
-# indicating
-# that with this density correction, we now failed to reject our null hypothesis of
-# bilateral symmetry under the stochastic block model.
-# ```
-
-#%%
-
-colors = sns.color_palette("Set2")
-method_palette = {"fisher": colors[2], "min": colors[3]}
-
-fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-# ax = axs[0]
-sns.kdeplot(
-    data=resample_results,
-    x="pvalue",
-    ax=ax,
-    # color=neutral_color,
-    hue="combine_method",
-    clip=(0, 1),
-    palette=method_palette,
-    fill=True,
-    log_scale=False,
-    linewidth=1,
-)
-# sns.histplot(
-#     data=resample_results,
-#     x="pvalue",
-#     ax=ax,
-#     # color=neutral_color,
-#     hue="combine_method",
-#     bins=100,
-#     stat="density",
-#     element="step",
-#     palette=method_palette,
-# )
-ax.set(xlabel="p-value", ylabel="", yticks=[])
-ax.spines["left"].set_visible(False)
-ax.axvline(0.05, color="dimgrey", linestyle=":")
-ax.text(
-    0.07, ax.get_ylim()[1], r"$\alpha = 0.05$", ha="left", va="top", color="dimgrey"
-)
-
-
-legend = ax.get_legend()
-handles = legend.legendHandles
-# labels = legend.get_texts()
-# labels = [label.get_text() for label in labels]
-new_labels = ["Fisher", "Bonferroni"]
-ax.get_legend().remove()
-ax.legend(handles=handles, labels=new_labels, title="Method")
-
-medians = resample_results.groupby("combine_method")["pvalue"].median()
-
-ax.axvline(medians.loc["fisher"], color=method_palette["fisher"], ymax=0.5)
-ax.axvline(medians.loc["min"], color=method_palette["min"], ymax=0.5)
-
-fisher_median = np.round(medians.loc["fisher"], 2)
-min_median = np.round(medians.loc["min"], 3)
-
-xticks = [0.5, 1]
-
-xticks.append(fisher_median)
-xticks.append(min_median)
-
-from matplotlib import ticker
-
-ax.xaxis.set_major_formatter(ticker.StrMethodFormatter("{x}"))
-ax.set_xticks(xticks)
-
-plt.draw()
-ticklabels = ax.get_xticklabels()
-
-for tick in ticklabels:
-    text = tick.get_text()
-    if text == str(min_median):
-        tick.set_color(method_palette["min"])
-    elif text == str(fisher_median):
-        tick.set_color(method_palette["fisher"])
-
-ticklabels = ax.get_xticklabels()
-
-ticks = ax.xaxis.get_major_ticks()
-# ticks[3].tick1line.set_markersize(10)
-
-fig.set_facecolor("w")
-# ax = axs[1]
-# sns.histplot(
-#     data=resample_results[resample_results["combine_method"] == "min"],
-#     x="pvalue",
-#     ax=ax,
-#     color=neutral_color,
-# )
-# ax.set(xlabel="p-value", ylabel="", yticks=[])
-# ax.spines["left"].set_visible(False)
-
-# mean_resample_pvalue = np.mean(resample_results["pvalue"])
-# median_resample_pvalue = np.median(resample_results["pvalue"])
-
-gluefig("pvalues_corrected_both", fig)
-
-# %%
-
-#%% [markdown]
-# ### An analytic approach to correcting for differences in density
-# Instead of randomly resetting the density of the right hemisphere network, we can
-# actually modify the hypothesis we are testing for each element of the $\hat{B}$
-# matrices to include this adjustment by some constant scale, $c$.
-#
-# ```{admonition} Math
-# Fisher's exact test (used
-# above to compare each element of the $\hat{B}$ matrices) tests the null hypotheses:
-#
-# $$H_0: B_{kl}^{(L)} = B_{kl}^{(R)}, \quad H_A: B_{kl}^{(L)} \neq B_{kl}^{(R)}$$
-#
-# for each $(k, l)$ pair, where $k$ and $l$ are the indices of the source and target
-# groups, respectively.
-#
-# Instead, we can use a test of:
-#
-# $$H_0: B_{kl}^{(L)} = c B_{kl}^{(R)}, \quad H_A: B_{kl}^{(L)} \neq c B_{kl}^{(R)}$$
-#
-# In our case, $c$ is a constant that we fit to the entire right hemisphere network to
-# set its density equal to the left, $c = \frac{p^{(L)}}{p_{(R)}}$
-#
-# A test for the adjusted null hypothesis above is given by using
-# [Fisher's noncentral hypergeometric distribution
-# ](https://en.wikipedia.org/wiki/Fisher%27s_noncentral_hypergeometric_distribution)
-# and applying a procedure much like that of the traditional Fisher's exact test.
-# ```
-#
-# More information about this test can be found in [](nhypergeom_sims).
-#%%
-null_odds = density_left / density_right
-stat, pvalue, misc = stochastic_block_test(
-    left_adj,
-    right_adj,
-    labels1=left_labels,
-    labels2=right_labels,
-    method="fisher",
-    null_odds=null_odds,
-    combine_method="tippett",
-)
-glue("corrected_pvalue", pvalue)
-print(pvalue)
-print(f"{pvalue:.2g}")
-
-# min_stat, min_pvalue, min_misc = stochastic_block_test(
-#     left_adj,
-#     right_adj,
-#     labels1=left_labels,
-#     labels2=right_labels,
-#     method="fisher",
-#     combine_method="min",
-#     null_odds=null_odds,
-# )
-# glue("corrected_pvalue_min", min_pvalue)
-# print(min_pvalue)
-
-#%%
-fig, axs = plot_stochastic_block_test(misc, pvalue_vmin=pvalue_vmin)
-gluefig("sbm_corrected", fig)
-
-#%% [markdown]
-# {numref}`Figure {number} <fig:sbm_unmatched_test-sbm_corrected>` shows the results
-# of running the analytic version of the density-adjusted test based on Fisher's
-# noncentral hypergeometric distribution. Note that now only two group-to-group
-# probability comparisons are significant after Bonferroni-Holm correction, and the
-# overall p-value for this test of Equation {eq}`sbm_unmatched_null_adjusted` is
-# {glue:text}`sbm_unmatched_test-corrected_pvalue:0.2f`.
-
-#%% [markdown]
-# ```{glue:figure} fig:sbm_unmatched_test-sbm_corrected
-# :name: "fig:sbm_unmatched_test-sbm_corrected"
-
-# Comparison of stochastic block model fits for the left and right hemispheres after
-# correcting for a difference in hemisphere density.
-# **A)** The estimated group-to-group connection probabilities for the left
-# and right hemispheres, after the right hemisphere probabilities were scaled by a
-# density-adjusting constant, $c$. Any estimated
-# probabilities which are zero (i.e. no edge was present between a given pair of
-# communities) is indicated explicitly with a "0" in that cell of the matrix.
-# **B)** The p-values for each hypothesis test between individual elements of
-# the block probability matrices. In other words, each cell represents a test for
-# whether a given group-to-group connection probability is the same on the left and the
-# right sides. "X" denotes a significant p-value after Bonferroni-Holm correction,
-# with $\alpha=0.05$. "B" indicates that a test was not run since the estimated
-# probability
-# was zero in that cell on both the left and right. "L" indicates this was the case on
-# the left only, and "R" that it was the case on the right only. These individual
-# p-values were combined using Fisher's method, resulting in an overall p-value (for the
-# null hypothesis that the two group connection probability matrices are the same after
-# adjustment by a density-normalizing constant, $c$) of
-# {glue:text}`sbm_unmatched_test-corrected_pvalue:0.2f`.
-# ```
-
-#%% [markdown]
-# Taken together, these results suggest that for the unmatched networks, and using the
-# known cell type labels, we reject the null hypothesis of bilateral symmetry under the
-# SBM (Equation {eq}`sbm_unmatched_null`), but fail to reject the null hypothesis of
-# bilateral symmetry under the SBM after a density adjustment (Equation
-# {eq}`sbm_unmatched_null_adjusted`). Moreover, they highlight the insights that
-# can be gained
-# by considering multiple definitions of bilateral symmetry.
-
-#%%
 
 
 #%%

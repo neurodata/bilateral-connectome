@@ -6,7 +6,7 @@ from statsmodels.stats.proportion import test_proportions_2indep
 from .fisher_exact_nonunity import fisher_exact_nonunity
 
 
-def binom_2samp(x1, n1, x2, n2, null_odds, method="fisher"):
+def binom_2samp(x1, n1, x2, n2, null_ratio=1.0, method="fisher"):
     """[summary]
 
     Parameters
@@ -19,7 +19,7 @@ def binom_2samp(x1, n1, x2, n2, null_odds, method="fisher"):
         [description]
     n2 : total possible in group 2
         [description]
-    null_odds : [type]
+    null_ratio : [type]
         [description]
     method : str, optional
         [description], by default "fisher"
@@ -39,16 +39,16 @@ def binom_2samp(x1, n1, x2, n2, null_odds, method="fisher"):
     if x1 == 0 or x2 == 0:
         # logging.warn("One or more counts were 0, not running test and returning nan")
         return np.nan, np.nan
-    if null_odds != 1 and method != "fisher":
+    if null_ratio != 1 and method != "fisher":
         raise ValueError("Non-unity null odds only works with Fisher's exact test")
 
     cont_table = np.array([[x1, n1 - x1], [x2, n2 - x2]])
-    if method == "fisher" and null_odds == 1.0:
+    if method == "fisher" and null_ratio == 1.0:
         stat, pvalue = fisher_exact(cont_table, alternative="two-sided")
-    elif method == "boschloo" and null_odds == 1.0:
+    elif method == "boschloo" and null_ratio == 1.0:
         stat, pvalue = boschloo_exact(cont_table, alternative="two-sided", n=16)
-    elif method == "fisher" and null_odds != 1.0:
-        stat, pvalue = fisher_exact_nonunity(cont_table, null_odds=null_odds)
+    elif method == "fisher" and null_ratio != 1.0:
+        stat, pvalue = fisher_exact_nonunity(cont_table, null_ratio=null_ratio)
     elif method == "chi2":
         stat, pvalue, _, _ = chi2_contingency(cont_table)
     elif method == "agresti-caffo":

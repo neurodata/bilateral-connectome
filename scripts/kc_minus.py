@@ -6,17 +6,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import rotate_labels
 from graspologic.plot import networkplot
 from matplotlib.transforms import Bbox
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, savefig
-from pkg.perturb import remove_edges
-from pkg.plot import bound_points, set_theme
+from pkg.plot import plot_pvalues, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from seaborn.utils import relative_luminance
-
 
 DISPLAY_FIGS = True
 
@@ -70,7 +67,17 @@ sub_right_labels = sub_right_nodes[GROUP_KEY]
 
 #%%
 
-from pkg.stats import compute_density_adjustment
+# TODO fix this
+stat, pvalue, misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method="fisher",
+    combine_method="tippett",
+)
+pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
+
 
 stat, pvalue, misc = erdos_renyi_test(sub_left_adj, sub_right_adj)
 print(pvalue)
@@ -87,14 +94,9 @@ stat, pvalue, misc = stochastic_block_test(
 print(pvalue)
 glue("sbm_pvalue", pvalue)
 
-# n_edges_left = np.count_nonzero(sub_left_adj)
-# n_edges_right = np.count_nonzero(sub_right_adj)
-# n_left = sub_left_adj.shape[0]
-# n_right = sub_right_adj.shape[0]
-# density_left = n_edges_left / (n_left ** 2)
-# density_right = n_edges_right / (n_right ** 2)
+fig, ax = plot_pvalues(misc, pvalue_vmin)
 
-null_ratio = compute_density_adjustment(sub_left_adj, sub_right_adj)
+#%%
 
 stat, pvalue, misc = stochastic_block_test(
     sub_left_adj,
@@ -102,9 +104,10 @@ stat, pvalue, misc = stochastic_block_test(
     labels1=sub_left_labels,
     labels2=sub_right_labels,
     method="fisher",
-    null_odds=null_ratio,
+    density_adjustment=True,
     combine_method="tippett",
 )
 print(pvalue)
 glue("asbm_pvalue", pvalue)
 glue("asbm_pvalue_formatted", f"{pvalue:.2g}")
+fig, ax = plot_pvalues(misc, pvalue_vmin)

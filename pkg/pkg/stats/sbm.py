@@ -6,6 +6,7 @@ from graspologic.utils import remove_loops
 
 from .binomial import binom_2samp, binom_2samp_paired
 from .combine import combine_pvalues
+from .utils import compute_density_adjustment
 
 SBMResult = namedtuple(
     "sbm_result", ["probabilities", "observed", "possible", "group_counts"]
@@ -71,7 +72,13 @@ def _make_adjacency_dataframe(data, index):
 
 
 def stochastic_block_test(
-    A1, A2, labels1, labels2, null_odds=1.0, method="fisher", combine_method="tippett"
+    A1,
+    A2,
+    labels1,
+    labels2,
+    density_adjustment=False,
+    method="fisher",
+    combine_method="tippett",
 ):
 
     B1, n_observed1, n_possible1, group_counts1 = fit_sbm(A1, labels1)
@@ -95,6 +102,9 @@ def stochastic_block_test(
     stats = np.empty((K, K), dtype=float)
     stats = _make_adjacency_dataframe(stats, index)
 
+    if density_adjustment:
+        adjustment_factor = compute_density_adjustment(A1, A2)
+
     for i in index:
         for j in index:
             curr_stat, curr_pvalue = binom_2samp(
@@ -103,7 +113,7 @@ def stochastic_block_test(
                 n_observed2.loc[i, j],
                 n_possible2.loc[i, j],
                 method=method,
-                null_odds=null_odds,
+                null_ratio=adjustment_factor,
             )
             uncorrected_pvalues.loc[i, j] = curr_pvalue
             stats.loc[i, j] = curr_stat
@@ -114,12 +124,12 @@ def stochastic_block_test(
     misc["probabilities1"] = B1
     misc["probabilities2"] = B2
     misc["observed1"] = n_observed1
-    misc["obserbed2"] = n_observed2
+    misc["observed2"] = n_observed2
     misc["possible1"] = n_possible1
     misc["possible2"] = n_possible2
     misc["group_counts1"] = group_counts1
     misc["group_counts2"] = group_counts2
-    misc["null_odds"] = null_odds
+    misc["null_ratio"] = adjustment_factor
 
     # TODO how else to combine pvalues
     run_pvalues = uncorrected_pvalues.values
@@ -143,7 +153,11 @@ def offdiag_indices_from(arr):
     return rows, cols
 
 
-def stochastic_block_test_paired(A1, A2, labels,):
+def stochastic_block_test_paired(
+    A1,
+    A2,
+    labels,
+):
     index, group_indices, group_counts = np.unique(
         labels, return_counts=True, return_inverse=True
     )
