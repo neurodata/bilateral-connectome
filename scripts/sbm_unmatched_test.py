@@ -1558,51 +1558,7 @@ gluefig("sbm_corrected", fig)
 # by considering multiple definitions of bilateral symmetry.
 
 #%%
-left_nodes["inds"] = range(len(left_nodes))
-sub_left_nodes = left_nodes[left_nodes[GROUP_KEY] != "KCs"]
-sub_left_inds = sub_left_nodes["inds"].values
-right_nodes["inds"] = range(len(right_nodes))
-sub_right_nodes = right_nodes[right_nodes[GROUP_KEY] != "KCs"]
-sub_right_inds = sub_right_nodes["inds"].values
 
-sub_left_adj = left_adj[np.ix_(sub_left_inds, sub_left_inds)]
-sub_right_adj = right_adj[np.ix_(sub_right_inds, sub_right_inds)]
-sub_left_labels = sub_left_nodes[GROUP_KEY]
-sub_right_labels = sub_right_nodes[GROUP_KEY]
-
-from pkg.stats import erdos_renyi_test
-
-stat, pvalue, misc = erdos_renyi_test(sub_left_adj, sub_right_adj)
-print(pvalue)
-
-stat, pvalue, misc = stochastic_block_test(
-    sub_left_adj,
-    sub_right_adj,
-    labels1=sub_left_labels,
-    labels2=sub_right_labels,
-    method="fisher",
-    combine_method="tippett",
-)
-print(pvalue)
-
-n_edges_left = np.count_nonzero(sub_left_adj)
-n_edges_right = np.count_nonzero(sub_right_adj)
-n_left = sub_left_adj.shape[0]
-n_right = sub_right_adj.shape[0]
-density_left = n_edges_left / (n_left ** 2)
-density_right = n_edges_right / (n_right ** 2)
-
-null_odds = density_left / density_right
-stat, pvalue, misc = stochastic_block_test(
-    sub_left_adj,
-    sub_right_adj,
-    labels1=sub_left_labels,
-    labels2=sub_right_labels,
-    method="fisher",
-    null_odds=null_odds,
-    combine_method="tippett",
-)
-print(pvalue)
 
 #%%
 elapsed = time.time() - t0
