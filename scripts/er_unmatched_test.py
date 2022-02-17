@@ -114,30 +114,30 @@ node_palette, NODE_KEY = load_node_palette()
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
 
+#%%
+stat, pvalue, misc = erdos_renyi_test(left_adj, right_adj)
+glue("pvalue", pvalue)
 
 #%%
-n_nodes_left = left_adj.shape[0]
-n_nodes_right = right_adj.shape[0]
-n_possible_left = n_nodes_left ** 2 - n_nodes_left
-n_possible_right = n_nodes_right ** 2 - n_nodes_right
+
+n_possible_left = misc["possible1"]
+n_possible_right = misc["possible2"]
 glue("n_possible_left", n_possible_left)
 glue("n_possible_right", n_possible_right)
 
-n_edges_left = np.count_nonzero(left_adj)
-n_edges_right = np.count_nonzero(right_adj)
-density_left = n_edges_left / n_possible_left
-density_right = n_edges_right / n_possible_right
-
+density_left = misc["probability1"]
+density_right = misc["probability2"]
 glue("density_left", density_left)
 glue("density_right", density_right)
+
+n_edges_left = misc["observed1"]
+n_edges_right = misc["observed2"]
 
 left_binom = binom(n_possible_left, density_left)
 right_binom = binom(n_possible_right, density_right)
 
-
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-
 
 ax.bar(0, density_left, color=network_palette["Left"])
 ax.bar(1, density_right, color=network_palette["Right"])
@@ -164,9 +164,6 @@ ax.set(
 
 gluefig("er_density", fig)
 
-#%%
-stat, pvalue, _ = erdos_renyi_test(left_adj, right_adj)
-glue("pvalue", pvalue)
 
 #%% [markdown]
 # ## Reject bilateral symmetry under the ER model

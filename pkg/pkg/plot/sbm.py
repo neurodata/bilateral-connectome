@@ -16,7 +16,7 @@ def plot_stochastic_block_probabilities(misc, network_palette):
     # get values
     B1 = misc["probabilities1"]
     B2 = misc["probabilities2"]
-    null_odds = misc["null_odds"]
+    null_odds = misc["null_ratio"]
     B2 = B2 * null_odds
 
     p_max = max(B1.values.max(), B2.values.max())
@@ -88,11 +88,19 @@ def plot_stochastic_block_probabilities(misc, network_palette):
 
 def plot_pvalues(
     misc,
-    pvalue_vmin,
+    pvalue_vmin=None,
     ax=None,
     cax=None,
     annot_missing=True,
 ):
+    if pvalue_vmin is None:
+        import json
+
+        vars_file = "bilateral-connectome/docs/glued_variables.json"
+        with open(vars_file, "r") as f:
+            vars_dict = json.load(f)
+            pvalue_vmin = vars_dict["sbm_unmatched_test-pvalue_vmin"]
+
     if ax is None:
         width_ratios = [0.5, 3, 10]
         fig, axs = plt.subplots(

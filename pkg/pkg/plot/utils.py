@@ -100,3 +100,71 @@ def make_sequential_colormap(cmap="Blues", vmin=0, vmax=1):
     cc = np.linspace(cmin, cmax, 256)
     cmap = mpl.colors.ListedColormap(cmap(cc))
     return cmap
+
+
+def get_text_points(text, transformer, renderer):
+    bbox = text.get_window_extent(renderer=renderer)
+    bbox_points = bbox.get_points()
+    out_points = transformer.transform(bbox_points)
+    return out_points
+
+
+def get_text_width(text, transformer, renderer):
+    points = get_text_points(text, transformer, renderer)
+    width = points[1][0] - points[0][0]
+    return width
+
+
+def multicolor_text(x, y, texts, colors, ax=None, space_scale=1.0, **kwargs):
+    fig = ax.get_figure()
+    renderer = fig.canvas.get_renderer()
+    transformer = ax.transData.inverted()
+
+    # make this dummy text to get proper space width, then delete
+    text = ax.text(0.5, 0.5, " ")
+    space_width = get_text_width(text, transformer, renderer)
+    space_width *= space_scale
+    text.remove()
+
+    # TODO make the spacing "smart"
+    text_objs = []
+    for text, color in zip(texts, colors):
+        text_obj = ax.text(x, y, text, color=color, **kwargs)
+        text_width = get_text_width(text_obj, transformer, renderer)
+        x += text_width
+        x += space_width
+        text_objs.append(text_obj)
+
+    return text_objs
+
+
+def get_texts_points(texts, ax=None):
+    fig = ax.get_figure()
+    renderer = fig.canvas.get_renderer()
+    transformer = ax.transData.inverted()
+
+    x_maxs = []
+    x_mins = []
+    y_maxs = []
+    y_mins = []
+    for text in texts:
+        points = get_text_points(text, transformer, renderer)
+        x_maxs.append(points[1][0])
+        x_mins.append(points[0][0])
+        y_maxs.append(points[1][1])
+        y_mins.append(points[0][1])
+
+    x_max = max(x_maxs)
+    x_min = min(x_mins)
+    y_max = max(y_maxs)
+    y_min = min(y_mins)
+    return x_min, x_max, y_min, y_max
+
+
+def bound_texts(texts, ax=None, xpad=0, ypad=0, **kwargs):
+    x_min, x_max, y_min, y_max = get_texts_points(texts, ax=ax)
+    xy = (x_min - xpad, y_min - ypad)
+    width = x_max - x_min + 2 * xpad
+    height = y_max - y_min + 2 * ypad
+    patch = mpl.patches.Rectangle(xy=xy, width=width, height=height, **kwargs)
+    ax.add_patch(patch)

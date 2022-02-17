@@ -1,16 +1,27 @@
+from .bound import bound_points, draw_bounding_contour, fit_bounding_contour
+from .er import plot_density
 from .manual_colors import (
     CLASS_COLOR_DICT,
     CLASS_IND_DICT,
     plot_class_colormap,
     plot_colors,
 )
-from .theme import set_theme
-from .bound import bound_points, fit_bounding_contour, draw_bounding_contour
-from .utils import shrink_axis, draw_colors, remove_shared_ax, make_sequential_colormap
 from .sbm import (
-    plot_stochastic_block_probabilities,
-    plot_pvalues,
+    compare_probability_row,
     heatmap_grouped,
     networkplot_grouped,
-    compare_probability_row,
+    plot_pvalues,
+    plot_stochastic_block_probabilities,
+)
+from .theme import set_theme
+from .utils import (
+    bound_texts,
+    draw_colors,
+    get_text_points,
+    get_text_width,
+    get_texts_points,
+    make_sequential_colormap,
+    multicolor_text,
+    remove_shared_ax,
+    shrink_axis,
 )

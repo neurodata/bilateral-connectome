@@ -12,35 +12,30 @@
 #%%
 import datetime
 import time
-from pathlib import Path
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from giskard.plot import merge_axes, rotate_labels
-from graspologic.plot import heatmap, networkplot
 from graspologic.simulations import sbm
-from matplotlib.colors import ListedColormap
-from matplotlib.transforms import Bbox
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, savefig
-from pkg.perturb import remove_edges
 from pkg.plot import (
-    bound_points,
+    bound_texts,
     compare_probability_row,
     heatmap_grouped,
+    multicolor_text,
     networkplot_grouped,
+    plot_pvalues,
+    plot_stochastic_block_probabilities,
     set_theme,
 )
 from pkg.plot.utils import make_sequential_colormap
 from pkg.stats import stochastic_block_test
-from seaborn.utils import relative_luminance
 from svgutils.compose import SVG, Figure, Panel, Text
+
 
 DISPLAY_FIGS = False
 
@@ -246,74 +241,6 @@ ax.annotate(
 )
 
 
-def get_text_points(text, transformer, renderer):
-    bbox = text.get_window_extent(renderer=renderer)
-    bbox_points = bbox.get_points()
-    out_points = transformer.transform(bbox_points)
-    return out_points
-
-
-def get_text_width(text, transformer, renderer):
-    points = get_text_points(text, transformer, renderer)
-    width = points[1][0] - points[0][0]
-    return width
-
-
-def multicolor_text(x, y, texts, colors, ax=None, space_scale=1.0, **kwargs):
-    fig = ax.get_figure()
-    renderer = fig.canvas.get_renderer()
-    transformer = ax.transData.inverted()
-
-    # make this dummy text to get proper space width, then delete
-    text = ax.text(0.5, 0.5, " ")
-    space_width = get_text_width(text, transformer, renderer)
-    space_width *= space_scale
-    text.remove()
-
-    # TODO make the spacing "smart"
-    text_objs = []
-    for text, color in zip(texts, colors):
-        text_obj = ax.text(x, y, text, color=color, **kwargs)
-        text_width = get_text_width(text_obj, transformer, renderer)
-        x += text_width
-        x += space_width
-        text_objs.append(text_obj)
-
-    return text_objs
-
-
-def get_texts_points(texts, ax=None):
-    fig = ax.get_figure()
-    renderer = fig.canvas.get_renderer()
-    transformer = ax.transData.inverted()
-
-    x_maxs = []
-    x_mins = []
-    y_maxs = []
-    y_mins = []
-    for text in texts:
-        points = get_text_points(text, transformer, renderer)
-        x_maxs.append(points[1][0])
-        x_mins.append(points[0][0])
-        y_maxs.append(points[1][1])
-        y_mins.append(points[0][1])
-
-    x_max = max(x_maxs)
-    x_min = min(x_mins)
-    y_max = max(y_maxs)
-    y_min = min(y_mins)
-    return x_min, x_max, y_min, y_max
-
-
-def bound_texts(texts, ax=None, xpad=0, ypad=0, **kwargs):
-    x_min, x_max, y_min, y_max = get_texts_points(texts, ax=ax)
-    xy = (x_min - xpad, y_min - ypad)
-    width = x_max - x_min + 2 * xpad
-    height = y_max - y_min + 2 * ypad
-    patch = mpl.patches.Rectangle(xy=xy, width=width, height=height, **kwargs)
-    ax.add_patch(patch)
-
-
 y = 0.34
 texts = multicolor_text(
     0.2,
@@ -342,16 +269,6 @@ bound_texts(
     facecolor="white",
     edgecolor="lightgrey",
 )
-
-
-# patch = mpl.patches.Rectangle(
-#     xy=(0.18, y - 0.03),
-#     width=0.7,
-#     height=0.21,
-#     facecolor="white",
-#     edgecolor="lightgrey",
-# )
-# ax.add_patch(patch)
 
 
 ax.set_title("Compare estimated\nprobabilities", fontsize="medium")
@@ -438,7 +355,6 @@ glue("uncorrected_pvalue_min", pvalue)
 print(min_pvalue)
 
 #%%
-set_theme(font_scale=1)
 
 fig, ax = plt.subplots(1, 1, figsize=(10, 5))
 
@@ -458,7 +374,6 @@ ax.set(
 )
 gluefig("group_counts", fig)
 
-#%%
 
 #%% [markdown]
 
@@ -471,163 +386,7 @@ gluefig("group_counts", fig)
 
 #%%
 
-
-def shrink_axis(ax, scale=0.7):
-    pos = ax.get_position()
-    mid = (pos.ymax + pos.ymin) / 2
-    height = pos.ymax - pos.ymin
-    new_pos = Bbox(
-        [
-            [pos.xmin, mid - scale * 0.5 * height],
-            [pos.xmax, mid + scale * 0.5 * height],
-        ]
-    )
-    ax.set_position(new_pos)
-
-
-def plot_stochastic_block_test(misc, pvalue_vmin=None, annot_missing=True):
-    # get values
-    B1 = misc["probabilities1"]
-    B2 = misc["probabilities2"]
-    null_odds = misc["null_odds"]
-    B2 = B2 * null_odds
-
-    index = B1.index
-    p_max = max(B1.values.max(), B2.values.max())
-    uncorrected_pvalues = misc["uncorrected_pvalues"]
-    n_tests = misc["n_tests"]
-    K = B1.shape[0]
-    alpha = 0.05
-    hb_thresh = alpha / n_tests
-
-    # set up plot
-    pad = 2
-    width_ratios = [0.5, pad + 0.8, 10, pad, 10]
-    set_theme(font_scale=1.25)
-    fig, axs = plt.subplots(
-        1,
-        len(width_ratios),
-        figsize=(20, 10),
-        gridspec_kw=dict(
-            width_ratios=width_ratios,
-        ),
-    )
-    left_col = 2
-    right_col = 4
-    # pvalue_col = 6
-
-    heatmap_kws = dict(
-        cmap="Blues", square=True, cbar=False, vmax=p_max, fmt="s", xticklabels=True
-    )
-
-    # heatmap of left connection probabilities
-    annot = np.full((K, K), "")
-    annot[B1.values == 0] = 0
-    ax = axs[left_col]
-    sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
-    ax.set(ylabel="Source group", xlabel="Target group")
-    ax.set_title(r"$\hat{B}$ left", fontsize="xx-large", color=network_palette["Left"])
-
-    # heatmap of right connection probabilities
-    annot = np.full((K, K), "")
-    annot[B2.values == 0] = 0
-    ax = axs[right_col]
-    im = sns.heatmap(B2, ax=ax, annot=annot, **heatmap_kws)
-    ax.set(ylabel="", xlabel="Target group")
-    text = r"$\hat{B}$ right"
-    if null_odds != 1:
-        text = r"$c$" + text
-    ax.set_title(text, fontsize="xx-large", color=network_palette["Right"])
-    # ax.set(yticks=[], yticklabels=[])
-
-    # handle the colorbars
-    # NOTE: did it this way cause the other options weren't playing nice with auto
-    # constrain
-    # layouts.
-
-    ax = axs[0]
-    shrink_axis(ax, scale=0.5)
-    _ = fig.colorbar(
-        im.get_children()[0],
-        cax=ax,
-        fraction=1,
-        shrink=1,
-        ticklocation="left",
-    )
-    ax.set_title("Estimated\nprobability")
-
-    # plot p-values
-    # ax = axs[pvalue_col]
-
-    # if annot_missing:
-    #     annot = np.full((K, K), "")
-    #     annot[(B1.values == 0) & (B2.values == 0)] = "B"
-    #     annot[(B1.values == 0) & (B2.values != 0)] = "L"
-    #     annot[(B1.values != 0) & (B2.values == 0)] = "R"
-    # else:
-    #     annot = False
-    # plot_pvalues = np.log10(uncorrected_pvalues)
-    # plot_pvalues[np.isnan(plot_pvalues)] = 0
-    # im = sns.heatmap(
-    #     plot_pvalues,
-    #     ax=ax,
-    #     annot=annot,
-    #     cmap="RdBu",
-    #     center=0,
-    #     square=True,
-    #     cbar=False,
-    #     fmt="s",
-    #     vmin=pvalue_vmin,
-    # )
-    # ax.set(ylabel="", xlabel="Target group")
-    # ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-    # ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
-
-    # colors = im.get_children()[0].get_facecolors()
-    # significant = uncorrected_pvalues < hb_thresh
-
-    # # NOTE: the x's looked bad so I did this super hacky thing...
-    # pad = 0.2
-    # for idx, (is_significant, color) in enumerate(
-    #     zip(significant.values.ravel(), colors)
-    # ):
-    #     if is_significant:
-    #         i, j = np.unravel_index(idx, (K, K))
-    #         # REF: seaborn heatmap
-    #         lum = relative_luminance(color)
-    #         text_color = ".15" if lum > 0.408 else "w"
-
-    #         xs = [j + pad, j + 1 - pad]
-    #         ys = [i + pad, i + 1 - pad]
-    #         ax.plot(xs, ys, color=text_color, linewidth=4)
-    #         xs = [j + 1 - pad, j + pad]
-    #         ys = [i + pad, i + 1 - pad]
-    #         ax.plot(xs, ys, color=text_color, linewidth=4)
-
-    # # plot colorbar for the pvalue plot
-    # # NOTE: only did it this way for consistency with the other colorbar
-    # ax = axs[7]
-    # shrink_axis(ax, scale=0.5)
-    # _ = fig.colorbar(
-    #     im.get_children()[0],
-    #     cax=ax,
-    #     fraction=1,
-    #     shrink=1,
-    #     ticklocation="right",
-    # )
-
-    # # fig.text(0.11, 0.85, "A)", fontweight="bold", fontsize=50)
-    # # fig.text(0.63, 0.85, "B)", fontweight="bold", fontsize=50)
-
-    # remove dummy axes
-    for i in range(len(width_ratios)):
-        if not axs[i].has_data():
-            axs[i].set_visible(False)
-
-    return fig, axs
-
-
-fig, axs = plot_stochastic_block_test(misc)
+fig, axs = plot_stochastic_block_probabilities(misc, network_palette)
 
 gluefig("sbm_uncorrected", fig)
 
@@ -637,89 +396,10 @@ glue("pvalue_vmin", pvalue_vmin)
 
 #%%
 
-
-def plot_pvalues(
-    ax, cax, uncorrected_pvalues, B1, B2, hb_thresh, pvalue_vmin, annot_missing=True
-):
-    K = len(B1)
-    index = B1.index
-    if annot_missing:
-        annot = np.full((K, K), "")
-        annot[(B1.values == 0) & (B2.values == 0)] = "B"
-        annot[(B1.values == 0) & (B2.values != 0)] = "L"
-        annot[(B1.values != 0) & (B2.values == 0)] = "R"
-    else:
-        annot = False
-    plot_pvalues = np.log10(uncorrected_pvalues)
-    plot_pvalues[np.isnan(plot_pvalues)] = 0
-    im = sns.heatmap(
-        plot_pvalues,
-        ax=ax,
-        annot=annot,
-        cmap="RdBu",
-        center=0,
-        square=True,
-        cbar=False,
-        fmt="s",
-        vmin=pvalue_vmin,
-    )
-    ax.set(ylabel="Source group", xlabel="Target group")
-    ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-    ax.set_title(r"Probability comparison", fontsize="x-large")
-
-    colors = im.get_children()[0].get_facecolors()
-    significant = uncorrected_pvalues < hb_thresh
-
-    # NOTE: the x's looked bad so I did this super hacky thing...
-    pad = 0.2
-    for idx, (is_significant, color) in enumerate(
-        zip(significant.values.ravel(), colors)
-    ):
-        if is_significant:
-            i, j = np.unravel_index(idx, (K, K))
-            # REF: seaborn heatmap
-            lum = relative_luminance(color)
-            text_color = ".15" if lum > 0.408 else "w"
-
-            xs = [j + pad, j + 1 - pad]
-            ys = [i + pad, i + 1 - pad]
-            ax.plot(xs, ys, color=text_color, linewidth=4)
-            xs = [j + 1 - pad, j + pad]
-            ys = [i + pad, i + 1 - pad]
-            ax.plot(xs, ys, color=text_color, linewidth=4)
-
-    # plot colorbar for the pvalue plot
-    # NOTE: only did it this way for consistency with the other colorbar
-    shrink_axis(cax, scale=0.5)
-    _ = fig.colorbar(
-        im.get_children()[0],
-        cax=cax,
-        fraction=1,
-        shrink=1,
-        ticklocation="left",
-    )
-    cax.set_title(r"$log_{10}$" + "\np-value", pad=20)
-
-
-width_ratios = [0.5, 3, 10]
-fig, axs = plt.subplots(
-    1,
-    3,
-    figsize=(10, 10),
-    gridspec_kw=dict(
-        width_ratios=width_ratios,
-    ),
-)
-axs[1].remove()
 plot_pvalues(
-    axs[2],
-    axs[0],
-    misc["uncorrected_pvalues"],
-    misc["probabilities1"],
-    misc["probabilities2"],
-    0.05 / misc["n_tests"],
+    misc,
     pvalue_vmin,
-    annot_missing=False,
+    annot_missing=True,
 )
 gluefig("sbm_uncorrected_pvalues", fig)
 
@@ -801,7 +481,7 @@ gluefig("sbm_uncorrected_pvalues", fig)
 def plot_estimated_probabilities(misc):
     B1 = misc["probabilities1"]
     B2 = misc["probabilities2"]
-    null_odds = misc["null_odds"]
+    null_odds = misc["null_ratio"]
     B2 = B2 * null_odds
     B1_ravel = B1.values.ravel()
     B2_ravel = B2.values.ravel()
@@ -911,21 +591,6 @@ gluefig("probs_uncorrected", fig)
 # apparent here, as there are more negative than positive values.
 # ```
 
-#%%
-# B1 = misc["probabilities1"]
-# B2 = misc["probabilities2"]
-# null_odds = misc["null_odds"]
-# B2 = B2 * null_odds
-# B1_ravel = B1.values.ravel()
-# B2_ravel = B2.values.ravel()
-
-# fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-# sns.scatterplot(x=B2_ravel, y=B1_ravel, color=neutral_color)
-# ax.set(yscale="log", xscale="log")
-# ax.set_xlabel("Right connection probability", color=network_palette["Right"])
-# ax.set_ylabel("Left connection probability", color=network_palette["Left"])
-# ax.plot([0.00001, 1], [0.00001, 1], color="black", linestyle="--")
-
 
 #%%
 
@@ -933,7 +598,7 @@ gluefig("probs_uncorrected", fig)
 def plot_significant_probabilities(misc):
     B1 = misc["probabilities1"]
     B2 = misc["probabilities2"]
-    null_odds = misc["null_odds"]
+    null_odds = misc["null_ratio"]
     B2 = B2 * null_odds
     index = B1.index
     uncorrected_pvalues = misc["uncorrected_pvalues"]
@@ -1007,8 +672,6 @@ fig, ax = plot_significant_probabilities(misc)
 gluefig("significant_p_comparison", fig)
 
 
-#%%
-
 #%% [markdown]
 # ```{glue:figure} fig:sbm_unmatched_test-significant_p_comparison
 # :name: "fig:sbm_unmatched_test-significant_p_comparison"
@@ -1066,7 +729,6 @@ fig = Figure(
     significant_p_comparison,
 )
 fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
-fig
 
 
 #%%

@@ -6,14 +6,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from graspologic.plot import networkplot
-from matplotlib.transforms import Bbox
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, savefig
 from pkg.plot import plot_pvalues, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
-from seaborn.utils import relative_luminance
 
 DISPLAY_FIGS = True
 
@@ -67,16 +64,16 @@ sub_right_labels = sub_right_nodes[GROUP_KEY]
 
 #%%
 
-# TODO fix this
-stat, pvalue, misc = stochastic_block_test(
-    left_adj,
-    right_adj,
-    labels1=left_labels,
-    labels2=right_labels,
-    method="fisher",
-    combine_method="tippett",
-)
-pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
+# # TODO fix this
+# stat, pvalue, misc = stochastic_block_test(
+#     left_adj,
+#     right_adj,
+#     labels1=left_labels,
+#     labels2=right_labels,
+#     method="fisher",
+#     combine_method="tippett",
+# )
+# pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
 
 
 stat, pvalue, misc = erdos_renyi_test(sub_left_adj, sub_right_adj)
@@ -94,7 +91,7 @@ stat, pvalue, misc = stochastic_block_test(
 print(pvalue)
 glue("sbm_pvalue", pvalue)
 
-fig, ax = plot_pvalues(misc, pvalue_vmin)
+fig, ax = plot_pvalues(misc)
 
 #%%
 
@@ -110,4 +107,4 @@ stat, pvalue, misc = stochastic_block_test(
 print(pvalue)
 glue("asbm_pvalue", pvalue)
 glue("asbm_pvalue_formatted", f"{pvalue:.2g}")
-fig, ax = plot_pvalues(misc, pvalue_vmin)
+# fig, ax = plot_pvalues(misc, pvalue_vmin)
