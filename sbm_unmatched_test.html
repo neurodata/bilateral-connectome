@@ -369,9 +369,9 @@ are part of.</p>
 <p>For now, we use some broad cell type categorizations for each neuron to determine its
 group. Alternatively, there are many methods for <em>estimating</em> these assignments to
 groups for each neuron, which we do not explore here.</p>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -395,8 +395,9 @@ groups for each neuron, which we do not explore here.</p>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pkg.plot.utils</span> <span class="kn">import</span> <span class="n">make_sequential_colormap</span>
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">stochastic_block_test</span>
+<span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">get_toy_palette</span><span class="p">,</span> <span class="n">sample_toy_networks</span>
+<span class="kn">from</span> <span class="nn">pkg.utils.toy</span> <span class="kn">import</span> <span class="n">sample_toy_networks</span>
 <span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">SVG</span><span class="p">,</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
-
 
 <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -516,17 +517,11 @@ used. We also do not consider tests which would compare the assignment vectors,
 number of neurons in each group in the group assignments <span class="math notranslate nohighlight">\(\tau\)</span> for the left and
 the right hemispheres. The number of neurons in each group is quite similar between
 the two hemispheres.</p>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">888888</span><span class="p">)</span>
-<span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]])</span>
-<span class="n">A1</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sbm</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loops</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">A2</span> <span class="o">=</span> <span class="n">sbm</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loops</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="n">node_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">A1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-<span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">:]))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span> <span class="o">=</span> <span class="n">sample_toy_networks</span><span class="p">()</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">get_toy_palette</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
@@ -680,12 +675,11 @@ the two hemispheres.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
 </div>
-</div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
     <span class="n">left_adj</span><span class="p">,</span>
     <span class="n">right_adj</span><span class="p">,</span>
     <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
@@ -700,15 +694,10 @@ the two hemispheres.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.6e-08
-</pre></div>
 </div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_stat</span><span class="p">,</span> <span class="n">min_pvalue</span><span class="p">,</span> <span class="n">min_misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">min_stat</span><span class="p">,</span> <span class="n">min_pvalue</span><span class="p">,</span> <span class="n">min_misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
     <span class="n">left_adj</span><span class="p">,</span>
     <span class="n">right_adj</span><span class="p">,</span>
     <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
@@ -721,15 +710,11 @@ the two hemispheres.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.561229446423099e-08
-</pre></div>
 </div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
 <span class="n">group_counts_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts1&quot;</span><span class="p">]</span>
 <span class="n">group_counts_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts2&quot;</span><span class="p">]</span>
@@ -749,19 +734,15 @@ the two hemispheres.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-group-counts">
-<div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_8_0.png" src="_images/sbm_unmatched_test_8_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
 the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group-counts" title="Permalink to this image">¶</a></p>
 </div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_stochastic_block_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">network_palette</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_stochastic_block_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">network_palette</span><span class="p">)</span>
 
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_uncorrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 
@@ -771,12 +752,11 @@ the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
 </div>
-</div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_pvalues</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">plot_pvalues</span><span class="p">(</span>
     <span class="n">misc</span><span class="p">,</span>
     <span class="n">pvalue_vmin</span><span class="p">,</span>
     <span class="n">annot_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -784,8 +764,6 @@ the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_uncorrected_pvalues&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
 </div>
 </div>
 <p>Next, we run the test for bilateral symmetry under the stochastic block model.
@@ -801,17 +779,14 @@ comparision of binomial proportions. We highlight these elements in the <span cl
 matrices with an explicit “0”, noting that we did not run the corresponding test in
 these cases.</p>
 <p>In <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5 B</span></a>, we see the
-p-values from all <span class="pasted-text">283</span> that were run. After
+p-values from all  that were run. After
 Bonferroni-Holm correction, 5 tests yield p-values less than 0.05, indicating that
 we reject the null hypothesis that those elements of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices are the
 same between the two hemispheres. We also combine all p-values using Fisher’s method,
 which yields an overall p-value for the entire null hypothesis in
 Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</a> of
-<span class="pasted-text">3.56e-08</span>.</p>
+.</p>
 <div class="figure align-default" id="fig-sbm-unmatched-test-sbm-uncorrected">
-<div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_10_0.png" src="_images/sbm_unmatched_test_10_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities for the left
 and right hemispheres appear qualitatively similar. Any estimated
@@ -827,7 +802,7 @@ was zero in that cell on both the left and right. “L” indicates this was the
 the left only, and “R” that it was the case on the right only. These individual
 p-values were combined using Fisher’s method, resulting in an overall p-value (for the
 null hypothesis that the two group connection probability matrices are the same) of
-<span class="pasted-text">3.56e-08</span>.</span><a class="headerlink" href="#fig-sbm-unmatched-test-sbm-uncorrected" title="Permalink to this image">¶</a></p>
+.</span><a class="headerlink" href="#fig-sbm-unmatched-test-sbm-uncorrected" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="adjusting-for-a-difference-in-density">
@@ -853,9 +828,11 @@ connection probabilities which were significantly different in
 in <a class="reference internal" href="#fig-sbm-unmatched-test-significant-p-comparison"><span class="std std-numref">Figure 7</span></a>. Note
 that in every case, the estimated probability on the right is higher with that on the
 right.</p>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_estimated_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+<span class="k">def</span> <span class="nf">plot_estimated_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
     <span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
     <span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
     <span class="n">null_odds</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;null_ratio&quot;</span><span class="p">]</span>
@@ -955,13 +932,8 @@ right.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-probs-uncorrected">
-<div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_14_0.png" src="_images/sbm_unmatched_test_14_0.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities (<span class="math notranslate nohighlight">\(\hat{p}\)</span>), sorted by
 the mean left/right connection probability. Note the very subtle tendency for the
@@ -971,9 +943,11 @@ differences between corresponding group-to-group connection probabilities
 being slightly smaller than the corresponding probability on the right is more
 apparent here, as there are more negative than positive values.</span><a class="headerlink" href="#fig-sbm-unmatched-test-probs-uncorrected" title="Permalink to this image">¶</a></p>
 </div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_significant_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+<span class="k">def</span> <span class="nf">plot_significant_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
     <span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
     <span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
     <span class="n">null_odds</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;null_ratio&quot;</span><span class="p">]</span>
@@ -1051,27 +1025,16 @@ apparent here, as there are more negative than positive values.</span><a class="
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/.venv/lib/python3.9/site-packages/seaborn/categorical.py:1781: UserWarning: You passed a edgecolor/edgecolors ((0.9882352941176471, 0.5529411764705883, 0.3843137254901961)) for an unfilled marker (&#39;_&#39;).  Matplotlib is ignoring the edgecolor in favor of the facecolor.  This behavior may change in the future.
-  ax.scatter(x, y, label=hue_level,
-/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/.venv/lib/python3.9/site-packages/seaborn/categorical.py:1781: UserWarning: You passed a edgecolor/edgecolors ((0.4, 0.7607843137254902, 0.6470588235294118)) for an unfilled marker (&#39;_&#39;).  Matplotlib is ignoring the edgecolor in favor of the facecolor.  This behavior may change in the future.
-  ax.scatter(x, y, label=hue_level,
-</pre></div>
-</div>
-</div>
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-significant-p-comparison">
-<div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_16_1.png" src="_images/sbm_unmatched_test_16_1.png" />
-</div>
 <p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
 which were significantly different in
 <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5</span></a>.
 In each case, the connection probability on the right hemisphere is higher.</span><a class="headerlink" href="#fig-sbm-unmatched-test-significant-p-comparison" title="Permalink to this image">¶</a></p>
 </div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total_width</span> <span class="o">=</span> <span class="mi">1000</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">total_width</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">total_height</span> <span class="o">=</span> <span class="mi">1500</span>
 
 <span class="n">FIG_PATH</span> <span class="o">=</span> <span class="n">FIG_PATH</span> <span class="o">/</span> <span class="n">FILENAME</span>
@@ -1121,9 +1084,9 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
 </pre></div>
 </div>
