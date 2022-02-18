@@ -65,22 +65,15 @@
 # ```
 
 #%%
-
-from pkg.utils import set_warnings
-
-set_warnings()
-
 import datetime
 import time
 
 import matplotlib.pyplot as plt
-import numpy as np
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
 from pkg.plot import set_theme
 from pkg.stats import erdos_renyi_test
-from scipy.stats import binom
 from statsmodels.stats.proportion import proportion_confint
 
 DISPLAY_FIGS = False
@@ -119,7 +112,6 @@ stat, pvalue, misc = erdos_renyi_test(left_adj, right_adj)
 glue("pvalue", pvalue)
 
 #%%
-
 n_possible_left = misc["possible1"]
 n_possible_right = misc["possible2"]
 glue("n_possible_left", n_possible_left)
@@ -133,9 +125,6 @@ glue("density_right", density_right)
 n_edges_left = misc["observed1"]
 n_edges_right = misc["observed2"]
 
-left_binom = binom(n_possible_left, density_left)
-right_binom = binom(n_possible_right, density_right)
-
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 
@@ -145,6 +134,7 @@ ax.bar(1, density_right, color=network_palette["Right"])
 coverage = 0.99
 coverage_percentage = coverage * 100
 glue("coverage_percentage", coverage_percentage)
+
 left_lower, left_upper = proportion_confint(
     n_edges_left, n_possible_left, alpha=1 - coverage, method="beta"
 )

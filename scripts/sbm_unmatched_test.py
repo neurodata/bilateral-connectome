@@ -34,8 +34,9 @@ from pkg.plot import (
 )
 from pkg.plot.utils import make_sequential_colormap
 from pkg.stats import stochastic_block_test
+from pkg.utils import get_toy_palette, sample_toy_networks
+from pkg.utils.toy import sample_toy_networks
 from svgutils.compose import SVG, Figure, Panel, Text
-
 
 DISPLAY_FIGS = False
 
@@ -165,16 +166,8 @@ right_labels = right_nodes[GROUP_KEY].values
 
 #%%
 
-
-np.random.seed(888888)
-ns = [5, 6, 7]
-B = np.array([[0.8, 0.2, 0.05], [0.05, 0.9, 0.2], [0.05, 0.05, 0.7]])
-A1, labels = sbm(ns, B, directed=True, loops=False, return_labels=True)
-A2 = sbm(ns, B, directed=True, loops=False)
-
-node_data = pd.DataFrame(index=np.arange(A1.shape[0]))
-node_data["labels"] = labels + 1
-palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
+A1, A2, node_data = sample_toy_networks()
+palette = get_toy_palette()
 
 fig, axs = plt.subplots(2, 4, figsize=(16, 6))
 ax = axs[0, 0]

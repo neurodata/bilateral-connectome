@@ -102,7 +102,7 @@ def plot_pvalues(
             pvalue_vmin = vars_dict["sbm_unmatched_test-pvalue_vmin"]
 
     if ax is None:
-        width_ratios = [0.5, 3, 10]
+        width_ratios = [0.5, 2, 10]
         fig, axs = plt.subplots(
             1,
             3,

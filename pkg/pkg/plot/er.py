@@ -4,7 +4,7 @@ from statsmodels.stats.proportion import proportion_confint
 
 def plot_density(misc, palette=None, ax=None):
     if ax is None:
-        _, ax = plt.subplots(1, 1, figsize=(6, 6))
+        fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 
     n_possible_left = misc["possible1"]
     n_possible_right = misc["possible2"]
@@ -36,4 +36,4 @@ def plot_density(misc, palette=None, ax=None):
         xticklabels=["Left", "Right"],
         ylabel=r"Estimated density ($\hat{p}$)",
     )
-    return ax
+    return ax.get_figure(), ax
