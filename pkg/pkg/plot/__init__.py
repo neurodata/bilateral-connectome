@@ -9,10 +9,10 @@ from .manual_colors import (
 from .sbm import (
     compare_probability_row,
     heatmap_grouped,
-    networkplot_grouped,
     plot_pvalues,
     plot_stochastic_block_probabilities,
 )
+from .layout import networkplot_simple
 from .theme import set_theme
 from .utils import (
     bound_texts,

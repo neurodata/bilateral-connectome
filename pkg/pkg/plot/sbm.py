@@ -1,13 +1,11 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
 import seaborn as sns
-from graspologic.plot import heatmap, networkplot
+from graspologic.plot import heatmap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from seaborn.utils import relative_luminance
 
-from .bound import bound_points
 from .theme import set_theme
 from .utils import draw_colors, remove_shared_ax, shrink_axis
 
@@ -181,39 +179,6 @@ def plot_pvalues(
     cax.set_title(r"$log_{10}$" + "\np-value", pad=20)
 
     return fig, axs
-
-
-def networkplot_grouped(A, node_data, palette=None, ax=None):
-    g = nx.from_numpy_array(A)
-    pos = nx.kamada_kawai_layout(g)
-    node_data["x"] = [pos[node][0] for node in node_data.index]
-    node_data["y"] = [pos[node][1] for node in node_data.index]
-
-    networkplot(
-        A,
-        node_data=node_data,
-        node_hue="labels",
-        x="x",
-        y="y",
-        edge_linewidth=1.0,
-        palette=palette,
-        node_sizes=(20, 200),
-        node_kws=dict(linewidth=1, edgecolor="black"),
-        node_alpha=1.0,
-        edge_kws=dict(color="black"),
-        ax=ax,
-    )
-
-    bound_points(
-        node_data[["x", "y"]].values,
-        point_data=node_data,
-        ax=ax,
-        label="labels",
-        palette=palette,
-    )
-    ax.set(xlabel="", ylabel="")
-    ax.spines[["left", "bottom"]].set_visible(False)
-    return node_data
 
 
 def heatmap_grouped(Bhat, labels, palette=None, ax=None, pad=0, color_size="5%"):

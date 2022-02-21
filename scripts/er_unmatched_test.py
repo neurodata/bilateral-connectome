@@ -67,6 +67,7 @@
 #%%
 import datetime
 import time
+from matplotlib import axes
 
 import matplotlib.pyplot as plt
 from myst_nb import glue as default_glue
@@ -106,6 +107,138 @@ node_palette, NODE_KEY = load_node_palette()
 
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
+
+#%%
+
+from pkg.utils import sample_toy_networks
+from pkg.plot import networkplot_simple
+from pkg.plot import bound_points
+import numpy as np
+import seaborn as sns
+
+A1, A2, node_data = sample_toy_networks()
+node_data["labels"] = np.ones(len(node_data), dtype=int)
+palette = {1: sns.color_palette("Set2")[2]}
+fig, axs = plt.subplots(2, 2, figsize=(6, 6))
+
+ax = axs[0, 0]
+networkplot_simple(A1, node_data, ax=ax)
+bound_points(
+    node_data[["x", "y"]].values,
+    ax=ax,
+    point_data=node_data,
+    label="labels",
+    palette=palette,
+)
+ax.set_title("Compute global\nconnection density")
+ax.set_ylabel(
+    "Left",
+    color=network_palette["Left"],
+    size="large",
+    rotation=0,
+    ha="right",
+    labelpad=10,
+)
+
+ax = axs[1, 0]
+
+ax = axs[1, 0]
+networkplot_simple(A2, node_data, ax=ax)
+bound_points(
+    node_data[["x", "y"]].values,
+    ax=ax,
+    point_data=node_data,
+    label="labels",
+    palette=palette,
+)
+ax.set_ylabel(
+    "Right",
+    color=network_palette["Right"],
+    size="large",
+    rotation=0,
+    ha="right",
+    labelpad=10,
+)
+
+stat, pvalue, misc = erdos_renyi_test(A1, A2)
+
+from giskard.plot import merge_axes
+import matplotlib as mpl
+from pkg.plot import make_sequential_colormap
+from pkg.plot import multicolor_text
+from pkg.plot import bound_texts
+
+ax = merge_axes(fig, axs, rows=None, cols=1)
+ax.set_title("Compare ER\nmodels")
+ax.axis("off")
+ax.set(xlim=(0, 1), ylim=(0.18, 1))
+ax.set_zorder(100)
+
+# compare_probability_row(0, 0, Bhat1, Bhat2, 0.5, cmap=cmap)
+cmap = make_sequential_colormap("Blues")
+
+y = 0.8
+x3 = 0.2
+
+size = 0.1
+phat = misc["probability1"]
+color = cmap(phat)
+patch = mpl.patches.Rectangle(
+    (x3, y - size / 4), width=size * 1.4, height=size / 2, facecolor=color
+)
+ax.add_patch(patch)
+
+text = ax.text(0.52, y, "?", ha="center", va="center")
+text.set_bbox(dict(facecolor="white", edgecolor="white"))
+
+x4 = 0.7075
+phat = misc["probability2"]
+color = cmap(phat)
+patch = mpl.patches.Rectangle(
+    (x4, y - size / 4), width=size * 1.4, height=size / 2, facecolor=color
+)
+ax.add_patch(patch)
+
+ax.plot([x3, x4], [y, y], linewidth=2.5, linestyle=":", color="grey", zorder=-1)
+
+y = 0.55
+texts = multicolor_text(
+    0.0,
+    y,
+    [r"$H_0$:", r"$B^{L}_{ij}$", r"$=$", r"$B^{R}_{ij}$"],
+    ["black", network_palette["Left"], "black", network_palette["Right"]],
+    fontsize="large",
+    ax=ax,
+)
+y = y - 0.1
+texts += multicolor_text(
+    0.0,
+    y,
+    [r"$H_A$:", r"$B^{L}_{ij}$", r"$\neq$", r"$B^{R}_{ij}$"],
+    ["black", network_palette["Left"], "black", network_palette["Right"]],
+    fontsize="large",
+    ax=ax,
+)
+bound_texts(
+    texts,
+    ax=ax,
+    xpad=0.07,
+    ypad=0.01,
+    facecolor="white",
+    edgecolor="lightgrey",
+)
+ax.set(xlim=(-0.1, 1.1))
+ax.annotate(
+    "",
+    xy=(0.52, 0.75),
+    xytext=(0.5, 0.63),
+    arrowprops=dict(
+        arrowstyle="simple",
+        facecolor="black",
+    ),
+)
+
+gluefig("er_methods", fig)
 
 #%%
 stat, pvalue, misc = erdos_renyi_test(left_adj, right_adj)

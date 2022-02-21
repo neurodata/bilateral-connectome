@@ -238,7 +238,7 @@ y = 0.34
 texts = multicolor_text(
     0.2,
     y,
-    [r"$H_0$:", r"$\hat{B}^{L}_{ij}$", r"$=$", r"$\hat{B}^{R}_{ij}$"],
+    [r"$H_0$:", r"$B^{L}_{ij}$", r"$=$", r"$B^{R}_{ij}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
     fontsize="large",
     ax=ax,
@@ -248,7 +248,7 @@ y = y - 0.1
 texts += multicolor_text(
     0.2,
     y,
-    [r"$H_A$:", r"$\hat{B}^{L}_{ij}$", r"$\neq$", r"$\hat{B}^{R}_{ij}$"],
+    [r"$H_A$:", r"$B^{L}_{ij}$", r"$\neq$", r"$B^{R}_{ij}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
     fontsize="large",
     ax=ax,
@@ -291,7 +291,7 @@ y = 0.34
 texts = multicolor_text(
     0.2,
     y,
-    [r"$H_0$:", r"$\hat{B}^{L}$", r"$=$", r"$\hat{B}^{R}$"],
+    [r"$H_0$:", r"$B^{L}$", r"$=$", r"$B^{R}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
     fontsize="large",
     ax=ax,
@@ -301,7 +301,7 @@ y = y - 0.1
 texts += multicolor_text(
     0.2,
     y,
-    [r"$H_A$:", r"$\hat{B}^{L}$", r"$\neq$", r"$\hat{B}^{R}$"],
+    [r"$H_A$:", r"$B^{L}$", r"$\neq$", r"$B^{R}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
     fontsize="large",
     ax=ax,
