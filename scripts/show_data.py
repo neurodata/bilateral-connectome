@@ -1,9 +1,5 @@
 #%%
 
-from pkg.utils import set_warnings
-
-set_warnings()
-
 import datetime
 import time
 
@@ -360,8 +356,8 @@ ax.axis("square")
 
 fig.set_facecolor("white")
 
-fig.text(0.07, 0.93, 'A)', fontweight='bold', fontsize=60)
-fig.text(0.4, 0.93, 'B)', fontweight='bold', fontsize=60)
+fig.text(0.07, 0.93, "A)", fontweight="bold", fontsize=60)
+fig.text(0.4, 0.93, "B)", fontweight="bold", fontsize=60)
 
 
 gluefig("adj_and_layout", fig)

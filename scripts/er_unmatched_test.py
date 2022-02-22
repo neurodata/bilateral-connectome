@@ -205,7 +205,7 @@ y = 0.55
 texts = multicolor_text(
     0.0,
     y,
-    [r"$H_0$:", r"$B^{L}_{ij}$", r"$=$", r"$B^{R}_{ij}$"],
+    [r"$H_0$:", r"$p^{(L)}$", r"$=$", r"$p^{(R)}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
     fontsize="large",
     ax=ax,
@@ -214,7 +214,7 @@ y = y - 0.1
 texts += multicolor_text(
     0.0,
     y,
-    [r"$H_A$:", r"$B^{L}_{ij}$", r"$\neq$", r"$B^{R}_{ij}$"],
+    [r"$H_A$:", r"$p^{(L)}$", r"$\neq$", r"$p^{(R)}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
     fontsize="large",
     ax=ax,
