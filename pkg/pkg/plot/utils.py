@@ -2,6 +2,7 @@ import matplotlib as mpl
 import numpy as np
 import seaborn as sns
 from matplotlib.colors import ListedColormap
+from matplotlib.patheffects import Normal, Stroke
 from matplotlib.transforms import Bbox
 
 
@@ -168,3 +169,31 @@ def bound_texts(texts, ax=None, xpad=0, ypad=0, **kwargs):
     height = y_max - y_min + 2 * ypad
     patch = mpl.patches.Rectangle(xy=xy, width=width, height=height, **kwargs)
     ax.add_patch(patch)
+
+
+def nice_text(
+    x,
+    y,
+    s,
+    ax=None,
+    color="black",
+    fontsize=None,
+    transform=None,
+    ha="left",
+    va="center",
+    linewidth=4,
+    linecolor="black",
+):
+    if transform is None:
+        transform = ax.transData
+    text = ax.text(
+        x,
+        y,
+        s,
+        color=color,
+        fontsize=fontsize,
+        transform=transform,
+        ha=ha,
+        va=va,
+    )
+    text.set_path_effects([Stroke(linewidth=linewidth, foreground=linecolor), Normal()])

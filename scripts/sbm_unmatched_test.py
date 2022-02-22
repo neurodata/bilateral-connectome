@@ -27,7 +27,7 @@ from pkg.plot import (
     compare_probability_row,
     heatmap_grouped,
     multicolor_text,
-    networkplot_grouped,
+    networkplot_simple,
     plot_pvalues,
     plot_stochastic_block_probabilities,
     set_theme,
@@ -171,7 +171,7 @@ palette = get_toy_palette()
 
 fig, axs = plt.subplots(2, 4, figsize=(16, 6))
 ax = axs[0, 0]
-networkplot_grouped(A1, node_data, palette=palette, ax=ax)
+networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
 ax.set_title("Group neurons\nby cell type", fontsize="medium")
 ax.set_ylabel(
     "Left",
@@ -183,7 +183,7 @@ ax.set_ylabel(
 )
 
 ax = axs[1, 0]
-networkplot_grouped(A2, node_data, palette=palette, ax=ax)
+networkplot_simple(A2, node_data, palette=palette, ax=ax, group=True)
 ax.set_ylabel(
     "Right",
     color=network_palette["Right"],
@@ -333,19 +333,7 @@ stat, pvalue, misc = stochastic_block_test(
 glue("uncorrected_pvalue", pvalue)
 n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
-print(f"{pvalue:.2g}")
-
-#%%
-min_stat, min_pvalue, min_misc = stochastic_block_test(
-    left_adj,
-    right_adj,
-    labels1=left_labels,
-    labels2=right_labels,
-    method="fisher",
-    combine_method="min",
-)
-glue("uncorrected_pvalue_min", pvalue)
-print(min_pvalue)
+print(pvalue)
 
 #%%
 

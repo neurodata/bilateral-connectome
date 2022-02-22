@@ -100,7 +100,7 @@ def plot_pvalues(
             pvalue_vmin = vars_dict["sbm_unmatched_test-pvalue_vmin"]
 
     if ax is None:
-        width_ratios = [0.5, 2, 10]
+        width_ratios = [0.5, 3, 10]
         fig, axs = plt.subplots(
             1,
             3,
@@ -142,7 +142,7 @@ def plot_pvalues(
     )
     ax.set(ylabel="Source group", xlabel="Target group")
     ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-    ax.set_title(r"Probability comparison", fontsize="x-large")
+    # ax.set_title(r"Probability comparison", fontsize="x-large")
 
     colors = im.get_children()[0].get_facecolors()
     significant = uncorrected_pvalues < hb_thresh

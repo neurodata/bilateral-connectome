@@ -24,4 +24,5 @@ from .utils import (
     multicolor_text,
     remove_shared_ax,
     shrink_axis,
+    nice_text,
 )

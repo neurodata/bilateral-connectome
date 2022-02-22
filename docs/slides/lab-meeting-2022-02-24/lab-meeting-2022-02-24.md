@@ -87,6 +87,8 @@ See [Michael Windings's talk](https://conference.neuromatch.io/abstract?edition=
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep (2021)
 </footer>
 
+---
+# For us, we're just going to consider this to be a network
 
 ---
 
@@ -189,6 +191,9 @@ section {
 - We know the direction of synapses, so network is *directed*.
 - For simplicity (for now), consider networks to be *unweighted*.
 - For simplicity (for now), consider the <span style='color: var(--left)'> left $\rightarrow$ left </span> and <span style='color: var(--right)'> right $\rightarrow$ right </span> (*ipsilateral*) connections only.
+- Not going to assume any nodes are matched
+
+![center h:250](../../../results/figs/unmatched_vs_matched/unmatched_vs_matched.svg)
 
 ---
 # Density-based testing: Erdos-Renyi (ER) model
@@ -341,8 +346,8 @@ table {
 | SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$    | Reject group connection probabilities the same           |
 | aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.0016$ | Reject above even after accounting for density           |
 | ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$    | Reject densities the same (w/o KCs)                      |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   |   $\approx 0.0027$    | Reject group connection probabilities the same (w/o KCs) |
-| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   |  $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)          |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.0027$ | Reject group connection probabilities the same (w/o KCs) |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   |  $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    |
 
 ---
 # More generally 
@@ -368,7 +373,9 @@ table {
 
 ## This work:
 [github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) 
-![w:600](./../../images/jb_example.png)
+![center w:400](./../../images/jb_example.png)
+[![h:50](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
+
 
 </div>
 </div>
