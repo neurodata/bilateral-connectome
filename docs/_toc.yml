@@ -26,5 +26,7 @@ parts:
     - file: references
   - caption: Slides
     chapters:
+    - url: https://docs.neurodata.io/bilateral-connectome/nmc.html
+      title: Lab meeting
     - url: https://docs.neurodata.io/bilateral-connectome/nmc.pdf
       title: neuromatch 4.0

@@ -31,6 +31,7 @@ jobs:
       run: |
         jupyter-book build docs
 
+    # NMC talk
     - name: Copy static HTML
       uses: canastro/copy-file-action@master
       with: 
@@ -42,6 +43,19 @@ jobs:
       with: 
         source: slides/nmc.pdf
         target: docs/_build/html/nmc.pdf
+
+    # Lab meeting talk
+    - name: Copy static HTML
+      uses: canastro/copy-file-action@master
+      with: 
+        source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.html
+        target: docs/_build/html/lab-meeting-2022-02-24.html
+      
+    - name: Copy static PDF
+      uses: canastro/copy-file-action@master
+      with: 
+        source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.pdf
+        target: docs/_build/html/lab-meeting-2022-02-24.pdf
 
     # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
