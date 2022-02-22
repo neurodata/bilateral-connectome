@@ -392,7 +392,7 @@ groups for each neuron, which we do not explore here.</p>
     <span class="n">compare_probability_row</span><span class="p">,</span>
     <span class="n">heatmap_grouped</span><span class="p">,</span>
     <span class="n">multicolor_text</span><span class="p">,</span>
-    <span class="n">networkplot_grouped</span><span class="p">,</span>
+    <span class="n">networkplot_simple</span><span class="p">,</span>
     <span class="n">plot_pvalues</span><span class="p">,</span>
     <span class="n">plot_stochastic_block_probabilities</span><span class="p">,</span>
     <span class="n">set_theme</span><span class="p">,</span>
@@ -528,7 +528,7 @@ the two hemispheres.</p>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">networkplot_grouped</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Group neurons</span><span class="se">\n</span><span class="s2">by cell type&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
     <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
@@ -540,7 +540,7 @@ the two hemispheres.</p>
 <span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">networkplot_grouped</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
     <span class="s2">&quot;Right&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
@@ -694,33 +694,12 @@ the two hemispheres.</p>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;uncorrected_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
 <span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_tests&quot;</span><span class="p">,</span> <span class="n">n_tests</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.6e-08
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_stat</span><span class="p">,</span> <span class="n">min_pvalue</span><span class="p">,</span> <span class="n">min_misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
-    <span class="n">left_adj</span><span class="p">,</span>
-    <span class="n">right_adj</span><span class="p">,</span>
-    <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
-    <span class="n">labels2</span><span class="o">=</span><span class="n">right_labels</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
-    <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;uncorrected_pvalue_min&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">min_pvalue</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.561229446423099e-08
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.561229383235394e-08
 </pre></div>
 </div>
 </div>
@@ -752,7 +731,7 @@ the two hemispheres.</p>
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-group-counts">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_8_0.png" src="_images/sbm_unmatched_test_8_0.png" />
+<img alt="_images/sbm_unmatched_test_7_0.png" src="_images/sbm_unmatched_test_7_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
 the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group-counts" title="Permalink to this image">¶</a></p>
@@ -808,7 +787,7 @@ Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</
 <span class="pasted-text">3.56e-08</span>.</p>
 <div class="figure align-default" id="fig-sbm-unmatched-test-sbm-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_10_0.png" src="_images/sbm_unmatched_test_10_0.png" />
+<img alt="_images/sbm_unmatched_test_9_0.png" src="_images/sbm_unmatched_test_9_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities for the left
@@ -958,7 +937,7 @@ right.</p>
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-probs-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_14_0.png" src="_images/sbm_unmatched_test_14_0.png" />
+<img alt="_images/sbm_unmatched_test_13_0.png" src="_images/sbm_unmatched_test_13_0.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
 <strong>A)</strong> The estimated group-to-group connection probabilities (<span class="math notranslate nohighlight">\(\hat{p}\)</span>), sorted by
@@ -1060,7 +1039,7 @@ apparent here, as there are more negative than positive values.</span><a class="
 </div>
 <div class="figure align-default" id="fig-sbm-unmatched-test-significant-p-comparison">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_16_1.png" src="_images/sbm_unmatched_test_16_1.png" />
+<img alt="_images/sbm_unmatched_test_15_1.png" src="_images/sbm_unmatched_test_15_1.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
 which were significantly different in
