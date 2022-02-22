@@ -4,11 +4,16 @@ import seaborn as sns
 from .bound import bound_points
 
 
-def networkplot_simple(A, node_data, palette=None, ax=None, group=False):
-    g = nx.from_numpy_array(A)
-    pos = nx.kamada_kawai_layout(g)
-    node_data["x"] = [pos[node][0] for node in node_data.index]
-    node_data["y"] = [pos[node][1] for node in node_data.index]
+def networkplot_simple(
+    A, node_data, palette=None, ax=None, group=False, edge_kws=None, compute_layout=True
+):
+    if edge_kws is None:
+        edge_kws = dict(color="black")
+    if compute_layout:
+        g = nx.from_numpy_array(A)
+        pos = nx.kamada_kawai_layout(g)
+        node_data["x"] = [pos[node][0] for node in node_data.index]
+        node_data["y"] = [pos[node][1] for node in node_data.index]
     if group:
         node_hue = "labels"
     else:
@@ -26,7 +31,7 @@ def networkplot_simple(A, node_data, palette=None, ax=None, group=False):
             linewidth=1, edgecolor="black", color=sns.color_palette("Set2")[2]
         ),
         node_alpha=1.0,
-        edge_kws=dict(color="black"),
+        edge_kws=edge_kws,
         ax=ax,
     )
     if group:

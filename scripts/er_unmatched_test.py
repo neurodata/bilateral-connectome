@@ -67,17 +67,29 @@
 #%%
 import datetime
 import time
-from matplotlib import axes
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from giskard.plot import merge_axes
+from matplotlib import axes
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
-from pkg.plot import set_theme
+from pkg.plot import (
+    bound_points,
+    bound_texts,
+    make_sequential_colormap,
+    multicolor_text,
+    networkplot_simple,
+    set_theme,
+)
 from pkg.stats import erdos_renyi_test
+from pkg.utils import sample_toy_networks
 from statsmodels.stats.proportion import proportion_confint
 
-DISPLAY_FIGS = False
+DISPLAY_FIGS = True
 
 FILENAME = "er_unmatched_test"
 
@@ -110,27 +122,16 @@ right_adj, right_nodes = load_unmatched("right")
 
 #%%
 
-from pkg.utils import sample_toy_networks
-from pkg.plot import networkplot_simple
-from pkg.plot import bound_points
-import numpy as np
-import seaborn as sns
 
 A1, A2, node_data = sample_toy_networks()
 node_data["labels"] = np.ones(len(node_data), dtype=int)
 palette = {1: sns.color_palette("Set2")[2]}
-fig, axs = plt.subplots(2, 2, figsize=(6, 6))
+fig, axs = plt.subplots(2, 3, figsize=(9, 6))
 
 ax = axs[0, 0]
 networkplot_simple(A1, node_data, ax=ax)
-bound_points(
-    node_data[["x", "y"]].values,
-    ax=ax,
-    point_data=node_data,
-    label="labels",
-    palette=palette,
-)
-ax.set_title("Compute global\nconnection density")
+
+ax.set_title("Compute global\nconnection density", x=1.1)
 ax.set_ylabel(
     "Left",
     color=network_palette["Left"],
@@ -144,13 +145,9 @@ ax = axs[1, 0]
 
 ax = axs[1, 0]
 networkplot_simple(A2, node_data, ax=ax)
-bound_points(
-    node_data[["x", "y"]].values,
-    ax=ax,
-    point_data=node_data,
-    label="labels",
-    palette=palette,
-)
+# networkplot_simple(1 - A2, node_data, ax=ax, compute_layout=False)
+
+
 ax.set_ylabel(
     "Right",
     color=network_palette["Right"],
@@ -162,44 +159,31 @@ ax.set_ylabel(
 
 stat, pvalue, misc = erdos_renyi_test(A1, A2)
 
-from giskard.plot import merge_axes
-import matplotlib as mpl
-from pkg.plot import make_sequential_colormap
-from pkg.plot import multicolor_text
-from pkg.plot import bound_texts
-
 ax = merge_axes(fig, axs, rows=None, cols=1)
+
+ax.text(
+    0.5, 0.5, r"$\frac{\# \ edges}{\# \ potential \ edges}$", ha="center", va="center"
+)
+ax.axis("off")
+
+
+ax = merge_axes(fig, axs, rows=None, cols=2)
+
 ax.set_title("Compare ER\nmodels")
 ax.axis("off")
-ax.set(xlim=(0, 1), ylim=(0.18, 1))
-ax.set_zorder(100)
+ax.set(xlim=(-0.5, 2), ylim=(0, 1))
 
 # compare_probability_row(0, 0, Bhat1, Bhat2, 0.5, cmap=cmap)
-cmap = make_sequential_colormap("Blues")
 
 y = 0.8
 x3 = 0.2
 
 size = 0.1
 phat = misc["probability1"]
-color = cmap(phat)
-patch = mpl.patches.Rectangle(
-    (x3, y - size / 4), width=size * 1.4, height=size / 2, facecolor=color
-)
-ax.add_patch(patch)
-
-text = ax.text(0.52, y, "?", ha="center", va="center")
-text.set_bbox(dict(facecolor="white", edgecolor="white"))
 
 x4 = 0.7075
 phat = misc["probability2"]
-color = cmap(phat)
-patch = mpl.patches.Rectangle(
-    (x4, y - size / 4), width=size * 1.4, height=size / 2, facecolor=color
-)
-ax.add_patch(patch)
 
-ax.plot([x3, x4], [y, y], linewidth=2.5, linestyle=":", color="grey", zorder=-1)
 
 y = 0.55
 texts = multicolor_text(
@@ -207,7 +191,7 @@ texts = multicolor_text(
     y,
     [r"$H_0$:", r"$p^{(L)}$", r"$=$", r"$p^{(R)}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="large",
+    fontsize="medium",
     ax=ax,
 )
 y = y - 0.1
@@ -216,7 +200,7 @@ texts += multicolor_text(
     y,
     [r"$H_A$:", r"$p^{(L)}$", r"$\neq$", r"$p^{(R)}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="large",
+    fontsize="medium",
     ax=ax,
 )
 bound_texts(
@@ -227,18 +211,17 @@ bound_texts(
     facecolor="white",
     edgecolor="lightgrey",
 )
-ax.set(xlim=(-0.1, 1.1))
-ax.annotate(
-    "",
-    xy=(0.52, 0.75),
-    xytext=(0.5, 0.63),
-    arrowprops=dict(
-        arrowstyle="simple",
-        facecolor="black",
-    ),
-)
+
 
 gluefig("er_methods", fig)
+
+#%%
+# from graspologic.plot import heatmap
+
+# heatmap(A1, cbar=False)
+
+#%%
+
 
 #%%
 stat, pvalue, misc = erdos_renyi_test(left_adj, right_adj)

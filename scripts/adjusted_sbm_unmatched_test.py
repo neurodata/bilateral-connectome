@@ -72,7 +72,7 @@ palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
 
 
 fig, axs = plt.subplots(
-    1, 4, figsize=(13, 4), gridspec_kw=dict(width_ratios=[1, 0.5, 0.5, 1])
+    1, 5, figsize=(13, 4), gridspec_kw=dict(width_ratios=[1, 0.01, 0.5, 0.5, 1])
 )
 ax = axs[0]
 node_data = networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
@@ -110,15 +110,19 @@ ax.set_ylabel(
     labelpad=10,
 )
 
+fig.text(0.35, 0.55, 'OR', fontweight='bold', fontsize='large', va='center')
 
 ax = axs[1]
+ax.axis('off')
+
+ax = axs[2]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
-top_ax.set_title("Adjust connection probabilities", fontsize="medium", x=1.2, y=6)
+top_ax.set_title("Adjust connection probabilities", fontsize="medium", x=1.2, y=8)
 
 
-ax = axs[2]
+ax = axs[3]
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
 
@@ -134,7 +138,7 @@ ax.annotate(
     zorder=1,
 )
 
-ax = axs[3]
+ax = axs[4]
 ax.set_title("Rerun SBM testing")
 ax.axis("off")
 
