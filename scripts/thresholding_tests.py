@@ -87,19 +87,15 @@ for threshold in tqdm(thresholds):
 
     for adjusted in [False, True]:
         if adjusted:
-            adjustment_ratio = compute_density_adjustment(
-                left_adj_thresh, right_adj_thresh
-            )
-            method = "SBM"
-        else:
-            adjustment_ratio = 1
             method = "aSBM"
+        else:
+            method = "SBM"
         stat, pvalue, misc = stochastic_block_test(
             left_adj_thresh,
             right_adj_thresh,
             left_labels,
             right_labels,
-            null_odds=adjustment_ratio,
+            density_adjustment=adjusted,
         )
         row = {
             "threshold": threshold,
@@ -154,19 +150,15 @@ for threshold in tqdm(thresholds):
 
     for adjusted in [False, True]:
         if adjusted:
-            adjustment_ratio = compute_density_adjustment(
-                left_adj_thresh, right_adj_thresh
-            )
-            method = "SBM"
-        else:
-            adjustment_ratio = 1
             method = "aSBM"
+        else:
+            method = "SBM"
         stat, pvalue, misc = stochastic_block_test(
             left_adj_thresh,
             right_adj_thresh,
             left_labels,
             right_labels,
-            null_odds=adjustment_ratio,
+            density_adjustment=adjusted,
         )
         row = {
             "threshold": threshold,

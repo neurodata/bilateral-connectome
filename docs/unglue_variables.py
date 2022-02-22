@@ -23,8 +23,10 @@ for notebook_path in notebooks:
             outputs = cell.get("outputs")
             for output in outputs:
                 if "data" in output:
-                    if (image_key not in output["data"]) and (
-                        "image/svg+xml" not in output["data"]
+                    if (
+                        (image_key not in output["data"])
+                        and ("image/svg+xml" not in output["data"])
+                        and ("image/png" not in output["data"])
                     ):
                         value = output["data"][data_key]
                         try:
