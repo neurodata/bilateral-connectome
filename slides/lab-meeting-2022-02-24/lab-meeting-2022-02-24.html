@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome &#8212; Bilateral Connectome</title>
+    <title>Is the maggot brain symmetric? A statistical analysis of bilateral symmetry in an insect connectome &#8212; Bilateral Connectome</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -305,7 +305,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome
+   Is the maggot brain symmetric? A statistical analysis of bilateral symmetry in an insect connectome
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -323,6 +323,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#electron-microscopy-connectomics">
    Electron microscopy connectomics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-are-we-talking-about-maggot-brain">
+   Why are we talking about maggot brain?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -414,6 +419,31 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#we-detect-a-difference-in-group-to-group-connection-probabilities">
    We detect a difference in group-to-group connection probabilities
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-massive-aside">
+   A massive aside
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combine-pvalues">
+   Distribution under the null for combine pvalues
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#power-for-combine-p-values">
+   Power for combine p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
+   Relative power (Fisher’s vs Tippett’s)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#back-to-the-main-thread">
+   Back to the main thread…
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -500,7 +530,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome</h1>
+                <h1>Is the maggot brain symmetric? A statistical analysis of bilateral symmetry in an insect connectome</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -512,7 +542,7 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome
+   Is the maggot brain symmetric? A statistical analysis of bilateral symmetry in an insect connectome
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -530,6 +560,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#electron-microscopy-connectomics">
    Electron microscopy connectomics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-are-we-talking-about-maggot-brain">
+   Why are we talking about maggot brain?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -621,6 +656,31 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#we-detect-a-difference-in-group-to-group-connection-probabilities">
    We detect a difference in group-to-group connection probabilities
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-massive-aside">
+   A massive aside
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combine-pvalues">
+   Distribution under the null for combine pvalues
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#power-for-combine-p-values">
+   Power for combine p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
+   Relative power (Fisher’s vs Tippett’s)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#back-to-the-main-thread">
+   Back to the main thread…
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -711,8 +771,9 @@ p {
     font-size: 24px;
 }
 </style>
-<div class="tex2jax_ignore mathjax_ignore section" id="maggot-brain-mirror-image-a-statistical-analysis-of-bilateral-symmetry-in-an-insect-brain-connectome">
-<h1>Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome<a class="headerlink" href="#maggot-brain-mirror-image-a-statistical-analysis-of-bilateral-symmetry-in-an-insect-brain-connectome" title="Permalink to this headline">¶</a></h1>
+<!-- # Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome -->
+<div class="tex2jax_ignore mathjax_ignore section" id="is-the-maggot-brain-symmetric-a-statistical-analysis-of-bilateral-symmetry-in-an-insect-connectome">
+<h1>Is the maggot brain symmetric? A statistical analysis of bilateral symmetry in an insect connectome<a class="headerlink" href="#is-the-maggot-brain-symmetric-a-statistical-analysis-of-bilateral-symmetry-in-an-insect-connectome" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="benjamin-d-pedigo">
 <h2>Benjamin D. Pedigo<a class="headerlink" href="#benjamin-d-pedigo" title="Permalink to this headline">¶</a></h2>
 <p><em>Johns Hopkins University</em>
@@ -741,6 +802,11 @@ p {
 <footer>
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep (2021)
 </footer>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="why-are-we-talking-about-maggot-brain">
+<h1>Why are we talking about maggot brain?<a class="headerlink" href="#why-are-we-talking-about-maggot-brain" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center h:500" src="../../_images/maggot-brain.jpg" /></p>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="drosophila-larva-aka-a-maggot-brain-connectome">
@@ -914,6 +980,41 @@ section {
 </ul>
 </div>
 </div>
+<hr class="docutils" />
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="a-massive-aside">
+<h1>A massive aside<a class="headerlink" href="#a-massive-aside" title="Permalink to this headline">¶</a></h1>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="distribution-under-the-null-for-combine-pvalues">
+<h1>Distribution under the null for combine pvalues<a class="headerlink" href="#distribution-under-the-null-for-combine-pvalues" title="Permalink to this headline">¶</a></h1>
+<p><img alt="bg right h:600" src="../results/figs/revamp_sbm_methods_sim/null_distributions.svg" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="power-for-combine-p-values">
+<h1>Power for combine p-values<a class="headerlink" href="#power-for-combine-p-values" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center h:500" src="../results/figs/revamp_sbm_methods_sim/perturbation_pvalues_lineplots.svg" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="relative-power-fisher-s-vs-tippett-s">
+<h1>Relative power (Fisher’s vs Tippett’s)<a class="headerlink" href="#relative-power-fisher-s-vs-tippett-s" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center" src="../results/figs/revamp_sbm_methods_sim/relative_power.svg" /></p>
+<hr class="docutils" />
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="back-to-the-main-thread">
+<h1>Back to the main thread…<a class="headerlink" href="#back-to-the-main-thread" title="Permalink to this headline">¶</a></h1>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="should-we-be-surprised">

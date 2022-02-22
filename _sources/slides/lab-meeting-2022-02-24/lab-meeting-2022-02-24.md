@@ -34,7 +34,9 @@ p {
 }
 </style>
 
-# Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome
+<!-- # Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome -->
+
+# Is the maggot brain symmetric? A statistical analysis of bilateral symmetry in an insect connectome
 
 ### Benjamin D. Pedigo
 
@@ -60,6 +62,10 @@ _[NeuroData lab](https://neurodata.io/)_
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep (2021)
 </footer>
 
+---
+# Why are we talking about maggot brain? 
+
+![center h:500](./../../images/maggot-brain.jpg)
 
 ---
 
@@ -259,6 +265,48 @@ section {
 
 </div>
 </div>
+
+--- 
+
+
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+# A massive aside
+
+---
+
+# Distribution under the null for combine pvalues
+
+![bg right h:600](./../../../results/figs/revamp_sbm_methods_sim/null_distributions.svg)
+
+---
+# Power for combine p-values
+
+![center h:500](./../../../results/figs/revamp_sbm_methods_sim/perturbation_pvalues_lineplots.svg)
+
+---
+
+# Relative power (Fisher's vs Tippett's)
+
+![center](./../../../results/figs/revamp_sbm_methods_sim/relative_power.svg)
+
+
+--- 
+
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+# Back to the main thread...
+
 
 ---
 # Should we be surprised?
