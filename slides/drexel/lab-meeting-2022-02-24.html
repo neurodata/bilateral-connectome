@@ -47,15 +47,14 @@
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="shortcut icon" href="../../_static/nd_logo_small.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -322,12 +321,11 @@
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#larval-drosophila-brain-connectome">
-   Larval
+  <a class="reference internal nav-link" href="#drosophila-larva-aka-a-maggot-brain-connectome">
    <em>
     Drosophila
    </em>
-   brain connectome
+   larva (AKA a maggot) brain connectome
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -525,12 +523,11 @@
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#larval-drosophila-brain-connectome">
-   Larval
+  <a class="reference internal nav-link" href="#drosophila-larva-aka-a-maggot-brain-connectome">
    <em>
     Drosophila
    </em>
-   brain connectome
+   larva (AKA a maggot) brain connectome
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -725,14 +722,14 @@ p {
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="electron-microscopy-connectomics">
 <h1>Electron microscopy connectomics<a class="headerlink" href="#electron-microscopy-connectomics" title="Permalink to this headline">¶</a></h1>
-<p><img alt="center w:1000" src="images/FigureS1-reconstruction.png" /></p>
+<p><img alt="center w:1000" src="../../_images/FigureS1-reconstruction.png" /></p>
 <footer>
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep (2021)
 </footer>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="larval-drosophila-brain-connectome">
-<h1>Larval <em>Drosophila</em> brain connectome<a class="headerlink" href="#larval-drosophila-brain-connectome" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="drosophila-larva-aka-a-maggot-brain-connectome">
+<h1><em>Drosophila</em> larva (AKA a maggot) brain connectome<a class="headerlink" href="#drosophila-larva-aka-a-maggot-brain-connectome" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
 <p>See <a class="reference external" href="https://conference.neuromatch.io/abstract?edition=2021-4&amp;submission_id=recVeh4RZFFRAQnIo">Michael Windings’s talk</a></p>
@@ -743,7 +740,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </ul>
 </div>
 <div>
-<p><img alt="" src="images/Figure1-brain-render.png" /></p>
+<p><img alt="" src="../../_images/Figure1-brain-render.png" /></p>
 <!-- ![w:600](./../../../results/figs/plot_layouts/whole-network-layout.png) -->
 </div>
 </div>
@@ -776,7 +773,7 @@ section {
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="connectomes-across-development">
 <h1>Connectomes across development<a class="headerlink" href="#connectomes-across-development" title="Permalink to this headline">¶</a></h1>
-<p><img alt="center h:475" src="images/witvliet-fig1.png" /></p>
+<p><img alt="center h:475" src="../../_images/witvliet-fig1.png" /></p>
 <footer>
 <p>Witvliet et al. <em>Nature</em> (2021)</p>
 </footer>
@@ -784,7 +781,7 @@ section {
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="connectomes-across-evolution-cortex">
 <h1>Connectomes across evolution, cortex<a class="headerlink" href="#connectomes-across-evolution-cortex" title="Permalink to this headline">¶</a></h1>
-<p><img alt="center w:550" src="images/bartsotti-fig2.png" /></p>
+<p><img alt="center w:550" src="../../_images/bartsotti-fig2.png" /></p>
 <footer>
 <p>Bartsotti + Correia et al. <em>Curr. Op. Neurobiology</em> (2021)</p>
 </footer>
@@ -853,7 +850,7 @@ section {
   $H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}$ -->
 <!-- </div>
 <div> -->
-<p><img alt="center h:500" src="../results/figs/er_unmatched_test/er_methods.png" /></p>
+<p><img alt="center h:500" src="../results/figs/er_unmatched_test/er_methods.svg" /></p>
 <!-- </div>
 </div> -->
 </div>
@@ -862,11 +859,11 @@ section {
 <h1>We detect a difference in density<a class="headerlink" href="#we-detect-a-difference-in-density" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
-<p><img alt="" src="../results/figs/er_unmatched_test/er-density.png" /></p>
+<p><img alt="" src="../results/figs/er_unmatched_test/er_density.svg" /></p>
 </div>
 <div>
 <ul class="simple">
-<li><p>p-value &lt; <span class="math notranslate nohighlight">\(10^{-23}\)</span></p></li>
+<li><p>p-value &lt; <span class="math notranslate nohighlight">\(10^{-22}\)</span></p></li>
 </ul>
 </div>
 </div>
@@ -879,7 +876,7 @@ section {
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="connection-probabilities-between-groups">
 <h1>Connection probabilities between groups<a class="headerlink" href="#connection-probabilities-between-groups" title="Permalink to this headline">¶</a></h1>
-<p><img alt="center h:200" src="images/Figure1-cell-classes.png" /></p>
+<p><img alt="center h:200" src="../../_images/Figure1-cell-classes.png" /></p>
 <p><img alt="center h:300" src="../results/figs/sbm_unmatched_test/sbm_uncorrected.svg" /></p>
 </div>
 <hr class="docutils" />
@@ -944,8 +941,8 @@ where <span class="math notranslate nohighlight">\(c\)</span> is a density-adjus
 </div>
 <div>
 <ul class="simple">
-<li><p>ER test: <span class="math notranslate nohighlight">\(p &lt;10^{-27}\)</span></p></li>
-<li><p>SBM test: <span class="math notranslate nohighlight">\(p &lt;...\)</span></p></li>
+<li><p>ER test: <span class="math notranslate nohighlight">\(p &lt;10^{-26}\)</span></p></li>
+<li><p>SBM test: <span class="math notranslate nohighlight">\(p \approx 0.0027\)</span></p></li>
 <li><p>Adjusted SBM test: <span class="math notranslate nohighlight">\(p \approx 0.43\)</span></p></li>
 </ul>
 </div>
@@ -1001,20 +998,20 @@ table {
 <tr class="row-odd"><td><p>ER</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
 <td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-27}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-26}\)</span></p></td>
 <td><p>Reject densities the same (w/o KCs)</p></td>
 </tr>
 <tr class="row-even"><td><p>SBM</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
 <td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt; 10^{-4}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.0027\)</span></p></td>
 <td><p>Reject group connection probabilities the same (w/o KCs)</p></td>
 </tr>
 <tr class="row-odd"><td><p>aSBM</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
 <td class="text-align:center"><p>-</p></td>
 <td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.43\)</span></p></td>
-<td><p>Don’t reject after density adjustment (w/o KCs)</p></td>
+<td><p>Don’t reject above after density adjustment (w/o KCs)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1033,7 +1030,7 @@ table {
 <div class="section" id="graspologic">
 <h2>graspologic:<a class="headerlink" href="#graspologic" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/microsoft/graspologic">github.com/microsoft/graspologic</a></p>
-<p><img alt="w:450" src="images/graspologic_svg.svg" /></p>
+<p><img alt="w:450" src="../../_images/graspologic_svg.svg" /></p>
 <p><a class="reference external" href="https://pepy.tech/project/graspologic"><img alt="h:50" src="https://pepy.tech/badge/graspologic" /></a>  <a class="reference external" href="https://github.com/microsoft/graspologic"><img alt="h:50" src="https://img.shields.io/github/stars/microsoft/graspologic?style=social" /></a>  <a class="reference external" href="https://github.com/microsoft/graspologic/graphs/contributors"><img alt="h:50" src="https://img.shields.io/github/contributors/microsoft/graspologic" /></a>  <a class="reference external" href="https://opensource.org/licenses/MIT"><img alt="h:50" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a></p>
 </div>
 <div>
@@ -1041,7 +1038,7 @@ table {
 <div class="section" id="this-work">
 <h2>This work:<a class="headerlink" href="#this-work" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/neurodata/bilateral-connectome">github.com/neurodata/bilateral-connectome</a>
-<img alt="w:600" src="images/jb_example.png" /></p>
+<img alt="w:600" src="../../_images/jb_example.png" /></p>
 </div>
 </div>
 <footer>Chung, Pedigo et al. JMLR (2019)</footer>
