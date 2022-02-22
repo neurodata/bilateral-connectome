@@ -63,7 +63,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 
 ---
 
-# Larval _Drosophila_ brain connectome
+# _Drosophila_ larva (AKA a maggot) brain connectome
 
 
 <div class="columns">
@@ -204,7 +204,7 @@ section {
 <!-- </div>
 <div> -->
 
-![center h:500](./../../../results/figs/er_unmatched_test/er_methods.png)
+![center h:500](./../../../results/figs/er_unmatched_test/er_methods.svg)
 
 <!-- </div>
 </div> -->
@@ -215,12 +215,12 @@ section {
 <div class="columns">
 <div>
 
-![](../../../results/figs/er_unmatched_test/er-density.png)
+![](../../../results/figs/er_unmatched_test/er_density.svg)
 
 </div>
 <div>
 
-- p-value < $10^{-23}$
+- p-value < $10^{-22}$
 
 
 </div>
@@ -307,8 +307,8 @@ section {
 </div>
 <div>
 
-- ER test: $p <10^{-27}$
-- SBM test: $p <...$
+- ER test: $p <10^{-26}$
+- SBM test: $p \approx 0.0027$
 - Adjusted SBM test: $p \approx 0.43$
 
 </div>
@@ -335,14 +335,14 @@ table {
 }
 </style>
 
-| Model | $H_0$ (vs. $H_A \neq$)                                             |   KC     | p-value | Interpretation                                     |
-| ----- | ------------------------------------------------------------------ | :---: |:-----------: | -------------------------------------------------- |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   | + |  $<10^{-23}$  | Reject densities the same                          |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | + | $< 10^{-7}$  | Reject group connection probabilities the same |
-| aSBM   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | + | $\approx 0.0016$ | Reject above even after accounting for density  |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   | - |  $<10^{-27}$  | Reject densities the same (w/o KCs)                        |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | - | $< 10^{-4}$  | Reject group connection probabilities the same (w/o KCs) |
-| aSBM   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | - | $\approx 0.43$ | Don't reject after density adjustment (w/o KCs)  |
+| Model | $H_0$ (vs. $H_A \neq$)                                             |  KC   |     p-value      | Interpretation                                           |
+| ----- | ------------------------------------------------------------------ | :---: | :--------------: | -------------------------------------------------------- |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$    | Reject densities the same                                |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$    | Reject group connection probabilities the same           |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.0016$ | Reject above even after accounting for density           |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$    | Reject densities the same (w/o KCs)                      |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   |   $\approx 0.0027$    | Reject group connection probabilities the same (w/o KCs) |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   |  $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)          |
 
 ---
 # More generally 

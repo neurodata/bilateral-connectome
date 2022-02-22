@@ -94,7 +94,7 @@ def plot_pvalues(
     if pvalue_vmin is None:
         import json
 
-        vars_file = "bilateral-connectome/docs/glued_variables.json"
+        vars_file = "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/docs/glued_variables.json"
         with open(vars_file, "r") as f:
             vars_dict = json.load(f)
             pvalue_vmin = vars_dict["sbm_unmatched_test-pvalue_vmin"]
