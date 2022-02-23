@@ -74,6 +74,8 @@ palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
 fig, axs = plt.subplots(
     1, 5, figsize=(13, 4), gridspec_kw=dict(width_ratios=[1, 0.01, 0.5, 0.5, 1])
 )
+
+
 ax = axs[0]
 node_data = networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
 
@@ -110,21 +112,54 @@ ax.set_ylabel(
     labelpad=10,
 )
 
-fig.text(0.35, 0.55, 'OR', fontweight='bold', fontsize='large', va='center')
+fig.text(0.35, 0.55, "OR", fontweight="bold", fontsize="large", va="center")
+# plt.annotate("", (0.35, 0.55), xytext=(0.35, 1), arrowprops=dict(arrowstyle="-"))
+
+ytop = 1.05
+ybottom = 0.11
+xleft = 0.05
+xright = 0.68
+border_color = "whitesmoke"
+line1 = mpl.lines.Line2D(
+    (0.37, 0.37), (0.61, ytop), transform=fig.transFigure, color="black"
+)
+line2 = mpl.lines.Line2D(
+    (0.37, 0.37), (ybottom, 0.5), transform=fig.transFigure, color="black"
+)
+
+left = mpl.lines.Line2D(
+    (xleft, xleft), (ybottom, ytop), transform=fig.transFigure, color=border_color
+)
+right = mpl.lines.Line2D(
+    (xright, xright), (ybottom, ytop), transform=fig.transFigure, color=border_color
+)
+top = mpl.lines.Line2D(
+    (xleft, xright), (ytop, ytop), transform=fig.transFigure, color=border_color
+)
+bottom = mpl.lines.Line2D(
+    (xleft, xright), (ybottom, ybottom), transform=fig.transFigure, color=border_color
+)
+
+fig.lines = (line1, line2, left, right, top, bottom)
 
 ax = axs[1]
-ax.axis('off')
+ax.axis("off")
 
 ax = axs[2]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
-top_ax.set_title("Adjust connection probabilities", fontsize="medium", x=1.2, y=8)
+top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
+ax.set_title(
+    "Adjust connection probabilities\n(analytic)", fontsize="medium", x=1.2, y=1.63
+)
 
 
 ax = axs[3]
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
+top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
+top_ax.text(0.65, -1.3, r"$c$")
 
 ax.annotate(
     "",
@@ -132,6 +167,7 @@ ax.annotate(
     xytext=(-1, 1.5),
     arrowprops=dict(
         arrowstyle="simple",
+        shrinkA=7,
         shrinkB=9,
         facecolor="black",
     ),
@@ -141,6 +177,11 @@ ax.annotate(
 ax = axs[4]
 ax.set_title("Rerun SBM testing")
 ax.axis("off")
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
+from pkg.plot import draw_hypothesis_box
+
+draw_hypothesis_box("asbm", 0.1, 0.65, ax=ax)
 
 fig.set_facecolor("w")
 
@@ -244,7 +285,7 @@ median_resample_pvalue = np.median(resample_results["pvalue"])
 colors = sns.color_palette("Set2")
 
 
-color = colors[3]
+color = colors[2]
 ax.axvline(median_resample_pvalue, color=color, linewidth=3)
 # ax.text(
 #     median_resample_pvalue - 0.0025,

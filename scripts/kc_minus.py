@@ -4,11 +4,14 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+from giskard.plot import merge_axes
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
-from pkg.plot import plot_density, plot_pvalues, set_theme
+from pkg.plot import networkplot_simple, plot_density, plot_pvalues, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
+from pkg.utils import get_toy_palette, sample_toy_networks
+
 
 DISPLAY_FIGS = True
 
@@ -61,30 +64,52 @@ sub_right_labels = sub_right_nodes[GROUP_KEY]
 #%% [markdown]
 # ## Methods
 
-from pkg.utils import sample_toy_networks, get_toy_palette
-from pkg.plot import networkplot_simple
-
 
 A1, A2, node_data = sample_toy_networks()
 palette = get_toy_palette()
 
-fig, axs = plt.subplots(2, 2, figsize=(8, 8))
+fig, axs = plt.subplots(2, 2, figsize=(7, 6), gridspec_kw=dict(width_ratios=[1, 1.5]))
 
 ax = axs[0, 0]
 networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
 x, y = node_data[node_data["labels"] == 1][["x", "y"]].mean()
 ax.text(x, y, "X", color="darkred", fontsize=80, va="center", ha="center")
 ax.set(title="Remove Kenyon cells")
+ax.set_ylabel(
+    "Left",
+    color=network_palette["Left"],
+    size="large",
+    rotation=0,
+    ha="right",
+    labelpad=10,
+)
 
 ax = axs[1, 0]
 networkplot_simple(A2, node_data, palette=palette, ax=ax, group=True)
 x, y = node_data[node_data["labels"] == 1][["x", "y"]].mean()
 ax.text(x, y, "X", color="darkred", fontsize=80, va="center", ha="center")
+ax.set_ylabel(
+    "Right",
+    color=network_palette["Right"],
+    size="large",
+    rotation=0,
+    ha="right",
+    labelpad=10,
+)
 
-from giskard.plot import merge_axes
+from pkg.plot import draw_hypothesis_box
 
 ax = merge_axes(fig, axs, rows=None, cols=1)
-# ax.axis("off")
+ax.axis("off")
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
+
+kwargs = dict(yskip=0.07, ax=ax, title=True)
+draw_hypothesis_box("er", 0.15, 0.8, **kwargs)
+draw_hypothesis_box("sbm", 0.15, 0.5, **kwargs)
+draw_hypothesis_box("asbm", 0.15, 0.2, **kwargs)
+
+
 ax.set_title("Re-run all tests")
 plt.tight_layout()
 
@@ -148,9 +173,10 @@ gluefig("box", fig)
 
 #%%
 
-from svgutils.compose import SVG, Figure, Panel, Text
-from pkg.io import FIG_PATH
 import ast
+
+from pkg.io import FIG_PATH
+from svgutils.compose import SVG, Figure, Panel, Text
 
 total_width = 1000
 total_height = 1500

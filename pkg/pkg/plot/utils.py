@@ -169,6 +169,7 @@ def bound_texts(texts, ax=None, xpad=0, ypad=0, **kwargs):
     height = y_max - y_min + 2 * ypad
     patch = mpl.patches.Rectangle(xy=xy, width=width, height=height, **kwargs)
     ax.add_patch(patch)
+    return patch
 
 
 def nice_text(
@@ -197,5 +198,3 @@ def nice_text(
         va=va,
     )
     text.set_path_effects([Stroke(linewidth=linewidth, foreground=linecolor), Normal()])
-
-
