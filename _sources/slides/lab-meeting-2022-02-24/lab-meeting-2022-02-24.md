@@ -333,12 +333,12 @@ section {
 ![center](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
 ---
-# Even with an adjustment, still detect a difference
+# Even with density adjustment, we detect a difference
 
 <div class="columns">
 <div>
 
-![center](./../../../overleaf/figs/adjusted_sbm_unmatched_test/resampled_pvalues_distribution.svg)
+![center](./../../../results/figs/adjusted_sbm_unmatched_test/resampled_pvalues_distribution.svg)
 
 </div>
 <div>
@@ -377,6 +377,11 @@ section {
 </style>
 
 # But wait, there's more (tests one could run)!
+
+---
+# Latent distribution test (RDPG)
+
+![center w:600](./../../../results/figs/rdpg_unmatched_test/pvalue_dimension_matrix.svg)
 
 ---
 # To sum up...
