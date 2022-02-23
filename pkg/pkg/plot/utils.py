@@ -197,3 +197,5 @@ def nice_text(
         va=va,
     )
     text.set_path_effects([Stroke(linewidth=linewidth, foreground=linecolor), Normal()])
+
+

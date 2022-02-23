@@ -181,8 +181,10 @@ def plot_pvalues(
     return fig, axs
 
 
-def heatmap_grouped(Bhat, labels, palette=None, ax=None, pad=0, color_size="5%"):
-    heatmap(Bhat, ax=ax, cmap="Blues", vmin=0, vmax=1, center=None, cbar=False)
+def heatmap_grouped(
+    Bhat, labels, palette=None, ax=None, pad=0, color_size="5%", vmin=0, vmax=1, cmap='Blues', center=None
+):
+    heatmap(Bhat, ax=ax, cmap=cmap, vmin=vmin, vmax=vmax, center=center, cbar=False)
     divider = make_axes_locatable(ax)
     top_ax = divider.append_axes("top", size=color_size, pad=pad, sharex=ax)
     remove_shared_ax(top_ax)

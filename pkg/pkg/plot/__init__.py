@@ -26,3 +26,4 @@ from .utils import (
     shrink_axis,
     nice_text,
 )
+from .hypotheses import draw_hypothesis_box

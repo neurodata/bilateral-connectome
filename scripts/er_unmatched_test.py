@@ -173,34 +173,26 @@ ax.set_title("Compare ER\nmodels")
 ax.axis("off")
 ax.set(xlim=(-0.5, 2), ylim=(0, 1))
 
-# compare_probability_row(0, 0, Bhat1, Bhat2, 0.5, cmap=cmap)
 
 y = 0.8
-x3 = 0.2
-
-size = 0.1
-phat = misc["probability1"]
-
-x4 = 0.7075
-phat = misc["probability2"]
-
+x3 = 0
 
 y = 0.55
 texts = multicolor_text(
-    0.0,
+    -0.4,
     y,
     [r"$H_0$:", r"$p^{(L)}$", r"$=$", r"$p^{(R)}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="medium",
+    fontsize="small",
     ax=ax,
 )
 y = y - 0.1
 texts += multicolor_text(
-    0.0,
+    -0.4,
     y,
     [r"$H_A$:", r"$p^{(L)}$", r"$\neq$", r"$p^{(R)}$"],
     ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="medium",
+    fontsize="small",
     ax=ax,
 )
 bound_texts(
@@ -211,7 +203,6 @@ bound_texts(
     facecolor="white",
     edgecolor="lightgrey",
 )
-
 
 gluefig("er_methods", fig)
 

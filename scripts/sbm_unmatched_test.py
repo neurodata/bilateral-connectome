@@ -32,7 +32,7 @@ from pkg.plot import (
     plot_stochastic_block_probabilities,
     set_theme,
 )
-from pkg.plot.utils import make_sequential_colormap
+from pkg.plot.utils import make_sequential_colormap, shrink_axis
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from pkg.utils.toy import sample_toy_networks
@@ -169,10 +169,13 @@ right_labels = right_nodes[GROUP_KEY].values
 A1, A2, node_data = sample_toy_networks()
 palette = get_toy_palette()
 
-fig, axs = plt.subplots(2, 4, figsize=(16, 6))
+fig, axs = plt.subplots(
+    2, 4, figsize=(14, 6), gridspec_kw=dict(wspace=0, hspace=0), constrained_layout=True
+)
+
 ax = axs[0, 0]
 networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
-ax.set_title("Group neurons\nby cell type", fontsize="medium")
+ax.set_title("Group neurons", fontsize="medium")
 ax.set_ylabel(
     "Left",
     color=network_palette["Left"],
@@ -193,128 +196,285 @@ ax.set_ylabel(
     labelpad=10,
 )
 
+from pkg.plot import shrink_axis
+
 ax = axs[0, 1]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
-top_ax.set_title("Fit stochastic\nblock models", fontsize="medium")
+top_ax.set_title(r"$\hat{B}^{(L)}$", color=network_palette["Left"])
+shrink_axis(ax, scale=0.8)
+
+ax.set_title("Estimate group-to-group\nconnection probabilities", pad=20)
+
+# top_ax.set_title("Fit stochastic\nblock models", fontsize="medium")
 
 ax = axs[1, 1]
 _, _, misc = stochastic_block_test(A2, A2, node_data["labels"], node_data["labels"])
 Bhat2 = misc["probabilities1"].values
-heatmap_grouped(Bhat2, [1, 2, 3], palette=palette, ax=ax)
+top_ax = heatmap_grouped(Bhat2, [1, 2, 3], palette=palette, ax=ax)
+top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
+shrink_axis(ax, scale=0.8)
 
+ax.set_title("")
 
 cmap = make_sequential_colormap("Blues")
 
+
 ax = merge_axes(fig, axs, rows=None, cols=2)
-ax.set(xlim=(0, 1), ylim=(0.18, 1))
-
-ax.text(0.4, 0.93, r"$\hat{B}^{(L)}$", color=network_palette["Left"])
-ax.text(0.8, 0.93, r"$\hat{B}^{(R)}$", color=network_palette["Right"])
-compare_probability_row(1, 1, Bhat1, Bhat2, 0.9, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(1, 2, Bhat1, Bhat2, 0.85, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(1, 3, Bhat1, Bhat2, 0.8, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(2, 1, Bhat1, Bhat2, 0.75, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(2, 2, Bhat1, Bhat2, 0.7, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(2, 3, Bhat1, Bhat2, 0.65, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(3, 1, Bhat1, Bhat2, 0.6, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(3, 2, Bhat1, Bhat2, 0.55, cmap=cmap, palette=palette, ax=ax)
-compare_probability_row(3, 3, Bhat1, Bhat2, 0.5, cmap=cmap, palette=palette, ax=ax)
+ax.set(xlim=(0, 13), ylim=(0, 1))
 
 
-ax.annotate(
-    "",
-    xy=(0.645, 0.48),
-    xytext=(0.5, 0.41),
-    arrowprops=dict(
-        arrowstyle="simple",
-        facecolor="black",
-    ),
+def compare_probability_row(i, j, y, Bhat1, Bhat2, ax=None, palette=None):
+    prob1 = Bhat1[i, j]
+    prob2 = Bhat2[i, j]
+
+    linestyle_kws = dict(linewidth=1, color="dimgrey")
+    ax.axvline(4, ymin=0.32, ymax=0.89, **linestyle_kws)
+    ax.axvline(9, ymin=0.32, ymax=0.89, **linestyle_kws)
+    ax.plot([4, 9], [0.89, 0.89], **linestyle_kws)
+    ax.plot([4, 9], [0.32, 0.32], **linestyle_kws)
+
+    ax.text(
+        5.5,
+        0.9,
+        r"$\hat{B}^{(L)}_{ij}$",
+        ha="center",
+        va="bottom",
+        color=network_palette["Left"],
+    )
+
+    ax.text(
+        8.5,
+        0.9,
+        r"$\hat{B}^{(R)}_{ij}$",
+        ha="center",
+        va="bottom",
+        color=network_palette["Right"],
+    )
+
+    ax.plot(
+        [1],
+        [y],
+        "o",
+        markersize=13,
+        markeredgecolor="black",
+        markeredgewidth=1,
+        markerfacecolor=palette[i + 1],
+    )
+    ax.plot(
+        [3],
+        [y],
+        "o",
+        markersize=13,
+        markeredgecolor="black",
+        markeredgewidth=1,
+        markerfacecolor=palette[j + 1],
+    )
+    ax.annotate(
+        "",
+        xy=(3, y),
+        xytext=(1, y),
+        arrowprops=dict(
+            arrowstyle="-|>",
+            connectionstyle="angle,angleA=60,angleB=-60,rad=30",
+            facecolor="black",
+            shrinkA=8,
+            shrinkB=7,
+            # mutation_scale=,
+        ),
+    )
+
+    ax.plot([5], [y], "s", markersize=15, color=cmap(prob1))
+    ax.plot([8], [y], "s", markersize=15, color=cmap(prob2))
+    ax.text(6.5, y, r"$\overset{?}{=}$", fontsize="large", va="center", ha="center")
+    ax.text(10, y, r"$\rightarrow$", fontsize="large", va="center", ha="center")
+    p_text = r"$p_{"
+    p_text += str(i + 1)
+    p_text += str(j + 1)
+    p_text += r"}$"
+    ax.text(12, y - 0.01, p_text, fontsize="large", va="center", ha="center")
+    ax.set(xticks=[], yticks=[])
+
+
+compare_probability_row(0, 0, 0.83, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_row(0, 1, 0.72, Bhat1, Bhat2, ax=ax, palette=palette)
+
+ax.plot(
+    [6.65], [0.64], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+)
+ax.plot(
+    [6.65], [0.61], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+)
+ax.plot(
+    [6.65], [0.58], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+)
+
+compare_probability_row(2, 1, 0.48, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_row(2, 2, 0.37, Bhat1, Bhat2, ax=ax, palette=palette)
+
+draw_hypothesis_box(
+    "sbm", 1, 0.15, yskip=0.09, ax=ax, subscript=True, xpad=0.3, ypad=0.0075
 )
 
 
-y = 0.34
-texts = multicolor_text(
-    0.2,
-    y,
-    [r"$H_0$:", r"$B^{L}_{ij}$", r"$=$", r"$B^{R}_{ij}$"],
-    ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="large",
-    ax=ax,
-)
+# ax.text(0.4, 0.93, r"$\hat{B}^{(L)}$", color=network_palette["Left"])
+# ax.text(0.8, 0.93, r"$\hat{B}^{(R)}$", color=network_palette["Right"])
+# compare_probability_row(1, 1, Bhat1, Bhat2, 0.9, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(1, 2, Bhat1, Bhat2, 0.85, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(1, 3, Bhat1, Bhat2, 0.8, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(2, 1, Bhat1, Bhat2, 0.75, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(2, 2, Bhat1, Bhat2, 0.7, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(2, 3, Bhat1, Bhat2, 0.65, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(3, 1, Bhat1, Bhat2, 0.6, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(3, 2, Bhat1, Bhat2, 0.55, cmap=cmap, palette=palette, ax=ax)
+# compare_probability_row(3, 3, Bhat1, Bhat2, 0.5, cmap=cmap, palette=palette, ax=ax)
 
-y = y - 0.1
-texts += multicolor_text(
-    0.2,
-    y,
-    [r"$H_A$:", r"$B^{L}_{ij}$", r"$\neq$", r"$B^{R}_{ij}$"],
-    ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="large",
-    ax=ax,
-)
 
-bound_texts(
-    texts,
-    ax=ax,
-    xpad=0.03,
-    ypad=0.01,
-    facecolor="white",
-    edgecolor="lightgrey",
-)
+# ax.annotate(
+#     "",
+#     xy=(0.645, 0.48),
+#     xytext=(0.5, 0.41),
+#     arrowprops=dict(
+#         arrowstyle="simple",
+#         facecolor="black",
+#     ),
+# )
+
+
+# y = 0.34
+# texts = multicolor_text(
+#     0.2,
+#     y,
+#     [r"$H_0$:", r"$B^{L}_{ij}$", r"$=$", r"$B^{R}_{ij}$"],
+#     ["black", network_palette["Left"], "black", network_palette["Right"]],
+#     fontsize="large",
+#     ax=ax,
+# )
+
+# y = y - 0.1
+# texts += multicolor_text(
+#     0.2,
+#     y,
+#     [r"$H_A$:", r"$B^{L}_{ij}$", r"$\neq$", r"$B^{R}_{ij}$"],
+#     ["black", network_palette["Left"], "black", network_palette["Right"]],
+#     fontsize="large",
+#     ax=ax,
+# )
+
+# bound_texts(
+#     texts,
+#     ax=ax,
+#     xpad=0.03,
+#     ypad=0.01,
+#     facecolor="white",
+#     edgecolor="lightgrey",
+# )
 
 
 ax.set_title("Compare estimated\nprobabilities", fontsize="medium")
-
 ax.axis("off")
 
-ax = merge_axes(fig, axs, rows=None, cols=3)
+# ax.axis("off")
+
+
+# ax = merge_axes(fig, axs, rows=None, cols=3)
+ax = axs[0, 3]
+uncorrected_pvalues = np.array([[0.5, 0.1, 0.22], [0.2, 0.01, 0.86], [0.43, 0.2, 0.6]])
+top_ax = heatmap_grouped(
+    uncorrected_pvalues,
+    labels=[1, 2, 3],
+    vmin=None,
+    vmax=None,
+    ax=ax,
+    palette=palette,
+    cmap="RdBu",
+    center=1,
+)
+top_ax.set_title("Combine p-values\nfor overall test", fontsize="medium")
+
+ax = axs[1, 3]
+
+# generic curve that we will use for everything
+# lx = np.linspace(-np.pi / 2.0 + 0.05, np.pi / 2.0 - 0.05, 500)
+# tan = np.tan(lx)
+# curve = np.hstack((tan[::-1], tan))
+# x0 = 0.5
+# width = 0.5
+# x = np.linspace(x0 - width, x0 + width, 1000)
+# ax.plot(x, curve, c="k")
+# ax.set(xlim)
+
+from matplotlib.text import TextPath
+from matplotlib.patches import PathPatch
+import matplotlib.transforms as mtrans
+from matplotlib.font_manager import FontProperties
+
+
+# REF: https://stackoverflow.com/questions/50039667/matplotlib-scale-text-curly-brackets
+
+x = 0.3
+y = 1.0
+
+trans = mtrans.Affine2D().rotate_deg_around(x, y, -90) + ax.transData
+fp = FontProperties(weight="ultralight", stretch="ultra-condensed")
+tp = TextPath((x, y), "$\}$", size=0.8, prop=fp, usetex=True)
+pp = PathPatch(tp, lw=0, fc="k", transform=trans)
+ax.add_artist(pp)
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
+# ax.text(0.5, 0.5, 'p', fontsize='large')
+
+# ax.text(0.5, 0.5, "}", rotation=-90, fontsize=100, ha='center', va='center')
+
+# ax.plot([0, 0.4], [0.9, 0.7], color="black")
+# ax.plot([0, 0.4], [0.5, 0.7], color="black")
+# ax.set(xlim=(0, 1), ylim=(0.18, 1))
+# ax.text(0.42, 0.7, r"$p = ...$", va="center", ha="left")
+
+# ax.annotate(
+#     "",
+#     xy=(0.64, 0.68),
+#     xytext=(0.5, 0.41),
+#     arrowprops=dict(
+#         arrowstyle="simple",
+#         facecolor="black",
+#     ),
+# )
+
+# y = 0.34
+
+# y = 0.4
+# texts = multicolor_text(
+#     0.2,
+#     y,
+#     [r"$H_0$:", r"$B^{L}$", r"$=$", r"$B^{R}$"],
+#     ["black", network_palette["Left"], "black", network_palette["Right"]],
+#     fontsize="large",
+#     ax=ax,
+# )
+
+# texts += multicolor_text(
+#     0.2,
+#     y - 0.15,
+#     [r"$H_A$:", r"$B^{L}$", r"$\neq$", r"$B^{R}$"],
+#     ["black", network_palette["Left"], "black", network_palette["Right"]],
+#     fontsize="large",
+#     ax=ax,
+# )
+# bound_texts(
+#     texts,
+#     ax=ax,
+#     xpad=0.03,
+#     ypad=0.01,
+#     facecolor="white",
+#     edgecolor="lightgrey",
+# )
+from pkg.plot import draw_hypothesis_box
+
+draw_hypothesis_box("sbm", 0.1, 0.4, yskip=0.15, ax=ax)
+
 ax.axis("off")
-ax.set_title("Combine p-values\nfor overall test", fontsize="medium")
-
-ax.plot([0, 0.4], [0.9, 0.7], color="black")
-ax.plot([0, 0.4], [0.5, 0.7], color="black")
-ax.set(xlim=(0, 1), ylim=(0.18, 1))
-ax.text(0.42, 0.7, r"$p = ...$", va="center", ha="left")
-
-ax.annotate(
-    "",
-    xy=(0.64, 0.68),
-    xytext=(0.5, 0.41),
-    arrowprops=dict(
-        arrowstyle="simple",
-        facecolor="black",
-    ),
-)
-
-y = 0.34
-texts = multicolor_text(
-    0.2,
-    y,
-    [r"$H_0$:", r"$B^{L}$", r"$=$", r"$B^{R}$"],
-    ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="large",
-    ax=ax,
-)
-
-y = y - 0.1
-texts += multicolor_text(
-    0.2,
-    y,
-    [r"$H_A$:", r"$B^{L}$", r"$\neq$", r"$B^{R}$"],
-    ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="large",
-    ax=ax,
-)
-
-bound_texts(
-    texts,
-    ax=ax,
-    xpad=0.03,
-    ypad=0.01,
-    facecolor="white",
-    edgecolor="lightgrey",
-)
 
 fig.set_facecolor("w")
 gluefig("sbm_methods_explain", fig)
