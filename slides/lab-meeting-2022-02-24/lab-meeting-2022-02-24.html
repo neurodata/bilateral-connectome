@@ -339,8 +339,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#for-us-we-re-just-going-to-consider-this-to-be-a-network">
-   For us, we’re just going to consider this to be a network
+  <a class="reference internal nav-link" href="#we-re-just-going-to-consider-this-to-be-a-network">
+   We’re just going to consider this to be a network
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
+   Why bilateral symmetry?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -427,13 +432,28 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combine-pvalues">
-   Distribution under the null for combine pvalues
+  <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
+   Combining p-values: nobody’s perfect
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#power-for-combine-p-values">
-   Power for combine p-values
+  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy">
+   Combining p-values: don’t trust scipy
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combining-p-values">
+   Distribution under the null for combining p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-be-careful-with-discreetness">
+   Combining p-values: be careful with discreetness
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#power-for-combining-p-values">
+   Power for combining p-values
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -467,18 +487,23 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#but-wait-there-s-more-tests-one-could-run">
-   But wait, there’s more (tests one could run)!
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#latent-distribution-test-rdpg">
-   Latent distribution test (RDPG)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#to-sum-up">
    To sum up…
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extensions">
+   Extensions
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#but-you-threw-out-all-of-the-edge-weights">
+   But you threw out all of the edge weights!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#there-are-so-many-other-models">
+   There are so many other models!
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -581,8 +606,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#for-us-we-re-just-going-to-consider-this-to-be-a-network">
-   For us, we’re just going to consider this to be a network
+  <a class="reference internal nav-link" href="#we-re-just-going-to-consider-this-to-be-a-network">
+   We’re just going to consider this to be a network
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
+   Why bilateral symmetry?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -669,13 +699,28 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combine-pvalues">
-   Distribution under the null for combine pvalues
+  <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
+   Combining p-values: nobody’s perfect
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#power-for-combine-p-values">
-   Power for combine p-values
+  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy">
+   Combining p-values: don’t trust scipy
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combining-p-values">
+   Distribution under the null for combining p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-be-careful-with-discreetness">
+   Combining p-values: be careful with discreetness
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#power-for-combining-p-values">
+   Power for combining p-values
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -709,18 +754,23 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#but-wait-there-s-more-tests-one-could-run">
-   But wait, there’s more (tests one could run)!
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#latent-distribution-test-rdpg">
-   Latent distribution test (RDPG)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#to-sum-up">
    To sum up…
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extensions">
+   Extensions
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#but-you-threw-out-all-of-the-edge-weights">
+   But you threw out all of the edge weights!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#there-are-so-many-other-models">
+   There are so many other models!
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -840,8 +890,22 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </footer>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="for-us-we-re-just-going-to-consider-this-to-be-a-network">
-<h1>For us, we’re just going to consider this to be a network<a class="headerlink" href="#for-us-we-re-just-going-to-consider-this-to-be-a-network" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="we-re-just-going-to-consider-this-to-be-a-network">
+<h1>We’re just going to consider this to be a network<a class="headerlink" href="#we-re-just-going-to-consider-this-to-be-a-network" title="Permalink to this headline">¶</a></h1>
+<p><img alt="" src="slides/lab-meeting-2022-02-24/show" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="why-bilateral-symmetry">
+<h1>Why bilateral symmetry?<a class="headerlink" href="#why-bilateral-symmetry" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p>We examined the connectivity of members of left–right homologous neuron pairs onto left–right homologous targets in the nerve ring of the hermaphrodite reconstruction to assess the amount of natural variability in connectivity. … Differences between individual worms will be expected to be at least this large. This information is used in the following section to identify sex differences.</p>
+</div></blockquote>
+<blockquote>
+<div><p>In both sexes, the gustatory neuron ASEL (that is, the left neuron of the pair) has greater chemical connectivity than ASER (that is, the right neuron of the pair) to the olfactory neuron class AWC. The ASEL–ASER pair is known to be lateralized in its ability to sense chemosensory cues</p>
+</div></blockquote>
+<footer>
+<p>Cook et al. <em>Nature</em> (2019)</p>
+</footer>
 <hr class="docutils" />
 <style scoped>
 section {
@@ -1002,14 +1066,48 @@ section {
 <h1>A massive aside<a class="headerlink" href="#a-massive-aside" title="Permalink to this headline">¶</a></h1>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="distribution-under-the-null-for-combine-pvalues">
-<h1>Distribution under the null for combine pvalues<a class="headerlink" href="#distribution-under-the-null-for-combine-pvalues" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="combining-p-values-nobody-s-perfect">
+<h1>Combining p-values: nobody’s perfect<a class="headerlink" href="#combining-p-values-nobody-s-perfect" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center h:475" src="../../_images/heard-fig1.png" /></p>
+<footer>
+<p>Heard, Rubin-Delanchy <em>Biometrika</em> (2018)</p>
+</footer>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="combining-p-values-don-t-trust-scipy">
+<h1>Combining p-values: don’t trust scipy<a class="headerlink" href="#combining-p-values-don-t-trust-scipy" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center w:600" src="../../_images/tippett-bug.png" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="distribution-under-the-null-for-combining-p-values">
+<h1>Distribution under the null for combining p-values<a class="headerlink" href="#distribution-under-the-null-for-combining-p-values" title="Permalink to this headline">¶</a></h1>
 <p><img alt="bg right h:600" src="../results/figs/revamp_sbm_methods_sim/null_distributions.svg" /></p>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="power-for-combine-p-values">
-<h1>Power for combine p-values<a class="headerlink" href="#power-for-combine-p-values" title="Permalink to this headline">¶</a></h1>
-<p><img alt="center h:500" src="../results/figs/revamp_sbm_methods_sim/perturbation_pvalues_lineplots.svg" /></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="combining-p-values-be-careful-with-discreetness">
+<h1>Combining p-values: be careful with discreetness<a class="headerlink" href="#combining-p-values-be-careful-with-discreetness" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center w:800" src="../../_images/lancaster-title.png" /></p>
+<div class="columns">
+<div>
+<p><img alt="" src="../overleaf/figs/plot_individual_pvalues/pvalue-dist-example2.svg" /></p>
+</div>
+<div>
+<p><span class="math notranslate nohighlight">\(\leftarrow\)</span> We are trying to approximate this null distribution with something continuous <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span></p>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="power-for-combining-p-values">
+<h1>Power for combining p-values<a class="headerlink" href="#power-for-combining-p-values" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>We perturb:</p>
+<ul>
+<li><p>Some # of them (x-axis)</p></li>
+<li><p>By some amount (panels)</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="bg center right:60% w:700" src="../results/figs/revamp_sbm_methods_sim/perturbation_pvalues_lineplots.svg" /></p>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="relative-power-fisher-s-vs-tippett-s">
@@ -1079,21 +1177,6 @@ where <span class="math notranslate nohighlight">\(c\)</span> is a density-adjus
 </ul>
 </div>
 </div>
-<hr class="docutils" />
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="but-wait-there-s-more-tests-one-could-run">
-<h1>But wait, there’s more (tests one could run)!<a class="headerlink" href="#but-wait-there-s-more-tests-one-could-run" title="Permalink to this headline">¶</a></h1>
-</div>
-<hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="latent-distribution-test-rdpg">
-<h1>Latent distribution test (RDPG)<a class="headerlink" href="#latent-distribution-test-rdpg" title="Permalink to this headline">¶</a></h1>
-<p><img alt="center w:600" src="../results/figs/rdpg_unmatched_test/pvalue_dimension_matrix.svg" /></p>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="to-sum-up">
@@ -1152,6 +1235,41 @@ table {
 </tr>
 </tbody>
 </table>
+<hr class="docutils" />
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="extensions">
+<h1>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="but-you-threw-out-all-of-the-edge-weights">
+<h1>But you threw out all of the edge weights!<a class="headerlink" href="#but-you-threw-out-all-of-the-edge-weights" title="Permalink to this headline">¶</a></h1>
+<p><img alt="" src="../results/figs/thresholding_tests/integer_threshold_pvalues.svg" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="there-are-so-many-other-models">
+<h1>There are so many other models!<a class="headerlink" href="#there-are-so-many-other-models" title="Permalink to this headline">¶</a></h1>
+<p>Latent distribution test (random dot product graph)</p>
+<div class="columns">
+<div>
+<p><img alt="center w:500" src="../results/figs/rdpg_unmatched_test/screeplot.svg" /></p>
+</div>
+<div>
+<p><img alt="center w:500" src="../results/figs/rdpg_unmatched_test/pvalue_dimension_matrix.svg" /></p>
+</div>
+</div>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="more-generally">
