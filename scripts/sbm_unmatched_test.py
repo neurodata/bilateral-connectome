@@ -480,6 +480,222 @@ ax.axis("off")
 fig.set_facecolor("w")
 gluefig("sbm_methods_explain", fig)
 
+#%%
+
+
+def compare_probability_row(i, j, y, Bhat1, Bhat2, ax=None, palette=None):
+    cmap = make_sequential_colormap("Blues")
+
+    prob1 = Bhat1[i, j]
+    prob2 = Bhat2[i, j]
+
+    linestyle_kws = dict(linewidth=1, color="dimgrey")
+    ax.axvline(4, ymin=0.32, ymax=0.89, **linestyle_kws)
+    ax.axvline(9, ymin=0.32, ymax=0.89, **linestyle_kws)
+    ax.plot([4, 9], [0.89, 0.89], **linestyle_kws)
+    ax.plot([4, 9], [0.32, 0.32], **linestyle_kws)
+
+    ax.text(
+        5.5,
+        0.9,
+        r"$\hat{B}^{(L)}_{ij}$",
+        ha="center",
+        va="bottom",
+        color=network_palette["Left"],
+    )
+
+    ax.text(
+        8.5,
+        0.9,
+        r"$\hat{B}^{(R)}_{ij}$",
+        ha="center",
+        va="bottom",
+        color=network_palette["Right"],
+    )
+
+    ax.plot(
+        [1],
+        [y],
+        "o",
+        markersize=13,
+        markeredgecolor="black",
+        markeredgewidth=1,
+        markerfacecolor=palette[i + 1],
+    )
+    ax.plot(
+        [3],
+        [y],
+        "o",
+        markersize=13,
+        markeredgecolor="black",
+        markeredgewidth=1,
+        markerfacecolor=palette[j + 1],
+    )
+    ax.annotate(
+        "",
+        xy=(3, y),
+        xytext=(1, y),
+        arrowprops=dict(
+            arrowstyle="-|>",
+            connectionstyle="angle,angleA=65,angleB=-65,rad=25",
+            facecolor="black",
+            shrinkA=8,
+            shrinkB=7,
+            # mutation_scale=,
+        ),
+    )
+
+    ax.plot([5], [y], "s", markersize=15, color=cmap(prob1))
+    ax.plot([8], [y], "s", markersize=15, color=cmap(prob2))
+    ax.text(6.5, y, r"$\overset{?}{=}$", fontsize="large", va="center", ha="center")
+    ax.text(10, y, r"$\rightarrow$", fontsize="large", va="center", ha="center")
+    p_text = r"$p_{"
+    p_text += str(i + 1)
+    p_text += str(j + 1)
+    p_text += r"}$"
+    ax.text(12.5, y, p_text, fontsize="large", va="center", ha="center")
+    ax.set(xticks=[], yticks=[])
+
+
+fig, axs = plt.subplots(
+    4,
+    7,
+    figsize=(14, 6),
+    gridspec_kw=dict(
+        wspace=0,
+        hspace=0,
+        height_ratios=[1.5, 5, 2.5, 5],
+        width_ratios=[5, 1, 5, 1, 5, 1, 5],
+    ),
+    constrained_layout=False,
+)
+
+axs[0, 0].set_title("Group neurons", fontsize="medium")
+axs[0, 2].set_title("Estimate group-to-group\nconnection probabilities")
+axs[0, 4].set_title("Compare estimated\nprobabilities", fontsize="medium")
+axs[0, 6].set_title("Combine p-values\nfor overall test", fontsize="medium")
+
+
+A1, A2, node_data = sample_toy_networks()
+palette = get_toy_palette()
+
+
+ax = axs[1, 0]
+networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
+ax.set_ylabel(
+    "Left",
+    color=network_palette["Left"],
+    size="large",
+    rotation=0,
+    ha="right",
+    labelpad=10,
+)
+
+ax = axs[3, 0]
+networkplot_simple(A2, node_data, palette=palette, ax=ax, group=True)
+ax.set_ylabel(
+    "Right",
+    color=network_palette["Right"],
+    size="large",
+    rotation=0,
+    ha="right",
+    labelpad=10,
+)
+
+
+ax = axs[1, 2]
+_, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
+Bhat1 = misc["probabilities1"].values
+top_ax, left_ax = heatmap_grouped(
+    Bhat1,
+    [1, 2, 3],
+    palette=palette,
+    ax=ax,
+    # xlabel="Target group",
+    # ylabel="Source group",
+)
+top_ax.set_title(r"$\hat{B}^{(L)}$", color=network_palette["Left"])
+left_ax.set_ylabel("Source group", fontsize="small")
+ax.set_xlabel("Target group", fontsize="small")
+
+ax = axs[3, 2]
+_, _, misc = stochastic_block_test(A2, A2, node_data["labels"], node_data["labels"])
+Bhat2 = misc["probabilities1"].values
+top_ax, left_ax = heatmap_grouped(Bhat2, [1, 2, 3], palette=palette, ax=ax)
+top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
+left_ax.set_ylabel("Source group", fontsize="small")
+ax.set_xlabel("Target group", fontsize="small")
+
+
+ax = merge_axes(fig, axs, rows=(1, 4), cols=4)
+ax.set(xlim=(0, 13), ylim=(0, 1))
+
+
+compare_probability_row(0, 0, 0.83, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_row(0, 1, 0.72, Bhat1, Bhat2, ax=ax, palette=palette)
+
+ax.plot(
+    [6.65], [0.64], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+)
+ax.plot(
+    [6.65], [0.61], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+)
+ax.plot(
+    [6.65], [0.58], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+)
+
+compare_probability_row(2, 1, 0.48, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_row(2, 2, 0.37, Bhat1, Bhat2, ax=ax, palette=palette)
+
+draw_hypothesis_box(
+    "sbm", 1, 0.17, yskip=0.12, ax=ax, subscript=True, xpad=0.3, ypad=0.0075
+)
+
+ax.axis("off")
+
+
+ax = axs[1, 6]
+uncorrected_pvalues = np.array([[0.5, 0.1, 0.22], [0.2, 0.01, 0.86], [0.43, 0.2, 0.6]])
+top_ax, left_ax = heatmap_grouped(
+    uncorrected_pvalues,
+    labels=[1, 2, 3],
+    vmin=None,
+    vmax=None,
+    ax=ax,
+    palette=palette,
+    cmap="RdBu",
+    center=1,
+)
+left_ax.set_ylabel("Source group", fontsize="small")
+ax.set_xlabel("Target group", fontsize="small")
+
+# ax = axs[3, 6]
+ax = merge_axes(fig, axs, rows=(2, 4), cols=6)
+
+# REF: https://stackoverflow.com/questions/50039667/matplotlib-scale-text-curly-brackets
+
+x = 0.35
+y = 0.9
+
+trans = mtrans.Affine2D().rotate_deg_around(x, y, -90) + ax.transData
+fp = FontProperties(weight="ultralight", stretch="ultra-condensed")
+tp = TextPath((x, y), "$\}$", size=0.7, prop=fp, usetex=True)
+pp = PathPatch(tp, lw=0, fc="k", transform=trans)
+ax.add_artist(pp)
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
+
+draw_hypothesis_box("sbm", 0.05, 0.4, yskip=0.15, ypad=0.02, ax=ax)
+
+ax.axis("off")
+
+for ax in axs.flat:
+    if not ax.has_data():
+        ax.axis("off")
+
+fig.set_facecolor("w")
+gluefig("sbm_methods_explain", fig)
+
 
 #%%
 

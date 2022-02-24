@@ -182,17 +182,32 @@ def plot_pvalues(
 
 
 def heatmap_grouped(
-    Bhat, labels, palette=None, ax=None, pad=0, color_size="5%", vmin=0, vmax=1, cmap='Blues', center=None
+    Bhat,
+    labels,
+    palette=None,
+    ax=None,
+    pad=0,
+    color_size="5%",
+    vmin=0,
+    vmax=1,
+    cmap="Blues",
+    center=None,
+    title="",
+    xlabel="",
+    ylabel="",
 ):
     heatmap(Bhat, ax=ax, cmap=cmap, vmin=vmin, vmax=vmax, center=center, cbar=False)
     divider = make_axes_locatable(ax)
     top_ax = divider.append_axes("top", size=color_size, pad=pad, sharex=ax)
     remove_shared_ax(top_ax)
     draw_colors(top_ax, "x", labels=labels, palette=palette)
-    color_ax = divider.append_axes("left", size=color_size, pad=pad, sharex=ax)
-    remove_shared_ax(color_ax)
-    draw_colors(color_ax, "y", labels=labels, palette=palette)
-    return top_ax
+    left_ax = divider.append_axes("left", size=color_size, pad=pad, sharex=ax)
+    remove_shared_ax(left_ax)
+    draw_colors(left_ax, "y", labels=labels, palette=palette)
+    top_ax.set_title(title)
+    left_ax.set_ylabel(ylabel)
+    ax.set_xlabel(xlabel)
+    return top_ax, left_ax
 
 
 def compare_probability_row(

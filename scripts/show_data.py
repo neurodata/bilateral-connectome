@@ -15,7 +15,7 @@ from seaborn.utils import relative_luminance
 from giskard.plot import soft_axis_off
 
 DISPLAY_FIGS = True
-FILENAME = "plot_side_layouts"
+FILENAME = "show_data"
 
 rng = np.random.default_rng(8888)
 

@@ -94,7 +94,22 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </footer>
 
 ---
-# For us, we're just going to consider this to be a network
+# We're just going to consider this to be a network
+
+![](./show)
+
+---
+# Why bilateral symmetry?
+
+> We examined the connectivity of members of left–right homologous neuron pairs onto left–right homologous targets in the nerve ring of the hermaphrodite reconstruction to assess the amount of natural variability in connectivity. ... Differences between individual worms will be expected to be at least this large. This information is used in the following section to identify sex differences.
+
+> In both sexes, the gustatory neuron ASEL (that is, the left neuron of the pair) has greater chemical connectivity than ASER (that is, the right neuron of the pair) to the olfactory neuron class AWC. The ASEL–ASER pair is known to be lateralized in its ability to sense chemosensory cues
+
+<footer>
+
+Cook et al. *Nature* (2019)
+
+</footer>
 
 ---
 
@@ -279,15 +294,56 @@ section {
 # A massive aside
 
 ---
+# Combining p-values: nobody's perfect
 
-# Distribution under the null for combine pvalues
+![center h:475](./../../images/heard-fig1.png)
+
+<footer>
+
+Heard, Rubin-Delanchy *Biometrika* (2018)
+
+</footer>
+
+---
+# Combining p-values: don't trust scipy
+
+![center w:600](../../images/tippett-bug.png)
+
+---
+
+# Distribution under the null for combining p-values
 
 ![bg right h:600](./../../../results/figs/revamp_sbm_methods_sim/null_distributions.svg)
 
 ---
-# Power for combine p-values
 
-![center h:500](./../../../results/figs/revamp_sbm_methods_sim/perturbation_pvalues_lineplots.svg)
+# Combining p-values: be careful with discreetness
+
+![center w:800](./../../images/lancaster-title.png) 
+
+<div class="columns">
+<div>
+
+![](./../../../overleaf/figs/plot_individual_pvalues/pvalue-dist-example2.svg)
+
+
+</div>
+<div>
+
+$\leftarrow$ We are trying to approximate this null distribution with something continuous $Uniform(0,1)$
+
+</div>
+</div>
+
+
+---
+# Power for combining p-values
+
+- We perturb:
+  - Some # of them (x-axis)
+  - By some amount (panels)
+
+![bg center right:60% w:700](./../../../results/figs/revamp_sbm_methods_sim/perturbation_pvalues_lineplots.svg)
 
 ---
 
@@ -368,22 +424,6 @@ section {
 </div>
 
 ---
-
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
-# But wait, there's more (tests one could run)!
-
----
-# Latent distribution test (RDPG)
-
-![center w:600](./../../../results/figs/rdpg_unmatched_test/pvalue_dimension_matrix.svg)
-
----
 # To sum up...
 
 <style scoped>
@@ -401,6 +441,52 @@ table {
 | ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$    | Reject densities the same (w/o KCs)                      |
 | SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.0027$ | Reject group connection probabilities the same (w/o KCs) |
 | aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   |  $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    |
+
+---
+
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+# Extensions
+
+---
+
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+
+---
+
+# But you threw out all of the edge weights!
+![](./../../../results/figs/thresholding_tests/integer_threshold_pvalues.svg)
+
+
+---
+# There are so many other models!
+
+Latent distribution test (random dot product graph)
+
+<div class="columns">
+<div>
+
+![center w:500](../../../results/figs/rdpg_unmatched_test/screeplot.svg)
+
+</div>
+<div>
+
+![center w:500](./../../../results/figs/rdpg_unmatched_test/pvalue_dimension_matrix.svg)
+
+</div>
+</div>
+
 
 ---
 # More generally 

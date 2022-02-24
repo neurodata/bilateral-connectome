@@ -102,7 +102,7 @@ for i in choice_inds:
     )
 
 
-ax.set_title("Randomly subsample\nedges", fontsize="medium")
+ax.set_title("Remove edges to\n match density (random)", fontsize="medium")
 ax.set_ylabel(
     "Right",
     color=network_palette["Right"],
@@ -148,16 +148,16 @@ ax.axis("off")
 ax = axs[2]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
-top_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
+top_ax, left_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
 ax.set_title(
-    "Adjust connection probabilities\n(analytic)", fontsize="medium", x=1.2, y=1.63
+    "Adjust connection\nprobabilities (analytic)", fontsize="medium", x=1.2, y=1.63
 )
 
 
 ax = axs[3]
 Bhat1 = misc["probabilities1"].values
-top_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
+top_ax, left_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
 top_ax.text(0.65, -1.3, r"$c$")
 
