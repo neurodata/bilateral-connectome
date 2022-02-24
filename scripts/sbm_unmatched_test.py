@@ -37,6 +37,14 @@ from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from pkg.utils.toy import sample_toy_networks
 from svgutils.compose import SVG, Figure, Panel, Text
+from matplotlib.text import TextPath
+from matplotlib.patches import PathPatch
+import matplotlib.transforms as mtrans
+from matplotlib.font_manager import FontProperties
+from pkg.plot import draw_hypothesis_box
+
+from pkg.plot import shrink_axis
+
 
 DISPLAY_FIGS = False
 
@@ -196,14 +204,13 @@ ax.set_ylabel(
     labelpad=10,
 )
 
-from pkg.plot import shrink_axis
 
 ax = axs[0, 1]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(L)}$", color=network_palette["Left"])
-shrink_axis(ax, scale=0.8)
+# shrink_axis(ax, scale=0.8)
 
 ax.set_title("Estimate group-to-group\nconnection probabilities", pad=20)
 
@@ -214,7 +221,7 @@ _, _, misc = stochastic_block_test(A2, A2, node_data["labels"], node_data["label
 Bhat2 = misc["probabilities1"].values
 top_ax = heatmap_grouped(Bhat2, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
-shrink_axis(ax, scale=0.8)
+# shrink_axis(ax, scale=0.8)
 
 ax.set_title("")
 
@@ -405,11 +412,6 @@ ax = axs[1, 3]
 # ax.plot(x, curve, c="k")
 # ax.set(xlim)
 
-from matplotlib.text import TextPath
-from matplotlib.patches import PathPatch
-import matplotlib.transforms as mtrans
-from matplotlib.font_manager import FontProperties
-
 
 # REF: https://stackoverflow.com/questions/50039667/matplotlib-scale-text-curly-brackets
 
@@ -470,7 +472,6 @@ ax.set(xlim=(0, 1), ylim=(0, 1))
 #     facecolor="white",
 #     edgecolor="lightgrey",
 # )
-from pkg.plot import draw_hypothesis_box
 
 draw_hypothesis_box("sbm", 0.1, 0.4, yskip=0.15, ax=ax)
 
