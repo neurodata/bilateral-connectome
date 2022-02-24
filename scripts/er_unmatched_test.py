@@ -162,7 +162,7 @@ stat, pvalue, misc = erdos_renyi_test(A1, A2)
 ax = merge_axes(fig, axs, rows=None, cols=1)
 
 ax.text(
-    0.5, 0.5, r"$\frac{\# \ edges}{\# \ potential \ edges}$", ha="center", va="center"
+    0.4, 0.52, r"$p = \frac{\# \ edges}{\# \ potential \ edges}$", ha="center", va="center"
 )
 ax.axis("off")
 
