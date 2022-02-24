@@ -36,7 +36,7 @@ p {
 
 <!-- # Maggot brain, mirror image? A statistical analysis of bilateral symmetry in an insect brain connectome -->
 
-# Is the maggot brain symmetric? A statistical analysis of bilateral symmetry in an insect connectome
+# A statistical analysis of bilateral symmetry in an insect connectome
 
 ### Benjamin D. Pedigo
 
@@ -96,7 +96,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 ---
 # We're just going to consider this to be a network
 
-![](./show)
+![center h:500](./../../../results/figs/show_data/Figure(1500x1500).png)
 
 ---
 # Why bilateral symmetry?
@@ -156,7 +156,11 @@ Bartsotti + Correia et al. *Curr. Op. Neurobiology* (2021)
 </footer>
 
 ---
+# So, studying bilateral symmetry here lets us
+- Try to formalize what we even mean by this property, and make claims about what we find in this connectome, and
+- Test out methods for comparing networks for these future pursuits
 
+---
 
 <style scoped>
 section {
@@ -453,20 +457,11 @@ section {
 
 # Extensions
 
----
-
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
 
 ---
 
 # But you threw out all of the edge weights!
-![](./../../../results/figs/thresholding_tests/integer_threshold_pvalues.svg)
+![center](./../../../results/figs/thresholding_tests/integer_threshold_pvalues.svg)
 
 
 ---
@@ -489,10 +484,11 @@ Latent distribution test (random dot product graph)
 
 
 ---
-# More generally 
-- We studied simple ways of framing a network two sample test
-- We found that it can be important to "mod out" by other simple network statistics if you don't care about them (like density)
-- We provide recommendations for what to run for you future connectome comparisons
+# In summary...
+- We studied simple ways of framing a network two sample test, and proposed test procedures for each
+  - We found that it can be important to "mod out" by other simple network statistics if you don't care about them (like density)
+- We found that all of these tests find the left and the right hemispheres to be significantly different, unless you ignore Kenyon cells and adjust for the difference in density
+- The tests proposed here provide a foundation for future principled comparisons of connectomes
 
 --- 
 
@@ -546,7 +542,7 @@ Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McL
 
 ![bg opacity:.65 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
 
----
+<!-- ---
 <div class="columns">
 <div>
 
@@ -558,4 +554,4 @@ Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McL
 
 
 </div>
-</div>
+</div> -->
