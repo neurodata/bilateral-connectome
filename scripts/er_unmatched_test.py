@@ -68,23 +68,19 @@
 import datetime
 import time
 
-import matplotlib as mpl
+import matplotlib.path
 import matplotlib.pyplot as plt
+import matplotlib.transforms
 import numpy as np
+import pandas as pd
 import seaborn as sns
-from giskard.plot import merge_axes
-from matplotlib import axes
+from giskard.plot import merge_axes, soft_axis_off
+from graspologic.simulations import er_np
+from matplotlib.collections import LineCollection
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
-from pkg.plot import (
-    bound_points,
-    bound_texts,
-    make_sequential_colormap,
-    multicolor_text,
-    networkplot_simple,
-    set_theme,
-)
+from pkg.plot import bound_texts, multicolor_text, networkplot_simple, set_theme
 from pkg.stats import erdos_renyi_test
 from pkg.utils import sample_toy_networks
 from statsmodels.stats.proportion import proportion_confint
@@ -121,8 +117,72 @@ left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
 
 #%%
+# describe ER model
 
 
+np.random.seed(8888)
+ps = [0.2, 0.4, 0.6, 0.8]
+n_steps = len(ps)
+fig, axs = plt.subplots(
+    2,
+    n_steps,
+    figsize=(8, 3),
+    gridspec_kw=dict(height_ratios=[2, 0.5]),
+    constrained_layout=True,
+)
+n = 18
+for i, p in enumerate(ps):
+    A = er_np(n, p)
+    if i == 0:
+        node_data = pd.DataFrame(index=np.arange(n))
+
+    ax = axs[0, i]
+    networkplot_simple(A, node_data, ax=ax, compute_layout=i == 0)
+
+    label_text = f"{p}"
+    if i == 0:
+        label_text = r"$p = $" + label_text
+    ax.set_xlabel(label_text)
+
+fig.set_facecolor("w")
+
+
+ax = merge_axes(fig, axs, rows=1)
+
+soft_axis_off(ax)
+
+
+def rainbowarrow(ax, start, end, cmap="viridis", n=50, lw=3):
+    # REF: https://stackoverflow.com/questions/47163796/using-colormap-with-annotate-arrow-in-matplotlib
+    cmap = plt.get_cmap(cmap, n)
+    # Arrow shaft: LineCollection
+    x = np.linspace(start[0], end[0], n)
+    y = np.linspace(start[1], end[1], n)
+    points = np.array([x, y]).T.reshape(-1, 1, 2)
+    segments = np.concatenate([points[:-1], points[1:]], axis=1)
+    lc = LineCollection(segments, cmap=cmap, linewidth=lw)
+    lc.set_array(np.linspace(0, 1, n))
+    ax.add_collection(lc)
+    # Arrow head: Triangle
+    tricoords = [(0, -0.4), (0.5, 0), (0, 0.4), (0, -0.4)]
+    angle = np.arctan2(end[1] - start[1], end[0] - start[0])
+    rot = matplotlib.transforms.Affine2D().rotate(angle)
+    tricoords2 = rot.transform(tricoords)
+    tri = matplotlib.path.Path(tricoords2, closed=True)
+    ax.scatter(end[0], end[1], c=1, s=(2 * lw) ** 2, marker=tri, cmap=cmap, vmin=0)
+    ax.autoscale_view()
+
+
+rainbowarrow(ax, (0.15, 0.5), (0.85, 0.5), cmap="Blues", n=100, lw=12)
+ax.set_xlim((0, 1))
+ax.set_ylim((0, 1))
+ax.set_xticks([])
+ax.set_yticks([])
+ax.set_xlabel("Increasing density")
+
+gluefig("er_explain", fig)
+
+#%%
 A1, A2, node_data = sample_toy_networks()
 node_data["labels"] = np.ones(len(node_data), dtype=int)
 palette = {1: sns.color_palette("Set2")[2]}
@@ -162,7 +222,11 @@ stat, pvalue, misc = erdos_renyi_test(A1, A2)
 ax = merge_axes(fig, axs, rows=None, cols=1)
 
 ax.text(
-    0.4, 0.52, r"$p = \frac{\# \ edges}{\# \ potential \ edges}$", ha="center", va="center"
+    0.4,
+    0.52,
+    r"$p = \frac{\# \ edges}{\# \ potential \ edges}$",
+    ha="center",
+    va="center",
 )
 ax.axis("off")
 

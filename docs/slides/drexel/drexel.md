@@ -90,9 +90,7 @@ _[NeuroData lab](https://neurodata.io/)_
 - *Drosophila* larva brain connectome
 - Why we should care about comparing connectomes
 - Bilateral symmetry
-
 - Extensions
-
 - Conclude
 
 
@@ -218,11 +216,11 @@ section {
 }
 </style>
 
-# Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *the same*?
+# Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
 
 ---
 
-# Are these populations the same?
+# Are these populations different?
 
 <div class="columns">
 <div>
@@ -241,7 +239,7 @@ section {
 </div>
 
 --- 
-# Are these two _networks_ the same?
+# Are these two _networks_ different?
 
 <div class="columns">
 <div>
@@ -270,7 +268,15 @@ section {
 ![center h:250](../../../results/figs/unmatched_vs_matched/unmatched_vs_matched.svg)
 
 ---
-# Density-based testing: Erdos-Renyi (ER) model
+# Erdos-Renyi model
+
+- All edges are indepentent
+- All edges generated with the same probability, $p$
+
+![center](../../../results/figs/er_unmatched_test/er_explain.svg)
+
+---
+# Density-based testing
 
 <!-- <div class="columns">
 <div> -->
@@ -309,7 +315,10 @@ section {
 # Need a segue here
 
 --- 
-# Group-based testing: stochastic block model (SBM)
+# Slide on what is an SBM
+
+--- 
+# Group-based testing
 
 ![center](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
 
@@ -426,8 +435,7 @@ section {
 }
 </style>
 
-# Extensions
-
+# Extensions (and other tools)
 
 ---
 
@@ -437,18 +445,42 @@ section {
 ---
 # What do we consider to be a "cell type"?
 
-TODO: show clustering dendrogram
-
-TODO: show cluster morphologies
+---
+# Something about methods for this stuff
 
 ---
+# Hierarchical clustering of neurons based on observed connectivity
+
+![center](../../images/bar-dendrogram-wide.svg)
+
+---
+
+![bg h:700](../../images/FigureS7-morphology.png)
+
+---
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
 # What about the "matchedness" of the networks?
 
-TODO: show the graph matching illustration idea 
+---
+# Graph matching
+![center h:500](./../../images/network-matching-explanation.svg)
 
-TODO: show results of the matching somehow
+---
+# Graph matching predicts single-neuron pairs between hemispheres
 
-TODO: show some example pairs from the automated matching, good and bad
+![]()
+
+---
+# Pairs are (mostly) morphologically similar
+
+![]()
+
 
 ---
 # In summary...
@@ -538,16 +570,10 @@ Latent distribution test (random dot product graph)
 </div>
 </div>
 
---- 
+---
+![center](../../../results/figs/sbm_unmatched_test/group_counts.svg)
 
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
 
-# A massive aside
 
 ---
 # Combining p-values: nobody's perfect
@@ -561,7 +587,7 @@ Heard, Rubin-Delanchy *Biometrika* (2018)
 </footer>
 
 ---
-# Combining p-values: don't trust scipy
+# Combining p-values: don't trust SciPy until 1.9.0
 
 ![center w:600](../../images/tippett-bug.png)
 
@@ -606,18 +632,6 @@ $\leftarrow$ We are trying to approximate this null distribution with something 
 # Relative power (Fisher's vs Tippett's)
 
 ![center](./../../../results/figs/revamp_sbm_methods_sim/relative_power.svg)
-
-
---- 
-
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
-# Back to the main thread...
 
 
 <!-- ---
