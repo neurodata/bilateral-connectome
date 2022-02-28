@@ -364,7 +364,7 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-the-same">
+  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
    Are the
    <span style="color: var(--left)">
     left
@@ -377,23 +377,23 @@ const thebe_selector_output = ".output, .cell_output"
    <p>
    </p>
    <em>
-    the same
+    different
    </em>
    ?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-populations-the-same">
-   Are these populations the same?
+  <a class="reference internal nav-link" href="#are-these-populations-different">
+   Are these populations different?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-two-networks-the-same">
+  <a class="reference internal nav-link" href="#are-these-two-networks-different">
    Are these two
    <em>
     networks
    </em>
-   the same?
+   different?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -402,8 +402,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#density-based-testing-erdos-renyi-er-model">
-   Density-based testing: Erdos-Renyi (ER) model
+  <a class="reference internal nav-link" href="#erdos-renyi-model">
+   Erdos-Renyi model
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#density-based-testing">
+   Density-based testing
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -417,8 +422,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#group-based-testing-stochastic-block-model-sbm">
-   Group-based testing: stochastic block model (SBM)
+  <a class="reference internal nav-link" href="#slide-on-what-is-an-sbm">
+   Slide on what is an SBM
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#group-based-testing">
+   Group-based testing
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -457,8 +467,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extensions">
-   Extensions
+  <a class="reference internal nav-link" href="#extensions-and-other-tools">
+   Extensions (and other tools)
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -472,8 +482,33 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#something-about-methods-for-this-stuff">
+   Something about methods for this stuff
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity">
+   Hierarchical clustering of neurons based on observed connectivity
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#what-about-the-matchedness-of-the-networks">
    What about the “matchedness” of the networks?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching">
+   Graph matching
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres">
+   Graph matching predicts single-neuron pairs between hemispheres
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pairs-are-mostly-morphologically-similar">
+   Pairs are (mostly) morphologically similar
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -531,18 +566,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-massive-aside">
-   A massive aside
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
    Combining p-values: nobody’s perfect
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy">
-   Combining p-values: don’t trust scipy
+  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy-until-1-9-0">
+   Combining p-values: don’t trust SciPy until 1.9.0
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -563,11 +593,6 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
    Relative power (Fisher’s vs Tippett’s)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#back-to-the-main-thread">
-   Back to the main thread…
   </a>
  </li>
 </ul>
@@ -651,7 +676,7 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-the-same">
+  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
    Are the
    <span style="color: var(--left)">
     left
@@ -664,23 +689,23 @@ const thebe_selector_output = ".output, .cell_output"
    <p>
    </p>
    <em>
-    the same
+    different
    </em>
    ?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-populations-the-same">
-   Are these populations the same?
+  <a class="reference internal nav-link" href="#are-these-populations-different">
+   Are these populations different?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-two-networks-the-same">
+  <a class="reference internal nav-link" href="#are-these-two-networks-different">
    Are these two
    <em>
     networks
    </em>
-   the same?
+   different?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -689,8 +714,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#density-based-testing-erdos-renyi-er-model">
-   Density-based testing: Erdos-Renyi (ER) model
+  <a class="reference internal nav-link" href="#erdos-renyi-model">
+   Erdos-Renyi model
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#density-based-testing">
+   Density-based testing
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -704,8 +734,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#group-based-testing-stochastic-block-model-sbm">
-   Group-based testing: stochastic block model (SBM)
+  <a class="reference internal nav-link" href="#slide-on-what-is-an-sbm">
+   Slide on what is an SBM
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#group-based-testing">
+   Group-based testing
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -744,8 +779,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extensions">
-   Extensions
+  <a class="reference internal nav-link" href="#extensions-and-other-tools">
+   Extensions (and other tools)
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -759,8 +794,33 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#something-about-methods-for-this-stuff">
+   Something about methods for this stuff
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity">
+   Hierarchical clustering of neurons based on observed connectivity
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#what-about-the-matchedness-of-the-networks">
    What about the “matchedness” of the networks?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching">
+   Graph matching
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres">
+   Graph matching predicts single-neuron pairs between hemispheres
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pairs-are-mostly-morphologically-similar">
+   Pairs are (mostly) morphologically similar
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -818,18 +878,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-massive-aside">
-   A massive aside
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
    Combining p-values: nobody’s perfect
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy">
-   Combining p-values: don’t trust scipy
+  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy-until-1-9-0">
+   Combining p-values: don’t trust SciPy until 1.9.0
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -850,11 +905,6 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
    Relative power (Fisher’s vs Tippett’s)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#back-to-the-main-thread">
-   Back to the main thread…
   </a>
  </li>
 </ul>
@@ -1025,12 +1075,12 @@ section {
 }
 </style>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-the-same">
-<h1>Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> <em>the same</em>?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-the-same" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
+<h1>Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> <em>different</em>?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different" title="Permalink to this headline">¶</a></h1>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="are-these-populations-the-same">
-<h1>Are these populations the same?<a class="headerlink" href="#are-these-populations-the-same" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="are-these-populations-different">
+<h1>Are these populations different?<a class="headerlink" href="#are-these-populations-different" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
 <ul class="simple">
@@ -1046,8 +1096,8 @@ section {
 </div>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="are-these-two-networks-the-same">
-<h1>Are these two <em>networks</em> the same?<a class="headerlink" href="#are-these-two-networks-the-same" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="are-these-two-networks-different">
+<h1>Are these two <em>networks</em> different?<a class="headerlink" href="#are-these-two-networks-different" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
 <ul class="simple">
@@ -1074,8 +1124,17 @@ section {
 <p><img alt="center h:250" src="../results/figs/unmatched_vs_matched/unmatched_vs_matched.svg" /></p>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="density-based-testing-erdos-renyi-er-model">
-<h1>Density-based testing: Erdos-Renyi (ER) model<a class="headerlink" href="#density-based-testing-erdos-renyi-er-model" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="erdos-renyi-model">
+<h1>Erdos-Renyi model<a class="headerlink" href="#erdos-renyi-model" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>All edges are indepentent</p></li>
+<li><p>All edges generated with the same probability, <span class="math notranslate nohighlight">\(p\)</span></p></li>
+</ul>
+<p><img alt="center" src="../results/figs/er_unmatched_test/er_explain.svg" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="density-based-testing">
+<h1>Density-based testing<a class="headerlink" href="#density-based-testing" title="Permalink to this headline">¶</a></h1>
 <!-- <div class="columns">
 <div> -->
 <!-- - $P[i \rightarrow j] = p$ -->
@@ -1107,8 +1166,12 @@ section {
 <h1>Need a segue here<a class="headerlink" href="#need-a-segue-here" title="Permalink to this headline">¶</a></h1>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="group-based-testing-stochastic-block-model-sbm">
-<h1>Group-based testing: stochastic block model (SBM)<a class="headerlink" href="#group-based-testing-stochastic-block-model-sbm" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="slide-on-what-is-an-sbm">
+<h1>Slide on what is an SBM<a class="headerlink" href="#slide-on-what-is-an-sbm" title="Permalink to this headline">¶</a></h1>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="group-based-testing">
+<h1>Group-based testing<a class="headerlink" href="#group-based-testing" title="Permalink to this headline">¶</a></h1>
 <p><img alt="center" src="../results/figs/sbm_unmatched_test/sbm_methods_explain.svg" /></p>
 </div>
 <hr class="docutils" />
@@ -1251,8 +1314,8 @@ section {
 }
 </style>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="extensions">
-<h1>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="extensions-and-other-tools">
+<h1>Extensions (and other tools)<a class="headerlink" href="#extensions-and-other-tools" title="Permalink to this headline">¶</a></h1>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="but-you-threw-out-all-of-the-edge-weights">
@@ -1262,15 +1325,42 @@ section {
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="what-do-we-consider-to-be-a-cell-type">
 <h1>What do we consider to be a “cell type”?<a class="headerlink" href="#what-do-we-consider-to-be-a-cell-type" title="Permalink to this headline">¶</a></h1>
-<p>TODO: show clustering dendrogram</p>
-<p>TODO: show cluster morphologies</p>
 </div>
 <hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="something-about-methods-for-this-stuff">
+<h1>Something about methods for this stuff<a class="headerlink" href="#something-about-methods-for-this-stuff" title="Permalink to this headline">¶</a></h1>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="hierarchical-clustering-of-neurons-based-on-observed-connectivity">
+<h1>Hierarchical clustering of neurons based on observed connectivity<a class="headerlink" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center" src="../../_images/bar-dendrogram-wide.svg" /></p>
+<hr class="docutils" />
+<p><img alt="bg h:700" src="../../_images/FigureS7-morphology.png" /></p>
+<hr class="docutils" />
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+</div>
 <div class="tex2jax_ignore mathjax_ignore section" id="what-about-the-matchedness-of-the-networks">
 <h1>What about the “matchedness” of the networks?<a class="headerlink" href="#what-about-the-matchedness-of-the-networks" title="Permalink to this headline">¶</a></h1>
-<p>TODO: show the graph matching illustration idea</p>
-<p>TODO: show results of the matching somehow</p>
-<p>TODO: show some example pairs from the automated matching, good and bad</p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="graph-matching">
+<h1>Graph matching<a class="headerlink" href="#graph-matching" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center h:500" src="../../_images/network-matching-explanation.svg" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="graph-matching-predicts-single-neuron-pairs-between-hemispheres">
+<h1>Graph matching predicts single-neuron pairs between hemispheres<a class="headerlink" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres" title="Permalink to this headline">¶</a></h1>
+<p><img alt="" src="../../_images/drexel" /></p>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="pairs-are-mostly-morphologically-similar">
+<h1>Pairs are (mostly) morphologically similar<a class="headerlink" href="#pairs-are-mostly-morphologically-similar" title="Permalink to this headline">¶</a></h1>
+<p><img alt="" src="../../_images/drexel" /></p>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="in-summary">
@@ -1355,15 +1445,7 @@ section {
 </div>
 </div>
 <hr class="docutils" />
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="a-massive-aside">
-<h1>A massive aside<a class="headerlink" href="#a-massive-aside" title="Permalink to this headline">¶</a></h1>
+<p><img alt="center" src="../results/figs/sbm_unmatched_test/group_counts.svg" /></p>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="combining-p-values-nobody-s-perfect">
@@ -1374,8 +1456,8 @@ section {
 </footer>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="combining-p-values-don-t-trust-scipy">
-<h1>Combining p-values: don’t trust scipy<a class="headerlink" href="#combining-p-values-don-t-trust-scipy" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="combining-p-values-don-t-trust-scipy-until-1-9-0">
+<h1>Combining p-values: don’t trust SciPy until 1.9.0<a class="headerlink" href="#combining-p-values-don-t-trust-scipy-until-1-9-0" title="Permalink to this headline">¶</a></h1>
 <p><img alt="center w:600" src="../../_images/tippett-bug.png" /></p>
 </div>
 <hr class="docutils" />
@@ -1413,16 +1495,6 @@ section {
 <div class="tex2jax_ignore mathjax_ignore section" id="relative-power-fisher-s-vs-tippett-s">
 <h1>Relative power (Fisher’s vs Tippett’s)<a class="headerlink" href="#relative-power-fisher-s-vs-tippett-s" title="Permalink to this headline">¶</a></h1>
 <p><img alt="center" src="../results/figs/revamp_sbm_methods_sim/relative_power.svg" /></p>
-<hr class="docutils" />
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="back-to-the-main-thread">
-<h1>Back to the main thread…<a class="headerlink" href="#back-to-the-main-thread" title="Permalink to this headline">¶</a></h1>
 <!-- ---
 <div class="columns">
 <div>
