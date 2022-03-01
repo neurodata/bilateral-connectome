@@ -110,7 +110,7 @@ What about matched pairs? -->
 ![center w:1000](./../../images/FigureS1-reconstruction.png)
 
 <footer>
-Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep (2021)
+Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
 </footer>
 
 
@@ -318,7 +318,7 @@ section {
 --- 
 # Stochastic block model
 
-![center w:1100](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
+![center h:500](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
 
 ---
 # Connection probabilities between groups
@@ -481,10 +481,11 @@ section {
 ![]()
 
 ---
-# Pairs are (mostly) morphologically similar
+# Predicted pairs are (mostly) morphologically similar
 
-![]()
+![center h:490](./match_examine/../../../../results/figs/match_examine/left-pair-predictions.svg)
 
+<footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
 
 ---
 # In summary...
