@@ -171,13 +171,15 @@ right_labels = right_nodes[GROUP_KEY].values
 
 #%%
 
+from seaborn.utils import relative_luminance
+
 np.random.seed(8888)
 ps = [0.2, 0.4, 0.6, 0.8]
 n_steps = len(ps)
 fig, axs = plt.subplots(
     3,
     n_steps,
-    figsize=(10, 4),
+    figsize=(8, 4),
     gridspec_kw=dict(height_ratios=[2, 2, 1], wspace=0),
     constrained_layout=True,
 )
@@ -189,9 +191,53 @@ ps = [0.2, 0.4, 0.6, 0.8]
 palette = get_toy_palette()
 
 
+def label_matrix_element(
+    matrix,
+    row_ind,
+    col_ind,
+    label,
+    ax,
+    pad=0.02,
+    fontsize="small",
+    cmap=None,
+    color=None,
+):
+    xlow = col_ind + pad
+    xhigh = col_ind + 1 - pad
+    ylow = row_ind + pad
+    yhigh = row_ind + 1 - pad
+    ax.plot(
+        [xlow, xhigh, xhigh, xlow, xlow],
+        [yhigh, yhigh, ylow, ylow, yhigh],
+        zorder=100,
+        color="red",
+        clip_on=False,
+    )
+
+    if color is None:
+        if cmap is None:
+            cmap = make_sequential_colormap("Blues", 0, 1)
+
+        color = cmap(matrix[row_ind, col_ind])
+        lum = relative_luminance(color)
+        text_color = ".15" if lum > 0.408 else "w"
+    else:
+        text_color = color
+
+    ax.text(
+        col_ind + 0.5,
+        row_ind + 0.5,
+        label,
+        ha="center",
+        va="center",
+        fontsize=fontsize,
+        color=text_color,
+    )
+
+
 for i, p in enumerate(ps):
     B_mod = B.copy()
-    B_mod[1, 2] = p
+    B_mod[0, 1] = p
     seed = 8
     np.random.seed(seed)
     A, labels = sbm(ns, B_mod, directed=True, loops=False, return_labels=True)
@@ -204,15 +250,24 @@ for i, p in enumerate(ps):
         A, node_data, ax=ax, compute_layout=i == 0, palette=palette, group=True
     )
     ax.axis("square")
+    ax.set(xticks=[], yticks=[], ylabel="", xlabel="")
 
     label_text = f"{p}"
     if i == 0:
-        label_text = r"$B_{2,3} = $" + label_text
+        label_text = r"$B_{12} = $" + label_text
     ax.set_title(label_text)
 
     ax = axs[1, i]
     heatmap_grouped(B_mod, [1, 2, 3], palette=palette, ax=ax)
-    ax.plot([2, 3, 3, 2, 2], [1, 1, 2, 2, 1], zorder=10, color="red", clip_on=False)
+    label_matrix_element(B_mod, 0, 1, r"$B_{12}$", ax)
+    # pad = 0.03
+    # ax.plot(
+    #     [1 + pad, 2 - pad, 2 - pad, 1 + pad, 1 + pad],
+    #     [0 + pad, 0 + pad, 1 - pad, 1 - pad, 0 + pad],
+    #     zorder=100,
+    #     color="red",
+    #     clip_on=False,
+    # )
 
 axs[0, 0].set_ylabel("Network", rotation=0, ha="right", labelpad=5)
 axs[1, 0].set_ylabel(
@@ -222,6 +277,7 @@ axs[1, 0].set_ylabel(
     va="center",
     labelpad=10,
 )
+
 
 ax = merge_axes(fig, axs, rows=2)
 
@@ -234,104 +290,14 @@ ax.set(xticks=[], yticks=[])
 rainbowarrow(ax, (0.1, 0.5), (0.89, 0.5), cmap="Blues", lw=12)
 ax.set_xlim((0, 1))
 ax.set_ylim((0, 1))
-ax.set_xlabel(r"Increasing $2 \rightarrow 3$ connectivity")
+ax.set_xlabel(r"Increasing $1 \rightarrow 2$ connection probability")
 
-# plt.tight_layout()
 fig.set_facecolor("w")
 
 gluefig("sbm_explain", fig)
 
 
-#     A = er_np(n, p)
-#     if i == 0:
-#         node_data = pd.DataFrame(index=np.arange(n))
-
-#     ax = axs[0, i]
-#     networkplot_simple(A, node_data, ax=ax, compute_layout=i == 0)
-
-#     label_text = f"{p}"
-#     if i == 0:
-#         label_text = r"$p = $" + label_text
-#     ax.set_xlabel(label_text)
-
-# fig.set_facecolor("w")
-
-
 #%%
-
-
-def compare_probability_row(i, j, y, Bhat1, Bhat2, ax=None, palette=None):
-    cmap = make_sequential_colormap("Blues")
-
-    prob1 = Bhat1[i, j]
-    prob2 = Bhat2[i, j]
-
-    linestyle_kws = dict(linewidth=1, color="dimgrey")
-    ax.axvline(4, ymin=0.32, ymax=0.89, **linestyle_kws)
-    ax.axvline(9, ymin=0.32, ymax=0.89, **linestyle_kws)
-    ax.plot([4, 9], [0.89, 0.89], **linestyle_kws)
-    ax.plot([4, 9], [0.32, 0.32], **linestyle_kws)
-
-    ax.text(
-        5.5,
-        0.9,
-        r"$\hat{B}^{(L)}_{ij}$",
-        ha="center",
-        va="bottom",
-        color=network_palette["Left"],
-    )
-
-    ax.text(
-        8.5,
-        0.9,
-        r"$\hat{B}^{(R)}_{ij}$",
-        ha="center",
-        va="bottom",
-        color=network_palette["Right"],
-    )
-
-    ax.plot(
-        [1],
-        [y],
-        "o",
-        markersize=13,
-        markeredgecolor="black",
-        markeredgewidth=1,
-        markerfacecolor=palette[i + 1],
-    )
-    ax.plot(
-        [3],
-        [y],
-        "o",
-        markersize=13,
-        markeredgecolor="black",
-        markeredgewidth=1,
-        markerfacecolor=palette[j + 1],
-    )
-    ax.annotate(
-        "",
-        xy=(3, y),
-        xytext=(1, y),
-        arrowprops=dict(
-            arrowstyle="-|>",
-            connectionstyle="angle,angleA=65,angleB=-65,rad=25",
-            facecolor="black",
-            shrinkA=8,
-            shrinkB=7,
-            # mutation_scale=,
-        ),
-    )
-
-    ax.plot([5], [y], "s", markersize=15, color=cmap(prob1))
-    ax.plot([8], [y], "s", markersize=15, color=cmap(prob2))
-    ax.text(6.5, y, r"$\overset{?}{=}$", fontsize="large", va="center", ha="center")
-    ax.text(10, y, r"$\rightarrow$", fontsize="large", va="center", ha="center")
-    p_text = r"$p_{"
-    p_text += str(i + 1)
-    p_text += str(j + 1)
-    p_text += r"}$"
-    ax.text(12.5, y, p_text, fontsize="large", va="center", ha="center")
-    ax.set(xticks=[], yticks=[])
 
 
 fig, axs = plt.subplots(
@@ -399,6 +365,11 @@ top_ax.set_title(r"$\hat{B}^{(L)}$", color=network_palette["Left"])
 left_ax.set_ylabel("Source group", fontsize="small")
 ax.set_xlabel("Target group", fontsize="small")
 
+
+# ax.text(1.5, 0.5, , va="center", ha="center")
+label_matrix_element(Bhat1, 0, 1, r"$\hat{B}_{12}^{(L)}$", ax)
+
+
 ax = axs[3, 2]
 _, _, misc = stochastic_block_test(A2, A2, node_data["labels"], node_data["labels"])
 Bhat2 = misc["probabilities1"].values
@@ -406,30 +377,142 @@ top_ax, left_ax = heatmap_grouped(Bhat2, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
 left_ax.set_ylabel("Source group", fontsize="small")
 ax.set_xlabel("Target group", fontsize="small")
+label_matrix_element(Bhat2, 0, 1, r"$\hat{B}_{12}^{(R)}$", ax)
 
 
 ax = merge_axes(fig, axs, rows=(1, 4), cols=4)
-ax.set(xlim=(0, 13), ylim=(0, 1))
+
+linestyle_kws = dict(linewidth=1, color="dimgrey")
+# ax.axvline(4, ymin=0.32, ymax=0.89, **linestyle_kws)
+# ax.axvline(9, ymin=0.32, ymax=0.89, **linestyle_kws)
+# ax.plot([4, 9], [0.89, 0.89], **linestyle_kws)
+# ax.plot([4, 9], [0.32, 0.32], **linestyle_kws)
+
+xmin = 0.01
+xmax = 0.99
+ymax = 0.95
+ymin = 0.65
+ax.plot([xmin, xmax, xmax, xmin, xmin], [ymax, ymax, ymin, ymin, ymax], **linestyle_kws)
+
+xstart = -0.05
+
+ax.text(
+    xstart - 0.05,
+    0.9,
+    r"$\hat{B}^{(L)}_{ij}$",
+    ha="center",
+    va="center",
+    color=network_palette["Left"],
+)
+
+ax.text(
+    xstart - 0.05,
+    0.7,
+    r"$\hat{B}^{(R)}_{ij}$",
+    ha="center",
+    va="center",
+    color=network_palette["Right"],
+)
 
 
-compare_probability_row(0, 0, 0.83, Bhat1, Bhat2, ax=ax, palette=palette)
-compare_probability_row(0, 1, 0.72, Bhat1, Bhat2, ax=ax, palette=palette)
+def compare_probability_column(i, j, x, Bhat1, Bhat2, ax=None, palette=None):
+    cmap = make_sequential_colormap("Blues")
+
+    prob1 = Bhat1[i, j]
+    prob2 = Bhat2[i, j]
+
+    ystart = 1.07
+    ax.plot(
+        [x],
+        [ystart],
+        "o",
+        markersize=9,
+        markeredgecolor="black",
+        markeredgewidth=1,
+        markerfacecolor=palette[i + 1],
+        clip_on=False,
+    )
+    ax.plot(
+        [x],
+        [ystart - 0.08],
+        "o",
+        markersize=9,
+        markeredgecolor="black",
+        markeredgewidth=1,
+        markerfacecolor=palette[j + 1],
+        clip_on=False,
+    )
+    ax.annotate(
+        "",
+        xy=(x, ystart - 0.08),
+        xytext=(x, ystart),
+        arrowprops=dict(
+            arrowstyle="-|>",
+            facecolor="black",
+            shrinkA=5,
+            shrinkB=4,
+        ),
+        clip_on=False,
+        zorder=-1,
+        fontsize=10,
+    )
+
+    ax.plot([x], [0.9], "s", markersize=15, color=cmap(prob1))
+    ax.plot([x], [0.7], "s", markersize=15, color=cmap(prob2))
+    ax.text(x, 0.78, r"$\overset{?}{=}$", fontsize="large", va="center", ha="center")
+    # ax.text(x, 10, r"$\rightarrow$", fontsize="large", va="center", ha="center")
+
+    ax.annotate(
+        "",
+        xy=(x, 0.53),
+        xytext=(x, 0.63),
+        arrowprops=dict(
+            arrowstyle="-|>",
+            facecolor="black",
+        ),
+    )
+
+    p_text = r"$p_{"
+    p_text += str(i + 1)
+    p_text += str(j + 1)
+    p_text += r"}$"
+    ax.text(x, 0.47, p_text, fontsize="small", va="center", ha="center")
+    ax.set(xticks=[], yticks=[])
+
+
+compare_probability_column(0, 0, xstart + 0.15, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_column(0, 1, xstart + 0.35, Bhat1, Bhat2, ax=ax, palette=palette)
 
 ax.plot(
-    [6.65], [0.64], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+    [0.44], [0.78], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
 )
 ax.plot(
-    [6.65], [0.61], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+    [0.5], [0.78], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
 )
 ax.plot(
-    [6.65], [0.58], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
+    [0.56], [0.78], ".", markersize=4, markeredgecolor="black", markerfacecolor="black"
 )
 
-compare_probability_row(2, 1, 0.48, Bhat1, Bhat2, ax=ax, palette=palette)
-compare_probability_row(2, 2, 0.37, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_column(2, 1, xstart + 0.75, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_column(2, 2, xstart + 0.95, Bhat1, Bhat2, ax=ax, palette=palette)
+
+xmin = 0.21
+xmax = 0.39
+ymax = 1.1
+ymin = 0.4
+ax.plot(
+    [xmin, xmax, xmax, xmin, xmin],
+    [ymax, ymax, ymin, ymin, ymax],
+    color="red",
+    clip_on=False,
+    lw=1.5
+)
+
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
 
 draw_hypothesis_box(
-    "sbm", 1, 0.17, yskip=0.12, ax=ax, subscript=True, xpad=0.3, ypad=0.0075
+    "sbm", xstart + 0.1, 0.2, yskip=0.12, ax=ax, subscript=True, xpad=0.05, ypad=0.0075
 )
 
 ax.axis("off")
@@ -449,6 +532,10 @@ top_ax, left_ax = heatmap_grouped(
 )
 left_ax.set_ylabel("Source group", fontsize="small")
 ax.set_xlabel("Target group", fontsize="small")
+top_ax.set_title("p-values")
+
+label_matrix_element(uncorrected_pvalues, 0, 1, r"$p_{12}$", ax, color="w")
+
 
 # ax = axs[3, 6]
 ax = merge_axes(fig, axs, rows=(2, 4), cols=6)

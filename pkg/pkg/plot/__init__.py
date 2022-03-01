@@ -28,3 +28,4 @@ from .utils import (
     rainbowarrow,
 )
 from .hypotheses import draw_hypothesis_box
+from .neuron import simple_plot_neurons

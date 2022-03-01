@@ -28,7 +28,7 @@ def networkplot_simple(
         palette=palette,
         node_sizes=(20, 200),
         node_kws=dict(
-            linewidth=1, edgecolor="black", color=sns.color_palette("Set2")[2]
+            linewidth=1, edgecolor="black", color=sns.color_palette("Set2")[2], clip_on=False
         ),
         node_alpha=1.0,
         edge_kws=edge_kws,
