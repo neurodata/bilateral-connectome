@@ -186,12 +186,12 @@ gluefig("er_explain", fig)
 A1, A2, node_data = sample_toy_networks()
 node_data["labels"] = np.ones(len(node_data), dtype=int)
 palette = {1: sns.color_palette("Set2")[2]}
-fig, axs = plt.subplots(2, 3, figsize=(9, 6))
+fig, axs = plt.subplots(2, 2, figsize=(6, 6), gridspec_kw=dict(wspace=0.7))
 
 ax = axs[0, 0]
 networkplot_simple(A1, node_data, ax=ax)
 
-ax.set_title("Compute global\nconnection density", x=1.1)
+ax.set_title("Compute global\nconnection density")
 ax.set_ylabel(
     "Left",
     color=network_palette["Left"],
@@ -201,7 +201,6 @@ ax.set_ylabel(
     labelpad=10,
 )
 
-ax = axs[1, 0]
 
 ax = axs[1, 0]
 networkplot_simple(A2, node_data, ax=ax)
@@ -219,11 +218,12 @@ ax.set_ylabel(
 
 stat, pvalue, misc = erdos_renyi_test(A1, A2)
 
-ax = merge_axes(fig, axs, rows=None, cols=1)
+# ax = merge_axes(fig, axs, rows=None, cols=1)
 
+ax = axs[0, 1]
 ax.text(
     0.4,
-    0.52,
+    0.2,
     r"$p = \frac{\# \ edges}{\# \ potential \ edges}$",
     ha="center",
     va="center",
@@ -231,42 +231,47 @@ ax.text(
 ax.axis("off")
 
 
-ax = merge_axes(fig, axs, rows=None, cols=2)
+# ax = merge_axes(fig, axs, rows=None, cols=2)
 
 ax.set_title("Compare ER\nmodels")
-ax.axis("off")
 ax.set(xlim=(-0.5, 2), ylim=(0, 1))
 
 
-y = 0.8
-x3 = 0
+ax = axs[1, 1]
+ax.axis("off")
 
+x = 0
 y = 0.55
-texts = multicolor_text(
-    -0.4,
-    y,
-    [r"$H_0$:", r"$p^{(L)}$", r"$=$", r"$p^{(R)}$"],
-    ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="small",
-    ax=ax,
-)
-y = y - 0.1
-texts += multicolor_text(
-    -0.4,
-    y,
-    [r"$H_A$:", r"$p^{(L)}$", r"$\neq$", r"$p^{(R)}$"],
-    ["black", network_palette["Left"], "black", network_palette["Right"]],
-    fontsize="small",
-    ax=ax,
-)
-bound_texts(
-    texts,
-    ax=ax,
-    xpad=0.07,
-    ypad=0.01,
-    facecolor="white",
-    edgecolor="lightgrey",
-)
+
+from pkg.plot import draw_hypothesis_box
+
+draw_hypothesis_box("er", -0.2, 0.8, ax=ax, fontsize="medium", yskip=0.2)
+
+# texts = multicolor_text(
+#     x,
+#     y,
+#     [r"$H_0$:", r"$p^{(L)}$", r"$=$", r"$p^{(R)}$"],
+#     ["black", network_palette["Left"], "black", network_palette["Right"]],
+#     fontsize="small",
+#     ax=ax,
+# )
+# y = y - 0.1
+# texts += multicolor_text(
+#     x,
+#     y,
+#     [r"$H_A$:", r"$p^{(L)}$", r"$\neq$", r"$p^{(R)}$"],
+#     ["black", network_palette["Left"], "black", network_palette["Right"]],
+#     fontsize="small",
+#     ax=ax,
+# )
+# bound_texts(
+#     texts,
+#     ax=ax,
+#     xpad=0.07,
+#     ypad=0.01,
+#     facecolor="white",
+#     edgecolor="lightgrey",
+# )
 
 gluefig("er_methods", fig)
 

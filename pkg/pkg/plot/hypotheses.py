@@ -72,7 +72,6 @@ def draw_hypothesis_box(
         points = rect.get_bbox().get_points()
         top = points[1][1]
         mid = (points[1][0] - points[0][0]) / 2
-        print(points)
         ax.text(
             points[0][0],
             top,
@@ -80,7 +79,7 @@ def draw_hypothesis_box(
             va="bottom",
             ha="left",
             transform=ax.transData,
-            fontsize='large'
+            fontsize="large",
         )
 
     return texts

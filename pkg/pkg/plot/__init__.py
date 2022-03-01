@@ -25,5 +25,6 @@ from .utils import (
     remove_shared_ax,
     shrink_axis,
     nice_text,
+    rainbowarrow,
 )
 from .hypotheses import draw_hypothesis_box

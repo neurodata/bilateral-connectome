@@ -4,6 +4,8 @@ import seaborn as sns
 from matplotlib.colors import ListedColormap
 from matplotlib.patheffects import Normal, Stroke
 from matplotlib.transforms import Bbox
+import matplotlib.pyplot as plt
+from matplotlib.collections import LineCollection
 
 
 def shrink_axis(ax, scale=0.7):
@@ -167,7 +169,9 @@ def bound_texts(texts, ax=None, xpad=0, ypad=0, **kwargs):
     xy = (x_min - xpad, y_min - ypad)
     width = x_max - x_min + 2 * xpad
     height = y_max - y_min + 2 * ypad
-    patch = mpl.patches.Rectangle(xy=xy, width=width, height=height, **kwargs)
+    patch = mpl.patches.Rectangle(
+        xy=xy, width=width, height=height, clip_on=False, **kwargs
+    )
     ax.add_patch(patch)
     return patch
 
@@ -198,3 +202,24 @@ def nice_text(
         va=va,
     )
     text.set_path_effects([Stroke(linewidth=linewidth, foreground=linecolor), Normal()])
+
+
+def rainbowarrow(ax, start, end, cmap="viridis", n=50, lw=3):
+    # REF: https://stackoverflow.com/questions/47163796/using-colormap-with-annotate-arrow-in-matplotlib
+    cmap = plt.get_cmap(cmap, n)
+    # Arrow shaft: LineCollection
+    x = np.linspace(start[0], end[0], n)
+    y = np.linspace(start[1], end[1], n)
+    points = np.array([x, y]).T.reshape(-1, 1, 2)
+    segments = np.concatenate([points[:-1], points[1:]], axis=1)
+    lc = LineCollection(segments, cmap=cmap, linewidth=lw)
+    lc.set_array(np.linspace(0, 1, n))
+    ax.add_collection(lc)
+    # Arrow head: Triangle
+    tricoords = [(0, -0.4), (0.5, 0), (0, 0.4), (0, -0.4)]
+    angle = np.arctan2(end[1] - start[1], end[0] - start[0])
+    rot = mpl.transforms.Affine2D().rotate(angle)
+    tricoords2 = rot.transform(tricoords)
+    tri = mpl.path.Path(tricoords2, closed=True)
+    ax.scatter(end[0], end[1], c=1, s=(2 * lw) ** 2, marker=tri, cmap=cmap, vmin=0)
+    ax.autoscale_view()

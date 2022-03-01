@@ -218,6 +218,7 @@ section {
 
 # Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
 
+
 ---
 
 # Are these populations different?
@@ -315,12 +316,9 @@ section {
 # Need a segue here
 
 --- 
-# Slide on what is an SBM
+# Stochastic block model
 
---- 
-# Group-based testing
-
-![center](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
+![center w:1100](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
 
 ---
 # Connection probabilities between groups
@@ -328,6 +326,12 @@ section {
 ![center h:200](./../../images/Figure1-cell-classes.png)
 
 ![center h:300](../../../results/figs/sbm_unmatched_test/sbm_uncorrected.svg)
+
+--- 
+# Group-based testing
+
+![center](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
+
 
 --- 
 # We detect a difference in group-to-group connection probabilities
