@@ -318,7 +318,12 @@ gluefig("resampled_pvalues_distribution", fig)
 
 fig, axs = plot_pvalues(misc)
 
-gluefig("sbm_uncorrected_pvalues", fig)
+gluefig("sbm_pvalues", fig)
+
+fig, axs = plot_pvalues(misc, annot_missing=False)
+
+gluefig("sbm_pvalues_unlabeled", fig)
+
 
 #%%
 from pkg.io import FIG_PATH

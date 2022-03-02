@@ -64,7 +64,6 @@ def glue(name, var, prefix=None):
 set_theme()
 
 colors = sns.color_palette("Set1")
-palette = dict(zip(["Left", "Right", "Contra"], [colors[0], colors[1], colors[3]]))
 
 #%% [markdown]
 # ### Load the data
@@ -551,7 +550,7 @@ for i, neuron_id in enumerate(id_choices):
                 transform=ax.transAxes,
                 fontsize="large",
             )
-            labeled_incorrect=True
+            labeled_incorrect = True
     else:
         color = "forestgreen"
         if i == 0:
@@ -618,6 +617,75 @@ for i, neuron_id in enumerate(id_choices):
     # ax.set_title('wrong')
 # plt.tight_layout()
 gluefig(f"left-pair-predictions", fig)
+
+#%%
+_, final_perm = linear_sum_assignment(-P[:, correct_perm])
+
+perm_right_nodes = right_nodes.iloc[final_perm]
+
+compare = left_nodes["pair_id"].values == perm_right_nodes["pair_id"].values
+compare[
+    (left_nodes["pair_id"] >= 2).values & (right_nodes["pair_id"] >= 2).values
+].mean()
+
+#%%
+
+from graspologic.embed import AdjacencySpectralEmbed
+
+from scipy.cluster import hierarchy
+
+ase = AdjacencySpectralEmbed(n_components=24, concat=True)
+embed = ase.fit_transform(ll_adj)
+
+
+def specsort(X, metric="cosine"):
+    Z = hierarchy.linkage(X, method="average", metric=metric)
+    Z_ordered = hierarchy.optimal_leaf_ordering(Z, X, metric=metric)
+    sorted_indices = hierarchy.leaves_list(Z_ordered)
+    return sorted_indices
+
+
+sort_inds = specsort(embed)
+
+#%%
+from giskard.plot import adjplot
+
+network_palette, _ = load_network_palette()
+
+fig, axs = plt.subplots(1, 2, figsize=(20, 10))
+
+adjplot_kws = dict(sizes=(2, 2), plot_type="scattermap")
+ax = axs[0]
+adjplot(
+    ll_adj[np.ix_(sort_inds, sort_inds)],
+    ax=ax,
+    color=network_palette["Left"],
+    **adjplot_kws,
+)
+ax.set_title("Left adjacency", fontsize="xx-large", color=network_palette["Left"])
+
+perm_rr_adj = rr_adj[np.ix_(final_perm, final_perm)]
+perm_rr_adj = perm_rr_adj[np.ix_(sort_inds, sort_inds)]
+
+ax = axs[1]
+adjplot(perm_rr_adj, ax=ax, color=network_palette["Right"], **adjplot_kws)
+ax.set_title("Right adjacency", fontsize="xx-large", color=network_palette["Right"])
+
+fig.set_facecolor("w")
+
+gluefig("matched_adjacencies", fig, format=["png"])
+
+#%%
+
+adjplot(
+    ll_adj[np.ix_(sort_inds, sort_inds)] - perm_rr_adj,
+    color=network_palette["Right"],
+    **adjplot_kws,
+)
+
+
+#%%
+
 
 # %% [markdown]
 # ## End

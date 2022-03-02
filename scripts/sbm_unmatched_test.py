@@ -41,6 +41,7 @@ from pkg.plot import (
 )
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
+from sqlalchemy import false
 from svgutils.compose import SVG, Figure, Panel, Text
 
 DISPLAY_FIGS = False
@@ -628,6 +629,13 @@ plot_pvalues(
     annot_missing=True,
 )
 gluefig("sbm_uncorrected_pvalues", fig)
+
+plot_pvalues(
+    misc,
+    pvalue_vmin,
+    annot_missing=False,
+)
+gluefig("sbm_uncorrected_pvalues_unlabeled", fig)
 
 
 #%% [markdown]

@@ -15,6 +15,13 @@ style: |
         display: block;
         margin: 0 auto;
     }
+    img[alt~="icon"] {
+        display: inline;
+        margin: 0 0.125em;
+        padding: 0;
+        vertical-align: middle;
+        height: 30px;
+    }
     header {
         top: 0px;
         margin-top: auto;
@@ -53,36 +60,15 @@ p {
 
 ### Benjamin D. Pedigo
 
-_Johns Hopkins University_
+_Johns Hopkins University - Biomedical Engineering_
 _[NeuroData lab](https://neurodata.io/)_
 
-![h:30](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
-<!-- 
-[_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
-[_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) -->
+![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
+![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
+![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
+![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/)
 
 ![bg right:45% w:600](./../../images/background.png)
-
-<!-- <div class="date">
-       <i class="fa fa-user-o" aria-hidden="true"></i>
-       <p style="display: inline-block" >10/01/2018</p>
-</div> -->
-
-<!-- <i class="fa fa-user-o"></i> -->
-
-<div class="social_icons">
-
-![h:40](./../../images/github.png) test
-
-</div>
-
-<!-- 
-<div class="ui-bar-a">
-    <span>This is github</span>
-    <img src="./../../images/github.png"> 
-</div> -->
-
-<!-- ![h:20](./../../images/github.png) text -->
 
 --- 
 # Outline
@@ -90,9 +76,7 @@ _[NeuroData lab](https://neurodata.io/)_
 - *Drosophila* larva brain connectome
 - Why we should care about comparing connectomes
 - Bilateral symmetry
-- Extensions
-- Conclude
-
+- Extensions and other tools
 
 <!-- What about weights? 
 What about the partition?
@@ -123,8 +107,9 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <div>
 
 <!-- See [Michael Windings's talk](https://conference.neuromatch.io/abstract?edition=2021-4&submission_id=recVeh4RZFFRAQnIo) -->
+- Collaboration with Marta Zlatic/Albert Cardona's groups - led by Michael Winding
 - First whole-brain, single-cell connectome of any insect
-- ~3000 neurons, ~544K synapses
+- ~3000 neurons, ~550K synapses
 - Both hemispheres of the brain reconstructed
 
 </div>
@@ -148,14 +133,14 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 ---
 # Why bilateral symmetry?
 
-> We examined the connectivity of members of left–right homologous neuron pairs onto left–right homologous targets in the nerve ring of the hermaphrodite reconstruction to assess the amount of natural variability in connectivity. ... Differences between individual worms will be expected to be at least this large. This information is used in the following section to identify sex differences.
+> "We examined the connectivity of members of left–right homologous neuron pairs ... **to assess the amount of natural variability in connectivity.** ... **Differences between individual worms will be expected to be at least this large.**"
 
-> In both sexes, the gustatory neuron ASEL (that is, the left neuron of the pair) has greater chemical connectivity than ASER (that is, the right neuron of the pair) to the olfactory neuron class AWC. The ASEL–ASER pair is known to be lateralized in its ability to sense chemosensory cues
+> "... the gustatory neuron ASEL (that is, the left neuron of the pair) has greater chemical connectivity than ASER (that is, the right neuron of the pair) to the olfactory neuron class AWC."
+
+
 
 <footer>
-
 Cook et al. *Nature* (2019)
-
 </footer>
 
 ---
@@ -186,20 +171,14 @@ section {
 # Connectomes across development
 ![center h:475](./../../images/witvliet-fig1.png)
 
-<footer>
-
-Witvliet et al. *Nature* (2021)
-
-</footer>
+<footer>Witvliet et al. *Nature* (2021)</footer>
 
 ---
 # Connectomes across evolution, cortex
 ![center w:550](./../../images/bartsotti-fig2.png)
 
 <footer>
-
 Bartsotti + Correia et al. *Curr. Op. Neurobiology* (2021)
-
 </footer>
 
 ---
@@ -226,15 +205,16 @@ section {
 <div class="columns">
 <div>
 
+![center w:400](./../../../results/figs/two_sample_testing/2_sample_real_line.svg)
+
+</div>
+<div>
+
 - Known as two-sample testing
 - $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$, $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
 - $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
   $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
 
-</div>
-<div>
-
-![center w:400](./../../../results/figs/two_sample_testing/2_sample_real_line.svg)
 
 </div>
 </div>
@@ -245,16 +225,16 @@ section {
 <div class="columns">
 <div>
 
-- Want a two-network-sample test!
-
-- <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span>, <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
-- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
-  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
+![center w:1000](./../../../results/figs/plot_side_layouts/2_network_layout.png)
 
 </div>
 <div>
 
-![center w:1000](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+
+- Want a two-network-sample test!
+- <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span>, <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
+- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
+  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
 
 </div>
 </div>
@@ -312,20 +292,43 @@ section {
 </div>
 </div>
 
---- 
-# Need a segue here
 
 --- 
 # Stochastic block model
 
-![center h:500](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
+- Edge probabilities are a function of a neuron's group
+
+![center h:450](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
 
 ---
 # Connection probabilities between groups
 
-![center h:200](./../../images/Figure1-cell-classes.png)
+<!-- ![center h:160](./../../images/Figure1-cell-classes.png)
 
-![center h:300](../../../results/figs/sbm_unmatched_test/sbm_uncorrected.svg)
+![center h:350](../../../results/figs/sbm_unmatched_test/sbm_uncorrected.svg) -->
+<style scoped>
+    .columns {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 0rem;
+    }
+</style>
+
+
+<div class="columns">
+<div>
+
+![center h:500](./../../images/Figure1-cell-classes-vertical.png)
+
+</div>
+<div>
+
+
+![center w:700](../../../results/figs/sbm_unmatched_test/sbm_uncorrected.svg)
+
+
+</div>
+</div>
 
 --- 
 # Group-based testing
@@ -339,7 +342,7 @@ section {
 <div class="columns">
 <div>
 
-![center h:450](sbm_unmatched_test/../../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg)
+![center h:450](sbm_unmatched_test/../../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues_unlabeled.svg)
 
 </div>
 <div>
@@ -387,13 +390,13 @@ section {
 </div>
 <div>
 
-![center w:500](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_uncorrected_pvalues.svg)
+![center w:500](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
 
 </div>
 </div>
 
 ---
-# So the Kenyon cells are the only group with remaining differences...
+# So the Kenyon cells (KCs) are the only group where we detect remaining differences...
 
 <div class="columns">
 <div>
@@ -405,7 +408,7 @@ section {
 <div>
 
 - ER test: $p <10^{-26}$
-- SBM test: $p \approx 0.0027$
+- SBM test: $p \approx 0.003$
 - Adjusted SBM test: $p \approx 0.43$
 
 </div>
@@ -421,14 +424,14 @@ table {
 }
 </style>
 
-| Model | $H_0$ (vs. $H_A \neq$)                                             |  KC   |     p-value      | Interpretation                                           |
-| ----- | ------------------------------------------------------------------ | :---: | :--------------: | -------------------------------------------------------- |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$    | Reject densities the same                                |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$    | Reject group connection probabilities the same           |
-| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.0016$ | Reject above even after accounting for density           |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$    | Reject densities the same (w/o KCs)                      |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.0027$ | Reject group connection probabilities the same (w/o KCs) |
-| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   |  $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    |
+| Model | $H_0$ (vs. $H_A \neq$)                                             |  KCs  |     p-value     | Interpretation                                           |
+| ----- | ------------------------------------------------------------------ | :---: | :-------------: | -------------------------------------------------------- |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$   | Reject densities the same                                |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$   | Reject group connection probabilities the same           |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.002$ | Reject above even after accounting for density           |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$   | Reject densities the same (w/o KCs)                      |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.003$ | Reject group connection probabilities the same (w/o KCs) |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   | $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    |
 
 ---
 
@@ -443,23 +446,43 @@ section {
 
 ---
 
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
 # But you threw out all of the edge weights!
-![center](./../../../results/figs/thresholding_tests/integer_threshold_pvalues.svg)
+
 
 ---
+# Thresholding at higher synapse counts reduces asymmetry
+
+![center h:450](./../../../results/figs/thresholding_tests/integer_threshold_pvalues.svg)
+
+---
+
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
 # What do we consider to be a "cell type"?
 
----
-# Something about methods for this stuff
+<!-- ---
+# Something about methods for this stuff -->
 
 ---
 # Hierarchical clustering of neurons based on observed connectivity
 
 ![center](../../images/bar-dendrogram-wide.svg)
 
----
+![center w:800](../../images/cell-type-labels-legend.png)
 
-![bg h:700](../../images/FigureS7-morphology.png)
+<footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
 
 ---
 <style scoped>
@@ -469,7 +492,7 @@ section {
 }
 </style>
 
-# What about the "matchedness" of the networks?
+# Are nodes/edges matched across hemispheres?
 
 ---
 # Graph matching
@@ -477,8 +500,11 @@ section {
 
 ---
 # Graph matching predicts single-neuron pairs between hemispheres
+- ~86% of predicted pairs are confirmed by a human annotator
 
-![]()
+![center h:375](./../../../results/figs/match_examine/matched_adjacencies.png)
+
+<footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
 
 ---
 # Predicted pairs are (mostly) morphologically similar
@@ -490,9 +516,10 @@ section {
 ---
 # In summary...
 - We studied simple ways of framing a network two sample test, and proposed test procedures for each
-  - We found that it can be important to "mod out" by other simple network statistics if you don't care about them (like density)
-- We found that all of these tests find the left and the right hemispheres to be significantly different, unless you ignore Kenyon cells and adjust for the difference in density
+  - It can be important to "mod out" by other simple network statistics if you don't care about them (like density)
+- All of these tests find the left and the right hemispheres to be significantly different, unless you ignore Kenyon cells and adjust for the difference in density
 - The tests proposed here provide a foundation for future principled comparisons of connectomes
+- We demonstrate how several other tools we have previously applied here (like network clustering or graph matching) could alter the definition of symmetry
 
 --- 
 
@@ -533,18 +560,41 @@ h4 {font-size: 28px}
 </style>
 
 #### Johns Hopkins University
-Mike Powell, Eric Bridgeford, Carey Priebe, Joshua Vogelstein, Kareef Ullah, Diane Lee, Sambit Panda, Jaewon Chung, Ali Saad-Eldin, NeuroData lab
+**Mike Powell**, **Eric Bridgeford**, **Carey Priebe**, **Joshua Vogelstein**, Kareef Ullah, Diane Lee, Sambit Panda, Jaewon Chung, Ali Saad-Eldin, NeuroData lab
 
 #### University of Cambridge / MRC Laboratory of Molecular Biology 
-Michael Winding, Albert Cardona, Marta Zlatic, Chris Barnes
+**Michael Winding**, Albert Cardona, Marta Zlatic, Chris Barnes
 
-#### Microsoft Research 
-Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McLean, Carolyn Buractaon, Amber Hoak
+#### Funding
+![h:125](../../images/NSF_4-Color_bitmap_Logo.png)
+
+
+<!-- #### Microsoft Research 
+Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McLean, Carolyn Buractaon, Amber Hoak -->
 
 ---
 # Questions?
 
-![bg opacity:.65 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+
+<span> </span>
+<span> </span>
+<span> </span>
+<span> </span>
+<span> </span>
+
+<style scoped>
+section {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+### Benjamin D. Pedigo
+![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
+![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
+![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
+![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/)
 
 ---
 

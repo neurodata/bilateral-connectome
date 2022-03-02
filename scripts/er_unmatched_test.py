@@ -142,7 +142,7 @@ for i, p in enumerate(ps):
     label_text = f"{p}"
     if i == 0:
         label_text = r"$p = $" + label_text
-    ax.set_xlabel(label_text)
+    ax.set_title(label_text)
 
 fig.set_facecolor("w")
 
