@@ -57,6 +57,13 @@ jobs:
         source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.pdf
         target: docs/_build/html/lab-meeting-2022-02-24.pdf
 
+    # Drexel talk
+    - name: Copy static PDF
+      uses: canastro/copy-file-action@master
+      with: 
+        source: docs/slides/drexel/drexel.pdf
+        target: docs/_build/html/drexel.pdf
+
     # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
       uses: peaceiris/actions-gh-pages@v3.6.1
