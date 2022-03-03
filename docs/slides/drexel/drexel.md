@@ -58,10 +58,9 @@ p {
 
 # Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome
 
-### Benjamin D. Pedigo
-
+### Benjamin D. Pedigo 
+(he/him) - _[NeuroData lab](https://neurodata.io/)_
 _Johns Hopkins University - Biomedical Engineering_
-_[NeuroData lab](https://neurodata.io/)_
 
 ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
 ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
@@ -496,8 +495,6 @@ section {
 </style>
 
 # Are nodes/edges matched across hemispheres?
-
-<!-- TODO something to show the idea of neuron pairs between hemispheres here before going on -->
 
 ---
 # Bilateral neuron pairs 
