@@ -506,7 +506,7 @@ ax.plot(
     [ymax, ymax, ymin, ymin, ymax],
     color="red",
     clip_on=False,
-    lw=1.5
+    lw=1.5,
 )
 
 ax.set(xlim=(0, 1), ylim=(0, 1))
@@ -580,6 +580,136 @@ glue("uncorrected_pvalue", pvalue)
 n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
 print(pvalue)
+
+#%%
+# TODO should be a better way with melt?
+def melt(misc, names):
+    if isinstance(names, str):
+        names = [names]
+    df = misc[names[0]]
+    row_inds, col_inds = np.indices(df.shape)
+    row_inds = row_inds.ravel()
+    col_inds = col_inds.ravel()
+    row_index = df.index[row_inds].to_series().reset_index(drop=True)
+    col_index = df.index[col_inds].to_series().reset_index(drop=True)
+    col_index.name = "target"
+    series_list = [row_index, col_index]
+    for name in names:
+        df = misc[name]
+        values = pd.Series(df.values.ravel(), name=name)
+        series_list.append(values)
+    melted_df = pd.concat(series_list, axis=1)
+    return melted_df
+
+
+melted_df = melt(
+    misc,
+    [
+        "probabilities1",
+        "probabilities2",
+        "possible1",
+        "possible2",
+        "uncorrected_pvalues",
+    ],
+)
+melted_df["Sample size"] = melted_df["possible1"] + melted_df["possible2"]
+melted_df["log10(p-value)"] = np.log10(melted_df["uncorrected_pvalues"])
+
+melted_df = melted_df[~melted_df["log10(p-value)"].isna()]
+
+import matplotlib as mpl
+
+vmax = 0
+vmin = melted_df["log10(p-value)"].min()
+center = 0
+cmap = mpl.cm.get_cmap("RdBu")
+vrange = max(vmax - center, center - vmin)
+normlize = mpl.colors.Normalize(center - vrange, center + vrange)
+cmin, cmax = normlize([vmin, vmax])
+cc = np.linspace(cmin, cmax, 256)
+cmap = mpl.colors.ListedColormap(cmap(cc))
+
+hb_thresh = 0.05 / misc["n_tests"]
+significant = misc["uncorrected_pvalues"] < hb_thresh
+row_inds, col_inds = np.nonzero(significant.values)
+row_index = significant.index[row_inds]
+col_index = significant.columns[col_inds]
+sig_df = melted_df.set_index(["source", "target"]).loc[zip(row_index, col_index)]
+
+fig, axs = plt.subplots(1, 2, figsize=(16, 8))
+
+ax = axs[0]
+sns.scatterplot(
+    data=melted_df,
+    x="probabilities2",
+    y="probabilities1",
+    size="Sample size",
+    hue="log10(p-value)",
+    palette=cmap,
+    sizes=(10, 100),
+    ax=ax,
+)
+ax.set_yscale("log")
+ax.set_xscale("log")
+# ax.get_legend().set_title("Sample size")
+ax.set(xlabel="Right probability", ylabel="Left probability")
+ax.plot([0.00001, 1], [0.00001, 1], color="grey", zorder=-2)
+
+for i, row in sig_df.iterrows():
+    ax.annotate(
+        "",
+        (row["probabilities2"], row["probabilities1"]),
+        xytext=(25, -25),
+        textcoords="offset points",
+        arrowprops=dict(arrowstyle="-|>", color="black"),
+        ha="center",
+        va="center",
+        zorder=-1,
+    )
+
+
+ax = axs[1]
+sns.scatterplot(
+    data=melted_df,
+    x="probabilities2",
+    y="probabilities1",
+    size="Sample size",
+    hue="log10(p-value)",
+    palette=cmap,
+    sizes=(10, 100),
+    ax=ax,
+    legend=False,
+)
+ax.set_yscale("log")
+ax.set_xscale("log")
+# ax.get_legend().set_title("Sample size")
+ax.set(xlabel="Right probability", ylabel="")
+ax.plot([0.00001, 1], [0.00001, 1], color="grey", zorder=-2)
+
+for i, row in sig_df.iterrows():
+    ax.annotate(
+        "",
+        (row["probabilities2"], row["probabilities1"]),
+        xytext=(25, -25),
+        textcoords="offset points",
+        arrowprops=dict(arrowstyle="-|>", color="black"),
+        ha="center",
+        va="center",
+        zorder=-1,
+    )
+ax.set(
+    xlim=(1e-2, 1),
+    ylim=(1e-2, 1),
+)
+
+gluefig('probs_scatter', fig)
+
+# sns.move_legend(ax, loc="upper left")
+
+# B1 = misc['probabilities1']
+# pd.melt(B1, var_name=['source', 'target'])
+
+# %%
 
 #%%
 
