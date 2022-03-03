@@ -58,10 +58,9 @@ p {
 
 # Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome
 
-### Benjamin D. Pedigo
-
+### Benjamin D. Pedigo 
+(he/him) - _[NeuroData lab](https://neurodata.io/)_
 _Johns Hopkins University - Biomedical Engineering_
-_[NeuroData lab](https://neurodata.io/)_
 
 ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
 ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
@@ -122,7 +121,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </div>
 
 <footer>
-Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep (2021)
+Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
 </footer>
 
 ---
@@ -140,7 +139,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 
 
 <footer>
-Cook et al. *Nature* (2019)
+Cook et al. Nature (2019)
 </footer>
 
 ---
@@ -171,14 +170,15 @@ section {
 # Connectomes across development
 ![center h:475](./../../images/witvliet-fig1.png)
 
-<footer>Witvliet et al. *Nature* (2021)</footer>
+<footer>Witvliet et al. Nature (2021)</footer>
 
 ---
 # Connectomes across evolution, cortex
 ![center w:550](./../../images/bartsotti-fig2.png)
 
 <footer>
-Bartsotti + Correia et al. *Curr. Op. Neurobiology* (2021)
+Bartsotti + Correia et al. Curr. Op. Neurobiology (2021)
+
 </footer>
 
 ---
@@ -484,6 +484,8 @@ section {
 
 <footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
 
+<!-- TODO something to add some punch here - why care about the clusters -->
+
 ---
 <style scoped>
 section {
@@ -493,6 +495,12 @@ section {
 </style>
 
 # Are nodes/edges matched across hemispheres?
+
+---
+# Bilateral neuron pairs 
+![center](./../../images/mbon-expression.jpg)
+
+<footer>Eschbach et al. eLife (2021)</footer>
 
 ---
 # Graph matching
@@ -507,7 +515,7 @@ section {
 <footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
 
 ---
-# Predicted pairs are (mostly) morphologically similar
+# Predicted pairs are morphologically similar
 
 ![center h:490](./match_examine/../../../../results/figs/match_examine/left-pair-predictions.svg)
 
@@ -515,11 +523,14 @@ section {
 
 ---
 # In summary...
-- We studied simple ways of framing a network two sample test, and proposed test procedures for each
-  - It can be important to "mod out" by other simple network statistics if you don't care about them (like density)
-- All of these tests find the left and the right hemispheres to be significantly different, unless you ignore Kenyon cells and adjust for the difference in density
-- The tests proposed here provide a foundation for future principled comparisons of connectomes
-- We demonstrate how several other tools we have previously applied here (like network clustering or graph matching) could alter the definition of symmetry
+- Studied statistical ways of framing "bilateral symmetry", proposing a test procedure for each
+- All tests found the left and the right hemispheres significantly different, unless ignoring Kenyon cells and adjust for the difference in density
+   <!-- - If there's a statistic (e.g. density) that you *don't* want in your definition of "different," it should be explicitly accounted for  -->
+- Provided a foundation for future principled comparisons of connectomes
+- Mentioned several other tools/analyses which could alter the definition of symmetry
+   - Edge weights
+   - Inferring neuron groups
+   - Graph matching to find pairs
 
 --- 
 
@@ -688,6 +699,10 @@ $\leftarrow$ We are trying to approximate this null distribution with something 
 
 ![center](./../../../results/figs/revamp_sbm_methods_sim/relative_power.svg)
 
+---
+# Plotting connection probabilities 
+
+![center h:500](./../../../results/figs/sbm_unmatched_test/probs_scatter.svg)
 
 <!-- ---
 <div class="columns">
