@@ -152,7 +152,7 @@ ax = merge_axes(fig, axs, rows=1)
 soft_axis_off(ax)
 
 
-def rainbowarrow(ax, start, end, cmap="viridis", n=50, lw=3):
+def rainbowarrow(ax, start, end, cmap="viridis", n=500, lw=3):
     # REF: https://stackoverflow.com/questions/47163796/using-colormap-with-annotate-arrow-in-matplotlib
     cmap = plt.get_cmap(cmap, n)
     # Arrow shaft: LineCollection
@@ -385,6 +385,39 @@ gluefig("er_density", fig)
 # of these other test statistics will also reject the null hypothesis. Thus, we will
 # need ways of telling whether an observed difference for these other tests could be
 # explained by this difference in density alone.
+
+#%%
+
+from pkg.plot import SmartSVG
+from pkg.io import FIG_PATH
+from svgutils.compose import Figure, Panel, Text
+
+FIG_PATH = FIG_PATH / FILENAME
+
+# total_width = 1000
+# total_height = 1500
+fontsize = 12
+
+methods = SmartSVG(FIG_PATH / "er_methods.svg")
+methods.set_width(200)
+methods.move(10, 15)
+methods_panel = Panel(methods, Text("A)", 5, 10, size=fontsize, weight="bold"))
+
+density = SmartSVG(FIG_PATH / "er_density.svg")
+density.set_width(200)
+density.move(10, 15)
+density_panel = Panel(density, Text("B)", 5, 10, size=fontsize, weight="bold"))
+density_panel.move(methods.width * 0.9, 0)
+
+fig = Figure(
+    (methods.width + density.width) * 0.9,
+    (methods.height) * 0.9,
+    methods_panel,
+    density_panel,
+)
+fig.save(FIG_PATH / "composite.svg")
+fig
+
 
 #%%
 elapsed = time.time() - t0

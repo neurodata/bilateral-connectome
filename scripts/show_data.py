@@ -233,8 +233,8 @@ def nice_text(x, y, s, color="black"):
 
 
 nice_text(n_left / 2, n_left / 2, r"L $\rightarrow$ L")
-nice_text(n_left / 2, n_left / 2 + n_left, r"L $\rightarrow$ R")
-nice_text(n_left / 2 + n_left, n_left / 2, r"R $\rightarrow$ L")
+nice_text(n_left / 2, n_left / 2 + n_left, r"R $\rightarrow$ L")
+nice_text(n_left / 2 + n_left, n_left / 2, r"L $\rightarrow$ R")
 nice_text(1.5 * n_left, 1.5 * n_left, r"R $\rightarrow$ R")
 
 
@@ -247,7 +247,7 @@ nice_text(1.5 * n_left, 1.5 * n_left, r"R $\rightarrow$ R")
 
 ax.spines[:].set_color("grey")
 
-gluefig(fig, "show_data", formats=["png"])
+gluefig("adjacencies", fig, formats=["png"])
 
 #%%
 
@@ -294,8 +294,8 @@ def nice_text(x, y, s, color="black"):
 
 
 nice_text(n_left / 2, n_left / 2, r"L $\rightarrow$ L")
-nice_text(n_left / 2, n_left / 2 + n_left, r"L $\rightarrow$ R")
-nice_text(n_left / 2 + n_left, n_left / 2, r"R $\rightarrow$ L")
+nice_text(n_left / 2, n_left / 2 + n_left, r"R $\rightarrow$ L")
+nice_text(n_left / 2 + n_left, n_left / 2, r"L $\rightarrow$ R")
 nice_text(1.5 * n_left, 1.5 * n_left, r"R $\rightarrow$ R")
 
 

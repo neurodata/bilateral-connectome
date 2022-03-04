@@ -702,7 +702,7 @@ ax.set(
     ylim=(1e-2, 1),
 )
 
-gluefig('probs_scatter', fig)
+gluefig("probs_scatter", fig)
 
 # sns.move_legend(ax, loc="upper left")
 
@@ -1094,6 +1094,47 @@ fig = Figure(
 )
 fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
 
+#%%
+
+from pkg.plot import SmartSVG
+from pkg.io import FIG_PATH
+
+FIG_PATH = FIG_PATH / FILENAME
+
+fontsize = 12
+
+methods = SmartSVG(FIG_PATH / "sbm_methods_explain.svg")
+methods.set_width(400)
+methods_panel = Panel(methods, Text("A)", 5, 10, size=fontsize, weight="bold"))
+
+probs = SmartSVG(FIG_PATH / "sbm_uncorrected.svg")
+probs.set_width(400)
+probs_panel = Panel(probs, Text("B)", 5, 10, size=fontsize, weight="bold"))
+probs_panel.move(0, methods.height * 0.85)
+
+pvalues = SmartSVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
+pvalues.set_width(200)
+pvalues.move(10, 15)
+pvalues_panel = Panel(pvalues, Text("C)", 5, 10, size=fontsize, weight="bold"))
+pvalues_panel.move(0, (methods.height + probs.height) * 0.83)
+
+comparison = SmartSVG(FIG_PATH / "significant_p_comparison.svg")
+comparison.set_width(145)
+comparison.move(10, 15)
+comparison_panel = Panel(comparison, Text("D)", 5, 10, size=fontsize, weight="bold"))
+comparison_panel.move(pvalues.width * 0.9, (methods.height + probs.height) * 0.83)
+
+fig = Figure(
+    methods.width * 0.8,
+    (methods.height + probs.height + pvalues.height) * 0.85,
+    methods_panel,
+    probs_panel,
+    pvalues_panel,
+    comparison_panel,
+)
+
+fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
+fig
 
 #%%
 elapsed = time.time() - t0
