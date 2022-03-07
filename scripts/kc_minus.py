@@ -143,6 +143,8 @@ stat, pvalue, misc = stochastic_block_test(
 print(pvalue)
 glue("sbm_pvalue", pvalue)
 
+set_theme(font_scale=1.25)
+
 fig, ax = plot_pvalues(misc)
 gluefig("sbm_pvalues", fig)
 
@@ -168,50 +170,14 @@ fig, ax = plot_pvalues(misc)
 gluefig("asbm_pvalues", fig)
 
 #%%
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-gluefig("box", fig)
-
-#%%
 
 import ast
 
 from pkg.io import FIG_PATH
 from svgutils.compose import SVG, Figure, Panel, Text
-
-total_width = 1000
-total_height = 1500
+from pkg.plot import SmartSVG
 
 FIG_PATH = FIG_PATH / FILENAME
-
-fontsize = 35
-
-
-def get_true_width_height(svg):
-    if "transform" in svg.root.attrib:
-        transform = svg.root.attrib["transform"]
-        ind = transform.rfind("scale")
-        transform_scale = transform[ind:].strip("scale").strip(" ").replace(" ", ",")
-        transform_tup = ast.literal_eval(transform_scale)
-    else:
-        transform_tup = (1.0, 1.0)
-    return svg._width.value * transform_tup[0], svg._height.value * transform_tup[1]
-
-
-class NotStupidSVG(SVG):
-    @property
-    def height(self):
-        _, height = get_true_width_height(self)
-        return height
-
-    @property
-    def width(self):
-        width, _ = get_true_width_height(self)
-        return width
-
-    def set_width(self, width):
-        current_width = self.width
-        scaler = width / current_width
-        self.scale(scaler)
 
 
 # class NotStupidPanel(Panel):
@@ -232,28 +198,28 @@ class NotStupidSVG(SVG):
 #         self.scale(scaler)
 
 
-methods = NotStupidSVG(FIG_PATH / "kc_minus_methods.svg")
+methods = SmartSVG(FIG_PATH / "kc_minus_methods.svg")
 methods.set_width(200)
 methods.move(10, 15)
-methods_panel = Panel(methods, Text("A)", 5, 10, size=12, weight="bold"))
+methods_panel = Panel(methods, Text("A)", 0, 10, size=12, weight="bold"))
 
-er = NotStupidSVG(FIG_PATH / "densities.svg")
-er.set_width(200)
-er.move(10, 25)
-er_panel = Panel(er, Text("B)", 5, 10, size=12, weight="bold"))
-er_panel.move(methods.width * 0.9, 0)
+er = SmartSVG(FIG_PATH / "densities.svg")
+er.set_width(170)
+er.move(20, 20)
+er_panel = Panel(er, Text("B)", 0, 10, size=12, weight="bold"))
+er_panel.move(methods.width * 0.87, 0)
 
-sbm = NotStupidSVG(FIG_PATH / "sbm_pvalues.svg")
+sbm = SmartSVG(FIG_PATH / "sbm_pvalues.svg")
 sbm.set_width(200)
-sbm.move(10, 15)
-sbm_panel = Panel(sbm, Text("C)", 5, 10, size=12, weight="bold"))
+sbm.move(0, 15)
+sbm_panel = Panel(sbm, Text("C)", 0, 10, size=12, weight="bold"))
 sbm_panel.move(0, methods.height * 0.9)
 
-asbm = NotStupidSVG(FIG_PATH / "asbm_pvalues.svg")
+asbm = SmartSVG(FIG_PATH / "asbm_pvalues.svg")
 asbm.set_width(200)
-asbm.move(10, 15)
-asbm_panel = Panel(asbm, Text("D)", 5, 10, size=12, weight="bold"))
-asbm_panel.move(methods.width * 0.9, methods.height * 0.9)
+asbm.move(0, 15)
+asbm_panel = Panel(asbm, Text("D)", 0, 10, size=12, weight="bold"))
+asbm_panel.move(methods.width * 0.87, methods.height * 0.9)
 
 # width, _ = get_true_width_height(methods)
 # print(width)
@@ -275,35 +241,12 @@ asbm_panel.move(methods.width * 0.9, methods.height * 0.9)
 
 
 fig = Figure(
-    (methods.width + er.width) * 0.9,
+    (methods.width + er.width) * 0.91,
     (methods.height + sbm.height) * 0.9,
     methods_panel,
     er_panel,
     sbm_panel,
     asbm_panel,
 )
-fig.save(FIG_PATH / "composite.svg")
+fig.save(FIG_PATH / "kc_minus_composite.svg")
 fig
-
-
-# #%%
-# fig, axs = plt.subplot_mosaic(
-#     [["A)", "B)"], ["C)", "D)"]], figsize=(10, 10), constrained_layout=True
-# )
-# for label, ax in axs.items():
-#     # ax.set_title("Normal Title", fontstyle="italic")
-#     ax.set_title(label, loc="left", fontsize="large", fontweight="bold")
-#     ax.set(xticks=[], yticks=[])
-
-# axs[0, 0].remove()
-# fig.add_subplot()
-
-# fig.set_facecolor("w")
-
-# # #%%
-
-# import pylustrator as pyl
-
-# kc_minus = pyl.load(FIG_PATH / "box.svg")
-
-# plt.show()

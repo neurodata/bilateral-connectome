@@ -27,22 +27,18 @@ from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, savefig
 from pkg.plot import (
-    bound_texts,
-    compare_probability_row,
+    SmartSVG,
     draw_hypothesis_box,
     heatmap_grouped,
     make_sequential_colormap,
-    multicolor_text,
     networkplot_simple,
     plot_pvalues,
     plot_stochastic_block_probabilities,
     set_theme,
-    shrink_axis,
 )
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
-from sqlalchemy import false
-from svgutils.compose import SVG, Figure, Panel, Text
+from svgutils.compose import Figure, Panel, Text
 
 DISPLAY_FIGS = False
 
@@ -1047,57 +1043,7 @@ gluefig("significant_p_comparison", fig)
 # ```
 
 #%%
-total_width = 1000
-total_height = 1500
 
-FIG_PATH = FIG_PATH / FILENAME
-
-fontsize = 35
-
-sbm_methods_explain_svg = SVG(FIG_PATH / "sbm_methods_explain.svg")
-sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 4
-sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
-
-sbm_methods_explain = Panel(
-    sbm_methods_explain_svg,
-    Text("A)", 5, 20, size=fontsize, weight="bold"),
-)
-
-sbm_uncorrected_svg = SVG(FIG_PATH / "sbm_uncorrected.svg")
-sbm_uncorrected_svg.scale(1 / sbm_uncorrected_svg.height * total_height / 3)
-sbm_uncorrected = Panel(
-    sbm_uncorrected_svg, Text("B)", 5, 20, size=fontsize, weight="bold")
-).move(0, 330)
-
-sbm_uncorrected_pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
-sbm_uncorrected_pvalues.scale(1 / sbm_uncorrected_pvalues.height * total_height / 3)
-sbm_uncorrected_pvalues = Panel(
-    sbm_uncorrected_pvalues, Text("C)", 5, 0, size=fontsize, weight="bold")
-).move(0, 750)
-
-significant_p_comparison = SVG(FIG_PATH / "significant_p_comparison.svg")
-significant_p_comparison.scale(
-    1 / significant_p_comparison.height * total_height / 3
-).scale(0.9)
-significant_p_comparison = Panel(
-    significant_p_comparison.move(20, 20),
-    Text("D)", 0, 0, size=fontsize, weight="bold"),
-).move(475, 750)
-
-fig = Figure(
-    810,
-    1170,
-    sbm_methods_explain,
-    sbm_uncorrected,
-    sbm_uncorrected_pvalues,
-    significant_p_comparison,
-)
-fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
-
-#%%
-
-from pkg.plot import SmartSVG
-from pkg.io import FIG_PATH
 
 FIG_PATH = FIG_PATH / FILENAME
 

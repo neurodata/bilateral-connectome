@@ -328,44 +328,40 @@ gluefig("sbm_pvalues_unlabeled", fig)
 #%%
 from pkg.io import FIG_PATH
 from svgutils.compose import SVG, Figure, Panel, Text
+from pkg.plot import SmartSVG
 
-total_width = 1000
-total_height = 700
 
 FIG_PATH = FIG_PATH / FILENAME
 
-fontsize = 35
+fontsize = 12
 
-sbm_methods_explain_svg = SVG(FIG_PATH / "adjusted_methods_explain.svg")
-sbm_methods_explain_svg_scaler = 1 / sbm_methods_explain_svg.height * total_height / 2
-sbm_methods_explain_svg = sbm_methods_explain_svg.scale(sbm_methods_explain_svg_scaler)
+methods = SmartSVG(FIG_PATH / "adjusted_methods_explain.svg")
+methods.set_width(400)
+methods_panel = Panel(methods, Text("A)", 5, 15, size=fontsize, weight="bold"))
 
-sbm_methods_explain = Panel(
-    sbm_methods_explain_svg,
-    Text("A)", 5, 20, size=fontsize, weight="bold"),
+distribution = SmartSVG(FIG_PATH / "resampled_pvalues_distribution.svg")
+distribution.set_width(190)
+distribution_panel = Panel(
+    distribution, Text("B)", 5, 10, size=fontsize, weight="bold")
 )
+distribution_panel.move(0, methods.height * 0.85)
 
-
-resampled_pvalues_distribution = SVG(FIG_PATH / "resampled_pvalues_distribution.svg")
-resampled_pvalues_distribution.scale(
-    1 / resampled_pvalues_distribution.height * total_height / 2
+pvalues = SmartSVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
+pvalues.set_width(170)
+pvalues.move(25, 0)
+pvalues_panel = Panel(
+    pvalues,
+    Text("C)", 5, 10, size=fontsize, weight="bold"),
 )
+pvalues_panel.move(distribution.width * 0.82, methods.height * 0.85)
 
-resampled_pvalues_distribution = Panel(
-    resampled_pvalues_distribution,
-    Text("B)", 5, 20, size=fontsize, weight="bold"),
-).move(0, 300)
-
-
-pvalues = SVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
-pvalues.scale(1 / pvalues.height * total_height / 2)
-
-pvalues = Panel(
-    pvalues.move(50, 30),
-    Text("C)", 5, 20, size=fontsize, weight="bold"),
-).move(400, 300)
-
-fig = Figure(850, 625, sbm_methods_explain, resampled_pvalues_distribution, pvalues)
+fig = Figure(
+    methods.width * 0.8,
+    (methods.height + distribution.height) * 0.85,
+    methods_panel,
+    distribution_panel,
+    pvalues_panel,
+)
 fig.save(FIG_PATH / "adjusted_sbm_composite.svg")
 fig
 
