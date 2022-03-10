@@ -136,7 +136,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Unmatched Tests
+  Tests for bilateral symmetry
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -151,25 +151,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="rdpg_unmatched_test.html">
-   An embedding-based test
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Matched Tests
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="er_matched_test.html">
-   A density-based test
+  <a class="reference internal" href="adjusted_sbm_unmatched_test.html">
+   SBM test with density adjustment
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="sbm_matched_test.html">
-   A group-based test
+  <a class="reference internal" href="kc_minus.html">
+   Removing the Kenyon cells
   </a>
  </li>
 </ul>
@@ -179,11 +167,6 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="nhypergeom_sims.html">
-   An exact test for non-unity null odds ratios
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="revamp_sbm_methods_sim.html">
    Comparing methods for SBM testing
@@ -221,6 +204,33 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/nmc.pdf">
    neuromatch 4.0
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Errata
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="nhypergeom_sims.html">
+   An exact test for non-unity null odds ratios
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rdpg_unmatched_test.html">
+   An embedding-based test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="er_matched_test.html">
+   A density-based test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sbm_matched_test.html">
+   A group-based test
   </a>
  </li>
 </ul>
@@ -412,6 +422,7 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">graspologic.utils</span> <span class="kn">import</span> <span class="n">binarize</span><span class="p">,</span> <span class="n">remove_loops</span>
 <span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
@@ -419,11 +430,17 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="c1"># print(f&quot;Using data from {DATA_VERSION}&quot;)</span>
+<span class="n">RESAVE</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using data from </span><span class="si">{</span><span class="n">DATA_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral&quot;</span><span class="p">)</span>  <span class="c1"># TODO fix, make this less fragile</span>
 <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;bilateral-connectome/data/processed&quot;</span><span class="p">)</span>
 <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
-<span class="c1"># print(f&quot;Saving data to {output_dir}&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using data from 2021-05-24-v2
 </pre></div>
 </div>
 </div>
@@ -441,8 +458,29 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 
 <span class="n">left_adj</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
 <span class="n">right_adj</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
-
-<span class="n">left_adj</span> <span class="o">=</span> <span class="n">remove_loops</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_n_loops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">left_adj</span><span class="p">))</span>
+<span class="n">right_n_loops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">right_adj</span><span class="p">))</span>
+<span class="n">left_n_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
+<span class="n">right_n_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
+<span class="n">p_loops</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_n_loops</span> <span class="o">+</span> <span class="n">right_n_loops</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_adj</span><span class="p">))</span>
+<span class="n">p_loop_edges</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_n_loops</span> <span class="o">+</span> <span class="n">right_n_loops</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">left_n_edges</span> <span class="o">+</span> <span class="n">right_n_edges</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops&quot;</span><span class="p">,</span> <span class="n">p_loops</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops_edges&quot;</span><span class="p">,</span> <span class="n">p_loop_edges</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">remove_loops</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
 <span class="n">right_adj</span> <span class="o">=</span> <span class="n">remove_loops</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
 
 <span class="n">n_left_unmatched</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -462,22 +500,24 @@ hemisphere, and <span class="pasted-text">1484</span> neurons in the right hemis
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">left_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-    <span class="n">left_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_left_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
 
-<span class="n">left_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_left_nodes.csv&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">RESAVE</span><span class="p">:</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
+        <span class="n">left_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_left_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">left_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_left_nodes.csv&quot;</span><span class="p">)</span>
 
 
 <span class="n">right_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span>
 <span class="p">)</span>
 <span class="n">right_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-    <span class="n">right_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_right_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
 
-<span class="n">right_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_right_nodes.csv&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">RESAVE</span><span class="p">:</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
+        <span class="n">right_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_right_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">right_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_right_nodes.csv&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -528,22 +568,24 @@ hemisphere, and <span class="pasted-text">1229</span> neurons in the right hemis
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">left_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-    <span class="n">left_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_left_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
+<span class="k">if</span> <span class="n">RESAVE</span><span class="p">:</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
+        <span class="n">left_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_left_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
 
-<span class="n">left_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_left_nodes.csv&quot;</span><span class="p">)</span>
+    <span class="n">left_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_left_nodes.csv&quot;</span><span class="p">)</span>
 
 
 <span class="n">right_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span>
 <span class="p">)</span>
 <span class="n">right_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-    <span class="n">right_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_right_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
 
-<span class="n">right_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_right_nodes.csv&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">RESAVE</span><span class="p">:</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
+        <span class="n">right_g</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_right_edgelist.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">right_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_right_nodes.csv&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -552,8 +594,14 @@ hemisphere, and <span class="pasted-text">1229</span> neurons in the right hemis
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="c1"># print(f&quot;Script took {delta}&quot;)</span>
-<span class="c1"># print(f&quot;Completed at {datetime.datetime.now()}&quot;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:20.933350
+Completed at 2022-03-10 10:02:30.282367
 </pre></div>
 </div>
 </div>

@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="A density-based test" href="er_matched_test.html" />
-    <link rel="prev" title="A group-based test" href="sbm_unmatched_test.html" />
+    <link rel="prev" title="An exact test for non-unity null odds ratios" href="nhypergeom_sims.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -134,10 +134,10 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Unmatched Tests
+  Tests for bilateral symmetry
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="er_unmatched_test.html">
    A density-based test
@@ -148,26 +148,14 @@ const thebe_selector_output = ".output, .cell_output"
    A group-based test
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   An embedding-based test
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Matched Tests
- </span>
-</p>
-<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="er_matched_test.html">
-   A density-based test
+  <a class="reference internal" href="adjusted_sbm_unmatched_test.html">
+   SBM test with density adjustment
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="sbm_matched_test.html">
-   A group-based test
+  <a class="reference internal" href="kc_minus.html">
+   Removing the Kenyon cells
   </a>
  </li>
 </ul>
@@ -177,11 +165,6 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="nhypergeom_sims.html">
-   An exact test for non-unity null odds ratios
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="revamp_sbm_methods_sim.html">
    Comparing methods for SBM testing
@@ -219,6 +202,33 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/nmc.pdf">
    neuromatch 4.0
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Errata
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="nhypergeom_sims.html">
+   An exact test for non-unity null odds ratios
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   An embedding-based test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="er_matched_test.html">
+   A density-based test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sbm_matched_test.html">
+   A group-based test
   </a>
  </li>
 </ul>
@@ -526,7 +536,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="figure align-default" id="fig-rdpg-unmatched-test-screeplot">
-<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Comparison of the singular values from the spectral decompositions of the left and
+<p class="caption"><span class="caption-number">Fig. 14 </span><span class="caption-text">Comparison of the singular values from the spectral decompositions of the left and
 right hemisphere adjacency matrices. Note that the right hemisphere singular values
 tend to be slightly higher than the corresponding singular value on the left
 hemisphere, which is consistent with an increased density on the right hemisphere as
@@ -614,7 +624,7 @@ seen in <a class="reference internal" href="er_unmatched_test.html"><span class=
 </div>
 </div>
 <div class="figure align-default" id="fig-rdpg-unmatched-test-latents">
-<p class="caption"><span class="caption-number">Fig. 9 </span><span class="caption-text">Comparison of the latent positions used for the test based on the random dot product
+<p class="caption"><span class="caption-number">Fig. 15 </span><span class="caption-text">Comparison of the latent positions used for the test based on the random dot product
 graph. This plot shows only the first 
 dimensions, though the test was run in .
 The p-value for the test comparing the multivariate distribution of latent positions
@@ -780,11 +790,11 @@ null hypothesis of bilateral symmetry under this null model.</span><a class="hea
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="sbm_unmatched_test.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="nhypergeom_sims.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">A group-based test</p>
+            <p class="prev-next-title">An exact test for non-unity null odds ratios</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="er_matched_test.html" title="next page">

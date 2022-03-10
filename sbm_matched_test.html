@@ -58,7 +58,6 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="An exact test for non-unity null odds ratios" href="nhypergeom_sims.html" />
     <link rel="prev" title="A density-based test" href="er_matched_test.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
@@ -136,7 +135,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Unmatched Tests
+  Tests for bilateral symmetry
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -151,25 +150,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="rdpg_unmatched_test.html">
-   An embedding-based test
+  <a class="reference internal" href="adjusted_sbm_unmatched_test.html">
+   SBM test with density adjustment
   </a>
  </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Matched Tests
- </span>
-</p>
-<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="er_matched_test.html">
-   A density-based test
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   A group-based test
+  <a class="reference internal" href="kc_minus.html">
+   Removing the Kenyon cells
   </a>
  </li>
 </ul>
@@ -179,11 +166,6 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="nhypergeom_sims.html">
-   An exact test for non-unity null odds ratios
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="revamp_sbm_methods_sim.html">
    Comparing methods for SBM testing
@@ -221,6 +203,33 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/nmc.pdf">
    neuromatch 4.0
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Errata
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="nhypergeom_sims.html">
+   An exact test for non-unity null odds ratios
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rdpg_unmatched_test.html">
+   An embedding-based test
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="er_matched_test.html">
+   A density-based test
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   A group-based test
   </a>
  </li>
 </ul>
@@ -560,7 +569,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_output docutils container">
 <img alt="_images/sbm_matched_test_6_0.png" src="_images/sbm_matched_test_6_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">The p-values for each hypothesis test between individual elements of
+<p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">The p-values for each hypothesis test between individual elements of
 the block probability matrices. Each comparison was done by McNemar’s test, which
 treats each potential edge as a potential, and examines whether the number of
 disagreeing edges between the left and right is likely to be observed by chance.
@@ -643,14 +652,14 @@ p-values were combined using Fisher’s method, resulting in an overall p-value 
 <div class="cell_output docutils container">
 <img alt="_images/sbm_matched_test_14_0.png" src="_images/sbm_matched_test_14_0.png" />
 </div>
-<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Histogram of p-values after a correction for network density. For the observed networks
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Histogram of p-values after a correction for network density. For the observed networks
 the left hemisphere has a density of <span class="pasted-text">0.0191</span>,
 and the right hemisphere has
 a density of <span class="pasted-text">0.0208</span>. Here, we randomly
 removed exactly  edges from the right hemisphere network, which
 makes the density of the right network match that of the left hemisphere network.
 Then, we re-ran the stochastic block model testing
-procedure from <a class="reference internal" href="#fig-sbm-matched-test-uncorrected-pvalues"><span class="std std-numref">Figure 11</span></a>.
+procedure from <a class="reference internal" href="#fig-sbm-matched-test-uncorrected-pvalues"><span class="std std-numref">Figure 17</span></a>.
 This entire process
 was repeated  times. The histogram above shows the distribution
 of p-values for the overall test. Note that the p-values are no longer small, indicating
@@ -708,13 +717,6 @@ Completed at 2021-11-11 08:54:25.067608
             <p class="prev-next-subtitle">previous</p>
             <p class="prev-next-title">A density-based test</p>
         </div>
-    </a>
-    <a class='right-next' id="next-link" href="nhypergeom_sims.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">An exact test for non-unity null odds ratios</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
     </a>
 </div>
             
