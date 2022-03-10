@@ -4,22 +4,17 @@ parts:
   - caption: Preliminaries
     chapters:
     - file: introduction
-    # - file: goals
     - file: outline
     - file: unmatched_vs_matched
     - file: define_data
-  - caption: Unmatched Tests
+  - caption: Tests for bilateral symmetry
     chapters:
     - file: er_unmatched_test
     - file: sbm_unmatched_test
-    - file: rdpg_unmatched_test
-  - caption: Matched Tests
-    chapters:
-    - file: er_matched_test
-    - file: sbm_matched_test
+    - file: adjusted_sbm_unmatched_test
+    - file: kc_minus
   - caption: Appendix
     chapters: 
-    - file: nhypergeom_sims
     - file: revamp_sbm_methods_sim
   - caption: References
     chapters: 
@@ -32,3 +27,8 @@ parts:
       title: Lab meeting
     - url: https://docs.neurodata.io/bilateral-connectome/nmc.pdf
       title: neuromatch 4.0
+  - caption: Errata
+    - file: nhypergeom_sims
+    - file: rdpg_unmatched_test
+    - file: er_matched_test
+    - file: sbm_matched_test

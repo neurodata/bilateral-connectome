@@ -1,3 +1,5 @@
+#%% [markdown]
+# # Removing the Kenyon cells
 #%%
 import time
 

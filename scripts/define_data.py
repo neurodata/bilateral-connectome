@@ -63,11 +63,10 @@ t0 = time.time()
 
 RESAVE = False
 
-# print(f"Using data from {DATA_VERSION}")
+print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
 output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed")
 output_dir = Path(output_dir)
-# print(f"Saving data to {output_dir}")
 
 #%%
 mg = load_maggot_graph()
@@ -83,17 +82,15 @@ left_adj = binarize(left_adj)
 right_adj = binarize(right_adj)
 
 #%%
-print(np.count_nonzero(np.diag(left_adj)))
-print(np.count_nonzero(np.diag(left_adj)) / len(left_adj))
-# print(np.count_nonzero(np.diag(right_adj)))
-print(np.count_nonzero(np.diag(left_adj)) / np.count_nonzero(left_adj))
-#%%
 left_n_loops = np.count_nonzero(np.diag(left_adj))
 right_n_loops = np.count_nonzero(np.diag(right_adj))
 left_n_edges = np.count_nonzero(left_adj)
 right_n_edges = np.count_nonzero(right_adj)
-print((left_n_loops + right_n_loops) / (len(left_adj) + len(right_adj)))
-print((left_n_loops + right_n_loops) / (left_n_edges + right_n_edges))
+p_loops = (left_n_loops + right_n_loops) / (len(left_adj) + len(right_adj))
+p_loop_edges = (left_n_loops + right_n_loops) / (left_n_edges + right_n_edges)
+glue("p_loops", p_loops, display=False)
+glue("p_loops_edges", p_loop_edges, display=False)
+
 #%%
 left_adj = remove_loops(left_adj)
 right_adj = remove_loops(right_adj)
@@ -102,8 +99,6 @@ n_left_unmatched = left_adj.shape[0]
 n_right_unmatched = right_adj.shape[0]
 glue("n_left_unmatched", n_left_unmatched, display=False)
 glue("n_right_unmatched", n_right_unmatched, display=False)
-
-#%%
 
 
 #%% [markdown]
@@ -198,5 +193,5 @@ if RESAVE:
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
-# print(f"Script took {delta}")
-# print(f"Completed at {datetime.datetime.now()}")
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

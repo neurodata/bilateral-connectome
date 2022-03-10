@@ -5,7 +5,6 @@
 
 import datetime
 import time
-from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -406,3 +405,5 @@ fig
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

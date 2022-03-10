@@ -80,7 +80,7 @@ from matplotlib.collections import LineCollection
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
-from pkg.plot import bound_texts, multicolor_text, networkplot_simple, set_theme
+from pkg.plot import networkplot_simple, set_theme
 from pkg.stats import erdos_renyi_test
 from pkg.utils import sample_toy_networks
 from statsmodels.stats.proportion import proportion_confint
@@ -422,3 +422,5 @@ fig
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")
