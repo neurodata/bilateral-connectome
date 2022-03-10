@@ -181,7 +181,7 @@ ax.set(xlim=(0, 1), ylim=(0, 1))
 
 from pkg.plot import draw_hypothesis_box
 
-draw_hypothesis_box("asbm", 0.1, 0.65, ax=ax)
+draw_hypothesis_box("dasbm", 0.1, 0.65, ax=ax)
 
 fig.set_facecolor("w")
 
@@ -257,6 +257,9 @@ stat, pvalue, misc = stochastic_block_test(
 glue("corrected_pvalue", pvalue)
 print(pvalue)
 print(f"{pvalue:.2g}")
+
+#%%
+
 
 
 #%%

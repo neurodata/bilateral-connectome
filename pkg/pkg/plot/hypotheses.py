@@ -21,7 +21,7 @@ def draw_hypothesis_box(
         item1 = r"$p^{(L)}$"
         item2 = r"$p^{(R)}$"
         title_text = "ER"
-    elif model in ["sbm", "asbm"]:
+    elif model in ["sbm", "dasbm"]:
         if subscript:
             item1 = r"$B^{(L)}_{ij}$"
             item2 = r"$B^{(R)}_{ij}$"
@@ -30,13 +30,13 @@ def draw_hypothesis_box(
             item2 = r"$B^{(R)}$"
         if model == "sbm":
             title_text = "SBM"
-        elif model == "asbm":
-            title_text = "aSBM"
+        elif model == "dasbm":
+            title_text = "DA-SBM"
 
     text_items = [r"$H_0$:", item1, r"$=$", item2]
     colors = ["black", network_palette["Left"], "black", network_palette["Right"]]
 
-    if model == "asbm":
+    if model == "dasbm":
         text_items.insert(3, r"$c$")
         colors.insert(3, "black")
 

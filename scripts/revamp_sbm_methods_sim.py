@@ -767,6 +767,55 @@ fig.text(0.09, 0.86, "A)", fontweight="bold", fontsize=50)
 fig.text(0.64, 0.86, "B)", fontweight="bold", fontsize=50)
 gluefig("relative_power", fig)
 
+#%%
+
+set_theme(font_scale=1.25)
+
+
+min_null_results = min_results[
+    (min_results["n_perturb"] == 0) | (min_results["perturb_size"] == 0)
+]
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+subuniformity_plot(min_null_results["pvalue"], ax=ax, write_pvalue=False)
+ax.set_xlabel("p-value")
+ax.set(title="p-values under $H_0$")
+gluefig("tippett_null_cdf", fig)
+
+#%%
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+out = power_heatmap(min_power_square, ax=ax, cbar=True)
+xlabel = r"# perturbed blocks $(t)$ $\rightarrow$"
+ylabel = r"Perturbation size $(\delta)$ $\rightarrow$"
+ax.set(xlabel=xlabel, ylabel=ylabel, title="Power under $H_A $" + r"($\alpha=0.05$)")
+gluefig("tippett_power_matrix", fig)
+
+#%%
+from pkg.plot import SmartSVG
+from svgutils.compose import Panel, Text, Figure
+from pkg.io import FIG_PATH
+
+FIG_PATH = FIG_PATH / FILENAME
+
+fontsize = 12
+
+null = SmartSVG(FIG_PATH / "tippett_null_cdf.svg")
+null.set_width(200)
+null.move(10, 10)
+null_panel = Panel(null, Text("A)", 5, 10, size=fontsize, weight="bold"))
+
+power = SmartSVG(FIG_PATH / "tippett_power_matrix.svg")
+power.set_width(200)
+power.move(20, 20)
+power_panel = Panel(power, Text("B)", 5, 10, size=fontsize, weight="bold"))
+power_panel.move(null.width * 0.9, 0)
+
+fig = Figure(null.width * 2 * 0.9, null.width * 0.9, null_panel, power_panel)
+fig.save(FIG_PATH / 'tippett_sim_composite.svg')
+fig
+
+
 #%% [markdown]
 # ```{glue:figure} fig:revamp_sbm_methods_sim-relative_power
 #

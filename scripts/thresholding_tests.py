@@ -98,7 +98,7 @@ for threshold in tqdm(thresholds):
 
     for adjusted in [False, True]:
         if adjusted:
-            method = "aSBM"
+            method = "DA-SBM"
         else:
             method = "SBM"
         stat, pvalue, misc = stochastic_block_test(
@@ -152,7 +152,7 @@ def add_alpha_line(ax):
 
 
 colors = sns.color_palette("tab20")
-palette = dict(zip(["SBM", "aSBM", "ER"], colors))
+palette = dict(zip(["SBM", "DA-SBM", "ER"], colors))
 
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
 
@@ -186,7 +186,7 @@ gluefig("integer_threshold_pvalues", fig)
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
 
 colors = sns.color_palette("tab20")
-palette = dict(zip(["SBM", "aSBM", "ER"], colors))
+palette = dict(zip(["SBM", "DA-SBM", "ER"], colors))
 
 sns.scatterplot(
     data=integer_results,
@@ -247,7 +247,7 @@ for threshold in tqdm(thresholds):
 
     for adjusted in [False, True]:
         if adjusted:
-            method = "aSBM"
+            method = "DA-SBM"
         else:
             method = "SBM"
         stat, pvalue, misc = stochastic_block_test(
@@ -275,7 +275,7 @@ input_results
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
 
 colors = sns.color_palette("tab20")
-palette = dict(zip(["SBM", "aSBM", "ER"], colors))
+palette = dict(zip(["SBM", "DA-SBM", "ER"], colors))
 
 sns.scatterplot(
     data=input_results,

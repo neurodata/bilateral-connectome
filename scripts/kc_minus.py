@@ -107,7 +107,7 @@ ax.set(xlim=(0, 1), ylim=(0, 1))
 kwargs = dict(yskip=0.07, ax=ax, title=True)
 draw_hypothesis_box("er", 0.15, 0.8, **kwargs)
 draw_hypothesis_box("sbm", 0.15, 0.5, **kwargs)
-draw_hypothesis_box("asbm", 0.15, 0.2, **kwargs)
+draw_hypothesis_box("dasbm", 0.15, 0.2, **kwargs)
 
 
 ax.set_title("Re-run all tests")
@@ -167,7 +167,7 @@ glue("asbm_pvalue", pvalue)
 glue("asbm_pvalue_formatted", f"{pvalue:.2g}")
 
 fig, ax = plot_pvalues(misc)
-gluefig("asbm_pvalues", fig)
+gluefig("dasbm_pvalues", fig)
 
 #%%
 
@@ -215,7 +215,7 @@ sbm.move(0, 15)
 sbm_panel = Panel(sbm, Text("C)", 0, 10, size=12, weight="bold"))
 sbm_panel.move(0, methods.height * 0.9)
 
-asbm = SmartSVG(FIG_PATH / "asbm_pvalues.svg")
+asbm = SmartSVG(FIG_PATH / "dasbm_pvalues.svg")
 asbm.set_width(200)
 asbm.move(0, 15)
 asbm_panel = Panel(asbm, Text("D)", 0, 10, size=12, weight="bold"))

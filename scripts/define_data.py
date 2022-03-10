@@ -1,14 +1,14 @@
 #%% [markdown]
 # # Larval *Drosophila melanogaster* brain connectome
-# 
+#
 # Recently, authors mapped a connectome of a *Drosophila melanogaster* larva. This
 # synaptic wiring diagram is comprised of 3,013 neurons and over 544,000
 # synapses. Importantly, this work yielded a complete reconstruction of both the left
-# and right hemispheres of the brain. We can represent this data as a network, with 
+# and right hemispheres of the brain. We can represent this data as a network, with
 # nodes representing neurons and
-# edges representing some number of synapses between them. 
-# Since there are many modeling choices to make even when deciding how to take a raw 
-# connectome and generate a network representation from it, we describe some of these 
+# edges representing some number of synapses between them.
+# Since there are many modeling choices to make even when deciding how to take a raw
+# connectome and generate a network representation from it, we describe some of these
 # choices below.
 
 #%% [markdown]
@@ -53,12 +53,15 @@ import time
 from pathlib import Path
 
 import networkx as nx
+import numpy as np
 import pandas as pd
 from graspologic.utils import binarize, remove_loops
 from myst_nb import glue
 from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 
 t0 = time.time()
+
+RESAVE = False
 
 # print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
@@ -79,6 +82,19 @@ right_adj = right_mg.sum.adj
 left_adj = binarize(left_adj)
 right_adj = binarize(right_adj)
 
+#%%
+print(np.count_nonzero(np.diag(left_adj)))
+print(np.count_nonzero(np.diag(left_adj)) / len(left_adj))
+# print(np.count_nonzero(np.diag(right_adj)))
+print(np.count_nonzero(np.diag(left_adj)) / np.count_nonzero(left_adj))
+#%%
+left_n_loops = np.count_nonzero(np.diag(left_adj))
+right_n_loops = np.count_nonzero(np.diag(right_adj))
+left_n_edges = np.count_nonzero(left_adj)
+right_n_edges = np.count_nonzero(right_adj)
+print((left_n_loops + right_n_loops) / (len(left_adj) + len(right_adj)))
+print((left_n_loops + right_n_loops) / (left_n_edges + right_n_edges))
+#%%
 left_adj = remove_loops(left_adj)
 right_adj = remove_loops(right_adj)
 
@@ -86,6 +102,9 @@ n_left_unmatched = left_adj.shape[0]
 n_right_unmatched = right_adj.shape[0]
 glue("n_left_unmatched", n_left_unmatched, display=False)
 glue("n_right_unmatched", n_right_unmatched, display=False)
+
+#%%
+
 
 #%% [markdown]
 # After this data cleaning, we are left with {glue:text}`n_left_unmatched` neurons in
@@ -95,22 +114,24 @@ glue("n_right_unmatched", n_right_unmatched, display=False)
 # %%
 left_adj = pd.DataFrame(data=left_adj, index=left_nodes.index, columns=left_nodes.index)
 left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
-nx.write_edgelist(
-    left_g, output_dir / "unmatched_left_edgelist.csv", delimiter=",", data=False
-)
 
-left_nodes.to_csv(output_dir / "unmatched_left_nodes.csv")
+if RESAVE:
+    nx.write_edgelist(
+        left_g, output_dir / "unmatched_left_edgelist.csv", delimiter=",", data=False
+    )
+    left_nodes.to_csv(output_dir / "unmatched_left_nodes.csv")
 
 
 right_adj = pd.DataFrame(
     data=right_adj, index=right_nodes.index, columns=right_nodes.index
 )
 right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
-nx.write_edgelist(
-    right_g, output_dir / "unmatched_right_edgelist.csv", delimiter=",", data=False
-)
 
-right_nodes.to_csv(output_dir / "unmatched_right_nodes.csv")
+if RESAVE:
+    nx.write_edgelist(
+        right_g, output_dir / "unmatched_right_edgelist.csv", delimiter=",", data=False
+    )
+    right_nodes.to_csv(output_dir / "unmatched_right_nodes.csv")
 
 
 #%% [markdown]
@@ -155,22 +176,24 @@ glue("n_right_matched", n_right_matched, display=False)
 # %%
 left_adj = pd.DataFrame(data=left_adj, index=left_nodes.index, columns=left_nodes.index)
 left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
-nx.write_edgelist(
-    left_g, output_dir / "matched_left_edgelist.csv", delimiter=",", data=False
-)
+if RESAVE:
+    nx.write_edgelist(
+        left_g, output_dir / "matched_left_edgelist.csv", delimiter=",", data=False
+    )
 
-left_nodes.to_csv(output_dir / "matched_left_nodes.csv")
+    left_nodes.to_csv(output_dir / "matched_left_nodes.csv")
 
 
 right_adj = pd.DataFrame(
     data=right_adj, index=right_nodes.index, columns=right_nodes.index
 )
 right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
-nx.write_edgelist(
-    right_g, output_dir / "matched_right_edgelist.csv", delimiter=",", data=False
-)
 
-right_nodes.to_csv(output_dir / "matched_right_nodes.csv")
+if RESAVE:
+    nx.write_edgelist(
+        right_g, output_dir / "matched_right_edgelist.csv", delimiter=",", data=False
+    )
+    right_nodes.to_csv(output_dir / "matched_right_nodes.csv")
 
 #%%
 elapsed = time.time() - t0
