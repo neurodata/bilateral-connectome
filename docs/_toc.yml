@@ -13,6 +13,7 @@ parts:
     - file: sbm_unmatched_test
     - file: adjusted_sbm_unmatched_test
     - file: kc_minus
+    - file: thresholding_tests
   - caption: Appendix
     chapters: 
     - file: revamp_sbm_methods_sim
