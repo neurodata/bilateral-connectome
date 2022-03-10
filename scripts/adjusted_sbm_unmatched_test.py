@@ -258,9 +258,43 @@ glue("corrected_pvalue", pvalue)
 print(pvalue)
 print(f"{pvalue:.2g}")
 
+# #%%
+# from pkg.stats import compute_density, compute_density_adjustment
+
+# left_density = compute_density(left_adj)
+# right_density = compute_density(right_adj)
+
+# #%%
+# stat, pvalue, misc = stochastic_block_test(
+#     left_adj,
+#     right_adj,
+#     labels1=left_labels,
+#     labels2=right_labels,
+#     method="fisher",
+#     density_adjustment=False,
+#     combine_method="tippett",
+# )
+
+# np.sum((misc["probabilities1"] * misc["possible1"]).values) / (
+#     left_adj.size - len(left_adj)
+# )
+
+# #%%
+# stat, pvalue, misc = stochastic_block_test(
+#     left_adj,
+#     right_adj,
+#     labels1=left_labels,
+#     labels2=right_labels,
+#     method="fisher",
+#     density_adjustment=True,
+#     combine_method="tippett",
+# )
+
 #%%
-
-
+# c = compute_density_adjustment(left_adj, right_adj)
+# np.sum((c * misc["probabilities2"] * misc["possible2"]).values) / (
+#     right_adj.size - len(right_adj)
+# )
 
 #%%
 
