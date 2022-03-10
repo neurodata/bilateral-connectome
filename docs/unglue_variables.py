@@ -28,13 +28,14 @@ for notebook_path in notebooks:
                         and ("image/svg+xml" not in output["data"])
                         and ("image/png" not in output["data"])
                     ):
-                        value = output["data"][data_key]
-                        try:
-                            value = ast.literal_eval(value)
-                        except:
-                            pass
-                        name = output["metadata"]["scrapbook"]["name"]
-                        variables[name] = value
-
+                        data = output["data"]
+                        if data_key in data:
+                            value = data[data_key]
+                            try:
+                                value = ast.literal_eval(value)
+                            except:
+                                pass
+                            name = output["metadata"]["scrapbook"]["name"]
+                            variables[name] = value
 with open("bilateral-connectome/docs/glued_variables.json", "w") as f:
     json.dump(variables, f, indent=4)
