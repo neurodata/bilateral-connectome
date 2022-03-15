@@ -3,6 +3,7 @@ from collections import namedtuple
 import numpy as np
 import pandas as pd
 from graspologic.utils import remove_loops
+from statsmodels.stats.multitest import multipletests
 
 from .binomial import binom_2samp, binom_2samp_paired
 from .combine import combine_pvalues
@@ -79,6 +80,8 @@ def stochastic_block_test(
     density_adjustment=False,
     method="fisher",
     combine_method="tippett",
+    correct_method="holm",
+    alpha=0.05,
 ):
 
     B1, n_observed1, n_possible1, group_counts1 = fit_sbm(A1, labels1)
@@ -106,7 +109,7 @@ def stochastic_block_test(
         adjustment_factor = compute_density_adjustment(A1, A2)
     else:
         adjustment_factor = 1.0
-        
+
     for i in index:
         for j in index:
             curr_stat, curr_pvalue = binom_2samp(
@@ -133,11 +136,31 @@ def stochastic_block_test(
     misc["group_counts2"] = group_counts2
     misc["null_ratio"] = adjustment_factor
 
-    # TODO how else to combine pvalues
     run_pvalues = uncorrected_pvalues.values
-    run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
+    indices = np.nonzero(~np.isnan(run_pvalues))
+    run_pvalues = run_pvalues[indices]
     n_tests = len(run_pvalues)
     misc["n_tests"] = n_tests
+
+    # correct for multiple comparisons
+    rejections_flat, corrected_pvalues_flat, _, _ = multipletests(
+        run_pvalues,
+        alpha,
+        method=correct_method,
+        is_sorted=False,
+        returnsorted=False,
+    )
+    rejections = np.full((K, K), False, dtype=bool)
+    rejections[indices] = rejections_flat
+    rejections = _make_adjacency_dataframe(rejections, index)
+    misc["rejections"] = rejections
+
+    corrected_pvalues = np.full((K, K), np.nan, dtype=float)
+    corrected_pvalues[indices] = corrected_pvalues_flat
+    corrected_pvalues = _make_adjacency_dataframe(corrected_pvalues, index)
+    misc["corrected_pvalues"] = corrected_pvalues
+
+    # combine p-values (on the UNcorrected p-values)
     if run_pvalues.min() == 0.0:
         # TODO consider raising a new warning here
         stat = np.inf

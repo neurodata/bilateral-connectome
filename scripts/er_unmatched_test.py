@@ -73,6 +73,7 @@ import matplotlib.pyplot as plt
 import matplotlib.transforms
 import numpy as np
 import pandas as pd
+from pkg.plot.er import plot_density
 import seaborn as sns
 from giskard.plot import merge_axes, soft_axis_off
 from graspologic.simulations import er_np
@@ -302,31 +303,8 @@ n_edges_left = misc["observed1"]
 n_edges_right = misc["observed2"]
 
 #%%
-fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 
-ax.bar(0, density_left, color=network_palette["Left"])
-ax.bar(1, density_right, color=network_palette["Right"])
-
-coverage = 0.99
-coverage_percentage = coverage * 100
-glue("coverage_percentage", coverage_percentage)
-
-left_lower, left_upper = proportion_confint(
-    n_edges_left, n_possible_left, alpha=1 - coverage, method="beta"
-)
-right_lower, right_upper = proportion_confint(
-    n_edges_right, n_possible_right, alpha=1 - coverage, method="beta"
-)
-
-ax.plot([0, 0], [left_lower, left_upper], color="black", linewidth=4)
-ax.plot([1, 1], [right_lower, right_upper], color="black", linewidth=4)
-
-ax.set(
-    xlabel="Hemisphere",
-    xticks=[0, 1],
-    xticklabels=["Left", "Right"],
-    ylabel=r"Estimated density ($\hat{p}$)",
-)
+plot_density(misc, palette=network_palette)
 
 gluefig("er_density", fig)
 
@@ -400,13 +378,13 @@ fontsize = 12
 
 methods = SmartSVG(FIG_PATH / "er_methods.svg")
 methods.set_width(200)
-methods.move(10, 15)
-methods_panel = Panel(methods, Text("A)", 5, 10, size=fontsize, weight="bold"))
+methods.move(10, 20)
+methods_panel = Panel(methods, Text("A) Density test methods", 5, 10, size=fontsize, weight="bold"))
 
 density = SmartSVG(FIG_PATH / "er_density.svg")
-density.set_width(200)
+density.set_height(methods.height)
 density.move(10, 15)
-density_panel = Panel(density, Text("B)", 5, 10, size=fontsize, weight="bold"))
+density_panel = Panel(density, Text("B) Density comparison", 5, 10, size=fontsize, weight="bold"))
 density_panel.move(methods.width * 0.9, 0)
 
 fig = Figure(

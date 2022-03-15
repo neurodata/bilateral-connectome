@@ -28,3 +28,8 @@ class SmartSVG(SVG):
         current_width = self.width
         scaler = width / current_width
         self.scale(scaler)
+
+    def set_height(self, height):
+        current_height = self.height
+        scaler = height / current_height
+        self.scale(scaler)

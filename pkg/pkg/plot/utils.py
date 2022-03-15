@@ -141,10 +141,13 @@ def multicolor_text(x, y, texts, colors, ax=None, space_scale=1.0, **kwargs):
     return text_objs
 
 
-def get_texts_points(texts, ax=None):
+def get_texts_points(texts, ax=None, transform="data"):
     fig = ax.get_figure()
     renderer = fig.canvas.get_renderer()
-    transformer = ax.transData.inverted()
+    if transform == "data":
+        transformer = ax.transData.inverted()
+    elif transform == "axes":
+        transformer = ax.transAxes.inverted()
 
     x_maxs = []
     x_mins = []
@@ -164,8 +167,8 @@ def get_texts_points(texts, ax=None):
     return x_min, x_max, y_min, y_max
 
 
-def bound_texts(texts, ax=None, xpad=0, ypad=0, **kwargs):
-    x_min, x_max, y_min, y_max = get_texts_points(texts, ax=ax)
+def bound_texts(texts, ax=None, xpad=0, ypad=0, transform="data", **kwargs):
+    x_min, x_max, y_min, y_max = get_texts_points(texts, ax=ax, transform=transform)
     xy = (x_min - xpad, y_min - ypad)
     width = x_max - x_min + 2 * xpad
     height = y_max - y_min + 2 * ypad

@@ -44,6 +44,8 @@ DISPLAY_FIGS = False
 
 FILENAME = "sbm_unmatched_test"
 
+FIG_PATH = FIG_PATH / FILENAME
+
 
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
@@ -305,14 +307,14 @@ fig, axs = plt.subplots(
         wspace=0,
         hspace=0,
         height_ratios=[1.5, 5, 2.5, 5],
-        width_ratios=[5, 1, 5, 1, 5, 1, 5],
+        width_ratios=[5, 2, 5, 2, 5, 1.5, 5],
     ),
     constrained_layout=False,
 )
 
 axs[0, 0].set_title("Group neurons", fontsize="medium")
-axs[0, 2].set_title("Estimate group-to-group\nconnection probabilities")
-axs[0, 4].set_title("Compare estimated\nprobabilities", fontsize="medium")
+axs[0, 2].set_title("Estimate group\nconnection probabilities", x=.45, ha='center')
+axs[0, 4].set_title("Compare probabilities,\ncompute p-values", fontsize="medium")
 axs[0, 6].set_title("Combine p-values\nfor overall test", fontsize="medium")
 
 
@@ -346,6 +348,10 @@ ax.set_ylabel(
     labelpad=10,
 )
 
+ax = merge_axes(fig, axs, rows=None, cols=1)
+ax.axis("off")
+ax.plot([0.5, 0.5], [0, 1], color="lightgrey", linewidth=1.5)
+ax.set_xlim((0, 1))
 
 ax = axs[1, 2]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
@@ -376,15 +382,17 @@ left_ax.set_ylabel("Source group", fontsize="small")
 ax.set_xlabel("Target group", fontsize="small")
 label_matrix_element(Bhat2, 0, 1, r"$\hat{B}_{12}^{(R)}$", ax)
 
+# divider
+ax = merge_axes(fig, axs, rows=None, cols=3)
+ax.axis("off")
+ax.plot([0.3, 0.3], [0, 1], color="lightgrey", linewidth=1.5, clip_on=False)
+ax.set_xlim((0, 1))
 
+# 3rd column
 ax = merge_axes(fig, axs, rows=(1, 4), cols=4)
 
-linestyle_kws = dict(linewidth=1, color="dimgrey")
-# ax.axvline(4, ymin=0.32, ymax=0.89, **linestyle_kws)
-# ax.axvline(9, ymin=0.32, ymax=0.89, **linestyle_kws)
-# ax.plot([4, 9], [0.89, 0.89], **linestyle_kws)
-# ax.plot([4, 9], [0.32, 0.32], **linestyle_kws)
 
+linestyle_kws = dict(linewidth=1, color="dimgrey")
 xmin = 0.01
 xmax = 0.99
 ymax = 0.95
@@ -514,7 +522,13 @@ draw_hypothesis_box(
 
 ax.axis("off")
 
+# divider
+ax = merge_axes(fig, axs, rows=None, cols=5)
+ax.axis("off")
+ax.plot([0.65, 0.65], [0, 1], color="lightgrey", linewidth=1.5, clip_on=False)
+ax.set_xlim((0, 1))
 
+# last column
 ax = axs[1, 6]
 uncorrected_pvalues = np.array([[0.5, 0.1, 0.22], [0.2, 0.01, 0.86], [0.43, 0.2, 0.6]])
 top_ax, left_ax = heatmap_grouped(
@@ -571,8 +585,9 @@ stat, pvalue, misc = stochastic_block_test(
     labels2=right_labels,
     method="fisher",
     combine_method="tippett",
+    correct_method="bonferroni",
 )
-glue("uncorrected_pvalue", pvalue)
+glue("pvalue", pvalue)
 n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
 print(pvalue)
@@ -700,13 +715,6 @@ ax.set(
 
 gluefig("probs_scatter", fig)
 
-# sns.move_legend(ax, loc="upper left")
-
-# B1 = misc['probabilities1']
-# pd.melt(B1, var_name=['source', 'target'])
-
-# %%
-
 #%%
 
 fig, ax = plt.subplots(1, 1, figsize=(10, 5))
@@ -743,11 +751,12 @@ fig, axs = plot_stochastic_block_probabilities(misc, network_palette)
 
 gluefig("sbm_uncorrected", fig)
 
-# need to save this for later for setting colorbar the same on other plot
-pvalue_vmin = np.log10(np.nanmin(misc["uncorrected_pvalues"].values))
-glue("pvalue_vmin", pvalue_vmin)
 
 #%%
+
+# need to save this for later for setting colorbar the same on other plot
+pvalue_vmin = np.log10(np.nanmin(misc["corrected_pvalues"].values))
+glue("pvalue_vmin", pvalue_vmin)
 
 plot_pvalues(
     misc,
@@ -1000,7 +1009,7 @@ def plot_significant_probabilities(misc):
     mean_ps = sig_data.groupby("pair")["p"].mean()
     pair_orders = mean_ps.sort_values(ascending=False).index
 
-    fig, ax = plt.subplots(1, 1, figsize=(6, 6))
+    fig, ax = plt.subplots(1, 1, figsize=(7, 6))
     sns.pointplot(
         data=sig_data,
         y="p",
@@ -1044,35 +1053,52 @@ gluefig("significant_p_comparison", fig)
 
 #%%
 
-
-FIG_PATH = FIG_PATH / FILENAME
-
-fontsize = 12
+fontsize = 8
 
 methods = SmartSVG(FIG_PATH / "sbm_methods_explain.svg")
 methods.set_width(400)
-methods_panel = Panel(methods, Text("A)", 5, 10, size=fontsize, weight="bold"))
+methods.move(0, 15)
+methods_panel = Panel(
+    methods,
+    Text("A) Group connection test methods", 5, 10, size=fontsize, weight="bold"),
+)
 
 probs = SmartSVG(FIG_PATH / "sbm_uncorrected.svg")
 probs.set_width(400)
-probs_panel = Panel(probs, Text("B)", 5, 10, size=fontsize, weight="bold"))
-probs_panel.move(0, methods.height * 0.85)
+probs.move(0, 15)
+probs_panel = Panel(
+    probs,
+    Text(
+        "B) Group connection probabilities",
+        5,
+        10,
+        size=fontsize,
+        weight="bold",
+    ),
+)
+probs_panel.move(0, methods.height * 0.9)
 
 pvalues = SmartSVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
 pvalues.set_width(200)
 pvalues.move(10, 15)
-pvalues_panel = Panel(pvalues, Text("C)", 5, 10, size=fontsize, weight="bold"))
-pvalues_panel.move(0, (methods.height + probs.height) * 0.83)
+pvalues_panel = Panel(
+    pvalues, Text("C) Connection p-values", 5, 10, size=fontsize, weight="bold")
+)
+pvalues_panel.move(0, (methods.height + probs.height) * 0.9)
 
 comparison = SmartSVG(FIG_PATH / "significant_p_comparison.svg")
-comparison.set_width(145)
-comparison.move(10, 15)
-comparison_panel = Panel(comparison, Text("D)", 5, 10, size=fontsize, weight="bold"))
-comparison_panel.move(pvalues.width * 0.9, (methods.height + probs.height) * 0.83)
+comparison.set_width(150)
+comparison.move(10, 25)
+comparison_panel = Panel(
+    comparison,
+    Text("D) Probabilities for", 5, 10, size=fontsize, weight="bold"),
+    Text("significant connections", 20, 20, size=fontsize, weight="bold"),
+)
+comparison_panel.move(pvalues.width * 0.9, (methods.height + probs.height) * 0.9)
 
 fig = Figure(
     methods.width * 0.8,
-    (methods.height + probs.height + pvalues.height) * 0.85,
+    (methods.height + probs.height + pvalues.height) * 0.9,
     methods_panel,
     probs_panel,
     pvalues_panel,

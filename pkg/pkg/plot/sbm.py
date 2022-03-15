@@ -5,9 +5,10 @@ import seaborn as sns
 from graspologic.plot import heatmap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from seaborn.utils import relative_luminance
+import matplotlib.transforms as mtransforms
 
 from .theme import set_theme
-from .utils import draw_colors, remove_shared_ax, shrink_axis
+from .utils import bound_texts, draw_colors, remove_shared_ax, shrink_axis
 
 
 def plot_stochastic_block_probabilities(misc, network_palette):
@@ -74,12 +75,22 @@ def plot_stochastic_block_probabilities(misc, network_palette):
         shrink=1,
         ticklocation="left",
     )
-    ax.set_title("Estimated\nprobability")
+    ax.set_title("Estimated\nedge\nprobability")
 
     # remove dummy axes
     for i in range(len(width_ratios)):
         if not axs[i].has_data():
             axs[i].set_visible(False)
+
+    ax = axs[left_col]
+
+    texts = []
+    texts.append(ax.text(-0.5, -0.16, "0 - No edges", transform=ax.transAxes))
+    texts.append(ax.text(-0.41, -0.22, "observed", transform=ax.transAxes))
+
+    bound_texts(
+        texts, ax=ax, facecolor="white", edgecolor="lightgrey", xpad=0.3, ypad=1.2
+    )
 
     return fig, axs
 
@@ -92,6 +103,8 @@ def plot_pvalues(
     annot_missing=True,
 ):
     if pvalue_vmin is None:
+        # TODO make this less brittle
+
         import json
 
         vars_file = "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/docs/glued_variables.json"
@@ -113,10 +126,9 @@ def plot_pvalues(
         ax = axs[-1]
         cax = axs[0]
 
-    uncorrected_pvalues = misc["uncorrected_pvalues"]
+    corrected_pvalues = misc["corrected_pvalues"]
     B1 = misc["probabilities1"]
     B2 = misc["probabilities2"]
-    hb_thresh = 0.05 / misc["n_tests"]
 
     K = len(B1)
     index = B1.index
@@ -127,7 +139,7 @@ def plot_pvalues(
         annot[(B1.values != 0) & (B2.values == 0)] = "R"
     else:
         annot = False
-    plot_pvalues = np.log10(uncorrected_pvalues)
+    plot_pvalues = np.log10(corrected_pvalues)
     plot_pvalues[np.isnan(plot_pvalues)] = 0
     im = sns.heatmap(
         plot_pvalues,
@@ -145,7 +157,7 @@ def plot_pvalues(
     # ax.set_title(r"Probability comparison", fontsize="x-large")
 
     colors = im.get_children()[0].get_facecolors()
-    significant = uncorrected_pvalues < hb_thresh
+    significant = misc["rejections"]
 
     # NOTE: the x's looked bad so I did this super hacky thing...
     pad = 0.2
@@ -177,6 +189,31 @@ def plot_pvalues(
         ticklocation="left",
     )
     cax.set_title(r"$log_{10}$" + "\np-value", pad=20)
+
+    cax.plot(
+        [0, 1], [np.log10(0.05), np.log10(0.05)], zorder=100, color="black", linewidth=3
+    )
+    cax.annotate(
+        r"$\alpha$",
+        (0.05, np.log10(0.05)),
+        xytext=(-20, 15),
+        textcoords="offset points",
+        va="center",
+        ha="right",
+        arrowprops={"arrowstyle": "-", "linewidth": 3, "relpos": (0, 0.5)},
+    )
+
+    if annot_missing:
+        texts = []
+        texts.append(ax.text(-0.5, -0.1, "Test not run,", transform=ax.transAxes))
+        texts.append(ax.text(-0.5, -0.16, "no edges on:", transform=ax.transAxes))
+        texts.append(ax.text(-0.45, -0.24, "L - left", transform=ax.transAxes))
+        texts.append(ax.text(-0.45, -0.3, "R - right", transform=ax.transAxes))
+        texts.append(ax.text(-0.45, -0.36, "B - both", transform=ax.transAxes))
+
+        bound_texts(
+            texts, ax=ax, facecolor="white", edgecolor="lightgrey", xpad=0.3, ypad=1.2
+        )
 
     return fig, axs
 
