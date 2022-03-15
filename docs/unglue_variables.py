@@ -39,3 +39,7 @@ for notebook_path in notebooks:
                             variables[name] = value
 with open("bilateral-connectome/docs/glued_variables.json", "w") as f:
     json.dump(variables, f, indent=4)
+
+with open("bilateral-connectome/docs/glued_variables.txt", "w") as f:
+    for key, value in variables.items():
+        f.write(f"{key} {value}\n")
