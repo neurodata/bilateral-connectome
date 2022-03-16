@@ -1,5 +1,5 @@
 #%% [markdown]
-# # A group-based test
+# # Group connection test
 # Next, we test bilateral symmetry by making an assumption that the left and the right
 # hemispheres both come from a stochastic block model, which models the probability
 # of any potential edge as a function of the groups that the source and target nodes

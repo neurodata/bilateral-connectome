@@ -1,5 +1,5 @@
 #%% [markdown]
-# # A density-based test
+# # Density test
 # Here, we compare the two unmatched networks by treating each as an Erdos-Renyi network
 # and simply compare their estimated densities.
 

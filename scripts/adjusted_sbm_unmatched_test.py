@@ -1,5 +1,5 @@
 #%% [markdown]
-# # SBM test with density adjustment
+# # Density-adjusted group connection test
 
 #%%
 
