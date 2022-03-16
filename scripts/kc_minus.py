@@ -109,7 +109,7 @@ ax.set(xlim=(0, 1), ylim=(0, 1))
 kwargs = dict(yskip=0.07, ax=ax, title=True)
 draw_hypothesis_box("er", 0.15, 0.8, **kwargs)
 draw_hypothesis_box("sbm", 0.15, 0.5, **kwargs)
-draw_hypothesis_box("dasbm", 0.15, 0.2, **kwargs)
+draw_hypothesis_box("dasbm", 0.15, 0.15, **kwargs)
 
 
 ax.set_title("Re-run all tests")
@@ -206,7 +206,7 @@ methods.move(10, 15)
 methods_panel = Panel(methods, Text("A)", 0, 10, size=12, weight="bold"))
 
 er = SmartSVG(FIG_PATH / "densities.svg")
-er.set_width(170)
+er.set_width(130)
 er.move(20, 20)
 er_panel = Panel(er, Text("B)", 0, 10, size=12, weight="bold"))
 er_panel.move(methods.width * 0.87, 0)
@@ -243,7 +243,7 @@ asbm_panel.move(methods.width * 0.87, methods.height * 0.9)
 
 
 fig = Figure(
-    (methods.width + er.width) * 0.91,
+    (methods.width + er.width) * 1.02,
     (methods.height + sbm.height) * 0.9,
     methods_panel,
     er_panel,

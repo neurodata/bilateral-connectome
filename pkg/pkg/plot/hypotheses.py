@@ -20,7 +20,7 @@ def draw_hypothesis_box(
     if model == "er":
         item1 = r"$p^{(L)}$"
         item2 = r"$p^{(R)}$"
-        title_text = "ER"
+        title_text = "Density"
     elif model in ["sbm", "dasbm"]:
         if subscript:
             item1 = r"$B^{(L)}_{ij}$"
@@ -29,9 +29,9 @@ def draw_hypothesis_box(
             item1 = r"$B^{(L)}$"
             item2 = r"$B^{(R)}$"
         if model == "sbm":
-            title_text = "SBM"
+            title_text = "Group connection"
         elif model == "dasbm":
-            title_text = "DA-SBM"
+            title_text = "Density-adjusted\ngroup connection"
 
     text_items = [r"$H_0$:", item1, r"$=$", item2]
     colors = ["black", network_palette["Left"], "black", network_palette["Right"]]

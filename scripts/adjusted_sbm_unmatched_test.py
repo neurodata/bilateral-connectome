@@ -14,16 +14,19 @@ import seaborn as sns
 from graspologic.simulations import sbm
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import savefig
+from pkg.io import OUT_PATH, savefig
 from pkg.io.io import FIG_PATH, OUT_PATH
 from pkg.perturb import remove_edges
 from pkg.plot import heatmap_grouped, networkplot_simple, plot_pvalues, set_theme
 from pkg.stats import stochastic_block_test
 from tqdm import tqdm
 
+
 DISPLAY_FIGS = False
 
 FILENAME = "adjusted_sbm_unmatched_test"
+
+OUT_PATH = OUT_PATH / FILENAME
 
 
 def gluefig(name, fig, **kwargs):
@@ -207,40 +210,47 @@ glue("n_remove", n_remove)
 rows = []
 n_resamples = 500
 glue("n_resamples", n_resamples)
-RERUN_SIM = False
+RERUN_SIM = True
 
-from pkg.io import OUT_PATH
-
-OUT_PATH = OUT_PATH / FILENAME
-# OUT_PATH = Path(f"bilateral-connectome/results/outputs/{FILENAME}")
+uncorrected_pvalue_matrices = []
+corrected_pvalue_matrices = []
 
 if RERUN_SIM:
     for i in tqdm(range(n_resamples)):
         subsampled_right_adj = remove_edges(
             right_adj, effect_size=n_remove, random_seed=rng
         )
-        for combine_method in ["tippett"]:
-            stat, pvalue, misc = stochastic_block_test(
-                left_adj,
-                subsampled_right_adj,
-                labels1=left_labels,
-                labels2=right_labels,
-                method="fisher",
-                combine_method=combine_method,
-            )
-            rows.append(
-                {
-                    "stat": stat,
-                    "pvalue": pvalue,
-                    "misc": misc,
-                    "resample": i,
-                    "combine_method": combine_method,
-                }
-            )
+        stat, pvalue, misc = stochastic_block_test(
+            left_adj,
+            subsampled_right_adj,
+            labels1=left_labels,
+            labels2=right_labels,
+        )
+        rows.append(
+            {
+                "stat": stat,
+                "pvalue": pvalue,
+                "misc": misc,
+                "resample": i,
+            }
+        )
+        uncorrected_pvalue_matrices.append(misc["uncorrected_pvalues"])
+        corrected_pvalue_matrices.append(misc["corrected_pvalues"])
     resample_results = pd.DataFrame(rows)
-    resample_results.to_csv(OUT_PATH / "resample_results.csv")
+    # resample_results.to_csv(OUT_PATH / "resample_results.csv")
 else:
     resample_results = pd.read_csv(OUT_PATH / "resample_results.csv", index_col=0)
+
+# #%%
+# corrected_pvalues = []
+# for mat in corrected_pvalue_matrices:
+#     corrected_pvalues.append(mat.values)
+# corrected_pvalues = np.stack(corrected_pvalues)
+# print(corrected_pvalues.shape)
+
+# medians = np.nanmedian(corrected_pvalues, axis=0)
+# row_indices, col_indices = np.nonzero(medians < 0.05)
+# print(list(zip(mat.index[row_indices], mat.columns[col_indices])))
 
 
 #%%
@@ -251,7 +261,6 @@ stat, pvalue, misc = stochastic_block_test(
     labels2=right_labels,
     method="fisher",
     density_adjustment=True,
-    combine_method="tippett",
 )
 glue("corrected_pvalue", pvalue)
 print(pvalue)
@@ -300,7 +309,7 @@ print(f"{pvalue:.2g}")
 set_theme(font_scale=1.25)
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 sns.histplot(
-    data=resample_results[resample_results["combine_method"] == "tippett"],
+    data=resample_results,
     x="pvalue",
     ax=ax,
     color=neutral_color,
@@ -363,9 +372,8 @@ gluefig("sbm_pvalues_unlabeled", fig)
 
 #%%
 from pkg.io import FIG_PATH
-from svgutils.compose import SVG, Figure, Panel, Text
 from pkg.plot import SmartSVG
-
+from svgutils.compose import SVG, Figure, Panel, Text
 
 FIG_PATH = FIG_PATH / FILENAME
 
