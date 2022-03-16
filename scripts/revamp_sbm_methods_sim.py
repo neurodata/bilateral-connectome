@@ -2,9 +2,6 @@
 # # Comparing methods for SBM testing
 
 #%%
-from pkg.utils import set_warnings
-
-set_warnings()
 
 import csv
 import datetime
@@ -18,19 +15,22 @@ import seaborn as sns
 from giskard.plot import subuniformity_plot
 from matplotlib.transforms import Bbox
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.io import FIG_PATH
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import set_theme
+from pkg.plot import SmartSVG, set_theme
 from pkg.stats import binom_2samp, stochastic_block_test
 from scipy.stats import beta, binom, chi2
 from scipy.stats import combine_pvalues as scipy_combine_pvalues
 from scipy.stats import ks_1samp, uniform
+from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
-
 
 DISPLAY_FIGS = False
 
 FILENAME = "revamp_sbm_methods_sim"
+
+FIG_PATH = FIG_PATH / FILENAME
 
 
 def glue(name, var, **kwargs):
@@ -773,13 +773,8 @@ ylabel = r"Perturbation size $(\delta)$ $\rightarrow$"
 ax.set(xlabel=xlabel, ylabel=ylabel, title="Power under $H_A $" + r"($\alpha=0.05$)")
 gluefig("tippett_power_matrix", fig)
 
-from pkg.io import FIG_PATH
 
 #%%
-from pkg.plot import SmartSVG
-from svgutils.compose import Figure, Panel, Text
-
-FIG_PATH = FIG_PATH / FILENAME
 
 fontsize = 12
 
