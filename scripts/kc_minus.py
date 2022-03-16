@@ -4,20 +4,31 @@
 import time
 
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import numpy as np
 import seaborn as sns
 from giskard.plot import merge_axes
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import savefig
-from pkg.plot import networkplot_simple, plot_density, plot_pvalues, set_theme
+from pkg.io import FIG_PATH, savefig
+from pkg.plot import (
+    SmartSVG,
+    draw_hypothesis_box,
+    networkplot_simple,
+    plot_density,
+    plot_pvalues,
+    set_theme,
+)
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
+from svgutils.compose import Figure, Panel, Text
 
 
 DISPLAY_FIGS = True
 
 FILENAME = "kc_minus"
+
+FIG_PATH = FIG_PATH / FILENAME
 
 
 def gluefig(name, fig, **kwargs):
@@ -36,10 +47,11 @@ def glue(name, var, prefix=None):
     default_glue(savename, var, display=False)
 
 
-#%%
 t0 = time.time()
 set_theme()
 rng = np.random.default_rng(8888)
+
+#%%
 
 network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
@@ -99,7 +111,6 @@ ax.set_ylabel(
     labelpad=10,
 )
 
-from pkg.plot import draw_hypothesis_box
 
 ax = merge_axes(fig, axs, rows=None, cols=1)
 ax.axis("off")
@@ -110,6 +121,16 @@ kwargs = dict(yskip=0.07, ax=ax, title=True)
 draw_hypothesis_box("er", 0.15, 0.8, **kwargs)
 draw_hypothesis_box("sbm", 0.15, 0.5, **kwargs)
 draw_hypothesis_box("dasbm", 0.15, 0.15, **kwargs)
+
+line1 = mpl.lines.Line2D(
+    (0.51, 0.51),
+    (0.05, 0.9),
+    transform=fig.transFigure,
+    color="lightgrey",
+    linewidth=1.5,
+)
+
+fig.lines = (line1,)
 
 
 ax.set_title("Re-run all tests")
@@ -173,78 +194,43 @@ gluefig("dasbm_pvalues", fig)
 
 #%%
 
-import ast
-
-from pkg.io import FIG_PATH
-from svgutils.compose import SVG, Figure, Panel, Text
-from pkg.plot import SmartSVG
-
-FIG_PATH = FIG_PATH / FILENAME
-
-
-# class NotStupidPanel(Panel):
-#     @property
-#     def height(self):
-#         return self.root.getchildren().height
-#         # _, height = get_true_width_height(self)
-#         # return height
-
-#     @property
-#     def width(self):
-#         width, _ = get_true_width_height(self)
-#         return width
-
-#     def set_width(self, width):
-#         current_width = self.width
-#         scaler = width / current_width
-#         self.scale(scaler)
-
+fontsize = 10
 
 methods = SmartSVG(FIG_PATH / "kc_minus_methods.svg")
 methods.set_width(200)
 methods.move(10, 15)
-methods_panel = Panel(methods, Text("A)", 0, 10, size=12, weight="bold"))
+methods_panel = Panel(
+    methods, Text("A) Kenyon cell removal", 0, 10, size=fontsize, weight="bold")
+)
 
 er = SmartSVG(FIG_PATH / "densities.svg")
 er.set_width(130)
-er.move(20, 20)
-er_panel = Panel(er, Text("B)", 0, 10, size=12, weight="bold"))
+er.move(30, 20)
+er_panel = Panel(er, Text("B) Density test", 0, 10, size=fontsize, weight="bold"))
 er_panel.move(methods.width * 0.87, 0)
 
 sbm = SmartSVG(FIG_PATH / "sbm_pvalues.svg")
 sbm.set_width(200)
-sbm.move(0, 15)
-sbm_panel = Panel(sbm, Text("C)", 0, 10, size=12, weight="bold"))
+sbm.move(0, 25)
+sbm_panel = Panel(
+    sbm, Text("C) Group connection test", 0, 10, size=fontsize, weight="bold")
+)
 sbm_panel.move(0, methods.height * 0.9)
 
 asbm = SmartSVG(FIG_PATH / "dasbm_pvalues.svg")
 asbm.set_width(200)
-asbm.move(0, 15)
-asbm_panel = Panel(asbm, Text("D)", 0, 10, size=12, weight="bold"))
+asbm.move(0, 25)
+asbm_panel = Panel(
+    asbm,
+    Text("D) Density-adjusted", 0, 10, size=fontsize, weight="bold"),
+    Text("group connection test", 14, 20, size=fontsize, weight="bold"),
+)
 asbm_panel.move(methods.width * 0.87, methods.height * 0.9)
-
-# width, _ = get_true_width_height(methods)
-# print(width)
-# set_width(methods, 200)
-
-# er = SVG(FIG_PATH / "densities.svg")
-# set_width(er, 200)
-# er.move(), 0)
-
-
-# text = Text("here", methods.width, 100, size=20)
-# text = Text("here", methods.width * 0.8, 100, size=20)
-
-# sbm = SVG(FIG_PATH / 'sbm_pvalues.svg')
-# set_width(er, 1000)
-
-# # asbm = SVG(FIG_PATH / 'asbm_pvalues.svg')
-# # set_width(er, 1000)
 
 
 fig = Figure(
     (methods.width + er.width) * 1.02,
-    (methods.height + sbm.height) * 0.9,
+    (methods.height + sbm.height) * 0.95,
     methods_panel,
     er_panel,
     sbm_panel,

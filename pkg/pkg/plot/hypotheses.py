@@ -35,16 +35,19 @@ def draw_hypothesis_box(
 
     text_items = [r"$H_0$:", item1, r"$=$", item2]
     colors = ["black", network_palette["Left"], "black", network_palette["Right"]]
+    spaces = [True, True, True]
 
     if model == "dasbm":
         text_items.insert(3, r"$c$")
         colors.insert(3, "black")
+        spaces.insert(3, False)
 
     texts = multicolor_text(
         x,
         y,
         text_items,
         colors,
+        spaces=spaces,
         fontsize=fontsize,
         ax=ax,
     )
@@ -57,6 +60,7 @@ def draw_hypothesis_box(
         y - yskip,
         text_items,
         colors,
+        spaces=spaces,
         fontsize=fontsize,
         ax=ax,
     )
@@ -71,7 +75,6 @@ def draw_hypothesis_box(
     if title:
         points = rect.get_bbox().get_points()
         top = points[1][1]
-        mid = (points[1][0] - points[0][0]) / 2
         ax.text(
             points[0][0],
             top,

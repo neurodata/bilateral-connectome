@@ -14,19 +14,27 @@ import seaborn as sns
 from graspologic.simulations import sbm
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import OUT_PATH, savefig
-from pkg.io.io import FIG_PATH, OUT_PATH
+from pkg.io import FIG_PATH, OUT_PATH, savefig
 from pkg.perturb import remove_edges
-from pkg.plot import heatmap_grouped, networkplot_simple, plot_pvalues, set_theme
+from pkg.plot import (
+    SmartSVG,
+    draw_hypothesis_box,
+    heatmap_grouped,
+    networkplot_simple,
+    plot_pvalues,
+    set_theme,
+)
 from pkg.stats import stochastic_block_test
+from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
-
 
 DISPLAY_FIGS = False
 
 FILENAME = "adjusted_sbm_unmatched_test"
 
 OUT_PATH = OUT_PATH / FILENAME
+
+FIG_PATH = FIG_PATH / FILENAME
 
 
 def gluefig(name, fig, **kwargs):
@@ -74,11 +82,69 @@ palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
 
 
 fig, axs = plt.subplots(
-    1, 5, figsize=(13, 4), gridspec_kw=dict(width_ratios=[1, 0.01, 0.5, 0.5, 1])
+    1, 3, figsize=(8, 3), gridspec_kw=dict(width_ratios=[0.75, 0.75, 1])
 )
 
 
+ytop = 1.05
+ybottom = 0.11
+xleft = 0.05
+xright = 0.68
+border_color = "lightgrey"
+line1 = mpl.lines.Line2D(
+    (0.615, 0.615),
+    (0.15, 0.95),
+    transform=fig.transFigure,
+    color=border_color,
+    linewidth=1.5,
+)
+
+fig.lines = (line1,)
+
+
 ax = axs[0]
+_, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
+Bhat1 = misc["probabilities1"].values
+top_ax, left_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
+top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
+ax.set_title("Adjust connection\nprobabilities", fontsize="small", x=1.2, y=1.4)
+
+ax = axs[1]
+Bhat1 = misc["probabilities1"].values
+top_ax, left_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
+top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"], x=0.55)
+top_ax.text(0.94, -1.3, r"$c$")
+
+ax.annotate(
+    "",
+    xy=(0, 1.5),
+    xytext=(-1, 1.5),
+    arrowprops=dict(
+        arrowstyle="simple",
+        shrinkA=7,
+        shrinkB=9,
+        facecolor="black",
+    ),
+    zorder=1,
+)
+
+ax = axs[2]
+ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize='small')
+ax.axis("off")
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
+
+draw_hypothesis_box("dasbm", 0.1, 0.65, ax=ax, yskip=0.17, ypad=0.015)
+
+fig.set_facecolor("w")
+
+gluefig("adjusted_methods_explain", fig)
+
+
+#%%
+
+fig, ax = plt.subplots(1, 1, figsize=(5, 4))
+
 node_data = networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
 
 n_select = 10
@@ -114,81 +180,8 @@ ax.set_ylabel(
     labelpad=10,
 )
 
-fig.text(0.35, 0.55, "OR", fontweight="bold", fontsize="large", va="center")
-# plt.annotate("", (0.35, 0.55), xytext=(0.35, 1), arrowprops=dict(arrowstyle="-"))
-
-ytop = 1.05
-ybottom = 0.11
-xleft = 0.05
-xright = 0.68
-border_color = "whitesmoke"
-line1 = mpl.lines.Line2D(
-    (0.37, 0.37), (0.61, ytop), transform=fig.transFigure, color="black"
-)
-line2 = mpl.lines.Line2D(
-    (0.37, 0.37), (ybottom, 0.5), transform=fig.transFigure, color="black"
-)
-
-left = mpl.lines.Line2D(
-    (xleft, xleft), (ybottom, ytop), transform=fig.transFigure, color=border_color
-)
-right = mpl.lines.Line2D(
-    (xright, xright), (ybottom, ytop), transform=fig.transFigure, color=border_color
-)
-top = mpl.lines.Line2D(
-    (xleft, xright), (ytop, ytop), transform=fig.transFigure, color=border_color
-)
-bottom = mpl.lines.Line2D(
-    (xleft, xright), (ybottom, ybottom), transform=fig.transFigure, color=border_color
-)
-
-fig.lines = (line1, line2, left, right, top, bottom)
-
-ax = axs[1]
-ax.axis("off")
-
-ax = axs[2]
-_, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
-Bhat1 = misc["probabilities1"].values
-top_ax, left_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
-top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
-ax.set_title(
-    "Adjust connection\nprobabilities (analytic)", fontsize="medium", x=1.2, y=1.63
-)
-
-
-ax = axs[3]
-Bhat1 = misc["probabilities1"].values
-top_ax, left_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
-top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
-top_ax.text(0.65, -1.3, r"$c$")
-
-ax.annotate(
-    "",
-    xy=(0, 1.5),
-    xytext=(-1, 1.5),
-    arrowprops=dict(
-        arrowstyle="simple",
-        shrinkA=7,
-        shrinkB=9,
-        facecolor="black",
-    ),
-    zorder=1,
-)
-
-ax = axs[4]
-ax.set_title("Rerun SBM testing")
-ax.axis("off")
-ax.set(xlim=(0, 1), ylim=(0, 1))
-
-from pkg.plot import draw_hypothesis_box
-
-draw_hypothesis_box("dasbm", 0.1, 0.65, ax=ax)
-
-fig.set_facecolor("w")
-
-gluefig("adjusted_methods_explain", fig)
-
+fig.set_facecolor("white")
+gluefig("edge_removal_methods", fig)
 
 #%%
 n_edges_left = np.count_nonzero(left_adj)
@@ -210,10 +203,7 @@ glue("n_remove", n_remove)
 rows = []
 n_resamples = 500
 glue("n_resamples", n_resamples)
-RERUN_SIM = True
-
-uncorrected_pvalue_matrices = []
-corrected_pvalue_matrices = []
+RERUN_SIM = False
 
 if RERUN_SIM:
     for i in tqdm(range(n_resamples)):
@@ -234,23 +224,10 @@ if RERUN_SIM:
                 "resample": i,
             }
         )
-        uncorrected_pvalue_matrices.append(misc["uncorrected_pvalues"])
-        corrected_pvalue_matrices.append(misc["corrected_pvalues"])
     resample_results = pd.DataFrame(rows)
-    # resample_results.to_csv(OUT_PATH / "resample_results.csv")
+    resample_results.to_csv(OUT_PATH / "resample_results.csv")
 else:
     resample_results = pd.read_csv(OUT_PATH / "resample_results.csv", index_col=0)
-
-# #%%
-# corrected_pvalues = []
-# for mat in corrected_pvalue_matrices:
-#     corrected_pvalues.append(mat.values)
-# corrected_pvalues = np.stack(corrected_pvalues)
-# print(corrected_pvalues.shape)
-
-# medians = np.nanmedian(corrected_pvalues, axis=0)
-# row_indices, col_indices = np.nonzero(medians < 0.05)
-# print(list(zip(mat.index[row_indices], mat.columns[col_indices])))
 
 
 #%%
@@ -266,43 +243,6 @@ glue("corrected_pvalue", pvalue)
 print(pvalue)
 print(f"{pvalue:.2g}")
 
-# #%%
-# from pkg.stats import compute_density, compute_density_adjustment
-
-# left_density = compute_density(left_adj)
-# right_density = compute_density(right_adj)
-
-# #%%
-# stat, pvalue, misc = stochastic_block_test(
-#     left_adj,
-#     right_adj,
-#     labels1=left_labels,
-#     labels2=right_labels,
-#     method="fisher",
-#     density_adjustment=False,
-#     combine_method="tippett",
-# )
-
-# np.sum((misc["probabilities1"] * misc["possible1"]).values) / (
-#     left_adj.size - len(left_adj)
-# )
-
-# #%%
-# stat, pvalue, misc = stochastic_block_test(
-#     left_adj,
-#     right_adj,
-#     labels1=left_labels,
-#     labels2=right_labels,
-#     method="fisher",
-#     density_adjustment=True,
-#     combine_method="tippett",
-# )
-
-#%%
-# c = compute_density_adjustment(left_adj, right_adj)
-# np.sum((c * misc["probabilities2"] * misc["possible2"]).values) / (
-#     right_adj.size - len(right_adj)
-# )
 
 #%%
 
@@ -313,9 +253,7 @@ sns.histplot(
     x="pvalue",
     ax=ax,
     color=neutral_color,
-    # bins=30,
     kde=True,
-    # kde_kws=dict(clip=[0, 1]),
     log_scale=True,
     stat="density",
 )
@@ -332,13 +270,7 @@ colors = sns.color_palette("Set2")
 
 color = colors[2]
 ax.axvline(median_resample_pvalue, color=color, linewidth=3)
-# ax.text(
-#     median_resample_pvalue - 0.0025,
-#     ylim[1] * 0.9,
-#     f"Median = {median_resample_pvalue:0.2g}",
-#     ha="right",
-#     color=color,
-# )
+
 ax.text(
     median_resample_pvalue - 0.0025,
     ylim[1] * 0.9,
@@ -347,11 +279,11 @@ ax.text(
     ha="right",
 )
 
-color = colors[4]
-ax.axvline(pvalue, 0, 0.5, color=color, linewidth=3)
+color = "darkred"
+ax.axvline(pvalue, 0, 0.58, color=color, linewidth=3, linestyle="--")
 ax.text(
     pvalue - 0.0002,
-    ylim[1] * 0.43,
+    ylim[1] * 0.48,
     f"Analytic = {pvalue:0.2g}",
     ha="right",
     color=color,
@@ -371,39 +303,44 @@ gluefig("sbm_pvalues_unlabeled", fig)
 
 
 #%%
-from pkg.io import FIG_PATH
-from pkg.plot import SmartSVG
-from svgutils.compose import SVG, Figure, Panel, Text
 
-FIG_PATH = FIG_PATH / FILENAME
 
-fontsize = 12
+fontsize = 10
 
 methods = SmartSVG(FIG_PATH / "adjusted_methods_explain.svg")
-methods.set_width(400)
-methods_panel = Panel(methods, Text("A)", 5, 15, size=fontsize, weight="bold"))
-
-distribution = SmartSVG(FIG_PATH / "resampled_pvalues_distribution.svg")
-distribution.set_width(190)
-distribution_panel = Panel(
-    distribution, Text("B)", 5, 10, size=fontsize, weight="bold")
+methods.set_width(350)
+methods.move(15, 35)
+methods_panel = Panel(
+    methods,
+    Text(
+        "A) Density-adjusted group connection test methods",
+        0,
+        10,
+        size=fontsize,
+        weight="bold",
+    ),
 )
-distribution_panel.move(0, methods.height * 0.85)
 
-pvalues = SmartSVG(FIG_PATH / "sbm_uncorrected_pvalues.svg")
-pvalues.set_width(170)
-pvalues.move(25, 0)
+# distribution = SmartSVG(FIG_PATH / "resampled_pvalues_distribution.svg")
+# distribution.set_width(190)
+# distribution_panel = Panel(
+#     distribution, Text("B)", 5, 10, size=fontsize, weight="bold")
+# )
+# distribution_panel.move(0, methods.height * 0.85)
+
+pvalues = SmartSVG(FIG_PATH / "sbm_pvalues.svg")
+pvalues.set_width(250)
+pvalues.move(0, 20)
 pvalues_panel = Panel(
     pvalues,
-    Text("C)", 5, 10, size=fontsize, weight="bold"),
+    Text("C) Connection p-values", 5, 10, size=fontsize, weight="bold"),
 )
-pvalues_panel.move(distribution.width * 0.82, methods.height * 0.85)
+pvalues_panel.move(methods.width * 0.9, 0)
 
 fig = Figure(
-    methods.width * 0.8,
-    (methods.height + distribution.height) * 0.85,
+    (methods.width + pvalues.width) * 0.9,
+    (pvalues.height) * 0.9,
     methods_panel,
-    distribution_panel,
     pvalues_panel,
 )
 fig.save(FIG_PATH / "adjusted_sbm_composite.svg")

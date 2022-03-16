@@ -118,7 +118,9 @@ def get_text_width(text, transformer, renderer):
     return width
 
 
-def multicolor_text(x, y, texts, colors, ax=None, space_scale=1.0, **kwargs):
+def multicolor_text(
+    x, y, texts, colors, ax=None, space_scale=1.0, spaces=True, **kwargs
+):
     fig = ax.get_figure()
     renderer = fig.canvas.get_renderer()
     transformer = ax.transData.inverted()
@@ -129,13 +131,17 @@ def multicolor_text(x, y, texts, colors, ax=None, space_scale=1.0, **kwargs):
     space_width *= space_scale
     text.remove()
 
-    # TODO make the spacing "smart"
+    if isinstance(spaces, bool):
+        spaces = len(texts) * [spaces]
+
     text_objs = []
-    for text, color in zip(texts, colors):
+    for i, (text, color) in enumerate(zip(texts, colors)):
         text_obj = ax.text(x, y, text, color=color, **kwargs)
         text_width = get_text_width(text_obj, transformer, renderer)
         x += text_width
-        x += space_width
+        if i != len(texts) - 1:
+            if spaces[i]:
+                x += space_width
         text_objs.append(text_obj)
 
     return text_objs

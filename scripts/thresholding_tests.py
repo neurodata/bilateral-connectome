@@ -1,25 +1,17 @@
 #%%
-from audioop import add
-import datetime
-import os
+
 import time
-from pathlib import Path
 
 import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from graspologic.utils import remove_loops
 from myst_nb import glue as default_glue
-from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
-from pkg.io import savefig
-from pkg.plot import set_theme
-from pkg.stats import (
-    compute_density_adjustment,
-    erdos_renyi_test,
-    stochastic_block_test,
-)
+from pkg.data import load_maggot_graph, select_nice_nodes
+from pkg.io import FIG_PATH, savefig
+from pkg.plot import SmartSVG, set_theme
+from pkg.stats import erdos_renyi_test, stochastic_block_test
+from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
 
 set_theme()
@@ -29,6 +21,8 @@ t0 = time.time()
 DISPLAY_FIGS = True
 
 FILENAME = "thresholding_tests"
+
+FIG_PATH = FIG_PATH / FILENAME
 
 
 def glue(name, var, prefix=None):
@@ -122,22 +116,6 @@ integer_results = pd.DataFrame(rows)
 
 
 #%%
-
-
-# def plot_thresholding_pvalues(results):
-#     fig, ax = plt.subplots(1, 1, figsize=(7, 6))
-
-#     sns.scatterplot(
-#         data=results, x="threshold", y="pvalue", hue="method", palette=palette, ax=ax
-#     )
-#     ax.set(yscale="log", ylabel="p-value", xlabel="Edge weight (# synapses) threshold")
-#     ax.get_legend().set_title("Method")
-#     ax.axhline(0.05, color="black", linestyle=":")
-#     ax.text(ax.get_xlim()[1], 0.05, r"$\alpha = 0.05$", va="center", ha="left")
-#     ax.set(xticks=thresholds)
-
-
-#%%
 def add_alpha_line(ax):
     ax.axhline(0.05, color="black", linestyle=":", zorder=-1)
     ax.annotate(
@@ -180,7 +158,7 @@ ax.set(xticks=thresholds)
 add_alpha_line(ax)
 
 gluefig("integer_threshold_pvalues", fig)
-# %%
+
 
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
@@ -206,7 +184,9 @@ sns.lineplot(
     ax=ax,
     legend=False,
 )
-ax.set(yscale="log", ylabel="p-value", xlabel="Proportion of edges removed (by # synapses)")
+ax.set(
+    yscale="log", ylabel="p-value", xlabel="Proportion of edges removed (by # synapses)"
+)
 add_alpha_line(ax)
 gluefig("integer_threshold_pvalues_p_removed", fig)
 
@@ -227,9 +207,7 @@ rows = []
 thresholds = np.linspace(0, 0.03, 21)
 for threshold in tqdm(thresholds):
     left_adj_thresh = binarize(left_adj_input_norm, threshold=threshold)
-    # p_edges_left = np.count_nonzero(left_adj_thresh) / np.count_nonzero(left_adj)
     right_adj_thresh = binarize(right_adj_input_norm, threshold=threshold)
-    # p_edges_right = np.count_nonzero(left_adj_thresh) / np.count_nonzero(left_adj)
 
     p_edges_removed = 1 - (
         np.count_nonzero(left_adj_thresh) + np.count_nonzero(right_adj_thresh)
@@ -333,11 +311,6 @@ gluefig("input_threshold_pvalues_p_removed", fig)
 
 #%%
 
-from pkg.plot import SmartSVG
-from svgutils.compose import Panel, Text, Figure
-from pkg.io import FIG_PATH
-
-FIG_PATH = FIG_PATH / FILENAME
 
 fontsize = 12
 
@@ -380,29 +353,3 @@ fig = Figure(
 )
 fig.save(FIG_PATH / "thresholding_composite.svg")
 fig
-
-
-# #%%
-# #%%
-# integer_results["Threshold type"] = "Synapse count"
-# input_results["Threshold type"] = "Input proportion"
-# results = pd.concat((integer_results, input_results))
-
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.scatterplot(
-#     data=results,
-#     x="p_edges_removed",
-#     y="pvalue",
-#     hue="method",
-#     style="Threshold type",
-#     ax=ax,
-# )
-# ax.set(yscale='log')
-# sns.lineplot(
-#     data=results,
-#     x="p_edges_removed",
-#     y="pvalue",
-#     hue="method",
-#     style="Threshold type",
-#     ax=ax,
-# )
