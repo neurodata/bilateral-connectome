@@ -1,16 +1,18 @@
 #%% [markdown]
 # # Removing the Kenyon cells
 #%%
+import datetime
 import time
 
-import matplotlib.pyplot as plt
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from giskard.plot import merge_axes
-from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import FIG_PATH, savefig
+from pkg.io import FIG_PATH
+from pkg.io import glue as default_glue
+from pkg.io import savefig
 from pkg.plot import (
     SmartSVG,
     draw_hypothesis_box,
@@ -23,7 +25,6 @@ from pkg.stats import erdos_renyi_test, stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
 
-
 DISPLAY_FIGS = True
 
 FILENAME = "kc_minus"
@@ -32,24 +33,22 @@ FIG_PATH = FIG_PATH / FILENAME
 
 
 def gluefig(name, fig, **kwargs):
-    savefig(name, foldername=FILENAME, pad_inches=0, bbox_inches="tight", **kwargs)
+    savefig(name, foldername=FILENAME, **kwargs)
 
-    glue(name, fig, prefix="fig")
+    glue(name, fig, figure=True)
 
     if not DISPLAY_FIGS:
         plt.close()
 
 
-def glue(name, var, prefix=None):
-    savename = f"{FILENAME}-{name}"
-    if prefix is not None:
-        savename = prefix + ":" + savename
-    default_glue(savename, var, display=False)
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
 
 
 t0 = time.time()
 set_theme()
 rng = np.random.default_rng(8888)
+
 
 #%%
 
@@ -238,3 +237,9 @@ fig = Figure(
 )
 fig.save(FIG_PATH / "kc_minus_composite.svg")
 fig
+
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

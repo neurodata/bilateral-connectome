@@ -1,23 +1,21 @@
 #%%
 
+import datetime
 import time
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from myst_nb import glue as default_glue
 from pkg.data import load_maggot_graph, select_nice_nodes
-from pkg.io import FIG_PATH, savefig
+from pkg.io import FIG_PATH
 from pkg.io import glue as default_glue
+from pkg.io import savefig
 from pkg.plot import SmartSVG, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
 
-set_theme()
-
-t0 = time.time()
 
 DISPLAY_FIGS = True
 
@@ -26,18 +24,21 @@ FILENAME = "thresholding_tests"
 FIG_PATH = FIG_PATH / FILENAME
 
 
-def glue(name, var):
-    savename = f"{FILENAME}-{name}"
-    default_glue(savename, var, display=False)
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
 
 
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
-    glue(name, fig, prefix="fig")
+    glue(name, fig, figure=True)
 
     if not DISPLAY_FIGS:
         plt.close()
+
+
+t0 = time.time()
+set_theme()
 
 
 #%%
@@ -359,3 +360,9 @@ fig = Figure(
 )
 fig.save(FIG_PATH / "thresholding_composite.svg")
 fig
+
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

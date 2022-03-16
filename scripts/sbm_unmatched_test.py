@@ -52,6 +52,10 @@ FILENAME = "sbm_unmatched_test"
 FIG_PATH = FIG_PATH / FILENAME
 
 
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
+
+
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
@@ -60,9 +64,6 @@ def gluefig(name, fig, **kwargs):
     if not DISPLAY_FIGS:
         plt.close()
 
-
-def glue(name, var, **kwargs):
-    default_glue(name, var, FILENAME, **kwargs)
 
 
 t0 = time.time()

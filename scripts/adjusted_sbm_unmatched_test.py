@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from graspologic.simulations import sbm
-from myst_nb import glue as default_glue
+from pkg.io import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, OUT_PATH, savefig
 from pkg.perturb import remove_edges
@@ -37,20 +37,17 @@ OUT_PATH = OUT_PATH / FILENAME
 FIG_PATH = FIG_PATH / FILENAME
 
 
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
+
+
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
-    glue(name, fig, prefix="fig")
+    glue(name, fig, figure=True)
 
     if not DISPLAY_FIGS:
         plt.close()
-
-
-def glue(name, var, prefix=None):
-    savename = f"{FILENAME}-{name}"
-    if prefix is not None:
-        savename = prefix + ":" + savename
-    default_glue(savename, var, display=False)
 
 
 t0 = time.time()
@@ -129,7 +126,7 @@ ax.annotate(
 )
 
 ax = axs[2]
-ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize='small')
+ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize="small")
 ax.axis("off")
 ax.set(xlim=(0, 1), ylim=(0, 1))
 

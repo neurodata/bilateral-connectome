@@ -73,6 +73,7 @@ def glue(name, var, filename, figure=False, display=False):
         with open(RESULTS_PATH / "glued_variables.json", "r") as f:
             variables = json.load(f)
 
+        # numpy types are not json serializable
         if isinstance(var, np.generic):
             var = var.item()
 

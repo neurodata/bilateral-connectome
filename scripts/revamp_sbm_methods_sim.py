@@ -17,8 +17,8 @@ import pandas as pd
 import seaborn as sns
 from giskard.plot import subuniformity_plot
 from matplotlib.transforms import Bbox
-from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.plot import set_theme
 from pkg.stats import binom_2samp, stochastic_block_test
@@ -27,25 +27,23 @@ from scipy.stats import combine_pvalues as scipy_combine_pvalues
 from scipy.stats import ks_1samp, uniform
 from tqdm import tqdm
 
+
 DISPLAY_FIGS = False
 
 FILENAME = "revamp_sbm_methods_sim"
 
 
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
+
+
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
-    glue(name, fig, prefix="fig")
+    glue(name, fig, figure=True)
 
     if not DISPLAY_FIGS:
         plt.close()
-
-
-def glue(name, var, prefix=None):
-    savename = f"{FILENAME}-{name}"
-    if prefix is not None:
-        savename = prefix + ":" + savename
-    default_glue(savename, var, display=False)
 
 
 t0 = time.time()
@@ -57,7 +55,6 @@ node_palette, NODE_KEY = load_node_palette()
 fisher_color = sns.color_palette("Set2")[2]
 min_color = sns.color_palette("Set2")[3]
 eric_color = sns.color_palette("Set2")[4]
-# method_palette = {"fisher": fisher_color, "min": min_color, "eric": eric_color}
 
 GROUP_KEY = "simple_group"
 
@@ -146,21 +143,6 @@ def random_shift_pvalues(pvalues, rng=None):
     moves = uniform_samples * diffs
     pvalues[1:] = pvalues[1:] - moves
     return pvalues
-
-
-def random_shift_pvalues(pvalues, rng=None):
-    shifted_pvalues = np.array(pvalues)
-    unique_pvalues, inverse = np.unique(pvalues, return_inverse=True)
-    # pvalues = np.sort(pvalues)  # already makes a copy
-    diffs = np.array(
-        [unique_pvalues[0]] + list(unique_pvalues[1:] - unique_pvalues[:-1])
-    )
-    rng = np.random.default_rng()
-    uniform_samples = rng.uniform(size=len(shifted_pvalues))
-    matched_diffs = diffs[inverse]
-    moves = uniform_samples * matched_diffs
-    shifted_pvalues -= moves
-    return shifted_pvalues
 
 
 def my_combine_pvalues(pvalues, method="fisher", pad_high=0, n_resamples=100):
@@ -791,10 +773,11 @@ ylabel = r"Perturbation size $(\delta)$ $\rightarrow$"
 ax.set(xlabel=xlabel, ylabel=ylabel, title="Power under $H_A $" + r"($\alpha=0.05$)")
 gluefig("tippett_power_matrix", fig)
 
+from pkg.io import FIG_PATH
+
 #%%
 from pkg.plot import SmartSVG
-from svgutils.compose import Panel, Text, Figure
-from pkg.io import FIG_PATH
+from svgutils.compose import Figure, Panel, Text
 
 FIG_PATH = FIG_PATH / FILENAME
 
@@ -812,7 +795,7 @@ power_panel = Panel(power, Text("B)", 5, 10, size=fontsize, weight="bold"))
 power_panel.move(null.width * 0.9, 0)
 
 fig = Figure(null.width * 2 * 0.9, null.width * 0.9, null_panel, power_panel)
-fig.save(FIG_PATH / 'tippett_sim_composite.svg')
+fig.save(FIG_PATH / "tippett_sim_composite.svg")
 fig
 
 

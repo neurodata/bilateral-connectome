@@ -5,7 +5,7 @@ import seaborn as sns
 from graspologic.plot import heatmap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from seaborn.utils import relative_luminance
-import matplotlib.transforms as mtransforms
+from pathlib import Path
 
 from .theme import set_theme
 from .utils import bound_texts, draw_colors, remove_shared_ax, shrink_axis
@@ -103,11 +103,12 @@ def plot_pvalues(
     annot_missing=True,
 ):
     if pvalue_vmin is None:
-        # TODO make this less brittle
-
         import json
 
-        vars_file = "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/docs/glued_variables.json"
+        vars_file = Path(__file__).parent.parent.parent.parent
+        vars_file = vars_file / "results"
+        vars_file = vars_file / "glued_variables.json"
+
         with open(vars_file, "r") as f:
             vars_dict = json.load(f)
             pvalue_vmin = vars_dict["sbm_unmatched_test-pvalue_vmin"]
