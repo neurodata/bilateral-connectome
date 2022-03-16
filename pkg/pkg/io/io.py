@@ -1,7 +1,10 @@
+import json
 import os
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
+from myst_nb import glue as default_glue
 
 
 def _handle_dirs(pathname, foldername, subfoldername):
@@ -17,13 +20,12 @@ def _handle_dirs(pathname, foldername, subfoldername):
     return path
 
 
-FIG_PATH = Path(__file__).parent.parent.parent.parent
-FIG_PATH = FIG_PATH / "results"
-FIG_PATH = FIG_PATH / "figs"
+RESULTS_PATH = Path(__file__).parent.parent.parent.parent
+RESULTS_PATH = RESULTS_PATH / "results"
 
-OUT_PATH = Path(__file__).parent.parent.parent.parent
-OUT_PATH = OUT_PATH / "results"
-OUT_PATH = OUT_PATH / "outputs"
+FIG_PATH = RESULTS_PATH / "figs"
+
+OUT_PATH = RESULTS_PATH / "outputs"
 
 
 def savefig(
@@ -60,3 +62,23 @@ def savefig(
 def get_out_dir(foldername=None, subfoldername=None, pathname=OUT_PATH):
     path = _handle_dirs(pathname, foldername, subfoldername)
     return path
+
+
+def glue(name, var, filename, figure=False, display=False):
+    savename = f"{filename}-{name}"
+
+    if figure:
+        savename = "fig:" + savename
+    else:
+        with open(RESULTS_PATH / "glued_variables.json", "r") as f:
+            variables = json.load(f)
+
+        if isinstance(var, np.generic):
+            var = var.item()
+
+        variables[savename] = var
+
+        with open(RESULTS_PATH / "glued_variables.json", "w") as f:
+            json.dump(variables, f)
+
+    default_glue(savename, var, display=display)

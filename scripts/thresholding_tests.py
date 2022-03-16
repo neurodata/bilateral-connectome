@@ -9,6 +9,7 @@ import seaborn as sns
 from myst_nb import glue as default_glue
 from pkg.data import load_maggot_graph, select_nice_nodes
 from pkg.io import FIG_PATH, savefig
+from pkg.io import glue as default_glue
 from pkg.plot import SmartSVG, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
@@ -25,10 +26,8 @@ FILENAME = "thresholding_tests"
 FIG_PATH = FIG_PATH / FILENAME
 
 
-def glue(name, var, prefix=None):
+def glue(name, var):
     savename = f"{FILENAME}-{name}"
-    if prefix is not None:
-        savename = prefix + ":" + savename
     default_glue(savename, var, display=False)
 
 
@@ -58,6 +57,10 @@ left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 #%%
 
+d_key = "Density"
+gc_key = "Group connection"
+dagc_key = "Density-adjusted\ngroup connection"
+
 
 def binarize(A, threshold=None):
     # threshold is the smallest that is kept
@@ -85,16 +88,16 @@ for threshold in tqdm(thresholds):
         "threshold": threshold,
         "stat": stat,
         "pvalue": pvalue,
-        "method": "ER",
+        "method": d_key,
         "p_edges_removed": p_edges_removed,
     }
     rows.append(row)
 
     for adjusted in [False, True]:
         if adjusted:
-            method = "DA-SBM"
+            method = dagc_key
         else:
-            method = "SBM"
+            method = gc_key
         stat, pvalue, misc = stochastic_block_test(
             left_adj_thresh,
             right_adj_thresh,
@@ -130,7 +133,7 @@ def add_alpha_line(ax):
 
 
 colors = sns.color_palette("tab20")
-palette = dict(zip(["SBM", "DA-SBM", "ER"], colors))
+palette = dict(zip([gc_key, dagc_key, d_key], colors))
 
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
 
@@ -153,7 +156,7 @@ sns.lineplot(
     legend=False,
 )
 ax.set(yscale="log", ylabel="p-value", xlabel="Edge weight (# synapses) threshold")
-ax.get_legend().set_title("Method")
+sns.move_legend(ax, "lower right", title="Test", frameon=True, fontsize="small")
 ax.set(xticks=thresholds)
 add_alpha_line(ax)
 
@@ -163,8 +166,6 @@ gluefig("integer_threshold_pvalues", fig)
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
 
-colors = sns.color_palette("tab20")
-palette = dict(zip(["SBM", "DA-SBM", "ER"], colors))
 
 sns.scatterplot(
     data=integer_results,
@@ -218,16 +219,16 @@ for threshold in tqdm(thresholds):
         "threshold": threshold,
         "stat": stat,
         "pvalue": pvalue,
-        "method": "ER",
+        "method": d_key,
         "p_edges_removed": p_edges_removed,
     }
     rows.append(row)
 
     for adjusted in [False, True]:
         if adjusted:
-            method = "DA-SBM"
+            method = dagc_key
         else:
-            method = "SBM"
+            method = gc_key
         stat, pvalue, misc = stochastic_block_test(
             left_adj_thresh,
             right_adj_thresh,
@@ -252,8 +253,6 @@ input_results
 
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
 
-colors = sns.color_palette("tab20")
-palette = dict(zip(["SBM", "DA-SBM", "ER"], colors))
 
 sns.scatterplot(
     data=input_results,
@@ -312,40 +311,47 @@ gluefig("input_threshold_pvalues_p_removed", fig)
 #%%
 
 
-fontsize = 12
+fontsize = 10
 
 int_thresh = SmartSVG(FIG_PATH / "integer_threshold_pvalues.svg")
 int_thresh.set_width(200)
-int_thresh.move(10, 10)
-int_thresh_panel = Panel(int_thresh, Text("A)", 5, 10, size=fontsize, weight="bold"))
+int_thresh.move(10, 15)
+int_thresh_panel = Panel(
+    int_thresh, Text("A) Synapse count thresholds", 5, 10, size=fontsize, weight="bold")
+)
 
 input_thresh = SmartSVG(FIG_PATH / "input_threshold_pvalues.svg")
 input_thresh.set_width(200)
-input_thresh.move(10, 10)
+input_thresh.move(10, 15)
 input_thresh_panel = Panel(
-    input_thresh, Text("B)", 5, 10, size=fontsize, weight="bold")
+    input_thresh,
+    Text("B) Input proportion thresholds", 5, 10, size=fontsize, weight="bold"),
 )
 input_thresh_panel.move(int_thresh.width * 0.9, 0)
 
 int_p_removed = SmartSVG(FIG_PATH / "integer_threshold_pvalues_p_removed.svg")
 int_p_removed.set_width(200)
-int_p_removed.move(10, 10)
+int_p_removed.move(10, 25)
 int_p_removed_panel = Panel(
-    int_p_removed, Text("C)", 5, 10, size=fontsize, weight="bold")
+    int_p_removed,
+    Text("C) Synapse count thresholds", 5, 10, size=fontsize, weight="bold"),
+    Text("by edges removed", 15, 20, size=fontsize, weight="bold"),
 )
 int_p_removed_panel.move(0, int_thresh.height * 0.9)
 
 input_p_removed = SmartSVG(FIG_PATH / "input_threshold_pvalues_p_removed.svg")
 input_p_removed.set_width(200)
-input_p_removed.move(10, 10)
+input_p_removed.move(10, 25)
 input_p_removed_panel = Panel(
-    input_p_removed, Text("D)", 5, 10, size=fontsize, weight="bold")
+    input_p_removed,
+    Text("D) Input proportion thresholds", 5, 10, size=fontsize, weight="bold"),
+    Text("by edges removed", 15, 20, size=fontsize, weight="bold"),
 )
 input_p_removed_panel.move(int_thresh.width * 0.9, int_thresh.height * 0.9)
 
 fig = Figure(
     int_thresh.width * 2 * 0.9,
-    int_thresh.height * 2 * 0.9,
+    int_thresh.height * 2 * 0.95,
     int_thresh_panel,
     input_thresh_panel,
     int_p_removed_panel,

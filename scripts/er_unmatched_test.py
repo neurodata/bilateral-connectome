@@ -73,18 +73,21 @@ import matplotlib.pyplot as plt
 import matplotlib.transforms
 import numpy as np
 import pandas as pd
-from pkg.plot.er import plot_density
 import seaborn as sns
 from giskard.plot import merge_axes, soft_axis_off
 from graspologic.simulations import er_np
 from matplotlib.collections import LineCollection
-from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.io import FIG_PATH
+from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import networkplot_simple, set_theme
+from pkg.plot import SmartSVG, networkplot_simple, set_theme
+from pkg.plot.er import plot_density
 from pkg.stats import erdos_renyi_test
 from pkg.utils import sample_toy_networks
-from statsmodels.stats.proportion import proportion_confint
+from svgutils.compose import Figure, Panel, Text
+from pkg.plot import draw_hypothesis_box
+
 
 DISPLAY_FIGS = True
 
@@ -94,17 +97,14 @@ FILENAME = "er_unmatched_test"
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
-    glue(name, fig, prefix="fig")
+    glue(name, fig, figure=True)
 
     if not DISPLAY_FIGS:
         plt.close()
 
 
-def glue(name, var, prefix=None):
-    savename = f"{FILENAME}-{name}"
-    if prefix is not None:
-        savename = prefix + ":" + savename
-    default_glue(savename, var, display=False)
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
 
 
 t0 = time.time()
@@ -112,7 +112,6 @@ set_theme(font_scale=1.25)
 
 network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
-
 
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
@@ -205,8 +204,6 @@ ax.set_ylabel(
 
 ax = axs[1, 0]
 networkplot_simple(A2, node_data, ax=ax)
-# networkplot_simple(1 - A2, node_data, ax=ax, compute_layout=False)
-
 
 ax.set_ylabel(
     "Right",
@@ -219,7 +216,6 @@ ax.set_ylabel(
 
 stat, pvalue, misc = erdos_renyi_test(A1, A2)
 
-# ax = merge_axes(fig, axs, rows=None, cols=1)
 
 ax = axs[0, 1]
 ax.text(
@@ -232,8 +228,6 @@ ax.text(
 ax.axis("off")
 
 
-# ax = merge_axes(fig, axs, rows=None, cols=2)
-
 ax.set_title("Compare ER\nmodels")
 ax.set(xlim=(-0.5, 2), ylim=(0, 1))
 
@@ -244,44 +238,11 @@ ax.axis("off")
 x = 0
 y = 0.55
 
-from pkg.plot import draw_hypothesis_box
 
 draw_hypothesis_box("er", -0.2, 0.8, ax=ax, fontsize="medium", yskip=0.2)
 
-# texts = multicolor_text(
-#     x,
-#     y,
-#     [r"$H_0$:", r"$p^{(L)}$", r"$=$", r"$p^{(R)}$"],
-#     ["black", network_palette["Left"], "black", network_palette["Right"]],
-#     fontsize="small",
-#     ax=ax,
-# )
-# y = y - 0.1
-# texts += multicolor_text(
-#     x,
-#     y,
-#     [r"$H_A$:", r"$p^{(L)}$", r"$\neq$", r"$p^{(R)}$"],
-#     ["black", network_palette["Left"], "black", network_palette["Right"]],
-#     fontsize="small",
-#     ax=ax,
-# )
-# bound_texts(
-#     texts,
-#     ax=ax,
-#     xpad=0.07,
-#     ypad=0.01,
-#     facecolor="white",
-#     edgecolor="lightgrey",
-# )
 
 gluefig("er_methods", fig)
-
-#%%
-# from graspologic.plot import heatmap
-
-# heatmap(A1, cbar=False)
-
-#%%
 
 
 #%%
@@ -366,25 +327,23 @@ gluefig("er_density", fig)
 
 #%%
 
-from pkg.plot import SmartSVG
-from pkg.io import FIG_PATH
-from svgutils.compose import Figure, Panel, Text
-
 FIG_PATH = FIG_PATH / FILENAME
 
-# total_width = 1000
-# total_height = 1500
 fontsize = 12
 
 methods = SmartSVG(FIG_PATH / "er_methods.svg")
 methods.set_width(200)
 methods.move(10, 20)
-methods_panel = Panel(methods, Text("A) Density test methods", 5, 10, size=fontsize, weight="bold"))
+methods_panel = Panel(
+    methods, Text("A) Density test methods", 5, 10, size=fontsize, weight="bold")
+)
 
 density = SmartSVG(FIG_PATH / "er_density.svg")
 density.set_height(methods.height)
 density.move(10, 15)
-density_panel = Panel(density, Text("B) Density comparison", 5, 10, size=fontsize, weight="bold"))
+density_panel = Panel(
+    density, Text("B) Density comparison", 5, 10, size=fontsize, weight="bold")
+)
 density_panel.move(methods.width * 0.9, 0)
 
 fig = Figure(

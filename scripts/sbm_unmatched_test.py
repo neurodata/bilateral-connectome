@@ -23,7 +23,7 @@ from graspologic.simulations import sbm
 from matplotlib.font_manager import FontProperties
 from matplotlib.patches import PathPatch
 from matplotlib.text import TextPath
-from myst_nb import glue as default_glue
+from pkg.io import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, savefig
 from pkg.plot import (
@@ -39,6 +39,11 @@ from pkg.plot import (
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
+from seaborn.utils import relative_luminance
+from giskard.plot import soft_axis_off
+from pkg.plot import rainbowarrow
+import matplotlib as mpl
+
 
 DISPLAY_FIGS = False
 
@@ -50,17 +55,14 @@ FIG_PATH = FIG_PATH / FILENAME
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
-    glue(name, fig, prefix="fig")
+    glue(name, fig, figure=True)
 
     if not DISPLAY_FIGS:
         plt.close()
 
 
-def glue(name, var, prefix=None):
-    savename = f"{FILENAME}-{name}"
-    if prefix is not None:
-        savename = prefix + ":" + savename
-    default_glue(savename, var, display=False)
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
 
 
 t0 = time.time()
@@ -170,7 +172,6 @@ right_labels = right_nodes[GROUP_KEY].values
 
 #%%
 
-from seaborn.utils import relative_luminance
 
 np.random.seed(8888)
 ps = [0.2, 0.4, 0.6, 0.8]
@@ -259,14 +260,7 @@ for i, p in enumerate(ps):
     ax = axs[1, i]
     heatmap_grouped(B_mod, [1, 2, 3], palette=palette, ax=ax)
     label_matrix_element(B_mod, 0, 1, r"$B_{12}$", ax)
-    # pad = 0.03
-    # ax.plot(
-    #     [1 + pad, 2 - pad, 2 - pad, 1 + pad, 1 + pad],
-    #     [0 + pad, 0 + pad, 1 - pad, 1 - pad, 0 + pad],
-    #     zorder=100,
-    #     color="red",
-    #     clip_on=False,
-    # )
+
 
 axs[0, 0].set_ylabel("Network", rotation=0, ha="right", labelpad=5)
 axs[1, 0].set_ylabel(
@@ -280,8 +274,6 @@ axs[1, 0].set_ylabel(
 
 ax = merge_axes(fig, axs, rows=2)
 
-from giskard.plot import soft_axis_off
-from pkg.plot import rainbowarrow
 
 soft_axis_off(ax)
 ax.set(xticks=[], yticks=[])
@@ -313,17 +305,13 @@ fig, axs = plt.subplots(
 )
 
 axs[0, 0].set_title("Group neurons", fontsize="medium")
-axs[0, 2].set_title("Estimate group\nconnection probabilities", x=.45, ha='center')
+axs[0, 2].set_title("Estimate group\nconnection probabilities", x=0.45, ha="center")
 axs[0, 4].set_title("Compare probabilities,\ncompute p-values", fontsize="medium")
 axs[0, 6].set_title("Combine p-values\nfor overall test", fontsize="medium")
 
 
 A1, A2, node_data = sample_toy_networks()
 palette = get_toy_palette()
-
-# colors = sns.color_palette("tab10")
-# colors = [colors[4], colors[5], colors[9]]
-# palette = dict(zip([1, 2, 3], colors))
 
 
 ax = axs[1, 0]
@@ -361,15 +349,11 @@ top_ax, left_ax = heatmap_grouped(
     [1, 2, 3],
     palette=palette,
     ax=ax,
-    # xlabel="Target group",
-    # ylabel="Source group",
 )
 top_ax.set_title(r"$\hat{B}^{(L)}$", color=network_palette["Left"])
 left_ax.set_ylabel("Source group", fontsize="small")
 ax.set_xlabel("Target group", fontsize="small")
 
-
-# ax.text(1.5, 0.5, , va="center", ha="center")
 label_matrix_element(Bhat1, 0, 1, r"$\hat{B}_{12}^{(L)}$", ax)
 
 
@@ -593,7 +577,11 @@ glue("n_tests", n_tests)
 print(pvalue)
 
 #%%
+
+
 # TODO should be a better way with melt?
+
+
 def melt(misc, names):
     if isinstance(names, str):
         names = [names]
@@ -628,7 +616,6 @@ melted_df["log10(p-value)"] = np.log10(melted_df["uncorrected_pvalues"])
 
 melted_df = melted_df[~melted_df["log10(p-value)"].isna()]
 
-import matplotlib as mpl
 
 vmax = 0
 vmin = melted_df["log10(p-value)"].min()
@@ -693,7 +680,6 @@ sns.scatterplot(
 )
 ax.set_yscale("log")
 ax.set_xscale("log")
-# ax.get_legend().set_title("Sample size")
 ax.set(xlabel="Right probability", ylabel="")
 ax.plot([0.00001, 1], [0.00001, 1], color="grey", zorder=-2)
 
@@ -1111,3 +1097,5 @@ fig
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

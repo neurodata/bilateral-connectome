@@ -5,14 +5,22 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import seaborn as sns
-from myst_nb import glue as default_glue
-from pkg.data import load_unmatched, load_network_palette, load_node_palette
+from giskard.plot import adjplot, scattermap, soft_axis_off
+from graspologic.embed import AdjacencySpectralEmbed
+from graspologic.plot import networkplot
+from matplotlib.patheffects import Normal, Stroke
+from pkg.data import (
+    load_maggot_graph,
+    load_network_palette,
+    load_node_palette,
+    load_unmatched,
+)
+from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.plot import set_theme
-from seaborn.utils import relative_luminance
-from giskard.plot import soft_axis_off
+from scipy.cluster import hierarchy
+from umap import UMAP
 
 DISPLAY_FIGS = True
 FILENAME = "show_data"
@@ -23,17 +31,14 @@ rng = np.random.default_rng(8888)
 def gluefig(name, fig, **kwargs):
     savefig(name, foldername=FILENAME, **kwargs)
 
-    glue(name, fig, prefix="fig")
+    glue(name, fig, figure=True)
 
     if not DISPLAY_FIGS:
         plt.close()
 
 
-def glue(name, var, prefix=None):
-    savename = f"{FILENAME}-{name}"
-    if prefix is not None:
-        savename = prefix + ":" + savename
-    default_glue(savename, var, display=False)
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
 
 
 t0 = time.time()
@@ -47,17 +52,14 @@ node_palette, NODE_KEY = load_node_palette()
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
 
+
 #%%
 
-from graspologic.plot import networkplot
-
-from graspologic.embed import AdjacencySpectralEmbed
 
 ase = AdjacencySpectralEmbed(n_components=24, check_lcc=False, concat=True)
 left_ase_embedding = ase.fit_transform(left_adj)
 right_ase_embedding = ase.fit_transform(right_adj)
 
-from umap import UMAP
 
 umapper = UMAP(
     n_components=2,
@@ -124,8 +126,6 @@ gluefig("2_network_layout", fig)
 
 #%%
 
-from scipy.cluster import hierarchy
-from graspologic.plot import adjplot
 
 X = left_ase_embedding
 
@@ -141,8 +141,6 @@ def specsort(X, metric="cosine"):
 # adjplot(left_adj_sorted, plot_type="scattermap")
 
 #%%
-from pkg.data import load_maggot_graph
-
 
 left_sort_inds = specsort(left_ase_embedding)
 right_sort_inds = specsort(right_ase_embedding)
@@ -162,7 +160,8 @@ nodes = mg.nodes
 adj = mg.sum.adj
 
 #%%
-from giskard.plot import adjplot
+
+# from giskard.plot import adjplot
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 15))
 adjplot(
@@ -171,6 +170,7 @@ adjplot(
     sort_class="hemisphere",
     plot_type="scattermap",
     sizes=(0.5, 0.5),
+    ax=ax,
 )
 
 # %%
@@ -190,9 +190,6 @@ colors[~source_is_left & ~target_is_left] = "Right"
 #%%
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 15))
-
-from giskard.plot import scattermap
-from matplotlib.patheffects import Stroke, Normal
 
 
 network_palette["Contra"] = sns.color_palette("Set2")[2]
@@ -237,13 +234,6 @@ nice_text(n_left / 2, n_left / 2 + n_left, r"R $\rightarrow$ L")
 nice_text(n_left / 2 + n_left, n_left / 2, r"L $\rightarrow$ R")
 nice_text(1.5 * n_left, 1.5 * n_left, r"R $\rightarrow$ R")
 
-
-# from giskard.plot import plot_squarelines
-
-# labels = np.ones(len(adj))
-# labels[left_inds] = 0
-
-# # plot_squarelines(labels, ax, color='black', zorder=1)
 
 ax.spines[:].set_color("grey")
 
@@ -299,13 +289,6 @@ nice_text(n_left / 2 + n_left, n_left / 2, r"L $\rightarrow$ R")
 nice_text(1.5 * n_left, 1.5 * n_left, r"R $\rightarrow$ R")
 
 
-# from giskard.plot import plot_squarelines
-
-# labels = np.ones(len(adj))
-# labels[left_inds] = 0
-
-# # plot_squarelines(labels, ax, color='black', zorder=1)
-
 ax.spines[:].set_color("grey")
 
 ax = axs[1]
@@ -356,9 +339,16 @@ ax.axis("square")
 
 fig.set_facecolor("white")
 
-fig.text(0.07, 0.93, "A)", fontweight="bold", fontsize=40)
-fig.text(0.4, 0.93, "B)", fontweight="bold", fontsize=40)
+fig.text(0.07, 0.97, "A) Adjacency matrix", fontweight="bold", fontsize=40)
+fig.text(
+    0.4, 0.97, "B) Diagrams for ipsilateral networks", fontweight="bold", fontsize=40
+)
 
 
 gluefig("adj_and_layout", fig)
+
 #%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

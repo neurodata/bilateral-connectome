@@ -56,10 +56,17 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 from graspologic.utils import binarize, remove_loops
-from myst_nb import glue
+from pkg.io import glue as default_glue
 from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 
 t0 = time.time()
+
+FILENAME = "define_data"
+
+
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, display=False, **kwargs)
+
 
 RESAVE = False
 
@@ -88,8 +95,8 @@ left_n_edges = np.count_nonzero(left_adj)
 right_n_edges = np.count_nonzero(right_adj)
 p_loops = (left_n_loops + right_n_loops) / (len(left_adj) + len(right_adj))
 p_loop_edges = (left_n_loops + right_n_loops) / (left_n_edges + right_n_edges)
-glue("p_loops", p_loops, display=False)
-glue("p_loops_edges", p_loop_edges, display=False)
+glue("p_loops", p_loops)
+glue("p_loops_edges", p_loop_edges)
 
 #%%
 left_adj = remove_loops(left_adj)
@@ -97,8 +104,8 @@ right_adj = remove_loops(right_adj)
 
 n_left_unmatched = left_adj.shape[0]
 n_right_unmatched = right_adj.shape[0]
-glue("n_left_unmatched", n_left_unmatched, display=False)
-glue("n_right_unmatched", n_right_unmatched, display=False)
+glue("n_left_unmatched", n_left_unmatched)
+glue("n_right_unmatched", n_right_unmatched)
 
 
 #%% [markdown]
@@ -160,8 +167,8 @@ right_adj = remove_loops(right_adj)
 n_left_matched = left_adj.shape[0]
 n_right_matched = right_adj.shape[0]
 
-glue("n_left_matched", n_left_matched, display=False)
-glue("n_right_matched", n_right_matched, display=False)
+glue("n_left_matched", n_left_matched)
+glue("n_right_matched", n_right_matched)
 
 #%% [markdown]
 # For the matched networks, we are left with {glue:text}`n_left_matched` neurons in the
