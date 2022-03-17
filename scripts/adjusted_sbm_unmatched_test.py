@@ -318,12 +318,6 @@ methods_panel = Panel(
     ),
 )
 
-# distribution = SmartSVG(FIG_PATH / "resampled_pvalues_distribution.svg")
-# distribution.set_width(190)
-# distribution_panel = Panel(
-#     distribution, Text("B)", 5, 10, size=fontsize, weight="bold")
-# )
-# distribution_panel.move(0, methods.height * 0.85)
 
 pvalues = SmartSVG(FIG_PATH / "sbm_pvalues.svg")
 pvalues.set_width(250)
@@ -343,6 +337,44 @@ fig = Figure(
 fig.save(FIG_PATH / "adjusted_sbm_composite.svg")
 fig
 
+#%%
+methods = SmartSVG(FIG_PATH / "edge_removal_methods.svg")
+methods.set_width(200)
+methods.move(5, 15)
+methods_panel = Panel(
+    methods,
+    Text(
+        "A) Random edge removal methods",
+        0,
+        10,
+        size=fontsize,
+        weight="bold",
+    ),
+)
+
+distribution = SmartSVG(FIG_PATH / "resampled_pvalues_distribution.svg")
+distribution.set_width(200)
+distribution.move(10, 15)
+distribution_panel = Panel(
+    distribution,
+    Text(
+        "B) Distribution of p-values from subsamples",
+        5,
+        10,
+        size=fontsize,
+        weight="bold",
+    ),
+)
+distribution_panel.move(methods.width * 0.9, 0)
+
+fig = Figure(
+    (methods.width + distribution.width) * 0.9,
+    (distribution.height) * 0.9,
+    methods_panel,
+    distribution_panel,
+)
+fig.save(FIG_PATH / "adjusted_sbm_random_composite.svg")
+fig
 
 #%%
 elapsed = time.time() - t0
