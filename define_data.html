@@ -58,7 +58,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="A density-based test" href="er_unmatched_test.html" />
+    <link rel="next" title="Density test" href="er_unmatched_test.html" />
     <link rel="prev" title="Unmatched vs. matched networks" href="unmatched_vs_matched.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
@@ -142,17 +142,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="er_unmatched_test.html">
-   A density-based test
+   Density test
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="sbm_unmatched_test.html">
-   A group-based test
+   Group connection test
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="adjusted_sbm_unmatched_test.html">
-   SBM test with density adjustment
+   Density-adjusted group connection test
   </a>
  </li>
  <li class="toctree-l1">
@@ -425,16 +425,23 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">graspologic.utils</span> <span class="kn">import</span> <span class="n">binarize</span><span class="p">,</span> <span class="n">remove_loops</span>
-<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
 <span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">DATA_VERSION</span><span class="p">,</span> <span class="n">load_maggot_graph</span><span class="p">,</span> <span class="n">select_nice_nodes</span>
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="n">RESAVE</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;define_data&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">default_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">FILENAME</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="n">RESAVE</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using data from </span><span class="si">{</span><span class="n">DATA_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral&quot;</span><span class="p">)</span>  <span class="c1"># TODO fix, make this less fragile</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;bilateral-connectome/data/processed&quot;</span><span class="p">)</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;bilateral-connectome/data/processed-v2&quot;</span><span class="p">)</span>
 <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -448,16 +455,50 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mg</span> <span class="o">=</span> <span class="n">load_maggot_graph</span><span class="p">()</span>
-<span class="n">mg</span> <span class="o">=</span> <span class="n">select_nice_nodes</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span>
+
+<span class="c1"># Used to be in &quot;select_nice_nodes()&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before anything: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mg</span> <span class="o">=</span> <span class="n">mg</span><span class="p">[</span><span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;paper_clustered_neurons&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;accessory_neurons&quot;</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After filter by groups to consider for paper: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mg</span> <span class="o">=</span> <span class="n">mg</span><span class="p">[</span><span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;hemisphere&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">])]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After removing non left/right: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">mg</span><span class="o">.</span><span class="n">to_largest_connected_component</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After largest connected component: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># out_degrees = np.count_nonzero(mg.sum.adj, axis=0)</span>
+<span class="c1"># in_degrees = np.count_nonzero(mg.sum.adj, axis=1)</span>
+<span class="c1"># max_in_out_degree = np.maximum(out_degrees, in_degrees)</span>
+<span class="c1"># keep_inds = np.arange(len(mg.nodes))[max_in_out_degree &gt; 2]</span>
+<span class="c1"># remove_ids = np.setdiff1d(mg.nodes.index, mg.nodes.index[keep_inds])</span>
+<span class="c1"># print(mg.nodes.loc[remove_ids])</span>
+<span class="c1"># mg.nodes = mg.nodes.iloc[keep_inds]</span>
+<span class="c1"># mg.g.remove_nodes_from(remove_ids)</span>
+<span class="c1"># print(f&quot;After removing weakly connected nodes: {len(mg)}&quot;)</span>
+<span class="c1"># mg.to_largest_connected_component(verbose=False)</span>
+<span class="c1"># print(f&quot;After taking largest connected component again: {len(mg)}&quot;)</span>
+<span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;hemisphere&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;_inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
+
 <span class="n">left_mg</span><span class="p">,</span> <span class="n">right_mg</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">bisect</span><span class="p">(</span><span class="n">lcc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">left_mg</span><span class="o">.</span><span class="n">nodes</span>
 <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">right_mg</span><span class="o">.</span><span class="n">nodes</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;After taking largest connected component of each side </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">left_nodes</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
 
 <span class="n">left_adj</span> <span class="o">=</span> <span class="n">left_mg</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">adj</span>
 <span class="n">right_adj</span> <span class="o">=</span> <span class="n">right_mg</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">adj</span>
 
 <span class="n">left_adj</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
 <span class="n">right_adj</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Before anything: 3586
+After filter by groups to consider for paper: 3022
+After removing non left/right: 3020
+After largest connected component: 3008
+After taking largest connected component of each side 3006
 </pre></div>
 </div>
 </div>
@@ -470,8 +511,8 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 <span class="n">right_n_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
 <span class="n">p_loops</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_n_loops</span> <span class="o">+</span> <span class="n">right_n_loops</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_adj</span><span class="p">))</span>
 <span class="n">p_loop_edges</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_n_loops</span> <span class="o">+</span> <span class="n">right_n_loops</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">left_n_edges</span> <span class="o">+</span> <span class="n">right_n_edges</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops&quot;</span><span class="p">,</span> <span class="n">p_loops</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops_edges&quot;</span><span class="p">,</span> <span class="n">p_loop_edges</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops&quot;</span><span class="p">,</span> <span class="n">p_loops</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops_edges&quot;</span><span class="p">,</span> <span class="n">p_loop_edges</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -485,17 +526,17 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 
 <span class="n">n_left_unmatched</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">n_right_unmatched</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_left_unmatched&quot;</span><span class="p">,</span> <span class="n">n_left_unmatched</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_right_unmatched&quot;</span><span class="p">,</span> <span class="n">n_right_unmatched</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_left_unmatched&quot;</span><span class="p">,</span> <span class="n">n_left_unmatched</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_right_unmatched&quot;</span><span class="p">,</span> <span class="n">n_right_unmatched</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>After this data cleaning, we are left with <span class="pasted-text">1485</span> neurons in
+<p>After this data cleaning, we are left with  neurons in
 the left
-hemisphere, and <span class="pasted-text">1484</span> neurons in the right hemisphere.</p>
+hemisphere, and  neurons in the right hemisphere.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -553,17 +594,17 @@ described above for the unmatched networks.</p>
 <span class="n">n_left_matched</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">n_right_matched</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_left_matched&quot;</span><span class="p">,</span> <span class="n">n_left_matched</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_right_matched&quot;</span><span class="p">,</span> <span class="n">n_right_matched</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_left_matched&quot;</span><span class="p">,</span> <span class="n">n_left_matched</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_right_matched&quot;</span><span class="p">,</span> <span class="n">n_right_matched</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 </div>
 </div>
-<p>For the matched networks, we are left with <span class="pasted-text">1229</span> neurons in the
+<p>For the matched networks, we are left with  neurons in the
 left
-hemisphere, and <span class="pasted-text">1229</span> neurons in the right hemisphere.</p>
+hemisphere, and  neurons in the right hemisphere.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
@@ -600,8 +641,8 @@ hemisphere, and <span class="pasted-text">1229</span> neurons in the right hemis
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:20.933350
-Completed at 2022-03-10 10:02:30.282367
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:08.252355
+Completed at 2022-03-21 09:57:59.537550
 </pre></div>
 </div>
 </div>
@@ -644,7 +685,7 @@ Completed at 2022-03-10 10:02:30.282367
     <a class='right-next' id="next-link" href="er_unmatched_test.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">A density-based test</p>
+        <p class="prev-next-title">Density test</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

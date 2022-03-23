@@ -140,17 +140,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="er_unmatched_test.html">
-   A density-based test
+   Density test
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="sbm_unmatched_test.html">
-   A group-based test
+   Group connection test
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="adjusted_sbm_unmatched_test.html">
-   SBM test with density adjustment
+   Density-adjusted group connection test
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,52 +349,45 @@ const thebe_selector_output = ".output, .cell_output"
                 
   <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">audioop</span> <span class="kn">import</span> <span class="n">add</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">graspologic.utils</span> <span class="kn">import</span> <span class="n">remove_loops</span>
-<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
-<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">DATA_VERSION</span><span class="p">,</span> <span class="n">load_maggot_graph</span><span class="p">,</span> <span class="n">select_nice_nodes</span>
+<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_maggot_graph</span><span class="p">,</span> <span class="n">select_nice_nodes</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
-<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
-<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">compute_density_adjustment</span><span class="p">,</span>
-    <span class="n">erdos_renyi_test</span><span class="p">,</span>
-    <span class="n">stochastic_block_test</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">SmartSVG</span><span class="p">,</span> <span class="n">set_theme</span>
+<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">erdos_renyi_test</span><span class="p">,</span> <span class="n">stochastic_block_test</span>
+<span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="n">set_theme</span><span class="p">()</span>
-
-<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;thresholding_tests&quot;</span>
 
+<span class="n">FIG_PATH</span> <span class="o">=</span> <span class="n">FIG_PATH</span> <span class="o">/</span> <span class="n">FILENAME</span>
 
-<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">savename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FILENAME</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">savename</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">savename</span>
-    <span class="n">default_glue</span><span class="p">(</span><span class="n">savename</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">default_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;fig&quot;</span><span class="p">)</span>
+    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">set_theme</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -420,7 +413,12 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">binarize</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_key</span> <span class="o">=</span> <span class="s2">&quot;Density&quot;</span>
+<span class="n">gc_key</span> <span class="o">=</span> <span class="s2">&quot;Group connection&quot;</span>
+<span class="n">dagc_key</span> <span class="o">=</span> <span class="s2">&quot;Density-adjusted</span><span class="se">\n</span><span class="s2">group connection&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">binarize</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># threshold is the smallest that is kept</span>
 
     <span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -446,16 +444,16 @@ const thebe_selector_output = ".output, .cell_output"
         <span class="s2">&quot;threshold&quot;</span><span class="p">:</span> <span class="n">threshold</span><span class="p">,</span>
         <span class="s2">&quot;stat&quot;</span><span class="p">:</span> <span class="n">stat</span><span class="p">,</span>
         <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">pvalue</span><span class="p">,</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;ER&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">d_key</span><span class="p">,</span>
         <span class="s2">&quot;p_edges_removed&quot;</span><span class="p">:</span> <span class="n">p_edges_removed</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">adjusted</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">adjusted</span><span class="p">:</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;DA-SBM&quot;</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">dagc_key</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;SBM&quot;</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">gc_key</span>
         <span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
             <span class="n">left_adj_thresh</span><span class="p">,</span>
             <span class="n">right_adj_thresh</span><span class="p">,</span>
@@ -478,24 +476,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 9/9 [00:15&lt;00:00,  1.69s/it]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># def plot_thresholding_pvalues(results):</span>
-<span class="c1">#     fig, ax = plt.subplots(1, 1, figsize=(7, 6))</span>
-
-<span class="c1">#     sns.scatterplot(</span>
-<span class="c1">#         data=results, x=&quot;threshold&quot;, y=&quot;pvalue&quot;, hue=&quot;method&quot;, palette=palette, ax=ax</span>
-<span class="c1">#     )</span>
-<span class="c1">#     ax.set(yscale=&quot;log&quot;, ylabel=&quot;p-value&quot;, xlabel=&quot;Edge weight (# synapses) threshold&quot;)</span>
-<span class="c1">#     ax.get_legend().set_title(&quot;Method&quot;)</span>
-<span class="c1">#     ax.axhline(0.05, color=&quot;black&quot;, linestyle=&quot;:&quot;)</span>
-<span class="c1">#     ax.text(ax.get_xlim()[1], 0.05, r&quot;$\alpha = 0.05$&quot;, va=&quot;center&quot;, ha=&quot;left&quot;)</span>
-<span class="c1">#     ax.set(xticks=thresholds)</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 9/9 [00:21&lt;00:00,  2.38s/it]
 </pre></div>
 </div>
 </div>
@@ -516,7 +497,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;tab20&quot;</span><span class="p">)</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;SBM&quot;</span><span class="p">,</span> <span class="s2">&quot;DA-SBM&quot;</span><span class="p">,</span> <span class="s2">&quot;ER&quot;</span><span class="p">],</span> <span class="n">colors</span><span class="p">))</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">gc_key</span><span class="p">,</span> <span class="n">dagc_key</span><span class="p">,</span> <span class="n">d_key</span><span class="p">],</span> <span class="n">colors</span><span class="p">))</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
@@ -539,7 +520,7 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Edge weight (# synapses) threshold&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">get_legend</span><span class="p">()</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Method&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">move_legend</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;lower right&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">thresholds</span><span class="p">)</span>
 <span class="n">add_alpha_line</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
@@ -548,15 +529,13 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/thresholding_tests_4_1.png" src="_images/thresholding_tests_4_1.png" />
+<img alt="_images/thresholding_tests_3_1.png" src="_images/thresholding_tests_3_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
-<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;tab20&quot;</span><span class="p">)</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;SBM&quot;</span><span class="p">,</span> <span class="s2">&quot;DA-SBM&quot;</span><span class="p">,</span> <span class="s2">&quot;ER&quot;</span><span class="p">],</span> <span class="n">colors</span><span class="p">))</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">integer_results</span><span class="p">,</span>
@@ -576,14 +555,16 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
     <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Proportion of edges removed (by # synapses)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">yscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Proportion of edges removed (by # synapses)&quot;</span>
+<span class="p">)</span>
 <span class="n">add_alpha_line</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;integer_threshold_pvalues_p_removed&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/thresholding_tests_6_1.png" src="_images/thresholding_tests_6_1.png" />
+<img alt="_images/thresholding_tests_4_1.png" src="_images/thresholding_tests_4_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -605,9 +586,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">thresholds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">threshold</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">thresholds</span><span class="p">):</span>
     <span class="n">left_adj_thresh</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">left_adj_input_norm</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
-    <span class="c1"># p_edges_left = np.count_nonzero(left_adj_thresh) / np.count_nonzero(left_adj)</span>
     <span class="n">right_adj_thresh</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">right_adj_input_norm</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
-    <span class="c1"># p_edges_right = np.count_nonzero(left_adj_thresh) / np.count_nonzero(left_adj)</span>
 
     <span class="n">p_edges_removed</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">left_adj_thresh</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">right_adj_thresh</span><span class="p">)</span>
@@ -618,16 +597,16 @@ const thebe_selector_output = ".output, .cell_output"
         <span class="s2">&quot;threshold&quot;</span><span class="p">:</span> <span class="n">threshold</span><span class="p">,</span>
         <span class="s2">&quot;stat&quot;</span><span class="p">:</span> <span class="n">stat</span><span class="p">,</span>
         <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">pvalue</span><span class="p">,</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;ER&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">d_key</span><span class="p">,</span>
         <span class="s2">&quot;p_edges_removed&quot;</span><span class="p">:</span> <span class="n">p_edges_removed</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">adjusted</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">adjusted</span><span class="p">:</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;DA-SBM&quot;</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">dagc_key</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;SBM&quot;</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">gc_key</span>
         <span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
             <span class="n">left_adj_thresh</span><span class="p">,</span>
             <span class="n">right_adj_thresh</span><span class="p">,</span>
@@ -650,7 +629,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 21/21 [01:02&lt;00:00,  2.99s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 21/21 [01:15&lt;00:00,  3.57s/it]
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -685,7 +664,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0000</td>
       <td>3.082387e-23</td>
       <td>3.082387e-23</td>
-      <td>ER</td>
+      <td>Density</td>
       <td>0.000000</td>
       <td>NaN</td>
     </tr>
@@ -694,7 +673,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0000</td>
       <td>1.258385e-10</td>
       <td>3.561229e-08</td>
-      <td>SBM</td>
+      <td>Group connection</td>
       <td>0.000000</td>
       <td>False</td>
     </tr>
@@ -703,7 +682,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0000</td>
       <td>6.344169e-06</td>
       <td>1.793795e-03</td>
-      <td>DA-SBM</td>
+      <td>Density-adjusted\ngroup connection</td>
       <td>0.000000</td>
       <td>True</td>
     </tr>
@@ -712,7 +691,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0015</td>
       <td>5.954349e-24</td>
       <td>5.954349e-24</td>
-      <td>ER</td>
+      <td>Density</td>
       <td>0.005350</td>
       <td>NaN</td>
     </tr>
@@ -721,7 +700,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0015</td>
       <td>1.258385e-10</td>
       <td>3.561229e-08</td>
-      <td>SBM</td>
+      <td>Group connection</td>
       <td>0.005350</td>
       <td>False</td>
     </tr>
@@ -739,7 +718,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0285</td>
       <td>1.292440e-02</td>
       <td>9.248839e-01</td>
-      <td>SBM</td>
+      <td>Group connection</td>
       <td>0.818113</td>
       <td>False</td>
     </tr>
@@ -748,7 +727,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0285</td>
       <td>7.358936e-03</td>
       <td>7.700385e-01</td>
-      <td>DA-SBM</td>
+      <td>Density-adjusted\ngroup connection</td>
       <td>0.818113</td>
       <td>True</td>
     </tr>
@@ -757,7 +736,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0300</td>
       <td>6.647336e-01</td>
       <td>6.647336e-01</td>
-      <td>ER</td>
+      <td>Density</td>
       <td>0.830161</td>
       <td>NaN</td>
     </tr>
@@ -766,7 +745,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0300</td>
       <td>3.900540e-02</td>
       <td>9.996055e-01</td>
-      <td>SBM</td>
+      <td>Group connection</td>
       <td>0.830161</td>
       <td>False</td>
     </tr>
@@ -775,7 +754,7 @@ const thebe_selector_output = ".output, .cell_output"
       <td>0.0300</td>
       <td>3.296360e-02</td>
       <td>9.986441e-01</td>
-      <td>DA-SBM</td>
+      <td>Density-adjusted\ngroup connection</td>
       <td>0.830161</td>
       <td>True</td>
     </tr>
@@ -788,8 +767,6 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
-<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;tab20&quot;</span><span class="p">)</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;SBM&quot;</span><span class="p">,</span> <span class="s2">&quot;DA-SBM&quot;</span><span class="p">,</span> <span class="s2">&quot;ER&quot;</span><span class="p">],</span> <span class="n">colors</span><span class="p">))</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">input_results</span><span class="p">,</span>
@@ -819,7 +796,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/thresholding_tests_9_1.png" src="_images/thresholding_tests_9_1.png" />
+<img alt="_images/thresholding_tests_7_1.png" src="_images/thresholding_tests_7_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -855,51 +832,52 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/thresholding_tests_10_1.png" src="_images/thresholding_tests_10_1.png" />
+<img alt="_images/thresholding_tests_8_1.png" src="_images/thresholding_tests_8_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">SmartSVG</span>
-<span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Figure</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span>
-
-<span class="n">FIG_PATH</span> <span class="o">=</span> <span class="n">FIG_PATH</span> <span class="o">/</span> <span class="n">FILENAME</span>
-
-<span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="n">int_thresh</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;integer_threshold_pvalues.svg&quot;</span><span class="p">)</span>
 <span class="n">int_thresh</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-<span class="n">int_thresh</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">int_thresh_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">int_thresh</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;A)&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">))</span>
+<span class="n">int_thresh</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">int_thresh_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+    <span class="n">int_thresh</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;A) Synapse count thresholds&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">input_thresh</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;input_threshold_pvalues.svg&quot;</span><span class="p">)</span>
 <span class="n">input_thresh</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-<span class="n">input_thresh</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">input_thresh</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 <span class="n">input_thresh_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-    <span class="n">input_thresh</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;B)&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+    <span class="n">input_thresh</span><span class="p">,</span>
+    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;B) Input proportion thresholds&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">input_thresh_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">int_thresh</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 <span class="n">int_p_removed</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;integer_threshold_pvalues_p_removed.svg&quot;</span><span class="p">)</span>
 <span class="n">int_p_removed</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-<span class="n">int_p_removed</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">int_p_removed</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="n">int_p_removed_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-    <span class="n">int_p_removed</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;C)&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+    <span class="n">int_p_removed</span><span class="p">,</span>
+    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;C) Synapse count thresholds&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
+    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;by edges removed&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">int_p_removed_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">int_thresh</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
 
 <span class="n">input_p_removed</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;input_threshold_pvalues_p_removed.svg&quot;</span><span class="p">)</span>
 <span class="n">input_p_removed</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-<span class="n">input_p_removed</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">input_p_removed</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="n">input_p_removed_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-    <span class="n">input_p_removed</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;D)&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+    <span class="n">input_p_removed</span><span class="p">,</span>
+    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;D) Input proportion thresholds&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
+    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;by edges removed&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">input_p_removed_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">int_thresh</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">int_thresh</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span>
     <span class="n">int_thresh</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span>
-    <span class="n">int_thresh</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">int_thresh</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">0.95</span><span class="p">,</span>
     <span class="n">int_thresh_panel</span><span class="p">,</span>
     <span class="n">input_thresh_panel</span><span class="p">,</span>
     <span class="n">int_p_removed_panel</span><span class="p">,</span>
@@ -907,37 +885,27 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;thresholding_composite.svg&quot;</span><span class="p">)</span>
 <span class="n">fig</span>
-
-
-<span class="c1"># #%%</span>
-<span class="c1"># #%%</span>
-<span class="c1"># integer_results[&quot;Threshold type&quot;] = &quot;Synapse count&quot;</span>
-<span class="c1"># input_results[&quot;Threshold type&quot;] = &quot;Input proportion&quot;</span>
-<span class="c1"># results = pd.concat((integer_results, input_results))</span>
-
-<span class="c1"># fig, ax = plt.subplots(1, 1, figsize=(8, 6))</span>
-<span class="c1"># sns.scatterplot(</span>
-<span class="c1">#     data=results,</span>
-<span class="c1">#     x=&quot;p_edges_removed&quot;,</span>
-<span class="c1">#     y=&quot;pvalue&quot;,</span>
-<span class="c1">#     hue=&quot;method&quot;,</span>
-<span class="c1">#     style=&quot;Threshold type&quot;,</span>
-<span class="c1">#     ax=ax,</span>
-<span class="c1"># )</span>
-<span class="c1"># ax.set(yscale=&#39;log&#39;)</span>
-<span class="c1"># sns.lineplot(</span>
-<span class="c1">#     data=results,</span>
-<span class="c1">#     x=&quot;p_edges_removed&quot;,</span>
-<span class="c1">#     y=&quot;pvalue&quot;,</span>
-<span class="c1">#     hue=&quot;method&quot;,</span>
-<span class="c1">#     style=&quot;Threshold type&quot;,</span>
-<span class="c1">#     ax=ax,</span>
-<span class="c1"># )</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/thresholding_tests_11_0.svg" src="_images/thresholding_tests_11_0.svg" /></div>
+<img alt="_images/thresholding_tests_9_0.svg" src="_images/thresholding_tests_9_0.svg" /></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:02:20.124256
+Completed at 2022-03-21 10:04:38.915069
+</pre></div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">

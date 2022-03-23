@@ -142,17 +142,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="er_unmatched_test.html">
-   A density-based test
+   Density test
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="sbm_unmatched_test.html">
-   A group-based test
+   Group connection test
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="adjusted_sbm_unmatched_test.html">
-   SBM test with density adjustment
+   Density-adjusted group connection test
   </a>
  </li>
  <li class="toctree-l1">
@@ -393,11 +393,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h1>Comparing methods for SBM testing<a class="headerlink" href="#comparing-methods-for-sbm-testing" title="Permalink to this headline">¶</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
-
-<span class="n">set_warnings</span><span class="p">()</span>
-
-<span class="kn">import</span> <span class="nn">csv</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -408,35 +404,36 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">subuniformity_plot</span>
 <span class="kn">from</span> <span class="nn">matplotlib.transforms</span> <span class="kn">import</span> <span class="n">Bbox</span>
-<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
 <span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_network_palette</span><span class="p">,</span> <span class="n">load_node_palette</span><span class="p">,</span> <span class="n">load_unmatched</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
-<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
+<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">SmartSVG</span><span class="p">,</span> <span class="n">set_theme</span>
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">binom_2samp</span><span class="p">,</span> <span class="n">stochastic_block_test</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span><span class="p">,</span> <span class="n">binom</span><span class="p">,</span> <span class="n">chi2</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">combine_pvalues</span> <span class="k">as</span> <span class="n">scipy_combine_pvalues</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">ks_1samp</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;revamp_sbm_methods_sim&quot;</span>
 
+<span class="n">FIG_PATH</span> <span class="o">=</span> <span class="n">FIG_PATH</span> <span class="o">/</span> <span class="n">FILENAME</span>
+
+
+<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">default_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;fig&quot;</span><span class="p">)</span>
+    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">savename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FILENAME</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">savename</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">savename</span>
-    <span class="n">default_glue</span><span class="p">(</span><span class="n">savename</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -448,7 +445,6 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">fisher_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 <span class="n">min_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">eric_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span>
-<span class="c1"># method_palette = {&quot;fisher&quot;: fisher_color, &quot;min&quot;: min_color, &quot;eric&quot;: eric_color}</span>
 
 <span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;simple_group&quot;</span>
 
@@ -543,21 +539,6 @@ Note that all methods appear empirically valid, some appear highly conservative.
     <span class="n">moves</span> <span class="o">=</span> <span class="n">uniform_samples</span> <span class="o">*</span> <span class="n">diffs</span>
     <span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">moves</span>
     <span class="k">return</span> <span class="n">pvalues</span>
-
-
-<span class="k">def</span> <span class="nf">random_shift_pvalues</span><span class="p">(</span><span class="n">pvalues</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">shifted_pvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pvalues</span><span class="p">)</span>
-    <span class="n">unique_pvalues</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pvalues</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="c1"># pvalues = np.sort(pvalues)  # already makes a copy</span>
-    <span class="n">diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">unique_pvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">unique_pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">unique_pvalues</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="p">)</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
-    <span class="n">uniform_samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">shifted_pvalues</span><span class="p">))</span>
-    <span class="n">matched_diffs</span> <span class="o">=</span> <span class="n">diffs</span><span class="p">[</span><span class="n">inverse</span><span class="p">]</span>
-    <span class="n">moves</span> <span class="o">=</span> <span class="n">uniform_samples</span> <span class="o">*</span> <span class="n">matched_diffs</span>
-    <span class="n">shifted_pvalues</span> <span class="o">-=</span> <span class="n">moves</span>
-    <span class="k">return</span> <span class="n">shifted_pvalues</span>
 
 
 <span class="k">def</span> <span class="nf">my_combine_pvalues</span><span class="p">(</span><span class="n">pvalues</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span> <span class="n">pad_high</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_resamples</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
@@ -1236,13 +1217,7 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">SmartSVG</span>
-<span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Figure</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span>
-
-<span class="n">FIG_PATH</span> <span class="o">=</span> <span class="n">FIG_PATH</span> <span class="o">/</span> <span class="n">FILENAME</span>
-
-<span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
 
 <span class="n">null</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;tippett_null_cdf.svg&quot;</span><span class="p">)</span>
 <span class="n">null</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
@@ -1256,7 +1231,7 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 <span class="n">power_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">null</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span><span class="n">null</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">null</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">null_panel</span><span class="p">,</span> <span class="n">power_panel</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s1">&#39;tippett_sim_composite.svg&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;tippett_sim_composite.svg&quot;</span><span class="p">)</span>
 <span class="n">fig</span>
 </pre></div>
 </div>
