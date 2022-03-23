@@ -6,4 +6,5 @@ from .wrangle import (
     get_seeds,
     to_largest_connected_component,
     to_pandas_edgelist,
+    remove_group,
 )

@@ -64,7 +64,7 @@ def get_out_dir(foldername=None, subfoldername=None, pathname=OUT_PATH):
     return path
 
 
-def glue(name, var, filename, figure=False, display=False):
+def glue(name, var, filename, figure=False, display=False, form=None):
     savename = f"{filename}-{name}"
 
     if figure:
@@ -83,3 +83,15 @@ def glue(name, var, filename, figure=False, display=False):
             json.dump(variables, f)
 
     default_glue(savename, var, display=display)
+
+    if form == "pvalue":
+        if var > 0.01:
+            var = f"{var:0.2f}"
+        else:
+            factor = int(np.ceil(np.log10(var)))
+            var = r"${<}10^{" + str(factor) + r"}$"
+
+    if form is not None:
+        glue(
+            name + "-formatted", var, filename, figure=figure, display=False, form=None
+        )

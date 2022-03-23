@@ -190,8 +190,6 @@ density_right = n_edges_right / (n_right ** 2)
 
 n_remove = int((density_right - density_left) * (n_right ** 2))
 
-glue("density_left", density_left)
-glue("density_right", density_right)
 glue("n_remove", n_remove)
 
 
@@ -236,7 +234,7 @@ stat, pvalue, misc = stochastic_block_test(
     method="fisher",
     density_adjustment=True,
 )
-glue("corrected_pvalue", pvalue)
+glue("pvalue", pvalue, form='pvalue')
 print(pvalue)
 print(f"{pvalue:.2g}")
 

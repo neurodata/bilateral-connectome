@@ -13,6 +13,10 @@ version_loc = Path(__file__).parent / "version.txt"
 with open(version_loc) as f:
     version = f.readline()
 
+processed_loc = Path(__file__).parent / "processed_version.txt"
+with open(processed_loc) as f:
+    processed_version = f.readline()
+
 DATA_VERSION = version
 DATA_PATH = Path(__file__).parent.parent.parent.parent  # don't judge me judge judy
 DATA_PATH = DATA_PATH / "data"
@@ -72,14 +76,19 @@ def load_palette(path=None, version=None):
     return palette
 
 
-def load_unmatched(side="left"):
+def load_unmatched(side="left", weights=False):
     side = side.lower()
-    dir = DATA_PATH / "processed"
+    dir = DATA_PATH / processed_version
+    if weights:
+        data = (("weight", int),)
+    else:
+        data = False
     g = nx.read_edgelist(
         dir / f"unmatched_{side}_edgelist.csv",
         create_using=nx.DiGraph,
         delimiter=",",
         nodetype=int,
+        data=data,
     )
     nodes = pd.read_csv(dir / f"unmatched_{side}_nodes.csv", index_col=0)
     adj = nx.to_numpy_array(g, nodelist=nodes.index)
@@ -88,7 +97,7 @@ def load_unmatched(side="left"):
 
 def load_matched(side="left"):
     side = side.lower()
-    dir = DATA_PATH / "processed"
+    dir = DATA_PATH / processed_version
     g = nx.read_edgelist(
         dir / f"matched_{side}_edgelist.csv",
         create_using=nx.DiGraph,

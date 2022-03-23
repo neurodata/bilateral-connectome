@@ -247,7 +247,7 @@ gluefig("er_methods", fig)
 
 #%%
 stat, pvalue, misc = erdos_renyi_test(left_adj, right_adj)
-glue("pvalue", pvalue)
+glue("pvalue", pvalue, form="pvalue")
 
 #%%
 n_possible_left = misc["possible1"]

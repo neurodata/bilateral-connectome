@@ -7,6 +7,14 @@ import navis
 volume_names = ["PS_Neuropil_manual"]
 
 
+def rgb2hex(r, g, b):
+    r = int(255 * r)
+    g = int(255 * g)
+    b = int(255 * b)
+
+    return "#{:02x}{:02x}{:02x}".format(r, g, b)
+
+
 def simple_plot_neurons(
     neurons,
     azim=-90,
@@ -22,7 +30,7 @@ def simple_plot_neurons(
     axes_equal=True,
     force_bounds=True,
     axis_off=True,
-    **kwargs
+    **kwargs,
 ):
     if isinstance(neurons, (list, np.ndarray, pd.Series, pd.Index)):
         try:
@@ -40,20 +48,24 @@ def simple_plot_neurons(
         neuron_ids = neurons.id
         neuron_ids = [int(n) for n in neuron_ids]
 
+    for key, value in palette.items():
+        if isinstance(value, tuple):
+            palette[key] = rgb2hex(*value)
+
     # neurons = [pymaid.get_neuron(n) for n in neuron_ids]
     # volumes = [pymaid.get_volume(v) for v in volume_names]
-    color = np.vectorize(palette.get)(neuron_ids)
+    colors = np.vectorize(palette.get)(neuron_ids)
 
     plot_mode = "3d"
     navis.plot2d(
         neurons,
-        color=color,
+        color=colors,
         ax=ax,
         connectors=False,
         method="3d",
         autoscale=autoscale,
         soma=False,
-        **kwargs
+        **kwargs,
     )
     # plot_volumes(volumes, ax)
     if plot_mode == "3d":

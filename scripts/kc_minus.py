@@ -143,7 +143,7 @@ gluefig("kc_minus_methods", fig)
 
 stat, pvalue, misc = erdos_renyi_test(sub_left_adj, sub_right_adj)
 print(pvalue)
-glue("er_pvalue", pvalue)
+glue("er_pvalue", pvalue, form="pvalue")
 
 fig, ax = plot_density(misc, palette=network_palette)
 gluefig("densities", fig)
@@ -163,7 +163,7 @@ stat, pvalue, misc = stochastic_block_test(
     combine_method="tippett",
 )
 print(pvalue)
-glue("sbm_pvalue", pvalue)
+glue("sbm_pvalue", pvalue, form="pvalue")
 
 set_theme(font_scale=1.25)
 
@@ -185,8 +185,7 @@ stat, pvalue, misc = stochastic_block_test(
     combine_method="tippett",
 )
 print(pvalue)
-glue("asbm_pvalue", pvalue)
-glue("asbm_pvalue_formatted", f"{pvalue:.2g}")
+glue("asbm_pvalue", pvalue, form="pvalue")
 
 fig, ax = plot_pvalues(misc)
 gluefig("dasbm_pvalues", fig)

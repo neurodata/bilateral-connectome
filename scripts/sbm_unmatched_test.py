@@ -572,7 +572,7 @@ stat, pvalue, misc = stochastic_block_test(
     combine_method="tippett",
     correct_method="bonferroni",
 )
-glue("pvalue", pvalue)
+glue("pvalue", pvalue, form='pvalue')
 n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
 print(pvalue)

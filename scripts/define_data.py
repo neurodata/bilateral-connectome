@@ -68,25 +68,50 @@ def glue(name, var, **kwargs):
     default_glue(name, var, FILENAME, display=False, **kwargs)
 
 
-RESAVE = False
+RESAVE = True
 
 print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
-output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed")
+output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-v2")
 output_dir = Path(output_dir)
 
 #%%
 mg = load_maggot_graph()
-mg = select_nice_nodes(mg)
+
+# Used to be in "select_nice_nodes()"
+print(f"Before anything: {len(mg)}")
+mg = mg[mg.nodes["paper_clustered_neurons"] | mg.nodes["accessory_neurons"]]
+print(f"After filter by groups to consider for paper: {len(mg)}")
+mg = mg[mg.nodes["hemisphere"].isin(["L", "R"])]
+print(f"After removing non left/right: {len(mg)}")
+mg.to_largest_connected_component(verbose=False)
+print(f"After largest connected component: {len(mg)}")
+# out_degrees = np.count_nonzero(mg.sum.adj, axis=0)
+# in_degrees = np.count_nonzero(mg.sum.adj, axis=1)
+# max_in_out_degree = np.maximum(out_degrees, in_degrees)
+# keep_inds = np.arange(len(mg.nodes))[max_in_out_degree > 2]
+# remove_ids = np.setdiff1d(mg.nodes.index, mg.nodes.index[keep_inds])
+# print(mg.nodes.loc[remove_ids])
+# mg.nodes = mg.nodes.iloc[keep_inds]
+# mg.g.remove_nodes_from(remove_ids)
+# print(f"After removing weakly connected nodes: {len(mg)}")
+# mg.to_largest_connected_component(verbose=False)
+# print(f"After taking largest connected component again: {len(mg)}")
+mg.nodes.sort_values("hemisphere", inplace=True)
+mg.nodes["_inds"] = range(len(mg.nodes))
+
 left_mg, right_mg = mg.bisect(lcc=True)
 left_nodes = left_mg.nodes
 right_nodes = right_mg.nodes
+print(
+    f"After taking largest connected component of each side {len(left_nodes) + len(right_nodes)}"
+)
 
 left_adj = left_mg.sum.adj
 right_adj = right_mg.sum.adj
 
-left_adj = binarize(left_adj)
-right_adj = binarize(right_adj)
+# left_adj = binarize(left_adj)
+# right_adj = binarize(right_adj)
 
 #%%
 left_n_loops = np.count_nonzero(np.diag(left_adj))
@@ -114,24 +139,32 @@ glue("n_right_unmatched", n_right_unmatched)
 # hemisphere, and {glue:text}`n_right_unmatched` neurons in the right hemisphere.
 
 # %%
-left_adj = pd.DataFrame(data=left_adj, index=left_nodes.index, columns=left_nodes.index)
+left_adj = pd.DataFrame(
+    data=left_adj.astype(int), index=left_nodes.index, columns=left_nodes.index
+)
 left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
 
 if RESAVE:
     nx.write_edgelist(
-        left_g, output_dir / "unmatched_left_edgelist.csv", delimiter=",", data=False
+        left_g,
+        output_dir / "unmatched_left_edgelist.csv",
+        delimiter=",",
+        data=["weight"],
     )
     left_nodes.to_csv(output_dir / "unmatched_left_nodes.csv")
 
 
 right_adj = pd.DataFrame(
-    data=right_adj, index=right_nodes.index, columns=right_nodes.index
+    data=right_adj.astype(int), index=right_nodes.index, columns=right_nodes.index
 )
 right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
 
 if RESAVE:
     nx.write_edgelist(
-        right_g, output_dir / "unmatched_right_edgelist.csv", delimiter=",", data=False
+        right_g,
+        output_dir / "unmatched_right_edgelist.csv",
+        delimiter=",",
+        data=["weight"],
     )
     right_nodes.to_csv(output_dir / "unmatched_right_nodes.csv")
 

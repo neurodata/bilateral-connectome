@@ -102,3 +102,19 @@ def get_seeds(left_nodes, right_nodes):
     ).all()
 
     return (left_seeds, right_seeds)
+
+
+def remove_group(
+    left_adj, right_adj, left_nodes, right_nodes, group, group_key="simple_group"
+):
+    left_nodes["inds"] = range(len(left_nodes))
+    sub_left_nodes = left_nodes[left_nodes[group_key] != group]
+    sub_left_inds = sub_left_nodes["inds"].values
+    right_nodes["inds"] = range(len(right_nodes))
+    sub_right_nodes = right_nodes[right_nodes[group_key] != group]
+    sub_right_inds = sub_right_nodes["inds"].values
+
+    sub_left_adj = left_adj[np.ix_(sub_left_inds, sub_left_inds)]
+    sub_right_adj = right_adj[np.ix_(sub_right_inds, sub_right_inds)]
+    
+    return sub_left_adj, sub_right_adj, sub_left_nodes, sub_right_nodes
