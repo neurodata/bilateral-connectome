@@ -96,9 +96,73 @@ simple_plot_neurons(
 
 #%%
 
-fig, axs = plt.subplots(2,1,figsize=(8,8))
+fig, axs = plt.subplots(2, 1, figsize=(4, 5))
+
+import networkx as nx
+
+g = nx.DiGraph()
+g.add_edge(0, 1, weight=4)
+pos = {0: (0.1, 0.65), 1: (0.5, 0.65)}
+ax = axs[0]
+soft_axis_off(ax)
+nx.draw_networkx(
+    g,
+    pos,
+    ax=ax,
+    arrowstyle="-|>",
+    connectionstyle="arc3,rad=-0.5",
+    width=3,
+    node_size=500,
+    with_labels=False,
+)
+ax.set(xlim=(0, 1), ylim=(0, 1))
+ax.set_ylabel("Synapse\ncount", rotation=0, ha="right")
+ax.text(0.65, 0.65, "Weight = 2", fontsize="medium")
+
+ax = axs[1]
+soft_axis_off(ax)
+nx.draw_networkx(
+    g,
+    pos,
+    ax=ax,
+    arrowstyle="-|>",
+    connectionstyle="arc3,rad=-0.5",
+    width=3,
+    node_size=500,
+    with_labels=False,
+)
+ax.set(xlim=(0, 1), ylim=(0, 1))
+# $\frac{2}{5}$
+ax.text(0.65, 0.65, "Weight = 2 / 5", fontsize="medium")
 
 
+def draw_input(xytext):
+    ax.annotate(
+        "",
+        (0.5, 0.65),
+        xytext=xytext,
+        textcoords="offset points",
+        arrowprops=dict(
+            arrowstyle="-|>",
+            connectionstyle="arc3",
+            facecolor="grey",
+            linewidth=3,
+            shrinkB=10,
+            edgecolor="grey"
+            # width=0.5,
+            # mutation_scale=0.5,
+        ),
+    )
+
+
+draw_input((-25, -25))
+draw_input((0, -35))
+draw_input((-35, 0))
+draw_input((0, 35))
+
+ax.set_ylabel("Input\nproportion", rotation=0, ha="right")
+
+fig.set_facecolor("w")
 
 #%%
 rng = np.random.default_rng(8888)
@@ -303,6 +367,7 @@ def construct_weight_data(left_adj, right_adj):
 
 
 weight_data = construct_weight_data(left_adj, right_adj)
+weight_data = weight_data[weight_data["weights"] < 10]
 
 sns.histplot(
     data=weight_data,
@@ -316,6 +381,7 @@ sns.histplot(
 sns.move_legend(ax, loc="upper right", title="Hemisphere")
 ax.set(xlabel="Weight (synapse count)")
 ax.set_yscale("log")
+ax.set(xlim=(0, 10))
 
 #%%
 
@@ -548,7 +614,7 @@ ax.set_title("KC-")
 
 
 rows = []
-thresholds = np.linspace(0, 0.03, 41)
+thresholds = np.linspace(0, 0.03, 21)
 for threshold in tqdm(thresholds):
     left_adj_thresh = binarize(left_adj_input_norm, threshold=threshold)
     right_adj_thresh = binarize(right_adj_input_norm, threshold=threshold)
@@ -631,7 +697,7 @@ sns.scatterplot(
     hue="method",
     palette=palette,
     ax=ax,
-    legend=False,
+    legend=True,
 )
 sns.lineplot(
     data=input_results,
@@ -682,9 +748,56 @@ ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
 ax2.set_xlabel("Threshold (input proportion)")
 ax2.tick_params(axis="both", length=5)
 
+x = input_results[input_results["method"] == "Density"].iloc[7]["p_edges_removed"]
+y = np.mean(np.sqrt(np.product(ax.get_ylim())))
+
 add_alpha_line(ax)
+ax.autoscale(False)
+ax.fill_between(
+    (ax.get_xlim()[0], x), y1=0.05, y2=ax.get_ylim()[0], color="darkred", alpha=0.05
+)
+# ax.fill_between(ax.get_xlim(), y1=0.05, y2=ax.get_ylim()[1], color="green", alpha=0.03)
+ax.text(
+    0.27,
+    y,
+    # r"$\downarrow$Reject symmetry$\downarrow$",
+    "Reject symmetry",
+    ha="center",
+    va="center",
+    # transform=ax.transAxes,
+    color="darkred",
+)
+# ax.text(
+#     0.01,
+#     1,
+#     r"$\uparrow$ Fail to reject symmetry $\uparrow$",
+#     ha="left",
+#     va="bottom",
+#     transform=ax.transAxes,
+#     color="green",
+# )
+sns.move_legend(ax, "lower right", title="Test", frameon=True, fontsize="small")
+gluefig("input_threshold_pvalues_p_removed_legend", fig)
 
+ax.axvline(
+    x,
+    ax.get_ylim()[0],
+    0.95,
+    color="black",
+    linestyle="--",
+    zorder=0,
+)
+ax.text(
+    x + 0.005,
+    np.mean(np.sqrt(np.product(ax.get_ylim()))),
+    r"$\rightarrow$"
+    + "\n\n\n  All tests fail to\n  reject symmetry\n\n\n"
+    + r"$\rightarrow$",
+    ha="left",
+    va="center",
+)
 
+ax.get_legend().remove()
 gluefig("input_threshold_pvalues_p_removed", fig)
 
 # %%

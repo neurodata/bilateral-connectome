@@ -218,7 +218,7 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 <div class="columns2-bl">
 <div>
 
-![](../../../results/figs/thresholding_tests/input_threshold_pvalues_p_removed.svg)
+![](../../../results/figs/thresholding_tests/input_threshold_pvalues_p_removed_legend.svg)
 
 </div>
 <div>
