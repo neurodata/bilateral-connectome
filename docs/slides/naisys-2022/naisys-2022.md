@@ -32,6 +32,12 @@ size: 44:33
 
 ![centerh](./images/../../../images/nd_logo.png)
 
+<span style="text-align:center; margin:0; padding:0">
+
+### [neurodata.io](https://neurodata.io/)
+
+</span>
+
 </div>
 </div>
 

@@ -145,7 +145,7 @@ img[alt~='centerh'] {
   text-align: center;
   /* align-items: center; */
   margin-top: 20%;
-  margin-bottom: 20%;
+  margin-bottom: 0;
   /* padding: 1in; */
   vertical-align: middle;
 }
