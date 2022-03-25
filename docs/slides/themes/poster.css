@@ -165,15 +165,11 @@ img[alt~="icon"] {
   height: 30px;
 }
 /* Create a logo in the header */
-/* margin-top is controling the vertical-alignment, basically */
+/* margin-top is controlling the vertical-alignment, basically. */
 img[alt~='headerlogo'] {
   display: inline;
   text-align: center;
   margin-top: 20%;
   margin-bottom: 0;
   vertical-align: middle;
-}
-
-/* a {
-  color: var(--nd-blue);
 }
