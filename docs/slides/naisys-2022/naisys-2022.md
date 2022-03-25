@@ -10,7 +10,7 @@ size: 44:33
 
 <!-- <div class=center_container> -->
 
-![centerh](./images/../../../images/hopkins-logo.png)
+![headerlogo](./images/../../../images/hopkins-logo.png)
 
 <!-- </div> -->
 
@@ -30,7 +30,7 @@ size: 44:33
 </div>
 <div>
 
-![centerh](./images/../../../images/nd_logo.png)
+![headerlogo](./images/../../../images/nd_logo.png)
 
 <span style="text-align:center; margin:0; padding:0">
 
@@ -83,8 +83,9 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 
 ### Motivation
 
-- Connectomes are rich sources of inspiration for architectures in artificial intelligence
-- Comparing connectomes can help elucidate which structural features are necessary for yielding incredible capabilities animal intelligences
+- Connectomes are rich sources of inspiration for architectures in artificial intelligence.
+- Comparing connectomes could help elucidate which structural features are necessary for yielding the capabilities animal intelligences.
+- Bilateral symmetry for connectomes has been investigated, but not clearly defined as a network hypothesis.
 
 <!-- - We explored statistically principled connectome comparison via a case study of a *Drosophila* larva connectome -->
 
@@ -137,7 +138,7 @@ Requires that we define what we mean by "different" for a network, and develop a
 <div>
 
 
-**Fig 2A:** Testing symmetry under Erdos-Renyi (ER) model amounts to comparing densities (here via Fisher's exact test).
+**Fig 2A:** Testing symmetry under Erdos-Renyi (ER) model [2] amounts to comparing densities (here via Fisher's exact test).
 
 </div>
 <div>
@@ -147,10 +148,8 @@ Requires that we define what we mean by "different" for a network, and develop a
 </div>
 </div>
 
-
 </div>
 <div>
-
 
 
 ### Group connection testing 
@@ -295,7 +294,7 @@ table {
 </div>
 
 ### Limitations and extensions
-- Many other models to consider (e.g. random dot product graph) [x]
+- Many other models to consider (e.g. random dot product graph [3])
 - Many other potential neuron groupings for group connection testing
 - Matched nodes between networks
 
@@ -334,7 +333,11 @@ table {
 ### References
 
 <footer>
-[1]: Winding, Pedigo et al. *The complete connectome of an insect brain* In prep. (2022)
+[1]: Winding, Pedigo et al. *The complete connectome of an insect brain,* In prep. (2022)
+<br>
+[2]: Chung et al. *Statistical connectomics,* Ann. Rev. Statistics and its Application (2021)
+<br>
+[3]: Athreya et al. *Statistical inference on random dot product graphs: a survey,* JMLR (2017)
 </footer>
 
 </div>
