@@ -56,7 +56,7 @@ Aimed to define bilateral symmetry for a pair of networks, and formally test thi
 </div>
 <div>
 
-Found that left and right hemispheres are different under even the simplest model of a pair of networks
+Left and right hemispheres are significantly different under even the simplest model of a pair of networks
 
 </div>
 <div>
@@ -66,7 +66,7 @@ Left and right differ significantly in cell type connection probabilities, even 
 </div>
 <div>
 
-Difference between hemispheres can be explained as combination of a network-wide and cell-type specific effects
+Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects
 
 </div>
 <div>
@@ -83,8 +83,9 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 
 ### Motivation
 
-- Connectomes are rich sources of inspiration for architectures in artificial intelligence, but unclear which structural features are necessary for yielding incredible capabilities animal intelligences. 
-- Comparing connectomes 
+- Connectomes are rich sources of inspiration for architectures in artificial intelligence
+- Comparing connectomes can help elucidate which structural features are necessary for yielding incredible capabilities animal intelligences
+
 <!-- - We explored statistically principled connectome comparison via a case study of a *Drosophila* larva connectome -->
 
 ### Larval *Drosophila* brain connectome
@@ -95,27 +96,27 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 
 ![center w:5.5in](./../../images/Figure1-brain-render.png)
 
-**Fig 1A:** 3D rendering of larval *Drosophila* brain connectome 
+**Fig 1A:** 3D rendering of larval *Drosophila* brain connectome [1]. Comprised of ~3k neurons and ~544k synapses.
 
 </div>
 <div>
 
 ![w:5.1in](./../../../results/figs/show_data/adjacencies.png)
 
-**Fig 1B:** Adjacency matrix sorted by brain hemisphere
-
+**Fig 1B:** Adjacency matrix sorted by brain hemisphere. We focus on comparing $\color{#66c2a5} L \rightarrow L$ vs. $\color{#fc8d62} R \rightarrow R$ subgraphs.
 
 </div>
 </div>
 
-- Connectome of a larval *Drosophila* [1] has xxx neurons and xxx synapses
+<!-- - Connectome of a larval *Drosophila* [1] has xxx neurons and xxx synapses -->
 
 <!-- END subcolumns -->
 
 <!-- ![center](../../../results/figs/show_data/adj_and_layout.png) -->
 
 ## Are <span style="color:var(--left)"> left </span> and the <span style="color:var(--right)"> right </span> networks "different"?
-- Two sample testing problem! But for networks
+<!-- - Two sample testing problem! But for networks -->
+Requires that we define what we mean by "different" for a network, and develop a test procedure for any definition.
 
 ### Density testing
 
@@ -136,12 +137,12 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 <div>
 
 
-**Fig 2A:** Comparison of densities via Fisher's exact test
+**Fig 2A:** Testing symmetry under Erdos-Renyi (ER) model amounts to comparing densities (here via Fisher's exact test).
 
 </div>
 <div>
 
-**Fig 2B:** Densities are significantly different between hemispheres <br> ($p<10^{-23}$)
+**Fig 2B:** Densities are significantly different between hemispheres <br> ($p<10^{-23}$).
 
 </div>
 </div>
@@ -156,24 +157,36 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 
 <!-- #### A -->
 ![center w:13in](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
-**Fig 3A:** Group connection testing fits SBMs using cell type partition. Group-to-group connection probabilities are compared (Fisher's exact test), p-values are combined (Tippett's method).
+**Fig 3A:** Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types).
 
 <!-- START subcolumns -->
 <div class=columns2>
 <div>
 
-#### B
 ![](../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg)
 
 </div>
 <div>
 
-#### C
 ![center w:5in](../../../results/figs/sbm_unmatched_test/significant_p_comparison.svg)
 
 </div>
 </div>
-<!-- END subcolumns -->
+
+<div class=columns2>
+<div>
+
+**Fig 3B:** Corrected p-values for each group connection. 
+<!-- 5 connections are $<0.05$, shown with "X"s. -->
+
+</div>
+<div>
+
+**Fig 3C:** Comparison of probabilities for significant connections. 
+<!-- Probability is always higher on right side. -->
+
+</div>
+</div>
 
 ### Density-adjusted group connection testing
 
@@ -181,18 +194,64 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 
 ![](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues.svg) -->
 
-![center w:14in](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_sbm_composite.svg)
+<!-- ![center w:14in](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_sbm_composite.svg) -->
+<div class=columns2>
+<div>
 
-**Figure x:** Adjusted the hypothesis from figure 
+![](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
+
+</div>
+<div>
+
+![](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues.svg)
+
+</div>
+</div>
+
+<div class=columns2>
+<div>
+
+**Fig 4A:** Density-adjusted hypothesis from Fig 3. 
+
+</div>
+<div>
+
+**Fig 4B:** Corrected p-values for group connections w/ density adjustment. 
+
+</div>
+</div>
+
 
 </div>
 <div>
 
 
+<!-- ### Removing Kenyon cells -->
 
-### Removing Kenyon cells
+<!-- - Density test: $p < 10^{-26}$
+- Group connection test: $p < 10^{-2}$
+- Density-adjusted group connection test: $p \approx 0.5$ -->
+
+
+### Notions of bilateral symmetry
+
+<style scoped>
+table {
+    font-size: 0.3in;
+    margin-bottom: 50px;
+}
+</style>
+
+| Model | $H_0$ (vs. $H_A \neq$)                                             |  KCs  |     p-value     | Interpretation                                           |
+| ----- | ------------------------------------------------------------------ | :---: | :-------------: | -------------------------------------------------------- |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$   | Reject densities the same                                |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$   | Reject group connection probabilities the same           |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.002$ | Reject above even after accounting for density           |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$   | Reject densities the same (w/o KCs)                      |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.003$ | Reject group connection probabilities the same (w/o KCs) |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   | $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    |
 <!-- START subcolumns -->
-<div class=columns2>
+<!-- <div class=columns2-br>
 <div>
 
 ![](../../../results/figs/kc_minus/kc_minus_methods.svg)
@@ -200,34 +259,45 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 </div>
 <div>
 
-- Density test: super small
-
-- Group connection test: small
-
-- Density adjusted group connection test: not small
 
 </div>
-</div>
+</div> -->
 <!-- END subcolumns -->
 
 ### Edge weight thresholds
 
 <!-- ![](../../../results/figs/thresholding_tests/edge_weight_dist_input_proportion.png) -->
 
-<!-- START columns -->
-<div class="columns2-bl">
+<div class="columns2">
+<div>
+
+![](./results/thresholding_tests/../../../../../results/figs/thresholding_tests/thresholding_methods.svg)
+
+</div>
 <div>
 
 ![](../../../results/figs/thresholding_tests/input_threshold_pvalues_p_removed_legend.svg)
 
 </div>
+</div>
+
+<div class="columns2">
 <div>
 
-- some stuff about it blah blah
+**Fig 5A:** Removed edges below some edge weight threshold, examining bilateral symmetry for each resulting pair of networks. 
+
+</div>
+<div>
+
+**Fig 5B:** Higher edge weight thresholds generally make networks more symmetric. Less apparent when using synapse counts as edge weights (not shown). 
 
 </div>
 </div>
-<!-- END subcolumns -->
+
+### Limitations and extensions
+- Many other models to consider (e.g. random dot product graph) [x]
+- Many other potential neuron groupings for group connection testing
+- Matched nodes between networks
 
 ### Code
 <div class="columns2">

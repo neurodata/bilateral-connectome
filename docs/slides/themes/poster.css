@@ -19,6 +19,7 @@ section {
   justify-content: flex-start;
   --left: #66c2a5;
   --right: #fc8d62;
+  --nd-blue: #6FA5E1;
 }
 img[alt~="center"] {
   display: block;
@@ -65,12 +66,16 @@ h4 {
 p {
   font-size: 0.4in;
   text-align: justify;
+  /* margin: 0; */
+  line-height: 1.4;
 }
 .columns2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5in;
   padding: 0in 0in;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .columns2-np {
   display: grid;
@@ -112,7 +117,7 @@ p {
   font-size: 0.35in
 }
 .box {
-  border: 10px solid lightblue;
+  border: 10px solid var(--nd-blue);
 }
 .header {
   display: grid;

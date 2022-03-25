@@ -79,7 +79,10 @@ palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
 
 
 fig, axs = plt.subplots(
-    1, 3, figsize=(8, 3), gridspec_kw=dict(width_ratios=[0.75, 0.75, 1])
+    2,
+    2,
+    figsize=(6, 6),
+    # gridspec_kw=dict(height_ratios=[1, 0.2, 1]),
 )
 
 
@@ -99,14 +102,19 @@ line1 = mpl.lines.Line2D(
 fig.lines = (line1,)
 
 
-ax = axs[0]
+ax = axs[0, 0]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax, left_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
-ax.set_title("Adjust connection\nprobabilities", fontsize="small", x=1.2, y=1.4)
+ax.set_title(
+    "Adjust connection probabilities\nfor group connection test",
+    fontsize="small",
+    x=1.2,
+    y=1.4,
+)
 
-ax = axs[1]
+ax = axs[0, 1]
 Bhat1 = misc["probabilities1"].values
 top_ax, left_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"], x=0.55)
@@ -125,8 +133,11 @@ ax.annotate(
     zorder=1,
 )
 
-ax = axs[2]
-ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize="small")
+from giskard.plot import merge_axes
+
+
+ax = merge_axes(fig, axs, rows=1)
+# ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize="small")
 ax.axis("off")
 ax.set(xlim=(0, 1), ylim=(0, 1))
 
@@ -234,7 +245,7 @@ stat, pvalue, misc = stochastic_block_test(
     method="fisher",
     density_adjustment=True,
 )
-glue("pvalue", pvalue, form='pvalue')
+glue("pvalue", pvalue, form="pvalue")
 print(pvalue)
 print(f"{pvalue:.2g}")
 
