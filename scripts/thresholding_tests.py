@@ -381,7 +381,7 @@ sns.histplot(
 sns.move_legend(ax, loc="upper right", title="Hemisphere")
 ax.set(xlabel="Weight (synapse count)")
 ax.set_yscale("log")
-ax.set(xlim=(0, 10))
+# ax.set(xlim=(0, 10))
 
 #%%
 
@@ -689,6 +689,8 @@ add_alpha_line(ax)
 gluefig("input_threshold_pvalues", fig)
 
 #%%
+set_theme(font_scale=1)
+
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 sns.scatterplot(
     data=input_results,
@@ -711,7 +713,7 @@ sns.lineplot(
 ax.set(
     yscale="log",
     ylabel="p-value",
-    xlabel="Proportion of edges removed",
+    xlabel="Edges removed",
     yticks=np.geomspace(1, 1e-21, 8),
 )
 
@@ -729,6 +731,7 @@ ys = prop_to_thresh(xs)
 ax.set_xlim((x.min(), x.max()))
 ax.tick_params(axis="both", length=5)
 ax.set_xticks([0, 0.25, 0.5, 0.75])
+ax.set_xticklabels(["0%", "25%", "50%", "75%"])
 # fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 # sns.scatterplot(data=input_results, x="p_edges_removed", y="threshold", ax=ax)
 
@@ -745,7 +748,7 @@ ax2 = ax.secondary_xaxis(
 # ax2.set_xlim()
 ax2.set_xticks([0.005, 0.01, 0.015, 0.02])
 ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
-ax2.set_xlabel("Threshold (input proportion)")
+ax2.set_xlabel("Weight threshold (input proportion)")
 ax2.tick_params(axis="both", length=5)
 
 x = input_results[input_results["method"] == "Density"].iloc[7]["p_edges_removed"]
@@ -776,9 +779,6 @@ ax.text(
 #     transform=ax.transAxes,
 #     color="green",
 # )
-sns.move_legend(ax, "lower right", title="Test", frameon=True, fontsize="small")
-gluefig("input_threshold_pvalues_p_removed_legend", fig)
-
 ax.axvline(
     x,
     ax.get_ylim()[0],
@@ -796,6 +796,23 @@ ax.text(
     ha="left",
     va="center",
 )
+
+sns.move_legend(
+    ax,
+    "lower left",
+    title="Test",
+    frameon=True,
+    fontsize="small",
+    ncol=1,
+    labelspacing=0.3
+    # columnspacing=a
+    # prop=dict(va="top"),
+)
+leg = ax.get_legend()
+# dir(leg)
+# leg.texts[2].set_verticalalignment('top')
+gluefig("input_threshold_pvalues_p_removed_legend", fig)
+
 
 ax.get_legend().remove()
 gluefig("input_threshold_pvalues_p_removed", fig)
