@@ -384,18 +384,6 @@ const thebe_selector_output = ".output, .cell_output"
     <a class="reference internal nav-link" href="#group-connection-testing">
      Group connection testing
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#b">
-       B
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#c">
-       C
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#density-adjusted-group-connection-testing">
@@ -403,13 +391,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#removing-kenyon-cells">
-     Removing Kenyon cells
+    <a class="reference internal nav-link" href="#notions-of-bilateral-symmetry">
+     Notions of bilateral symmetry
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#edge-weight-thresholds">
      Edge weight thresholds
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#limitations-and-extensions">
+     Limitations and extensions
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -510,18 +503,6 @@ const thebe_selector_output = ".output, .cell_output"
     <a class="reference internal nav-link" href="#group-connection-testing">
      Group connection testing
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#b">
-       B
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#c">
-       C
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#density-adjusted-group-connection-testing">
@@ -529,13 +510,18 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#removing-kenyon-cells">
-     Removing Kenyon cells
+    <a class="reference internal nav-link" href="#notions-of-bilateral-symmetry">
+     Notions of bilateral symmetry
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#edge-weight-thresholds">
      Edge weight thresholds
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#limitations-and-extensions">
+     Limitations and extensions
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -588,13 +574,13 @@ const thebe_selector_output = ".output, .cell_output"
 <p>Aimed to define bilateral symmetry for a pair of networks, and formally test this hypothesis.</p>
 </div>
 <div>
-<p>Found that left and right hemispheres are different under even the simplest model of a pair of networks</p>
+<p>Left and right hemispheres are significantly different under even the simplest model of a pair of networks</p>
 </div>
 <div>
 <p>Left and right differ significantly in cell type connection probabilities, even when adjusting for the difference in density</p>
 </div>
 <div>
-<p>Difference between hemispheres can be explained as combination of a network-wide and cell-type specific effects</p>
+<p>Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects</p>
 </div>
 <div>
 <p>Provided a definition of bilateral symmetry exhibited by this connectome, tools for future connectome comparisons</p>
@@ -606,8 +592,8 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="section" id="motivation">
 <h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Connectomes are rich sources of inspiration for architectures in artificial intelligence, but unclear which structural features are necessary for yielding incredible capabilities animal intelligences.</p></li>
-<li><p>Comparing connectomes</p></li>
+<li><p>Connectomes are rich sources of inspiration for architectures in artificial intelligence</p></li>
+<li><p>Comparing connectomes can help elucidate which structural features are necessary for yielding incredible capabilities animal intelligences</p></li>
 </ul>
 <!-- - We explored statistically principled connectome comparison via a case study of a *Drosophila* larva connectome -->
 </div>
@@ -617,25 +603,22 @@ const thebe_selector_output = ".output, .cell_output"
 <div class=columns2>
 <div>
 <p><img alt="center w:5.5in" src="../../_images/Figure1-brain-render.png" /></p>
-<p><strong>Fig 1A:</strong> 3D rendering of larval <em>Drosophila</em> brain connectome</p>
+<p><strong>Fig 1A:</strong> 3D rendering of larval <em>Drosophila</em> brain connectome [1]. Comprised of ~3k neurons and ~544k synapses.</p>
 </div>
 <div>
 <p><img alt="w:5.1in" src="../results/figs/show_data/adjacencies.png" /></p>
-<p><strong>Fig 1B:</strong> Adjacency matrix sorted by brain hemisphere</p>
+<p><strong>Fig 1B:</strong> Adjacency matrix sorted by brain hemisphere. We focus on comparing <span class="math notranslate nohighlight">\(\color{#66c2a5} L \rightarrow L\)</span> vs. <span class="math notranslate nohighlight">\(\color{#fc8d62} R \rightarrow R\)</span> subgraphs.</p>
 </div>
 </div>
-<ul class="simple">
-<li><p>Connectome of a larval <em>Drosophila</em> [1] has xxx neurons and xxx synapses</p></li>
-</ul>
+<!-- - Connectome of a larval *Drosophila* [1] has xxx neurons and xxx synapses -->
 <!-- END subcolumns -->
 <!-- ![center](../../../results/figs/show_data/adj_and_layout.png) -->
 </div>
 </div>
 <div class="section" id="are-span-style-color-var-left-left-span-and-the-span-style-color-var-right-right-span-networks-different">
 <h2>Are <span style="color:var(--left)"> left </span> and the <span style="color:var(--right)"> right </span> networks “different”?<a class="headerlink" href="#are-span-style-color-var-left-left-span-and-the-span-style-color-var-right-right-span-networks-different" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Two sample testing problem! But for networks</p></li>
-</ul>
+<!-- - Two sample testing problem! But for networks -->
+<p>Requires that we define what we mean by “different” for a network, and develop a test procedure for any definition.</p>
 <div class="section" id="density-testing">
 <h3>Density testing<a class="headerlink" href="#density-testing" title="Permalink to this headline">¶</a></h3>
 <div class=columns2>
@@ -648,10 +631,10 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class=columns2>
 <div>
-<p><strong>Fig 2A:</strong> Comparison of densities via Fisher’s exact test</p>
+<p><strong>Fig 2A:</strong> Testing symmetry under Erdos-Renyi (ER) model amounts to comparing densities (here via Fisher’s exact test).</p>
 </div>
 <div>
-<p><strong>Fig 2B:</strong> Densities are significantly different between hemispheres <br> (<span class="math notranslate nohighlight">\(p&lt;10^{-23}\)</span>)</p>
+<p><strong>Fig 2B:</strong> Densities are significantly different between hemispheres <br> (<span class="math notranslate nohighlight">\(p&lt;10^{-23}\)</span>).</p>
 </div>
 </div>
 </div>
@@ -661,22 +644,25 @@ const thebe_selector_output = ".output, .cell_output"
 <h3>Group connection testing<a class="headerlink" href="#group-connection-testing" title="Permalink to this headline">¶</a></h3>
 <!-- #### A -->
 <p><img alt="center w:13in" src="../results/figs/sbm_unmatched_test/sbm_methods_explain.svg" />
-<strong>Fig 3A:</strong> Group connection testing fits SBMs using cell type partition. Group-to-group connection probabilities are compared (Fisher’s exact test), p-values are combined (Tippett’s method).</p>
+<strong>Fig 3A:</strong> Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types).</p>
 <!-- START subcolumns -->
 <div class=columns2>
 <div>
-<div class="section" id="b">
-<h4>B<a class="headerlink" href="#b" title="Permalink to this headline">¶</a></h4>
 <p><img alt="" src="../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg" /></p>
 </div>
 <div>
-</div>
-<div class="section" id="c">
-<h4>C<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h4>
 <p><img alt="center w:5in" src="../results/figs/sbm_unmatched_test/significant_p_comparison.svg" /></p>
 </div>
 </div>
-<!-- END subcolumns -->
+<div class=columns2>
+<div>
+<p><strong>Fig 3B:</strong> Corrected p-values for each group connection.</p>
+<!-- 5 connections are $<0.05$, shown with "X"s. -->
+</div>
+<div>
+<p><strong>Fig 3C:</strong> Comparison of probabilities for significant connections.</p>
+<!-- Probability is always higher on right side. -->
+</div>
 </div>
 </div>
 <div class="section" id="density-adjusted-group-connection-testing">
@@ -684,43 +670,127 @@ const thebe_selector_output = ".output, .cell_output"
 <!-- ![](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
 ![](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues.svg) -->
-<p><img alt="center w:14in" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_sbm_composite.svg" /></p>
-<p><strong>Figure x:</strong> Adjusted the hypothesis from figure</p>
-</div>
-<div>
-</div>
-<div class="section" id="removing-kenyon-cells">
-<h3>Removing Kenyon cells<a class="headerlink" href="#removing-kenyon-cells" title="Permalink to this headline">¶</a></h3>
-<!-- START subcolumns -->
+<!-- ![center w:14in](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_sbm_composite.svg) -->
 <div class=columns2>
 <div>
-<p><img alt="" src="../results/figs/kc_minus/kc_minus_methods.svg" /></p>
+<p><img alt="" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg" /></p>
 </div>
 <div>
-<ul class="simple">
-<li><p>Density test: super small</p></li>
-<li><p>Group connection test: small</p></li>
-<li><p>Density adjusted group connection test: not small</p></li>
-</ul>
+<p><img alt="" src="../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues.svg" /></p>
 </div>
 </div>
+<div class=columns2>
+<div>
+<p><strong>Fig 4A:</strong> Density-adjusted hypothesis from Fig 3.</p>
+</div>
+<div>
+<p><strong>Fig 4B:</strong> Corrected p-values for group connections w/ density adjustment.</p>
+</div>
+</div>
+</div>
+<div>
+<!-- ### Removing Kenyon cells -->
+<!-- - Density test: $p < 10^{-26}$
+- Group connection test: $p < 10^{-2}$
+- Density-adjusted group connection test: $p \approx 0.5$ -->
+</div>
+<div class="section" id="notions-of-bilateral-symmetry">
+<h3>Notions of bilateral symmetry<a class="headerlink" href="#notions-of-bilateral-symmetry" title="Permalink to this headline">¶</a></h3>
+<style scoped>
+table {
+    font-size: 0.3in;
+    margin-bottom: 50px;
+}
+</style>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(H_0\)</span> (vs. <span class="math notranslate nohighlight">\(H_A \neq\)</span>)</p></th>
+<th class="text-align:center head"><p>KCs</p></th>
+<th class="text-align:center head"><p>p-value</p></th>
+<th class="head"><p>Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ER</p></td>
+<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
+<td class="text-align:center"><p>+</p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-23}\)</span></p></td>
+<td><p>Reject densities the same</p></td>
+</tr>
+<tr class="row-odd"><td><p>SBM</p></td>
+<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p>+</p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt; 10^{-7}\)</span></p></td>
+<td><p>Reject group connection probabilities the same</p></td>
+</tr>
+<tr class="row-even"><td><p>aSBM</p></td>
+<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p>+</p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.002\)</span></p></td>
+<td><p>Reject above even after accounting for density</p></td>
+</tr>
+<tr class="row-odd"><td><p>ER</p></td>
+<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
+<td class="text-align:center"><p>-</p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-26}\)</span></p></td>
+<td><p>Reject densities the same (w/o KCs)</p></td>
+</tr>
+<tr class="row-even"><td><p>SBM</p></td>
+<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p>-</p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.003\)</span></p></td>
+<td><p>Reject group connection probabilities the same (w/o KCs)</p></td>
+</tr>
+<tr class="row-odd"><td><p>aSBM</p></td>
+<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p>-</p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.43\)</span></p></td>
+<td><p>Don’t reject above after density adjustment (w/o KCs)</p></td>
+</tr>
+</tbody>
+</table>
+<!-- START subcolumns -->
+<!-- <div class=columns2-br>
+<div>
+
+![](../../../results/figs/kc_minus/kc_minus_methods.svg)
+
+</div>
+<div>
+
+
+</div>
+</div> -->
 <!-- END subcolumns -->
 </div>
 <div class="section" id="edge-weight-thresholds">
 <h3>Edge weight thresholds<a class="headerlink" href="#edge-weight-thresholds" title="Permalink to this headline">¶</a></h3>
 <!-- ![](../../../results/figs/thresholding_tests/edge_weight_dist_input_proportion.png) -->
-<!-- START columns -->
-<div class="columns2-bl">
+<div class="columns2">
+<div>
+<p><img alt="" src="../results/figs/thresholding_tests/thresholding_methods.svg" /></p>
+</div>
 <div>
 <p><img alt="" src="../results/figs/thresholding_tests/input_threshold_pvalues_p_removed_legend.svg" /></p>
 </div>
+</div>
+<div class="columns2">
 <div>
+<p><strong>Fig 5A:</strong> Removed edges below some edge weight threshold, examining bilateral symmetry for each resulting pair of networks.</p>
+</div>
+<div>
+<p><strong>Fig 5B:</strong> Higher edge weight thresholds generally make networks more symmetric. Less apparent when using synapse counts as edge weights (not shown).</p>
+</div>
+</div>
+</div>
+<div class="section" id="limitations-and-extensions">
+<h3>Limitations and extensions<a class="headerlink" href="#limitations-and-extensions" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>some stuff about it blah blah</p></li>
+<li><p>Many other models to consider (e.g. random dot product graph) [x]</p></li>
+<li><p>Many other potential neuron groupings for group connection testing</p></li>
+<li><p>Matched nodes between networks</p></li>
 </ul>
-</div>
-</div>
-<!-- END subcolumns -->
 </div>
 <div class="section" id="code">
 <h3>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h3>
