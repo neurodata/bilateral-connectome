@@ -34,7 +34,7 @@ size: 44:33
 
 <span style="text-align:center; margin:0; padding:0">
 
-### [neurodata.io](https://neurodata.io/)
+<!-- ### [neurodata.io](https://neurodata.io/) -->
 
 </span>
 
