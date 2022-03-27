@@ -202,3 +202,21 @@ img[alt~='headerlogo'] {
   margin-top: auto;
   vertical-align: middle;
 } */
+
+table th {
+  font-size: 0.5in;
+  font-weight: 500;
+  border-bottom: 0.05in solid grey;
+}
+
+table th:not(:last-child){
+  border-right: 0.05in solid grey
+}
+
+table td:not(:last-child){
+  border-right: 0.05in solid grey
+}
+
+/* table tr {
+  border-right: 0.0in solid grey
+} */

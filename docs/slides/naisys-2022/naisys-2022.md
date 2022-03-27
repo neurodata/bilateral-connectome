@@ -127,9 +127,9 @@ size: 44:33
 <br>
 
 <!-- - Two sample testing problem! But for networks -->
-Requires that we define what we mean by "different" for a pair of networks, and develop a test procedure for any definition.
+Requires that we define what we could mean by "different" for a pair of networks, and develop a test procedure for each definition.
 
-### Density testing
+### Density test (Model 1)
 
 <div class=columns2>
 <div>
@@ -162,7 +162,7 @@ Requires that we define what we mean by "different" for a pair of networks, and 
 <div>
 
 
-### Group connection testing 
+### Group connection test (Model 2)
 
 <!-- #### A -->
 ![center w:11.5in](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
@@ -198,7 +198,7 @@ Requires that we define what we mean by "different" for a pair of networks, and 
 </div>
 </div>
 
-### Density-adjusted group connection testing
+### Density-adjusted group connection test (Model 3)
 
 <!-- ![](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
@@ -261,50 +261,40 @@ table {
 <div>
 
 #### With Kenyon cells
-| Model  |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
+| **Model** |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
 | :----: | :----------------------------------------------------------------: | :-----: |
-|   ER   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
-|  SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |         |
-| DA-SBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
+| **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
+| **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |         |
+| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
 
 
 </div>
 <div>
 
 #### Without Kenyon cells
-| Model  |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
+| Model |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
 | :----: | :----------------------------------------------------------------: | :-----: |
-|   ER   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
-|  SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |    d    |
+| **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
+| **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |    d    |
+| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
+
+</div>
+</div>
+
+<!-- #### With Kenyon cells
+| Model  |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
+| :----- | :----------------------------------------------------------------: | :-----: |
+| ER     |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
+| SBM    | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |         |
 | DA-SBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
 
-</div>
-</div>
+#### Without Kenyon cells
+| Model  |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
+| :----- | :----------------------------------------------------------------: | :-----: |
+| ER     |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
+| SBM    | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |    d    |
+| DA-SBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         | --> |
 
-
-
-<!-- 
-| <!-- | <!--                                                               |                          Model                          | $H_0$ (vs. $H_A \neq$) | KCs                                           | p-value | Interpretation |
-| ---- | ------------------------------------------------------------------ | :-----------------------------------------------------: | :--------------------: | --------------------------------------------- |
-| ER   | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   | <span style='font-size:0.3in;line-spacing:0'> + </span> |      $<10^{-23}$       | Reject equal densities                        |
-| SBM  | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | <span style='font-size:0.3in;line-spacing:0'> + </span> |      $< 10^{-7}$       | Reject equal group connection probabilities   |
-| aSBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | <span style='font-size:0.3in;line-spacing:0'> + </span> |    $\approx 0.002$     | Reject above even w/ density adjustment       |
-| ER   | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   | <span style='font-size:0.3in;line-spacing:0'> - </span> |      $<10^{-26}$       | Reject equal densities                        |
-| SBM  | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | <span style='font-size:0.3in;line-spacing:0'> - </span> |    $\approx 0.003$     | Reject equal group connection probabilities   |
-| aSBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | <span style='font-size:0.3in;line-spacing:0'> - </span> |     $\approx 0.43$     | Fail to reject above after density adjustment | -->     |
-<!-- START subcolumns -->
-<!-- <div class=columns2-br>
-<div>
-
-![](../../../results/figs/kc_minus/kc_minus_methods.svg)
-
-</div>
-<div>
-
-
-</div>
-</div> -->
-<!-- END subcolumns -->
 
 ### Edge weight thresholds
 
@@ -342,7 +332,7 @@ table {
 - Matched nodes between networks
 
 ### Code and references
-
+<br>
 <div class="columns2-np">
 <div>
 
