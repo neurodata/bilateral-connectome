@@ -12,6 +12,12 @@ size: 44:33
 
 ![headerlogo](./images/../../../images/hopkins-logo.png)
 
+<!-- <br>
+<br>
+<br>
+
+### Summary -->
+
 <!-- </div> -->
 
 </div>
@@ -45,33 +51,35 @@ size: 44:33
 <!-- # Towards statistical comparative connectomics:<br> A case study on the bilateral symmetry of an insect brain connectome -->
 
 
-
+<span class='h3-noline'> Summary </span>
 
 <div class='box'>
 <div class="columns5">
 <div>
 
-Aimed to define bilateral symmetry for a pair of networks, and formally test this hypothesis.
+<!-- #### Summary -->
+
+- Aimed to define bilateral symmetry for a pair of networks, and formally test this hypothesis.
 
 </div>
 <div>
 
-Left and right hemispheres are significantly different under even the simplest model of a pair of networks
+- Left and right hemispheres are significantly different under even the simplest model of a pair of networks
 
 </div>
 <div>
 
-Left and right differ significantly in cell type connection probabilities, even when adjusting for the difference in density
+- Left and right differ significantly in cell type connection probabilities, even when adjusting for the difference in density
 
 </div>
 <div>
 
-Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects
+- Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects
 
 </div>
 <div>
 
-Provided a definition of bilateral symmetry exhibited by this connectome, tools for future connectome comparisons
+- Provided a definition of bilateral symmetry exhibited by this connectome, tools for future connectome comparisons
 
 </div>
 </div>
@@ -115,9 +123,11 @@ Provided a definition of bilateral symmetry exhibited by this connectome, tools 
 
 <!-- ![center](../../../results/figs/show_data/adj_and_layout.png) -->
 
-## Are <span style="color:var(--left)"> left </span> and the <span style="color:var(--right)"> right </span> networks "different"?
+## Are the <span style="color:var(--left)"> left </span> and <span style="color:var(--right)"> right </span> networks "different"?
+<br>
+
 <!-- - Two sample testing problem! But for networks -->
-Requires that we define what we mean by "different" for a network, and develop a test procedure for any definition.
+Requires that we define what we mean by "different" for a pair of networks, and develop a test procedure for any definition.
 
 ### Density testing
 
@@ -155,7 +165,7 @@ Requires that we define what we mean by "different" for a network, and develop a
 ### Group connection testing 
 
 <!-- #### A -->
-![center w:13in](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
+![center w:11.5in](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
 **Fig 3A:** Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types).
 
 <!-- START subcolumns -->
@@ -175,13 +185,14 @@ Requires that we define what we mean by "different" for a network, and develop a
 <div class=columns2>
 <div>
 
-**Fig 3B:** Corrected p-values for each group connection. 
+**Fig 3B:** Corrected p-values for each group connection. P-value test of equal group connections is $<10^{-8}$.
+
 <!-- 5 connections are $<0.05$, shown with "X"s. -->
 
 </div>
 <div>
 
-**Fig 3C:** Comparison of probabilities for significant connections. 
+**Fig 3C:** Comparison of probabilities for significant connections: denser hemisphere probability always higher.
 <!-- Probability is always higher on right side. -->
 
 </div>
@@ -197,7 +208,9 @@ Requires that we define what we mean by "different" for a network, and develop a
 <div class=columns2>
 <div>
 
-![](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
+<br>
+
+![center w:5in](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
 </div>
 <div>
@@ -210,7 +223,7 @@ Requires that we define what we mean by "different" for a network, and develop a
 <div class=columns2>
 <div>
 
-**Fig 4A:** Density-adjusted hypothesis from Fig 3. 
+**Fig 4A:** Density-adjusted hypothesis, modified from Fig 3. 
 
 </div>
 <div>
@@ -231,24 +244,54 @@ Requires that we define what we mean by "different" for a network, and develop a
 - Group connection test: $p < 10^{-2}$
 - Density-adjusted group connection test: $p \approx 0.5$ -->
 
+<!-- ### Removing Kenyon cells
+Reran all tests after removing the asymmetric cell type (see below) -->
 
 ### Notions of bilateral symmetry
 
-<style scoped>
+<!-- <style scoped>
 table {
     font-size: 0.3in;
-    margin-bottom: 50px;
+    /* text-align: center; */
+    /* margin-bottom: 50px; */
 }
-</style>
+</style> -->
 
-| Model | $H_0$ (vs. $H_A \neq$)                                             |  KCs  |     p-value     | Interpretation                                           |
-| ----- | ------------------------------------------------------------------ | :---: | :-------------: | -------------------------------------------------------- |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$   | Reject densities the same                                |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$   | Reject group connection probabilities the same           |
-| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.002$ | Reject above even after accounting for density           |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$   | Reject densities the same (w/o KCs)                      |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.003$ | Reject group connection probabilities the same (w/o KCs) |
-| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   | $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    |
+<div class="columns2">
+<div>
+
+#### With Kenyon cells
+| Model  |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
+| :----: | :----------------------------------------------------------------: | :-----: |
+|   ER   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
+|  SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |         |
+| DA-SBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
+
+
+</div>
+<div>
+
+#### Without Kenyon cells
+| Model  |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
+| :----: | :----------------------------------------------------------------: | :-----: |
+|   ER   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
+|  SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |    d    |
+| DA-SBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
+
+</div>
+</div>
+
+
+
+<!-- 
+| <!-- | <!--                                                               |                          Model                          | $H_0$ (vs. $H_A \neq$) | KCs                                           | p-value | Interpretation |
+| ---- | ------------------------------------------------------------------ | :-----------------------------------------------------: | :--------------------: | --------------------------------------------- |
+| ER   | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   | <span style='font-size:0.3in;line-spacing:0'> + </span> |      $<10^{-23}$       | Reject equal densities                        |
+| SBM  | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | <span style='font-size:0.3in;line-spacing:0'> + </span> |      $< 10^{-7}$       | Reject equal group connection probabilities   |
+| aSBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | <span style='font-size:0.3in;line-spacing:0'> + </span> |    $\approx 0.002$     | Reject above even w/ density adjustment       |
+| ER   | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   | <span style='font-size:0.3in;line-spacing:0'> - </span> |      $<10^{-26}$       | Reject equal densities                        |
+| SBM  | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | <span style='font-size:0.3in;line-spacing:0'> - </span> |    $\approx 0.003$     | Reject equal group connection probabilities   |
+| aSBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | <span style='font-size:0.3in;line-spacing:0'> - </span> |     $\approx 0.43$     | Fail to reject above after density adjustment | -->     |
 <!-- START subcolumns -->
 <!-- <div class=columns2-br>
 <div>
@@ -283,7 +326,7 @@ table {
 <div class="columns2">
 <div>
 
-**Fig 5A:** Removed edges below some edge weight threshold, examining bilateral symmetry for each resulting pair of networks. 
+**Fig 5A:** Removed edges w/ weight (synapse count or proportion of input to downstream neuron) below some threshold, testing bilateral symmetry for each resulting pair of networks. 
 
 </div>
 <div>
@@ -298,8 +341,9 @@ table {
 - Many other potential neuron groupings for group connection testing
 - Matched nodes between networks
 
-### Code
-<div class="columns2">
+### Code and references
+
+<div class="columns2-np">
 <div>
 
 <div class="columns2-np">
@@ -329,8 +373,6 @@ table {
 
 </div>
 </div>
-
-### References
 
 <footer>
 [1]: Winding, Pedigo et al. *The complete connectome of an insect brain,* In prep. (2022)

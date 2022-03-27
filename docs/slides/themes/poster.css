@@ -25,6 +25,7 @@ section {
   --nd-blue: #6FA5E1;
   --left: #66c2a5;
   --right: #fc8d62;
+  overflow: hidden;
 }
 
 /* TEXT */
@@ -40,12 +41,14 @@ h1 {
 h2 {
   padding: 0in;
   font-size: 0.6in;
+  margin-top: 0.1in;
+  margin-bottom: 0.05in;
   text-align: center;
 }
 /* affiliations, correspondence, etc. */
 .underauthor {
-  margin-top: 0in;
-  margin-bottom: 0.2in;
+  margin-bottom: 0in;
+  padding-bottom: 0;
   vertical-align: top;
   font-size: 0.4in;
   text-align: center;
@@ -56,10 +59,16 @@ h2 {
   font-size: 0.35in
 }
 /* section headings */
-h3 {
-  font-size: 0.5in;
-  margin-top: 0.2in;
-  margin-bottom: 0.1in;
+h3, .h3-noline {
+  font-size: 0.6in;
+  margin-top: 0.15in;
+  margin-bottom: 0.15in;
+}
+h3{
+  border-bottom: .05in solid grey
+}
+.h3-noline { 
+  font-weight: 600
 }
 /* sub section headings if you want */
 h4 {
@@ -68,15 +77,20 @@ h4 {
   margin-bottom: 0in;
   font-size: 0.45in;
 }
-/* control of general text */
+/* control of general text and bullets */
 /* line-height controls vertical line spacing */
 /* overflow: hidden makes it so that text outside the margins is hidden, keeping a clean
 margin */
-p {
+p,ul {
   font-size: 0.4in;
   text-align: justify;
-  line-height: 1.4;
+  line-height: 1.2;
   overflow: hidden;
+}
+table {
+  font-size: 0.4in;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* COLUMNS */
@@ -96,8 +110,9 @@ column in half again */
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0;
-  /* gap: 0.25in; */
-  /* padding: 0.125in 0.25in; */
+  margin-left: auto;
+  margin-right: auto;
+  gap: 0;
 }
 .columns2-br {
   display: grid;
@@ -119,6 +134,7 @@ than the others. */
   gap: 0.75in;
   padding: 0.125in;
   overflow: hidden;
+  /* background-color: black; */
 }
 /* This is what I used to create a top bar of main points for the poster */
 .columns5 {
@@ -132,21 +148,29 @@ than the others. */
   display: grid;
   grid-template-columns: 1fr 6fr 1fr;
   gap: 0.0in;
+  margin-bottom: 0in;
+  padding-bottom: 0in;
 }
 /* For making a highlight box at top of poster */
 .box {
   border: 10px solid var(--nd-blue);
 }
 /* This controls formatting of bullet points */
-ul {
-  font-size:0.4in;
-}
+/* ul {
+  font-size: 0.4in;
+  text-align: justify;
+  line-height: 1.25;
+  overflow: hidden;
+
+} */
 /* I adapted this for references */
 footer {
   color: var(--header-footer-color);
   bottom: auto;
   left: auto;
-  font-size: 0.3in
+  font-size: 0.3in;
+  overflow: hidden;
+  position: relative;
 }
 
 /* IMAGES */
@@ -173,3 +197,8 @@ img[alt~='headerlogo'] {
   margin-bottom: 0;
   vertical-align: middle;
 }
+/* img[alt~='centerv'] {
+  position: relative;
+  margin-top: auto;
+  vertical-align: middle;
+} */

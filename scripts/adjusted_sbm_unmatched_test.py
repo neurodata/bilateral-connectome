@@ -82,7 +82,8 @@ fig, axs = plt.subplots(
     2,
     2,
     figsize=(6, 6),
-    # gridspec_kw=dict(height_ratios=[1, 0.2, 1]),
+    # constrained_layout=True,
+    gridspec_kw=dict(wspace=0.25, hspace=0, height_ratios=[2, 0.5]),
 )
 
 
@@ -92,45 +93,49 @@ xleft = 0.05
 xright = 0.68
 border_color = "lightgrey"
 line1 = mpl.lines.Line2D(
-    (0.615, 0.615),
     (0.15, 0.95),
+    (0.4, 0.4),
     transform=fig.transFigure,
     color=border_color,
     linewidth=1.5,
 )
 
-fig.lines = (line1,)
+# fig.lines = (line1,)
 
 
 ax = axs[0, 0]
 _, _, misc = stochastic_block_test(A1, A1, node_data["labels"], node_data["labels"])
 Bhat1 = misc["probabilities1"].values
 top_ax, left_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
-top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"])
+top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"], size="large")
 ax.set_title(
     "Adjust connection probabilities\nfor group connection test",
-    fontsize="small",
-    x=1.2,
-    y=1.4,
+    fontsize="large",
+    x=1.1,
+    y=1.3,
 )
 
 ax = axs[0, 1]
 Bhat1 = misc["probabilities1"].values
 top_ax, left_ax = heatmap_grouped(0.6 * Bhat1, [1, 2, 3], palette=palette, ax=ax)
-top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"], x=0.55)
-top_ax.text(0.94, -1.3, r"$c$")
+top_ax.set_title(
+    r"$\hat{B}^{(R)}$", color=network_palette["Right"], x=0.55, size="large"
+)
+top_ax.text(0.94, -1.2, r"$c$", size="large")
 
+# ax.autoscale("off")
 ax.annotate(
     "",
     xy=(0, 1.5),
-    xytext=(-1, 1.5),
+    xytext=(-0.9, 1.5),
     arrowprops=dict(
         arrowstyle="simple",
-        shrinkA=7,
-        shrinkB=9,
+        shrinkA=5,
+        shrinkB=10,
         facecolor="black",
     ),
     zorder=1,
+    clip_on=False,
 )
 
 from giskard.plot import merge_axes
@@ -141,8 +146,7 @@ ax = merge_axes(fig, axs, rows=1)
 ax.axis("off")
 ax.set(xlim=(0, 1), ylim=(0, 1))
 
-
-draw_hypothesis_box("dasbm", 0.1, 0.65, ax=ax, yskip=0.17, ypad=0.015)
+draw_hypothesis_box("dasbm", 0.27, 1, ax=ax, yskip=0.5, ypad=0.03)
 
 fig.set_facecolor("w")
 
