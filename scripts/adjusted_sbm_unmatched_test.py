@@ -81,9 +81,9 @@ palette = dict(zip(np.unique(labels) + 1, sns.color_palette("Set2")[3:]))
 fig, axs = plt.subplots(
     2,
     2,
-    figsize=(6, 6),
+    figsize=(6, 5),
     # constrained_layout=True,
-    gridspec_kw=dict(wspace=0.25, hspace=0, height_ratios=[2, 0.5]),
+    gridspec_kw=dict(wspace=0.25, hspace=0, height_ratios=[2, 0.3]),
 )
 
 
@@ -144,9 +144,9 @@ from giskard.plot import merge_axes
 ax = merge_axes(fig, axs, rows=1)
 # ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize="small")
 ax.axis("off")
-ax.set(xlim=(0, 1), ylim=(0, 1))
+ax.set(xlim=(0, 1), ylim=(0, 2))
 
-draw_hypothesis_box("dasbm", 0.27, 1, ax=ax, yskip=0.5, ypad=0.03)
+draw_hypothesis_box("dasbm", 0.27, 2, ax=ax, yskip=1.2, ypad=0.03)
 
 fig.set_facecolor("w")
 

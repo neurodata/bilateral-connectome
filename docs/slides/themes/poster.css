@@ -60,7 +60,7 @@ h2 {
 }
 /* section headings */
 h3, .h3-noline {
-  font-size: 0.6in;
+  font-size: 0.55in;
   margin-top: 0.15in;
   margin-bottom: 0.15in;
 }
@@ -73,15 +73,15 @@ h3{
 /* sub section headings if you want */
 h4 {
   padding: 0in;
-  margin-top: 0in;
-  margin-bottom: 0in;
+  margin-top: 0.15in;
+  margin-bottom: 0.1in;
   font-size: 0.45in;
 }
 /* control of general text and bullets */
 /* line-height controls vertical line spacing */
 /* overflow: hidden makes it so that text outside the margins is hidden, keeping a clean
 margin */
-p,ul {
+p, ul {
   font-size: 0.4in;
   text-align: justify;
   line-height: 1.2;
@@ -91,6 +91,7 @@ table {
   font-size: 0.4in;
   margin-left: auto;
   margin-right: auto;
+  border: 1px solid grey;
 }
 
 /* COLUMNS */
@@ -101,8 +102,8 @@ column in half again */
 .columns2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.5in;
-  padding: 0in 0in;
+  column-gap: 0.5in;
+  padding: 0in;
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -112,6 +113,18 @@ column in half again */
   padding: 0;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 0; 
+  margin-bottom: 0;
+  gap: 0;
+}
+.columns3-np {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0; 
+  margin-bottom: 0;
   gap: 0;
 }
 .columns2-br {
@@ -168,6 +181,15 @@ footer {
   color: var(--header-footer-color);
   bottom: auto;
   left: auto;
+  font-size: 0.25in;
+  overflow: hidden;
+  position: relative;
+}
+
+.references { 
+  color: var(--header-footer-color);
+  bottom: auto;
+  left: auto;
   font-size: 0.3in;
   overflow: hidden;
   position: relative;
@@ -215,6 +237,11 @@ table th:not(:last-child){
 
 table td:not(:last-child){
   border-right: 0.05in solid grey
+}
+
+img{
+  margin-bottom: 0in;
+  padding-bottom: 0in;
 }
 
 /* table tr {
