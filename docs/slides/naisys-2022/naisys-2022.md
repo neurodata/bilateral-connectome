@@ -29,7 +29,7 @@ size: 44:33
 
 <div class=underauthor> 
 
-1 - Johns Hopkins University, 2 - University of Cambridge, $\ast$ - correspondence: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo) ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) ![icon](../../images/web.png) [bdpedigo.github.io/](https://bdpedigo.github.io/) 
+1 - Johns Hopkins University, 2 - University of Cambridge, $\ast$ - correspondence: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo) ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) ![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/) 
 
 </div>
 
@@ -59,22 +59,27 @@ size: 44:33
 
 <!-- #### Summary -->
 
-- Aimed to define bilateral symmetry for a pair of networks, and formally test this hypothesis.
+- Aimed to define bilateral symmetry for a connectome, and formally test this hypothesis.
 
 </div>
 <div>
 
-- Left and right hemispheres are significantly different under even the simplest model of a pair of networks
+- Hemispheres differ in a network-wide parameter under even the simplest model of a network pair.
 
 </div>
 <div>
 
-- Left and right differ significantly in cell type connection probabilities, even when adjusting for the difference in density
+- Hemispheres differ in neuron group connection probabilities, even when adjusting for the network-wide effect.
 
 </div>
 <div>
 
-- Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects
+- Detect no differences in adjusted group connections after removing a cell type or when only considering strong edges.
+
+<!-- - Removing a specific cell type and adjusting for this network-wide effect provides one notion of bilateral symmetry -->
+
+<!-- 
+- Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects -->
 
 </div>
 <div>
@@ -105,14 +110,14 @@ size: 44:33
 
 ![center w:5.5in](./../../images/Figure1-brain-render.png)
 
-**Fig 1A:** 3D rendering of larval *Drosophila* brain connectome [1]. Comprised of ~3k neurons and ~544k synapses.
+**Fig 1A:** 3D rendering of a larval *Drosophila* brain connectome [1] comprised of ~3k neurons and ~544k synapses.
 
 </div>
 <div>
 
 ![w:5.1in](./../../../results/figs/show_data/adjacencies.png)
 
-**Fig 1B:** Adjacency matrix sorted by brain hemisphere. We compare $\color{#66c2a5} L \rightarrow L$ vs. $\color{#fc8d62} R \rightarrow R$ subgraphs.
+**Fig 1B:** Directed, binary adjacency matrix sorted by brain hemisphere. We compare $\color{#66c2a5} L \rightarrow L$ vs. $\color{#fc8d62} R \rightarrow R$ subgraphs.
 
 </div>
 </div>
@@ -127,7 +132,7 @@ size: 44:33
 <br>
 
 <!-- - Two sample testing problem! But for networks -->
-Requires that we define what we could mean by "different" for a pair of networks, and develop a test procedure for each definition.
+Requires that we define what we could mean by "different" for a pair of networks, develop a test procedure for each definition.
 
 ### Density test (Model 1)
 
@@ -380,7 +385,7 @@ This work
 
 #### Acknowledgements
 <footer>
-We thank Marta Zlatic's lab, Albert Cardona's lab and all tracers, for the amazing dataset and many ideas. We thank the NeuroData lab for helpful feedback. We thank many at Microsoft Research for help developing graspologic.
+Marta Zlatic's lab, Albert Cardona's lab and all tracers for the amazing dataset and many ideas. NeuroData lab for helpful feedback. Many at Microsoft Research for help developing graspologic.
 </footer>
 
 </div>
