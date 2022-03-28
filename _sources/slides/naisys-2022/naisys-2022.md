@@ -29,7 +29,7 @@ size: 44:33
 
 <div class=underauthor> 
 
-1 - Johns Hopkins University, 2 - University of Cambridge, $\ast$ - correspondence: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo) ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) ![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) 
+1 - Johns Hopkins University, 2 - University of Cambridge, $\ast$ - correspondence: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo) ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) ![icon](../../images/web.png) [bdpedigo.github.io/](https://bdpedigo.github.io/) 
 
 </div>
 
@@ -112,7 +112,7 @@ size: 44:33
 
 ![w:5.1in](./../../../results/figs/show_data/adjacencies.png)
 
-**Fig 1B:** Adjacency matrix sorted by brain hemisphere. We focus on comparing $\color{#66c2a5} L \rightarrow L$ vs. $\color{#fc8d62} R \rightarrow R$ subgraphs.
+**Fig 1B:** Adjacency matrix sorted by brain hemisphere. We compare $\color{#66c2a5} L \rightarrow L$ vs. $\color{#fc8d62} R \rightarrow R$ subgraphs.
 
 </div>
 </div>
@@ -165,7 +165,7 @@ Requires that we define what we could mean by "different" for a pair of networks
 ### Group connection test (Model 2)
 
 <!-- #### A -->
-![center w:11.5in](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
+![center w:10.5in](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
 **Fig 3A:** Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types).
 
 <!-- START subcolumns -->
@@ -185,15 +185,14 @@ Requires that we define what we could mean by "different" for a pair of networks
 <div class=columns2>
 <div>
 
-**Fig 3B:** Corrected p-values for each group connection. P-value test of equal group connections is $<10^{-8}$.
+<!-- P-values for group connections. Test of equal group connections rejects ($p<10^{-8}$). -->
 
-<!-- 5 connections are $<0.05$, shown with "X"s. -->
+**Fig 3B:** Test comparing group connections rejects ($p<10^{-7}$); five specific connections differ.
 
 </div>
 <div>
 
-**Fig 3C:** Comparison of probabilities for significant connections: denser hemisphere probability always higher.
-<!-- Probability is always higher on right side. -->
+**Fig 3C:** For significant group connections, denser hemisphere probability is always higher.
 
 </div>
 </div>
@@ -223,12 +222,12 @@ Requires that we define what we could mean by "different" for a pair of networks
 <div class=columns2>
 <div>
 
-**Fig 4A:** Density-adjusted hypothesis, modified from Fig 3. 
+**Fig 4A:** Hypothesis from Fig 3 modified by a factor $c$ set to make densities equal.
 
 </div>
 <div>
 
-**Fig 4B:** Corrected p-values for group connections w/ density adjustment. 
+**Fig 4B:** Test comparing adjusted group connections rejects ($p<10^{-2}$); two differing connections from KCs.
 
 </div>
 </div>
@@ -261,22 +260,22 @@ table {
 <div>
 
 #### With Kenyon cells
-| **Model** |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
-| :----: | :----------------------------------------------------------------: | :-----: |
-| **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
-| **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |         |
-| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
+| **Model** |                       $H_0$ (vs. $H_A \neq$)                       |    p-value    |
+| :-------: | :----------------------------------------------------------------: | :-----------: |
+|   **1**   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-23}$ |
+|   **2**   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-7}$  |
+|   **3**   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | ${<}10^{-2}$  |
 
 
 </div>
 <div>
 
 #### Without Kenyon cells
-| Model |                       $H_0$ (vs. $H_A \neq$)                       | p-value |
-| :----: | :----------------------------------------------------------------: | :-----: |
-| **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
-| **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |    d    |
-| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         |
+| Model |                       $H_0$ (vs. $H_A \neq$)                       |    p-value    |
+| :---: | :----------------------------------------------------------------: | :-----------: |
+| **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-26}$ |
+| **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-2}$  |
+| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |     0.51      |
 
 </div>
 </div>
@@ -316,30 +315,33 @@ table {
 <div class="columns2">
 <div>
 
-**Fig 5A:** Removed edges w/ weight (synapse count or proportion of input to downstream neuron) below some threshold, testing bilateral symmetry for each resulting pair of networks. 
+**Fig 5A:** Removed edges w/ weight (synapse count or percentage of input to downstream neuron) below some threshold, tested symmetry for each pair of networks. 
 
 </div>
 <div>
 
-**Fig 5B:** Higher edge weight thresholds generally make networks more symmetric. Less apparent when using synapse counts as edge weights (not shown). 
+**Fig 5B:** Higher edge weight thresholds generally made networks more symmetric. Less apparent when using synapse counts as edge weights (not shown). 
 
 </div>
 </div>
 
 ### Limitations and extensions
-- Many other models to consider (e.g. random dot product graph [3])
-- Many other potential neuron groupings for group connection testing
-- Matched nodes between networks
+- Other models to consider (e.g. random dot product graph [3])
+- Other sensible neuron groupings for group connection test
+- Matching nodes between networks - leads to different models, likely with more power
 
-### Code and references
-<br>
-<div class="columns2-np">
+###
+
+
+<div class="columns2">
 <div>
 
-<div class="columns2-np">
+#### Code
+
+<div class="columns3-np">
 <div>
 
-![center h:1in](./../../images/graspologic_svg.svg)
+![left h:1in](./../../images/graspologic_svg.svg)
 
 </div>
 <div>
@@ -348,29 +350,68 @@ table {
 [![h:.4in](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)
 
 </div>
+<div>
+
+![center h:1in](./../../images/graspologic-qr.svg)
+
+</div>
 </div>
 
-[github.com/microsoft/graspologic](https://github.com/microsoft/graspologic)
+<br>
 
+<div class="columns3-np">
+<div>
+
+This work 
 
 </div>
 <div>
 
 [![h:0.4in](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
 
-[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) 
+</div>
+<div>
 
+
+![center h:1in](./../../images/bilateral-qr.svg)
 
 </div>
 </div>
+
+#### Acknowledgements
+<footer>
+We thank Marta Zlatic's lab, Albert Cardona's lab and all tracers, for the amazing dataset and many ideas. We thank the NeuroData lab for helpful feedback. We thank many at Microsoft Research for help developing graspologic.
+</footer>
+
+</div>
+<div>
+
+#### References
 
 <footer>
-[1]: Winding, Pedigo et al. *The complete connectome of an insect brain,* In prep. (2022)
+[1] Winding, Pedigo et al. "The complete connectome of an insect brain," In preparation (2022) 
 <br>
-[2]: Chung et al. *Statistical connectomics,* Ann. Rev. Statistics and its Application (2021)
-<br>
-[3]: Athreya et al. *Statistical inference on random dot product graphs: a survey,* JMLR (2017)
+[2] Chung et al. "Statistical connectomics," Ann. Rev. Statistics and its Application (2021) <br>
+[3] Athreya et al. "Statistical inference on random dot product graphs: a survey," JMLR (2017)
 </footer>
+
+#### Funding
+<!-- ![h:1in](../../images/NSF_4-Color_bitmap_Logo.png) -->
+
+<footer>
+B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Award (1942963). J.T.V + C.E.P supported by NIH BRAIN Initiative (RF1MH123233).
+</footer>
+
+</div>
+</div>
+
+
+
+
+<!-- <div class='references'>
+
+
+</div> -->
 
 </div>
 </div>
