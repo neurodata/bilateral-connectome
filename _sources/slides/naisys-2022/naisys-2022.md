@@ -192,7 +192,7 @@ Requires that we define what we could mean by "different" for a pair of networks
 
 <!-- P-values for group connections. Test of equal group connections rejects ($p<10^{-8}$). -->
 
-**Fig 3B:** Test comparing group connections rejects ($p<10^{-7}$); five specific connections differ.
+**Fig 3B:** Test comparing group connections rejects ($p{<}10^{-7}$); five specific connections differ.
 
 </div>
 <div>
@@ -232,7 +232,7 @@ Requires that we define what we could mean by "different" for a pair of networks
 </div>
 <div>
 
-**Fig 4B:** Test comparing adjusted group connections rejects ($p<10^{-2}$); two differing connections from KCs.
+**Fig 4B:** Test comparing adjusted group connections rejects ($p{<}10^{-2}$); two differing connections from KCs.
 
 </div>
 </div>
@@ -385,7 +385,7 @@ This work
 
 #### Acknowledgements
 <footer>
-Marta Zlatic's lab, Albert Cardona's lab and all tracers for the amazing dataset and many ideas. NeuroData lab for helpful feedback. Many at Microsoft Research for help developing graspologic.
+Marta Zlatic's lab, Albert Cardona's lab and all tracers for the amazing dataset and many ideas. NeuroData lab for feedback. Many at Microsoft Research for w/ graspologic.
 </footer>
 
 </div>
