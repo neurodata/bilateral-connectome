@@ -265,11 +265,11 @@ table {
 <div>
 
 #### With Kenyon cells
-| **Model** |                       $H_0$ (vs. $H_A \neq$)                       |    p-value    |
-| :-------: | :----------------------------------------------------------------: | :-----------: |
-|   **1**   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-23}$ |
-|   **2**   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-7}$  |
-|   **3**   | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | ${<}10^{-2}$  |
+| Model |                       $H_0$ (vs. $H_A \neq$)                       |    p-value    |
+| :---: | :----------------------------------------------------------------: | :-----------: |
+| **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-23}$ |
+| **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-7}$  |
+| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | ${<}10^{-2}$  |
 
 
 </div>
@@ -325,7 +325,7 @@ table {
 </div>
 <div>
 
-**Fig 5B:** Higher edge weight thresholds generally made networks more symmetric. Less apparent when using synapse counts as edge weights (not shown). 
+**Fig 5B:** Detect no asymmetry in networks of only top ~$50\%$ of edges (by input percentage) under models studied here. Not true using synapse counts edge weights (not shown).
 
 </div>
 </div>
