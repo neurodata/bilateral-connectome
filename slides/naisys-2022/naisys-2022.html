@@ -618,7 +618,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="section" id="benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span">
 <h2>Benjamin D. Pedigo<span class=super>1*</span>, Mike Powell<span class=super>1</span>, Eric W. Bridgeford<span class=super>1</span>, Michael Winding<span class=super>2</span>, Carey E. Priebe<span class=super>1</span>, Joshua T. Vogelstein<span class=super>1</span><a class="headerlink" href="#benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span" title="Permalink to this headline">¶</a></h2>
 <div class=underauthor> 
-<p>1 - Johns Hopkins University, 2 - University of Cambridge, <span class="math notranslate nohighlight">\(\ast\)</span> - correspondence: <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a> <img alt="icon" src="../../_images/github.png" /> <a class="reference external" href="https://github.com/bdpedigo"><em>&#64;bdpedigo (Github)</em></a> <img alt="icon" src="../../_images/twitter.png" /> <a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod (Twitter)</em></a> <img alt="icon" src="../../_images/web.png" /> <a class="reference external" href="https://bdpedigo.github.io/">bdpedigo.github.io/</a></p>
+<p>1 - Johns Hopkins University, 2 - University of Cambridge, <span class="math notranslate nohighlight">\(\ast\)</span> - correspondence: <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a> <img alt="icon" src="../../_images/github.png" /> <a class="reference external" href="https://github.com/bdpedigo"><em>&#64;bdpedigo (Github)</em></a> <img alt="icon" src="../../_images/twitter.png" /> <a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod (Twitter)</em></a> <img alt="icon" src="../../_images/web.png" /> <a class="reference external" href="https://bdpedigo.github.io/">bdpedigo.github.io</a></p>
 </div>
 </div>
 <div>
@@ -635,23 +635,26 @@ const thebe_selector_output = ".output, .cell_output"
 <div>
 <!-- #### Summary -->
 <ul class="simple">
-<li><p>Aimed to define bilateral symmetry for a pair of networks, and formally test this hypothesis.</p></li>
+<li><p>Aimed to define bilateral symmetry for a connectome, and formally test this hypothesis.</p></li>
 </ul>
 </div>
 <div>
 <ul class="simple">
-<li><p>Left and right hemispheres are significantly different under even the simplest model of a pair of networks</p></li>
+<li><p>Hemispheres differ in a network-wide parameter under even the simplest model of a network pair.</p></li>
 </ul>
 </div>
 <div>
 <ul class="simple">
-<li><p>Left and right differ significantly in cell type connection probabilities, even when adjusting for the difference in density</p></li>
+<li><p>Hemispheres differ in neuron group connection probabilities, even when adjusting for the network-wide effect.</p></li>
 </ul>
 </div>
 <div>
 <ul class="simple">
-<li><p>Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects</p></li>
+<li><p>Detect no differences in adjusted group connections after removing a cell type or when only considering strong edges.</p></li>
 </ul>
+<!-- - Removing a specific cell type and adjusting for this network-wide effect provides one notion of bilateral symmetry -->
+<!-- 
+- Difference between hemispheres can be explained as combination of network-wide and cell type-specific effects -->
 </div>
 <div>
 <ul class="simple">
@@ -677,11 +680,11 @@ const thebe_selector_output = ".output, .cell_output"
 <div class=columns2>
 <div>
 <p><img alt="center w:5.5in" src="../../_images/Figure1-brain-render.png" /></p>
-<p><strong>Fig 1A:</strong> 3D rendering of larval <em>Drosophila</em> brain connectome [1]. Comprised of ~3k neurons and ~544k synapses.</p>
+<p><strong>Fig 1A:</strong> 3D rendering of a larval <em>Drosophila</em> brain connectome [1] comprised of ~3k neurons and ~544k synapses.</p>
 </div>
 <div>
 <p><img alt="w:5.1in" src="../results/figs/show_data/adjacencies.png" /></p>
-<p><strong>Fig 1B:</strong> Adjacency matrix sorted by brain hemisphere. We compare <span class="math notranslate nohighlight">\(\color{#66c2a5} L \rightarrow L\)</span> vs. <span class="math notranslate nohighlight">\(\color{#fc8d62} R \rightarrow R\)</span> subgraphs.</p>
+<p><strong>Fig 1B:</strong> Directed, binary adjacency matrix sorted by brain hemisphere. We compare <span class="math notranslate nohighlight">\(\color{#66c2a5} L \rightarrow L\)</span> vs. <span class="math notranslate nohighlight">\(\color{#fc8d62} R \rightarrow R\)</span> subgraphs.</p>
 </div>
 </div>
 <!-- - Connectome of a larval *Drosophila* [1] has xxx neurons and xxx synapses -->
@@ -693,7 +696,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>Are the <span style="color:var(--left)"> left </span> and <span style="color:var(--right)"> right </span> networks “different”?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-networks-different" title="Permalink to this headline">¶</a></h2>
 <br>
 <!-- - Two sample testing problem! But for networks -->
-<p>Requires that we define what we could mean by “different” for a pair of networks, and develop a test procedure for each definition.</p>
+<p>Requires that we define what we could mean by “different” for a pair of networks, develop a test procedure for each definition.</p>
 <div class="section" id="density-test-model-1">
 <h3>Density test (Model 1)<a class="headerlink" href="#density-test-model-1" title="Permalink to this headline">¶</a></h3>
 <div class=columns2>
@@ -912,7 +915,7 @@ table {
 <div class="section" id="acknowledgements">
 <h4>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h4>
 <footer>
-We thank Marta Zlatic's lab, Albert Cardona's lab and all tracers, for the amazing dataset and many ideas. We thank the NeuroData lab for helpful feedback. We thank many at Microsoft Research for help developing graspologic.
+Marta Zlatic's lab, Albert Cardona's lab and all tracers for the amazing dataset and many ideas. NeuroData lab for helpful feedback. Many at Microsoft Research for help developing graspologic.
 </footer>
 </div>
 <div>
