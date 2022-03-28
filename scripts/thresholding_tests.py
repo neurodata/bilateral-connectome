@@ -2,20 +2,25 @@
 
 import datetime
 import time
-from giskard.plot.utils import merge_axes, soft_axis_off
 
 import matplotlib.pyplot as plt
+import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from pkg.data import load_maggot_graph, select_nice_nodes
+from giskard.plot import merge_axes, soft_axis_off
+from giskard.plot.utils import merge_axes, soft_axis_off
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import SmartSVG, layout, set_theme
+from pkg.plot import SmartSVG, rainbowarrow, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
+from pkg.utils import sample_toy_networks
+from scipy.interpolate import interp1d
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
+from pkg.utils import remove_group
 
 
 DISPLAY_FIGS = True
@@ -44,13 +49,13 @@ set_theme()
 
 #%%
 
-from pkg.data import load_unmatched
-from pkg.data import load_network_palette
 
 network_palette, NETWORK_KEY = load_network_palette()
 
 left_adj, left_nodes = load_unmatched("left", weights=True)
 right_adj, right_nodes = load_unmatched("right", weights=True)
+
+neutral_color = sns.color_palette("Set2")[2]
 
 GROUP_KEY = "simple_group"
 
@@ -58,117 +63,262 @@ left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 
 #%%
-# from pkg.plot import simple_plot_neurons
+fig, axs = plt.subplots(2, 1, figsize=(4, 5))
 
-# pickle_path = "bilateral-connectome/data/2021-05-24-v2/neurons.pickle"
 
-# import pickle
-# from navis import NeuronList
+g = nx.DiGraph()
+g.add_edge(0, 1, weight=4)
+pos = {0: (0.1, 0.65), 1: (0.5, 0.65)}
+ax = axs[0]
+soft_axis_off(ax)
+nx.draw_networkx(
+    g,
+    pos,
+    ax=ax,
+    arrowstyle="-",
+    connectionstyle="arc3,rad=-0.5",
+    width=3,
+    node_size=500,
+    with_labels=False,
+)
+nx.draw_networkx(
+    g,
+    pos,
+    ax=ax,
+    arrowstyle="-",
+    connectionstyle="arc3,rad=0.5",
+    width=3,
+    node_size=500,
+    with_labels=False,
+)
+ax.plot([0.45], [0.73], "o", color="black")
+ax.set(xlim=(0, 1), ylim=(0, 1))
+ax.set_ylabel("Synapse\ncount", rotation=0, ha="right")
+ax.text(0.65, 0.65, "Weight = 2", fontsize="medium")
 
-# with open(pickle_path, "rb") as f:
-#     neuronlist = pickle.load(f)
+ax = axs[1]
+soft_axis_off(ax)
+nx.draw_networkx(
+    g,
+    pos,
+    ax=ax,
+    arrowstyle="-|>",
+    connectionstyle="arc3,rad=-0.5",
+    width=3,
+    node_size=500,
+    with_labels=False,
+)
+ax.set(xlim=(0, 1), ylim=(0, 1))
+ax.text(0.65, 0.65, "Weight = 2 / 5", fontsize="large")
 
-# neutral_color = sns.color_palette("Set2")[2]
 
-# fig = plt.figure(figsize=(5, 5), constrained_layout=True)
-# gs = plt.GridSpec(1, 1, figure=fig)
-# ax = fig.add_subplot(gs[0, 0], projection="3d")
-# # edge weight definitions
-# # 4 6
-# # 7 as a pre?
-# # 8 as a post?
-# # 13 as pre
-# neuron = NeuronList(neuronlist[13])
-# name = int(neuron.id[0])
-# simple_plot_neurons(
-#     neuron,
-#     ax=ax,
-#     dist=3,
-#     axes_equal=True,
-#     palette={name: neutral_color},
-#     use_x=True,
-#     use_y=True,
-#     use_z=False,
-#     force_bounds=True,
-#     axis_off=False,
-#     linewidth=1,
-# )
+def draw_input(xytext):
+    ax.annotate(
+        "",
+        (0.5, 0.65),
+        xytext=xytext,
+        textcoords="offset points",
+        arrowprops=dict(
+            arrowstyle="-|>",
+            connectionstyle="arc3",
+            facecolor="grey",
+            linewidth=3,
+            shrinkB=10,
+            edgecolor="grey"
+            # width=0.5,
+            # mutation_scale=0.5,
+        ),
+    )
 
-# #%%
 
-# fig, axs = plt.subplots(2, 1, figsize=(4, 5))
+draw_input((-25, -25))
+draw_input((0, -35))
+draw_input((-35, 0))
+draw_input((0, 35))
 
-# import networkx as nx
+ax.set_ylabel("Input\nproportion", rotation=0, ha="right")
 
-# g = nx.DiGraph()
-# g.add_edge(0, 1, weight=4)
-# pos = {0: (0.1, 0.65), 1: (0.5, 0.65)}
-# ax = axs[0]
-# soft_axis_off(ax)
-# nx.draw_networkx(
-#     g,
-#     pos,
-#     ax=ax,
-#     arrowstyle="-|>",
-#     connectionstyle="arc3,rad=-0.5",
-#     width=3,
-#     node_size=500,
-#     with_labels=False,
-# )
-# ax.set(xlim=(0, 1), ylim=(0, 1))
-# ax.set_ylabel("Synapse\ncount", rotation=0, ha="right")
+fig.set_facecolor("w")
+
+#%%
+fig, axs = plt.subplots(2, 1, figsize=(4, 5), gridspec_kw=dict(hspace=0))
+from matplotlib.patches import FancyArrowPatch
+from matplotlib.patches import Circle
+
+set_theme(font_scale=1)
+source_loc = (0.25, 0.5)
+target_loc = (0.75, 0.5)
+radius = 0.05
+dim_color = "black"
+dark_color = "black"
+
+
+def draw_synapse_end(rad_factor, color="black"):
+    rad = np.pi * rad_factor
+    x = np.cos(rad)
+    y = np.sin(rad)
+    scale_factor = 1.6
+    x *= radius * scale_factor
+    y *= radius * scale_factor
+    x += target_loc[0]
+    y += target_loc[1]
+    c = Circle((x, y), radius=0.0125, color=color)
+    ax.add_patch(c)
+
+
+def draw_synapse(source_loc, connection_rad=0, end_rad=0, color="black"):
+    fa = FancyArrowPatch(
+        posA=source_loc,
+        posB=target_loc,
+        connectionstyle=f"arc3,rad={connection_rad}",
+        shrinkB=30,
+        color=color,
+    )
+    ax.add_patch(fa)
+    draw_synapse_end(end_rad, color=color)
+
+
+def draw_neurons():
+    source_circle = Circle(
+        (source_loc),
+        radius=radius,
+        facecolor=neutral_color,
+        edgecolor="black",
+        linewidth=2,
+        zorder=10,
+    )
+    ax.add_patch(source_circle)
+    ax.text(*source_loc, r"$i$", zorder=11, va="center", ha="center")
+
+    target_circle = Circle(
+        (target_loc),
+        radius=radius,
+        facecolor=neutral_color,
+        edgecolor="black",
+        linewidth=2,
+        zorder=10,
+    )
+    ax.add_patch(target_circle)
+    ax.text(*target_loc, r"$j$", zorder=11, va="center", ha="center")
+
+
+def set_lims(ax):
+    ax.set_xlim(0.19, 0.81)
+    ax.set_ylim(0.3, 0.7)
+
+
+ax = axs[0]
+ax.text(0.93, 0.5, 2, fontsize="large", va="center", ha="center")
+soft_axis_off(ax)
+ax.set_ylabel("Synapse\ncount", rotation=0, ha="right", va="center", labelpad=20)
+
+draw_neurons()
+draw_synapse(source_loc, connection_rad=-0.5, end_rad=0.75)
+draw_synapse(source_loc, connection_rad=0.5, end_rad=-0.75)
+
+set_lims(ax)
+
+ax.annotate(
+    r"Synapse from $i$ to $j$",
+    (0.5, 0.63),
+    xytext=(40, 25),
+    textcoords="offset points",
+    ha="center",
+    arrowprops=dict(arrowstyle="-|>", facecolor="black", relpos=(0.25, 0)),
+    fontsize="small",
+)
+
+
 # ax.text(0.65, 0.65, "Weight = 2", fontsize="medium")
 
-# ax = axs[1]
-# soft_axis_off(ax)
-# nx.draw_networkx(
-#     g,
-#     pos,
-#     ax=ax,
-#     arrowstyle="-|>",
-#     connectionstyle="arc3,rad=-0.5",
-#     width=3,
-#     node_size=500,
-#     with_labels=False,
-# )
-# ax.set(xlim=(0, 1), ylim=(0, 1))
-# # $\frac{2}{5}$
+ax = axs[1]
+ax.text(0.93, 0.5, "2 / 5", fontsize="large", va="center", ha="center")
+soft_axis_off(ax)
+ax.set_ylabel("Input\nproportion", rotation=0, ha="right", va="center", labelpad=20)
 # ax.text(0.65, 0.65, "Weight = 2 / 5", fontsize="medium")
 
-
-# def draw_input(xytext):
-#     ax.annotate(
-#         "",
-#         (0.5, 0.65),
-#         xytext=xytext,
-#         textcoords="offset points",
-#         arrowprops=dict(
-#             arrowstyle="-|>",
-#             connectionstyle="arc3",
-#             facecolor="grey",
-#             linewidth=3,
-#             shrinkB=10,
-#             edgecolor="grey"
-#             # width=0.5,
-#             # mutation_scale=0.5,
-#         ),
-#     )
+draw_neurons()
 
 
-# draw_input((-25, -25))
-# draw_input((0, -35))
-# draw_input((-35, 0))
-# draw_input((0, 35))
+draw_synapse(source_loc, connection_rad=-0.5, end_rad=0.75)
+draw_synapse(source_loc, connection_rad=0.5, end_rad=-0.75)
 
-# ax.set_ylabel("Input\nproportion", rotation=0, ha="right")
+dist = 0.15
+draw_synapse(
+    (target_loc[0], target_loc[1] + dist),
+    connection_rad=0,
+    end_rad=0.5,
+    color=dim_color,
+)
+draw_synapse(
+    (target_loc[0] - dist, target_loc[1]),
+    connection_rad=0,
+    end_rad=1,
+    color=dim_color,
+)
+draw_synapse(
+    (target_loc[0], target_loc[1] - dist),
+    connection_rad=0,
+    end_rad=-0.5,
+    color=dim_color,
+)
 
-# fig.set_facecolor("w")
+set_lims(ax)
+
+ax.annotate(
+    r"Synapse from not $i$ to $j$",
+    (0.75, 0.4),
+    xytext=(-10, -50),
+    textcoords="offset points",
+    ha="right",
+    arrowprops=dict(arrowstyle="-|>", facecolor="black", relpos=(0.75, 1)),
+    fontsize="small",
+)
+
+
+fig.set_facecolor("w")
+
+fig.text(0.07, 0.89, "Weight\n type", fontsize="large", ha="right")
+fig.text(0.97, 0.89, "Weight\n" + r"$i \rightarrow$ j", fontsize="large")
+
+# fig.text(0.1, 0.9, "Source\nneuron")
+# fig.text(0.75, 0.9, "Target\nneuron")
+
+import matplotlib as mpl
+
+border_color = "lightgrey"
+line1 = mpl.lines.Line2D(
+    (-0.25, 1.2),
+    (0.5, 0.5),
+    transform=fig.transFigure,
+    color=border_color,
+    linewidth=1.5,
+)
+line2 = mpl.lines.Line2D(
+    (0.95, 0.95),
+    (0.15, 0.85),
+    transform=fig.transFigure,
+    color=border_color,
+    linewidth=1.5,
+)
+line3 = mpl.lines.Line2D(
+    (0.1, 0.1),
+    (0.15, 0.85),
+    transform=fig.transFigure,
+    color=border_color,
+    linewidth=1.5,
+)
+
+fig.lines = (line1, line2, line3)
+
+gluefig("weight_notions", fig)
+# %%
+
+# %%
 
 #%%
 rng = np.random.default_rng(8888)
 
-from pkg.utils import sample_toy_networks
-import networkx as nx
 
 A1, A2, node_data = sample_toy_networks()
 
@@ -192,9 +342,6 @@ def weight_adjacency(A, scale=6):
     return A
 
 
-from giskard.plot import soft_axis_off
-
-
 def layoutplot(
     g,
     pos,
@@ -213,19 +360,8 @@ def layoutplot(
 
     edgelist = g.edges()
     weights = np.array([g[u][v]["weight"] for u, v in edgelist])
-    # weight transformations happen here, can be important
-
     weights *= weight_scale
 
-    # plot the actual layout
-    # nx.draw_networkx_nodes(
-    #     g,
-    #     pos,
-    #     nodelist=nodes.index,
-    #     node_color="black",
-    #     node_size=node_size * 1.05,
-    #     ax=ax,
-    # )
     nx.draw_networkx_nodes(
         g,
         pos,
@@ -248,7 +384,7 @@ def layoutplot(
         edge_color=weights,
         alpha=edge_alpha,
         ax=ax,
-        node_size=node_size,  # connectionstyle="arc3,rad=0.2"
+        node_size=node_size,
     )
 
     soft_axis_off(ax)
@@ -282,14 +418,12 @@ for i in range(3):
     ax = axs[3, i]
     layoutplot(g2, pos2, node_data, ax=ax, **kwargs)
 
-from giskard.plot import merge_axes
-from pkg.plot import rainbowarrow
 
 ax = merge_axes(fig, axs, rows=0)
 
 rainbowarrow(ax, start=(0.1, 0.5), end=(0.9, 0.5), cmap="Greys", n=1000, lw=30)
 ax.set(ylim=(0.4, 0.8), xlim=(0, 1))
-ax.set_title("Increasing edge weight threshold", fontsize="medium", y=0.5)
+ax.set_title("Increasing edge weight threshold", fontsize="large", y=0.5)
 ax.axis("off")
 
 
@@ -317,11 +451,9 @@ ax.annotate(
     xytext=(45, 0),
     textcoords="offset points",
     arrowprops=dict(arrowstyle="-|>", facecolor="black"),
+    fontsize="medium",
     va="center",
 )
-
-# ax = merge_axes(fig, axs, rows=2)
-# ax.axis("off")
 
 axs[1, 0].set_ylabel(
     "Left",
@@ -384,7 +516,6 @@ sns.move_legend(ax, loc="upper right", title="Hemisphere")
 ax.set(xlabel="Weight (synapse count)")
 ax.set(xticks=np.arange(1, 10))
 ax.set_yscale("log")
-# ax.set(xlim=(0, 10))
 
 gluefig("synapse_weight_histogram", fig)
 
@@ -452,7 +583,6 @@ integer_results = pd.DataFrame(rows)
 
 
 #%%
-set_theme(font_scale=1)
 
 
 def add_alpha_line(ax):
@@ -468,65 +598,123 @@ def add_alpha_line(ax):
     )
 
 
-colors = sns.color_palette("tab20")
-palette = dict(zip([gc_key, dagc_key, d_key], colors))
-
-fig, ax = plt.subplots(1, 1, figsize=(7, 6))
+#%%
 
 
-sns.scatterplot(
-    data=integer_results,
-    x="threshold",
-    y="pvalue",
-    hue="method",
-    palette=palette,
-    ax=ax,
-)
-sns.lineplot(
-    data=integer_results,
-    x="threshold",
-    y="pvalue",
-    hue="method",
-    palette=palette,
-    ax=ax,
-    legend=False,
-)
-ax.set(yscale="log", ylabel="p-value", xlabel="Edge weight (# synapses) threshold")
-sns.move_legend(ax, "lower right", title="Test", frameon=True, fontsize="small")
-ax.set(xticks=thresholds)
-add_alpha_line(ax)
+def plot_thresholding_pvalues(
+    results, weight, figsize=(8, 6), no_reject_x=None, reject_x=None
+):
+    set_theme(font_scale=1.25)
+    fig, ax = plt.subplots(1, 1, figsize=figsize)
 
-gluefig("integer_threshold_pvalues", fig)
+    colors = sns.color_palette("tab20")
+    palette = dict(zip([gc_key, dagc_key, d_key], colors))
+
+    sns.scatterplot(
+        data=results,
+        x="p_edges_removed",
+        y="pvalue",
+        hue="method",
+        palette=palette,
+        ax=ax,
+        legend=True,
+    )
+    sns.lineplot(
+        data=results,
+        x="p_edges_removed",
+        y="pvalue",
+        hue="method",
+        palette=palette,
+        ax=ax,
+        legend=False,
+    )
+
+    ax.set(
+        yscale="log",
+        ylabel="p-value",
+        xlabel="Edges removed",
+        yticks=np.geomspace(1, 1e-20, 5),
+    )
+
+    # just pick any method because these are the same for each
+    single_results = results[results["method"] == "Density"]
+    x = single_results["p_edges_removed"]
+    y = single_results["threshold"]
+
+    ax.set_xlim((x.min(), x.max()))
+    ax.tick_params(axis="both", length=5)
+    ax.set_xticks([0, 0.25, 0.5, 0.75])
+    ax.set_xticklabels(["0%", "25%", "50%", "75%"])
+
+    # basically fitting splines to interpolate linearly between points we checked
+    prop_to_thresh = interp1d(
+        x=x, y=y, kind="slinear", bounds_error=False, fill_value=(0, 1)
+    )
+    thresh_to_prop = interp1d(
+        x=y, y=x, kind="slinear", bounds_error=False, fill_value=(0, 1)
+    )
+
+    ax2 = ax.secondary_xaxis(-0.2, functions=(prop_to_thresh, thresh_to_prop))
+    # ax2 = ax.secondary_xaxis(-0.2, functions=(thresh_to_prop, prop_to_thresh))
+
+    if weight == "input_proportion":
+        ax2.set_xticks([0.005, 0.01, 0.015, 0.02])
+        ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
+        ax2.set_xlabel("Weight threshold (input percentage)")
+    elif weight == "synapse_count":
+        # ax2.set_xticks([2.0, 4.0, 6.0, 8.0])
+        # ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
+        ax2.set_xlabel("Weight threshold (synapse count)")
+    ax2.tick_params(axis="both", length=5)
+
+    add_alpha_line(ax)
+
+    sns.move_legend(
+        ax,
+        "lower left",
+        title="Test",
+        frameon=True,
+        fontsize="small",
+        ncol=1,
+        labelspacing=0.3,
+    )
+
+    # shading
+    ax.autoscale(False)
+    if no_reject_x is None:
+        no_reject_x = ax.get_xlim()[1]
+    ax.fill_between(
+        (ax.get_xlim()[0], no_reject_x),
+        y1=0.05,
+        y2=ax.get_ylim()[0],
+        color="darkred",
+        alpha=0.05,
+    )
+
+    if reject_x is None:
+        reject_x = np.mean(ax.get_xlim())
+
+    y = np.mean(np.sqrt(np.product(ax.get_ylim())))
+    ax.text(
+        reject_x,
+        y,
+        "Reject\nsymmetry",
+        ha="center",
+        va="center",
+        color="darkred",
+    )
+
+    return fig, ax
 
 
 #%%
-fig, ax = plt.subplots(1, 1, figsize=(7, 6))
+fig, ax = plot_thresholding_pvalues(integer_results, "synapse_count")
+gluefig("synapse_threshold_pvalues_legend", fig)
+ax.get_legend().remove()
+gluefig("synapse_threshold_pvalues", fig)
 
-
-sns.scatterplot(
-    data=integer_results,
-    x="p_edges_removed",
-    y="pvalue",
-    hue="method",
-    palette=palette,
-    ax=ax,
-    legend=False,
-)
-sns.lineplot(
-    data=integer_results,
-    x="p_edges_removed",
-    y="pvalue",
-    hue="method",
-    palette=palette,
-    ax=ax,
-    legend=False,
-)
-ax.set(
-    yscale="log", ylabel="p-value", xlabel="Proportion of edges removed (by # synapses)"
-)
-add_alpha_line(ax)
-gluefig("integer_threshold_pvalues_p_removed", fig)
-
+#%%
+### EDGE WEIGHTS AS INPUT PROPORTIONS
 #%%
 left_input = (left_nodes["axon_input"] + left_nodes["dendrite_input"]).values
 left_input[left_input == 0] = 1
@@ -537,86 +725,6 @@ right_input[right_input == 0] = 1
 right_adj_input_norm = right_adj / right_input[None, :]
 
 #%%
-set_theme(font_scale=1.25)
-weight_data = construct_weight_data(left_adj_input_norm, right_adj_input_norm)
-median = np.median(weight_data["weights"])
-fig, ax = plt.subplots(1, 1, figsize=(8, 5))
-sns.histplot(
-    data=weight_data,
-    x="weights",
-    hue="labels",
-    palette=network_palette,
-    ax=ax,
-    discrete=False,
-    cumulative=False,
-    common_norm=True,
-    log_scale=True,
-    stat="count",
-    bins=50,
-    kde=True,
-)
-sns.move_legend(ax, loc="upper right", title="Hemisphere")
-ax.set(xlabel="Weight (input proportion)")
-neutral_color = sns.color_palette("Set2")[2]
-ax.axvline(median, color=neutral_color, linestyle="--", linewidth=4, alpha=1)
-ax.text(
-    median - 0.001,
-    ax.get_ylim()[1],
-    "Median",
-    ha="right",
-    va="top",
-    color=neutral_color,
-)
-gluefig("input_proportion_histogram", fig)
-#%%
-
-from pkg.utils import remove_group
-
-(
-    left_adj_input_norm_sub,
-    right_adj_input_norm_sub,
-    left_nodes_sub,
-    right_nodes_sub,
-) = remove_group(
-    left_adj_input_norm, right_adj_input_norm, left_nodes, right_nodes, "KCs"
-)
-
-
-weight_data = construct_weight_data(left_adj_input_norm_sub, right_adj_input_norm_sub)
-median = np.median(weight_data["weights"])
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(
-    data=weight_data,
-    x="weights",
-    hue="labels",
-    palette=network_palette,
-    ax=ax,
-    discrete=False,
-    cumulative=False,
-    common_norm=True,
-    log_scale=True,
-    stat="count",
-    bins=50,
-    kde=True,
-)
-sns.move_legend(ax, loc="upper right", title="Hemisphere")
-ax.set(xlabel="Weight (input proportion)")
-neutral_color = sns.color_palette("Set2")[2]
-ax.axvline(median, color=neutral_color, linestyle="--", linewidth=4, alpha=1)
-ax.text(
-    median - 0.001,
-    ax.get_ylim()[1],
-    "Median",
-    ha="right",
-    va="top",
-    color=neutral_color,
-)
-ax.set_title("KC-")
-# gluefig("edge_weight_dist_input_proportion", fig)
-
-
-#%%
-
 
 rows = []
 thresholds = np.linspace(0, 0.03, 31)
@@ -662,162 +770,16 @@ for threshold in tqdm(thresholds):
 input_results = pd.DataFrame(rows)
 input_results
 
-# %%
-set_theme(font_scale=1)
-
-fig, ax = plt.subplots(1, 1, figsize=(7, 6))
-
-
-sns.scatterplot(
-    data=input_results,
-    x="threshold",
-    y="pvalue",
-    hue="method",
-    palette=palette,
-    ax=ax,
-    legend=False,
-)
-sns.lineplot(
-    data=input_results,
-    x="threshold",
-    y="pvalue",
-    hue="method",
-    palette=palette,
-    ax=ax,
-    legend=False,
-)
-ax.set(yscale="log", ylabel="p-value", xlabel="Edge weight (relative input) threshold")
-ax.set(xticks=thresholds, yticks=np.geomspace(1, 1e-21, 8))
-ax.xaxis.set_major_locator(plt.MaxNLocator(4))
-add_alpha_line(ax)
-
-gluefig("input_threshold_pvalues", fig)
 
 #%%
-from scipy.interpolate import interp1d
 
-set_theme(font_scale=1)
-
-
-def plot_thresholding_pvalues(
-    results, weight, figsize=(8, 6), no_reject_x=None, reject_x=None
-):
-    fig, ax = plt.subplots(1, 1, figsize=figsize)
-
-    colors = sns.color_palette("tab20")
-    palette = dict(zip([gc_key, dagc_key, d_key], colors))
-
-    sns.scatterplot(
-        data=results,
-        x="p_edges_removed",
-        y="pvalue",
-        hue="method",
-        palette=palette,
-        ax=ax,
-        legend=True,
-    )
-    sns.lineplot(
-        data=results,
-        x="p_edges_removed",
-        y="pvalue",
-        hue="method",
-        palette=palette,
-        ax=ax,
-        legend=False,
-    )
-
-    ax.set(
-        yscale="log",
-        ylabel="p-value",
-        xlabel="Edges removed",
-        yticks=np.geomspace(1, 1e-21, 8),
-    )
-
-    # just pick any method because these are the same for each
-    single_results = results[results["method"] == "Density"]
-    x = single_results["p_edges_removed"]
-    y = single_results["threshold"]
-
-    ax.set_xlim((x.min(), x.max()))
-    ax.tick_params(axis="both", length=5)
-    ax.set_xticks([0, 0.25, 0.5, 0.75])
-    ax.set_xticklabels(["0%", "25%", "50%", "75%"])
-
-    # basically fitting splines to interpolate linearly between points we checked
-    prop_to_thresh = interp1d(
-        x=x, y=y, kind="slinear", bounds_error=False, fill_value=(0, 1)
-    )
-    thresh_to_prop = interp1d(
-        x=y, y=x, kind="slinear", bounds_error=False, fill_value=(0, 1)
-    )
-
-    ax2 = ax.secondary_xaxis(-0.2, functions=(prop_to_thresh, thresh_to_prop))
-    # ax2 = ax.secondary_xaxis(-0.2, functions=(thresh_to_prop, prop_to_thresh))
-
-    if weight == "input_proportion":
-        ax2.set_xticks([0.005, 0.01, 0.015, 0.02])
-        ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
-        ax2.set_xlabel("Weight threshold (input proportion)")
-    elif weight == "synapse_count":
-        # ax2.set_xticks([2.0, 4.0, 6.0, 8.0])
-        # ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
-        ax2.set_xlabel("Weight threshold (synapse count)")
-    ax2.tick_params(axis="both", length=5)
-
-    add_alpha_line(ax)
-
-    sns.move_legend(
-        ax,
-        "lower left",
-        title="Test",
-        frameon=True,
-        fontsize="small",
-        ncol=1,
-        labelspacing=0.3,
-    )
-
-    # shading
-    ax.autoscale(False)
-    if no_reject_x is None:
-        no_reject_x = ax.get_xlim()[1]
-    ax.fill_between(
-        (ax.get_xlim()[0], no_reject_x),
-        y1=0.05,
-        y2=ax.get_ylim()[0],
-        color="darkred",
-        alpha=0.05,
-    )
-
-    if reject_x is None:
-        reject_x = np.mean(ax.get_xlim())
-
-    y = np.mean(np.sqrt(np.product(ax.get_ylim())))
-    ax.text(
-        reject_x,
-        y,
-        "Reject symmetry",
-        ha="center",
-        va="center",
-        color="darkred",
-    )
-
-    return fig, ax
-
-
-#%%
-fig, ax = plot_thresholding_pvalues(integer_results, "synapse_count")
-gluefig("synapse_threshold_pvalues_legend", fig)
-ax.get_legend().remove()
-gluefig("synapse_threshold_pvalues", fig)
-
-#%%
 
 x = input_results[input_results["method"] == "Density"].iloc[12]["p_edges_removed"]
+x_threshold = input_results[input_results["method"] == "Density"].iloc[12]["threshold"]
 
 fig, ax = plot_thresholding_pvalues(
-    input_results, "input_proportion", no_reject_x=x, reject_x=0.28
+    input_results, "input_proportion", no_reject_x=x, reject_x=np.mean((0, x))
 )
-
 
 ax.axvline(
     x,
@@ -837,80 +799,88 @@ ax.text(
     va="center",
 )
 
-
-leg = ax.get_legend()
-
 gluefig("input_threshold_pvalues_legend", fig)
 ax.get_legend().remove()
 gluefig("input_threshold_pvalues", fig)
 
+
+#%%
+# Look at histogram
 #%%
 
+weight_data = construct_weight_data(left_adj_input_norm, right_adj_input_norm)
+median = np.median(weight_data["weights"])
 
-# fontsize = 10
+set_theme(font_scale=1.25)
+fig, ax = plt.subplots(1, 1, figsize=(8, 5))
 
-# int_thresh = SmartSVG(FIG_PATH / "integer_threshold_pvalues.svg")
-# int_thresh.set_width(200)
-# int_thresh.move(10, 15)
-# int_thresh_panel = Panel(
-#     int_thresh, Text("A) Synapse count thresholds", 5, 10, size=fontsize, weight="bold")
+sns.histplot(
+    data=weight_data,
+    x="weights",
+    hue="labels",
+    palette=network_palette,
+    ax=ax,
+    discrete=False,
+    cumulative=False,
+    common_norm=True,
+    log_scale=True,
+    stat="count",
+    bins=50,
+    kde=True,
+)
+sns.move_legend(ax, loc="upper right", title="Hemisphere")
+ax.set(xlabel="Weight (input percentage)")
+ax.set_xticks([1e-3, 1e-2, 1e-1, 1])
+ax.set_xticklabels(["0.1%", "1%", "10%", "100%"])
+ax.set_yticks([1000, 2000])
+ax.tick_params(pad=10)
+ax.axvline(x_threshold, 0, 0.99, color="black", linestyle="--", linewidth=4, alpha=1)
+ax.annotate(
+    "Critical point\n(Panel F)",
+    (x_threshold, ax.get_ylim()[1] * 0.95),
+    xytext=(-50, 10),
+    textcoords="offset points",
+    ha="right",
+    va="top",
+    color="black",
+    arrowprops=dict(arrowstyle="-|>", facecolor="black", relpos=(1, 0.7)),
+)
+# ax.text(
+#     median - 0.005,
+#     ax.get_ylim()[1],
+#     "Critical point\n(Panel E)",
+#     ha="right",
+#     va="top",
+#     color="black",
 # )
+gluefig("input_proportion_histogram", fig)
 
-# input_thresh = SmartSVG(FIG_PATH / "input_threshold_pvalues.svg")
-# input_thresh.set_width(200)
-# input_thresh.move(10, 15)
-# input_thresh_panel = Panel(
-#     input_thresh,
-#     Text("B) Input proportion thresholds", 5, 10, size=fontsize, weight="bold"),
-# )
-# input_thresh_panel.move(int_thresh.width * 0.9, 0)
-
-# int_p_removed = SmartSVG(FIG_PATH / "integer_threshold_pvalues_p_removed.svg")
-# int_p_removed.set_width(200)
-# int_p_removed.move(10, 25)
-# int_p_removed_panel = Panel(
-#     int_p_removed,
-#     Text("C) Synapse count thresholds", 5, 10, size=fontsize, weight="bold"),
-#     Text("by edges removed", 15, 20, size=fontsize, weight="bold"),
-# )
-# int_p_removed_panel.move(0, int_thresh.height * 0.9)
-
-# input_p_removed = SmartSVG(FIG_PATH / "input_threshold_pvalues_p_removed.svg")
-# input_p_removed.set_width(200)
-# input_p_removed.move(10, 25)
-# input_p_removed_panel = Panel(
-#     input_p_removed,
-#     Text("D) Input proportion thresholds", 5, 10, size=fontsize, weight="bold"),
-#     Text("by edges removed", 15, 20, size=fontsize, weight="bold"),
-# )
-# input_p_removed_panel.move(int_thresh.width * 0.9, int_thresh.height * 0.9)
-
-# fig = Figure(
-#     int_thresh.width * 2 * 0.9,
-#     int_thresh.height * 2 * 0.95,
-#     int_thresh_panel,
-#     input_thresh_panel,
-#     int_p_removed_panel,
-#     input_p_removed_panel,
-# )
-# fig.save(FIG_PATH / "thresholding_composite.svg")
-# fig
 
 #%%
 fontsize = 10
+
+weight_notions = SmartSVG(FIG_PATH / "weight_notions.svg")
+weight_notions.set_width(200)
+weight_notions.move(10, 15)
+weight_notions_panel = Panel(
+    weight_notions,
+    Text("A) Notions of edge weight", 5, 10, size=fontsize, weight="bold"),
+)
+
 methods = SmartSVG(FIG_PATH / "thresholding_methods.svg")
 methods.set_width(200)
 methods.move(10, 15)
 methods_panel = Panel(
-    methods, Text("A) Thresholding methods", 5, 10, size=fontsize, weight="bold")
+    methods, Text("B) Thresholding methods", 5, 10, size=fontsize, weight="bold")
 )
+methods_panel.move(weight_notions.width * 0.85, 0)
 
 synapse_hist = SmartSVG(FIG_PATH / "synapse_weight_histogram.svg")
 synapse_hist.set_width(200)
 synapse_hist.move(10, 15)
 synapse_hist_panel = Panel(
     synapse_hist,
-    Text("B) Synapse count distribution", 5, 10, size=fontsize, weight="bold"),
+    Text("C) Synapse count distribution", 5, 10, size=fontsize, weight="bold"),
 )
 synapse_hist_panel.move(0, methods.height * 0.9)
 
@@ -919,7 +889,7 @@ input_hist.set_width(200)
 input_hist.move(10, 15)
 input_hist_panel = Panel(
     input_hist,
-    Text("C) Input proportion distribution", 5, 10, size=fontsize, weight="bold"),
+    Text("D) Input proportion distribution", 5, 10, size=fontsize, weight="bold"),
 )
 input_hist_panel.move(synapse_hist.width * 0.85, methods.height * 0.9)
 
@@ -928,7 +898,7 @@ synapse_pvalues.set_width(200)
 synapse_pvalues.move(10, 15)
 synapse_pvalues_panel = Panel(
     synapse_pvalues,
-    Text("D) Synapse thresholding p-values", 5, 10, size=fontsize, weight="bold"),
+    Text("E) Synapse thresholding p-values", 5, 10, size=fontsize, weight="bold"),
 )
 synapse_pvalues_panel.move(0, (methods.height + synapse_hist.height) * 0.9)
 
@@ -937,24 +907,21 @@ input_pvalues.set_width(200)
 input_pvalues.move(10, 15)
 input_pvalues_panel = Panel(
     input_pvalues,
-    Text("E) Input thresholding p-values", 5, 10, size=fontsize, weight="bold"),
+    Text("F) Input thresholding p-values", 5, 10, size=fontsize, weight="bold"),
 )
 input_pvalues_panel.move(
-    synapse_pvalues.width * 0.85, (methods.height + input_hist.height) * 0.9
+    synapse_pvalues.width * 0.85, (methods.height + synapse_hist.height) * 0.9
 )
-
 
 fig = Figure(
     methods.width * 2 * 0.88,
     (methods.height + synapse_hist.height + synapse_pvalues.height) * 0.92,
+    weight_notions_panel,
     methods_panel,
     synapse_hist_panel,
     input_hist_panel,
     synapse_pvalues_panel,
-    input_pvalues_panel
-    # input_thresh_panel,
-    # int_p_removed_panel,
-    # input_p_removed_panel,
+    input_pvalues_panel,
 )
 fig.save(FIG_PATH / "thresholding_composite.svg")
 fig
@@ -964,3 +931,48 @@ elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
 print(f"Script took {delta}")
 print(f"Completed at {datetime.datetime.now()}")
+
+#%%
+
+
+(
+    left_adj_input_norm_sub,
+    right_adj_input_norm_sub,
+    left_nodes_sub,
+    right_nodes_sub,
+) = remove_group(
+    left_adj_input_norm, right_adj_input_norm, left_nodes, right_nodes, "KCs"
+)
+
+
+weight_data = construct_weight_data(left_adj_input_norm_sub, right_adj_input_norm_sub)
+median = np.median(weight_data["weights"])
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(
+    data=weight_data,
+    x="weights",
+    hue="labels",
+    palette=network_palette,
+    ax=ax,
+    discrete=False,
+    cumulative=False,
+    common_norm=True,
+    log_scale=True,
+    stat="count",
+    bins=50,
+    kde=True,
+)
+sns.move_legend(ax, loc="upper right", title="Hemisphere")
+ax.set(xlabel="Weight (input proportion)")
+ax.axvline(x_threshold, color="black", linestyle="--", linewidth=4, alpha=1)
+# ax.text(
+#     median - 0.001,
+#     ax.get_ylim()[1],
+#     "Median",
+#     ha="right",
+#     va="top",
+#     color="black",
+# )
+
+ax.set_title("KC-")
+gluefig("input_proportion_histogram_kc_minus", fig)

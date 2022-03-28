@@ -308,7 +308,7 @@ table {
 </div>
 <div>
 
-![](../../../results/figs/thresholding_tests/input_threshold_pvalues_p_removed_legend.svg)
+![](../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
 
 </div>
 </div>
