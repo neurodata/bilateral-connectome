@@ -180,7 +180,7 @@ def plot_pvalues(
 
     # plot colorbar for the pvalue plot
     # NOTE: only did it this way for consistency with the other colorbar
-    shrink_axis(cax, scale=0.5)
+    shrink_axis(cax, scale=0.5, shift=0.05)
     fig = ax.get_figure()
     _ = fig.colorbar(
         im.get_children()[0],
@@ -189,7 +189,7 @@ def plot_pvalues(
         shrink=1,
         ticklocation="left",
     )
-    cax.set_title(r"$log_{10}$" + "\np-value", pad=20)
+    cax.set_title(r"$log_{10}$" + "\ncorrected" "\np-value", pad=20)
 
     cax.plot(
         [0, 1], [np.log10(0.05), np.log10(0.05)], zorder=100, color="black", linewidth=3
@@ -206,15 +206,21 @@ def plot_pvalues(
 
     if annot_missing:
         texts = []
-        texts.append(ax.text(-0.5, -0.1, "Test not run,", transform=ax.transAxes))
-        texts.append(ax.text(-0.5, -0.16, "no edges on:", transform=ax.transAxes))
-        texts.append(ax.text(-0.45, -0.24, "L - left", transform=ax.transAxes))
-        texts.append(ax.text(-0.45, -0.3, "R - right", transform=ax.transAxes))
-        texts.append(ax.text(-0.45, -0.36, "B - both", transform=ax.transAxes))
+        texts.append(ax.text(-0.60, -0.1, "Test not run,", transform=ax.transAxes))
+        texts.append(ax.text(-0.60, -0.16, "no edges on:", transform=ax.transAxes))
+        texts.append(ax.text(-0.55, -0.24, "L - left", transform=ax.transAxes))
+        texts.append(ax.text(-0.55, -0.3, "R - right", transform=ax.transAxes))
+        texts.append(ax.text(-0.55, -0.36, "B - both", transform=ax.transAxes))
 
         bound_texts(
             texts, ax=ax, facecolor="white", edgecolor="lightgrey", xpad=0.3, ypad=1.2
         )
+
+    texts = []
+    texts.append(ax.text(-0.21, -0.36, "X - significant", transform=ax.transAxes))
+    bound_texts(
+        texts, ax=ax, facecolor="white", edgecolor="lightgrey", xpad=0.3, ypad=1.2
+    )
 
     return fig, axs
 

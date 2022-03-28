@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 
 
-def shrink_axis(ax, scale=0.7):
+def shrink_axis(ax, scale=0.7, shift=0):
     pos = ax.get_position()
     mid = (pos.ymax + pos.ymin) / 2
     height = pos.ymax - pos.ymin
     new_pos = Bbox(
         [
-            [pos.xmin, mid - scale * 0.5 * height],
-            [pos.xmax, mid + scale * 0.5 * height],
+            [pos.xmin, mid - scale * 0.5 * height - shift],
+            [pos.xmax, mid + scale * 0.5 * height - shift],
         ]
     )
     ax.set_position(new_pos)
