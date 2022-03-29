@@ -65,7 +65,7 @@ h3, .h3-noline {
   margin-bottom: 0.15in;
 }
 h3{
-  border-bottom: .05in solid var(--nd-blue)
+  border-bottom: .075in solid var(--nd-blue)
 }
 .h3-noline { 
   font-weight: 600

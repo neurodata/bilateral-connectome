@@ -23,7 +23,12 @@ size: 44:33
 </div>
 <div>
 
-# Is a whole insect brain connectome bilaterally symmetric? <br> A case study on comparing two networks
+<!-- # Is a whole insect brain connectome bilaterally symmetric? <br> A case study on comparing two networks -->
+
+# Generative network modeling reveals a first quantitative definition <br> of bilateral symmetry exhibited by an whole insect brain connectome
+
+<!-- # Towards statistical comparative connectomics:<br> A case study on the bilateral symmetry of an insect brain connectome -->
+
 
 ## Benjamin D. Pedigo<span class=super>1*</span>, Mike Powell<span class=super>1</span>, Eric W. Bridgeford<span class=super>1</span>, Michael Winding<span class=super>2</span>, Carey E. Priebe<span class=super>1</span>, Joshua T. Vogelstein<span class=super>1</span>
 
@@ -115,7 +120,7 @@ size: 44:33
 </div>
 <div>
 
-![w:5.1in](./../../../results/figs/show_data/adjacencies.png)
+![center w:5.1in](./../../../results/figs/show_data/adjacencies.png)
 
 **Fig 1B:** Directed, binary adjacency matrix sorted by brain hemisphere. We compare $\color{#66c2a5} L \rightarrow L$ vs. $\color{#fc8d62} R \rightarrow R$ subgraphs.
 
@@ -153,12 +158,12 @@ Requires that we define what we could mean by "different" for a pair of networks
 <div>
 
 
-**Fig 2A:** Testing symmetry under Erdos-Renyi (ER) model [2] amounts to comparing densities (here via Fisher's exact test).
+**Fig 2A:** Testing symmetry under Erdos-Renyi (ER) model [2] compares global connection probability  (density), here via Fisher's exact test.
 
 </div>
 <div>
 
-**Fig 2B:** Densities are significantly different between hemispheres <br> ($p<10^{-23}$).
+**Fig 2B:** Test comparing densities rejected ($p{<}10^{-23}$), even the simplest model parameter differs between hemispheres.
 
 </div>
 </div>
@@ -171,7 +176,7 @@ Requires that we define what we could mean by "different" for a pair of networks
 
 <!-- #### A -->
 ![center w:10.5in](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
-**Fig 3A:** Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types).
+**Fig 3A:** Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types [1]).
 
 <!-- START subcolumns -->
 <div class=columns2>
@@ -192,7 +197,7 @@ Requires that we define what we could mean by "different" for a pair of networks
 
 <!-- P-values for group connections. Test of equal group connections rejects ($p<10^{-8}$). -->
 
-**Fig 3B:** Test comparing group connections rejects ($p{<}10^{-7}$); five specific connections differ.
+**Fig 3B:** Test comparing group connections rejected ($p{<}10^{-7}$); five specific connections differ.
 
 </div>
 <div>
@@ -232,7 +237,7 @@ Requires that we define what we could mean by "different" for a pair of networks
 </div>
 <div>
 
-**Fig 4B:** Test comparing adjusted group connections rejects ($p{<}10^{-2}$); two differing connections from KCs.
+**Fig 4B:** Test comparing adjusted group connections rejected $(p{<}10^{-2})$; differences from KCs.
 
 </div>
 </div>
@@ -280,7 +285,7 @@ table {
 | :---: | :----------------------------------------------------------------: | :-----------: |
 | **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-26}$ |
 | **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-2}$  |
-| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |     0.51      |
+| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |     $0.51$      |
 
 </div>
 </div>
@@ -325,7 +330,7 @@ table {
 </div>
 <div>
 
-**Fig 5B:** Detect no asymmetry in networks of only top ~$50\%$ of edges (by input percentage) under models studied here. Not true using synapse counts edge weights (not shown).
+**Fig 5B:** Did not detect asymmetry in networks of only top ~$50\%$ of edges (by input percentage) under models studied here. Not true using synapse counts edge weights (not shown).
 
 </div>
 </div>
@@ -333,7 +338,7 @@ table {
 ### Limitations and extensions
 - Other models to consider (e.g. random dot product graph [3])
 - Other sensible neuron groupings for group connection test
-- Matching nodes between networks - leads to different models, likely with more power
+- Matching nodes across networks leads to new models, likely more power
 
 ###
 
@@ -404,7 +409,7 @@ Marta Zlatic's lab, Albert Cardona's lab and all tracers for the amazing dataset
 <!-- ![h:1in](../../images/NSF_4-Color_bitmap_Logo.png) -->
 
 <footer>
-B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Award (1942963). J.T.V + C.E.P supported by NIH BRAIN Initiative (RF1MH123233).
+B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Award (1942963). J.T.V + C.E.P supported by NIH BRAIN Initiative (RF1MH123233). Findings and conclusions expressed are  those of the authors and not necessarily those of the funders.
 </footer>
 
 </div>
