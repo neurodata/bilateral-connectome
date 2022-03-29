@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from giskard.plot import merge_axes, soft_axis_off
-from giskard.plot.utils import merge_axes, soft_axis_off
 from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH
 from pkg.io import glue as default_glue
@@ -608,7 +607,7 @@ def plot_thresholding_pvalues(
     fig, ax = plt.subplots(1, 1, figsize=figsize)
 
     colors = sns.color_palette("tab20")
-    palette = dict(zip([gc_key, dagc_key, d_key], colors))
+    palette = dict(zip([gc_key, dagc_key, d_key], [colors[0], colors[1], colors[12]]))
 
     sns.scatterplot(
         data=results,

@@ -46,12 +46,15 @@ h2 {
   text-align: center;
 }
 /* affiliations, correspondence, etc. */
-.underauthor {
+h5 {
   margin-bottom: 0in;
   padding-bottom: 0;
+  padding-top:0;
+  margin-top: 0;
   vertical-align: top;
   font-size: 0.4in;
   text-align: center;
+  font-weight: 425;
 }
 /* for making the superscript on affiliations of authors */
 .super { 
@@ -60,7 +63,7 @@ h2 {
 }
 /* section headings */
 h3, .h3-noline {
-  font-size: 0.55in;
+  font-size: 0.6in;
   margin-top: 0.15in;
   margin-bottom: 0.15in;
 }
@@ -247,3 +250,6 @@ img{
 /* table tr {
   border-right: 0.0in solid grey
 } */
+section.lead p {
+  text-align: center;
+}

@@ -25,18 +25,14 @@ size: 44:33
 
 <!-- # Is a whole insect brain connectome bilaterally symmetric? <br> A case study on comparing two networks -->
 
-# Generative network modeling reveals a first quantitative definition <br> of bilateral symmetry exhibited by an whole insect brain connectome
+# Generative network modeling reveals a quantitative definition <br> of bilateral symmetry exhibited by a whole insect brain connectome
 
 <!-- # Towards statistical comparative connectomics:<br> A case study on the bilateral symmetry of an insect brain connectome -->
 
 
 ## Benjamin D. Pedigo<span class=super>1*</span>, Mike Powell<span class=super>1</span>, Eric W. Bridgeford<span class=super>1</span>, Michael Winding<span class=super>2</span>, Carey E. Priebe<span class=super>1</span>, Joshua T. Vogelstein<span class=super>1</span>
 
-<div class=underauthor> 
-
-1 - Johns Hopkins University, 2 - University of Cambridge, $\ast$ - correspondence: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo) ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) ![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/) 
-
-</div>
+##### 1 - Johns Hopkins University, 2 - University of Cambridge, $\ast$ - correspondence: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo) ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) ![icon](../../images/web.png) [_bdpedigo.github.io_](https://bdpedigo.github.io/) 
 
 </div>
 <div>
@@ -103,7 +99,7 @@ size: 44:33
 
 - Connectomes are rich sources of inspiration for architectures in artificial intelligence.
 - Comparing connectomes could help elucidate which structural features are necessary for yielding the capabilities animal intelligences.
-- Bilateral symmetry for connectomes has been investigated, but not clearly defined as a network hypothesis.
+- Bilateral symmetry for connectomes is one such comparison; has been investigated, but not clearly defined as a network hypothesis.
 
 <!-- - We explored statistically principled connectome comparison via a case study of a *Drosophila* larva connectome -->
 
@@ -285,7 +281,7 @@ table {
 | :---: | :----------------------------------------------------------------: | :-----------: |
 | **1** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-26}$ |
 | **2** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-2}$  |
-| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |     $0.51$      |
+| **3** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |    $0.51$     |
 
 </div>
 </div>
