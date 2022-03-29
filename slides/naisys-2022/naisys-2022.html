@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Is a whole insect brain connectome bilaterally symmetric? A case study on comparing two networks &#8212; Bilateral Connectome</title>
+    <title>Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by an whole insect brain connectome &#8212; Bilateral Connectome</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -455,7 +455,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Is a whole insect brain connectome bilaterally symmetric? <br> A case study on comparing two networks</h1>
+                <h1>Generative network modeling reveals a first quantitative definition <br> of bilateral symmetry exhibited by an whole insect brain connectome</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -613,8 +613,10 @@ const thebe_selector_output = ".output, .cell_output"
 <!-- </div> -->
 </div>
 <div>
-<div class="tex2jax_ignore mathjax_ignore section" id="is-a-whole-insect-brain-connectome-bilaterally-symmetric-br-a-case-study-on-comparing-two-networks">
-<h1>Is a whole insect brain connectome bilaterally symmetric? <br> A case study on comparing two networks<a class="headerlink" href="#is-a-whole-insect-brain-connectome-bilaterally-symmetric-br-a-case-study-on-comparing-two-networks" title="Permalink to this headline">¶</a></h1>
+<!-- # Is a whole insect brain connectome bilaterally symmetric? <br> A case study on comparing two networks -->
+<div class="tex2jax_ignore mathjax_ignore section" id="generative-network-modeling-reveals-a-first-quantitative-definition-br-of-bilateral-symmetry-exhibited-by-an-whole-insect-brain-connectome">
+<h1>Generative network modeling reveals a first quantitative definition <br> of bilateral symmetry exhibited by an whole insect brain connectome<a class="headerlink" href="#generative-network-modeling-reveals-a-first-quantitative-definition-br-of-bilateral-symmetry-exhibited-by-an-whole-insect-brain-connectome" title="Permalink to this headline">¶</a></h1>
+<!-- # Towards statistical comparative connectomics:<br> A case study on the bilateral symmetry of an insect brain connectome -->
 <div class="section" id="benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span">
 <h2>Benjamin D. Pedigo<span class=super>1*</span>, Mike Powell<span class=super>1</span>, Eric W. Bridgeford<span class=super>1</span>, Michael Winding<span class=super>2</span>, Carey E. Priebe<span class=super>1</span>, Joshua T. Vogelstein<span class=super>1</span><a class="headerlink" href="#benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span" title="Permalink to this headline">¶</a></h2>
 <div class=underauthor> 
@@ -683,7 +685,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p><strong>Fig 1A:</strong> 3D rendering of a larval <em>Drosophila</em> brain connectome [1] comprised of ~3k neurons and ~544k synapses.</p>
 </div>
 <div>
-<p><img alt="w:5.1in" src="../results/figs/show_data/adjacencies.png" /></p>
+<p><img alt="center w:5.1in" src="../results/figs/show_data/adjacencies.png" /></p>
 <p><strong>Fig 1B:</strong> Directed, binary adjacency matrix sorted by brain hemisphere. We compare <span class="math notranslate nohighlight">\(\color{#66c2a5} L \rightarrow L\)</span> vs. <span class="math notranslate nohighlight">\(\color{#fc8d62} R \rightarrow R\)</span> subgraphs.</p>
 </div>
 </div>
@@ -709,10 +711,10 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class=columns2>
 <div>
-<p><strong>Fig 2A:</strong> Testing symmetry under Erdos-Renyi (ER) model [2] amounts to comparing densities (here via Fisher’s exact test).</p>
+<p><strong>Fig 2A:</strong> Testing symmetry under Erdos-Renyi (ER) model [2] compares global connection probability  (density), here via Fisher’s exact test.</p>
 </div>
 <div>
-<p><strong>Fig 2B:</strong> Densities are significantly different between hemispheres <br> (<span class="math notranslate nohighlight">\(p&lt;10^{-23}\)</span>).</p>
+<p><strong>Fig 2B:</strong> Test comparing densities rejected (<span class="math notranslate nohighlight">\(p{&lt;}10^{-23}\)</span>), even the simplest model parameter differs between hemispheres.</p>
 </div>
 </div>
 </div>
@@ -722,7 +724,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h3>Group connection test (Model 2)<a class="headerlink" href="#group-connection-test-model-2" title="Permalink to this headline">¶</a></h3>
 <!-- #### A -->
 <p><img alt="center w:10.5in" src="../results/figs/sbm_unmatched_test/sbm_methods_explain.svg" />
-<strong>Fig 3A:</strong> Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types).</p>
+<strong>Fig 3A:</strong> Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types [1]).</p>
 <!-- START subcolumns -->
 <div class=columns2>
 <div>
@@ -735,7 +737,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class=columns2>
 <div>
 <!-- P-values for group connections. Test of equal group connections rejects ($p<10^{-8}$). -->
-<p><strong>Fig 3B:</strong> Test comparing group connections rejects (<span class="math notranslate nohighlight">\(p{&lt;}10^{-7}\)</span>); five specific connections differ.</p>
+<p><strong>Fig 3B:</strong> Test comparing group connections rejected (<span class="math notranslate nohighlight">\(p{&lt;}10^{-7}\)</span>); five specific connections differ.</p>
 </div>
 <div>
 <p><strong>Fig 3C:</strong> For significant group connections, denser hemisphere probability is always higher.</p>
@@ -762,7 +764,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p><strong>Fig 4A:</strong> Hypothesis from Fig 3 modified by a factor <span class="math notranslate nohighlight">\(c\)</span> set to make densities equal.</p>
 </div>
 <div>
-<p><strong>Fig 4B:</strong> Test comparing adjusted group connections rejects (<span class="math notranslate nohighlight">\(p{&lt;}10^{-2}\)</span>); two differing connections from KCs.</p>
+<p><strong>Fig 4B:</strong> Test comparing adjusted group connections rejected <span class="math notranslate nohighlight">\((p{&lt;}10^{-2})\)</span>; differences from KCs.</p>
 </div>
 </div>
 </div>
@@ -832,7 +834,7 @@ table {
 </tr>
 <tr class="row-even"><td class="text-align:center"><p><strong>3</strong></p></td>
 <td class="text-align:center"><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>0.51</p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(0.51\)</span></p></td>
 </tr>
 </tbody>
 </table>
@@ -869,7 +871,7 @@ table {
 <p><strong>Fig 5A:</strong> Removed edges w/ weight (synapse count or percentage of input to downstream neuron) below some threshold, tested symmetry for each pair of networks.</p>
 </div>
 <div>
-<p><strong>Fig 5B:</strong> Detect no asymmetry in networks of only top ~<span class="math notranslate nohighlight">\(50\%\)</span> of edges (by input percentage) under models studied here. Not true using synapse counts edge weights (not shown).</p>
+<p><strong>Fig 5B:</strong> Did not detect asymmetry in networks of only top ~<span class="math notranslate nohighlight">\(50\%\)</span> of edges (by input percentage) under models studied here. Not true using synapse counts edge weights (not shown).</p>
 </div>
 </div>
 </div>
@@ -878,7 +880,7 @@ table {
 <ul class="simple">
 <li><p>Other models to consider (e.g. random dot product graph [3])</p></li>
 <li><p>Other sensible neuron groupings for group connection test</p></li>
-<li><p>Matching nodes between networks - leads to different models, likely with more power</p></li>
+<li><p>Matching nodes across networks leads to new models, likely more power</p></li>
 </ul>
 </div>
 <div class="section" id="id1">
@@ -933,7 +935,7 @@ Marta Zlatic's lab, Albert Cardona's lab and all tracers for the amazing dataset
 <h4>Funding<a class="headerlink" href="#funding" title="Permalink to this headline">¶</a></h4>
 <!-- ![h:1in](../../images/NSF_4-Color_bitmap_Logo.png) -->
 <footer>
-B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Award (1942963). J.T.V + C.E.P supported by NIH BRAIN Initiative (RF1MH123233).
+B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Award (1942963). J.T.V + C.E.P supported by NIH BRAIN Initiative (RF1MH123233). Findings and conclusions expressed are  those of the authors and not necessarily those of the funders.
 </footer>
 </div>
 </div>
