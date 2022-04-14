@@ -1,5 +1,4 @@
-# Generative network modeling reveals a first quantitative definition of bilateral
-symmetry exhibited by a whole insect brain connectome
+# Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome
 
 [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
 
