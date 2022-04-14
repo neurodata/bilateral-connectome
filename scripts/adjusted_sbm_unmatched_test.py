@@ -111,7 +111,7 @@ top_ax, left_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"], size="large")
 ax.set_title(
     "Scale connection probabilities\nto match densities",
-    fontsize="large",
+    fontsize="medium",
     x=1.1,
     y=1.3,
 )
