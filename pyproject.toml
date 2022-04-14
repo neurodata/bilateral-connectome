@@ -10,7 +10,7 @@ scikit-learn = "^0.24.2"
 umap-learn = "^0.5.1"
 anytree = "^2.8.0"
 pkg = {path = "pkg", develop = true}
-graspologic = {path = "../graspologic", develop = true}
+graspologic = "^1.0.0"
 giskard = {path = "../giskard", develop = true}
 statsmodels = "^0.13.0"
 jupyter-client = "6.1.12" # https://github.com/jupyter/jupyter_client/issues/637

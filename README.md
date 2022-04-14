@@ -14,6 +14,21 @@ Comparing connectomes can help explain how neural connectivity is related to gen
 ## Building the book 
 *Coming soon*
 
+## Setting up and running the code
+Prerequisites: `git`, working knowledge of Python and command line tools.
+
+I recommend using [Poetry](https://python-poetry.org/) to create and manage a 
+reproducible environment for running the code for this project. 
+- If you don't have it already, [install Poetry](https://python-poetry.org/docs/#installation) following their linked instructions.
+- Navigate to a directory where you want to store the project, and clone this repo: 
+    ```
+    git clone https://github.com/neurodata/bilateral-connectome
+    ```
+- Enter the newly cloned directory
+  ```
+  cd bilateral-connectome
+  ```
+
 ## Running the code
 *Coming soon*
 
