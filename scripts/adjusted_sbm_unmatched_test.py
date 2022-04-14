@@ -12,9 +12,10 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from graspologic.simulations import sbm
-from pkg.io import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import FIG_PATH, OUT_PATH, savefig
+from pkg.io import FIG_PATH, OUT_PATH
+from pkg.io import glue as default_glue
+from pkg.io import savefig
 from pkg.perturb import remove_edges
 from pkg.plot import (
     SmartSVG,
@@ -24,7 +25,7 @@ from pkg.plot import (
     plot_pvalues,
     set_theme,
 )
-from pkg.stats import stochastic_block_test
+from pkg.stats import compute_density, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
 
@@ -141,7 +142,6 @@ ax.annotate(
 
 from giskard.plot import merge_axes
 
-
 ax = merge_axes(fig, axs, rows=1)
 # ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize="small")
 ax.axis("off")
@@ -242,6 +242,12 @@ else:
 
 
 #%%
+
+left_density = compute_density(left_adj)
+right_density = compute_density(right_adj)
+c = left_density / right_density
+glue("c", c, form="0.2f")
+
 stat, pvalue, misc = stochastic_block_test(
     left_adj,
     right_adj,
@@ -251,9 +257,6 @@ stat, pvalue, misc = stochastic_block_test(
     density_adjustment=True,
 )
 glue("pvalue", pvalue, form="pvalue")
-print(pvalue)
-print(f"{pvalue:.2g}")
-
 
 #%%
 

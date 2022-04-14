@@ -120,8 +120,8 @@ left_n_edges = np.count_nonzero(left_adj)
 right_n_edges = np.count_nonzero(right_adj)
 p_loops = (left_n_loops + right_n_loops) / (len(left_adj) + len(right_adj))
 p_loop_edges = (left_n_loops + right_n_loops) / (left_n_edges + right_n_edges)
-glue("p_loops", p_loops)
-glue("p_loops_edges", p_loop_edges)
+glue("p_loops", p_loops, form="2.0f%")
+glue("p_loops_edges", p_loop_edges, form=".1f%")
 
 #%%
 left_adj = remove_loops(left_adj)

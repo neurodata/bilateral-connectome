@@ -99,6 +99,8 @@ def glue(name, var, filename, figure=False, display=False, form=None):
         var = f"{var:,}"
     elif form == "2.0f%":
         var = f"{var*100:2.0f}"
+    elif form == ".1f%":
+        var = f"{var*100:.1f}"
     elif form == "0.2f":
         var = f"{var:0.2f}"
     elif form == "0.2g":
