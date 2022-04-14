@@ -257,15 +257,17 @@ glue("n_possible_right", n_possible_right)
 
 density_left = misc["probability1"]
 density_right = misc["probability2"]
-glue("density_left", density_left)
-glue("density_right", density_right)
+glue("density_left", density_left, form="0.2g")
+glue("density_right", density_right, form="0.2g")
 
 n_edges_left = misc["observed1"]
 n_edges_right = misc["observed2"]
 
 #%%
 
-plot_density(misc, palette=network_palette)
+coverage = 0.95
+glue("coverage", coverage, form="2.0f%")
+plot_density(misc, palette=network_palette, coverage=coverage)
 
 gluefig("er_density", fig)
 

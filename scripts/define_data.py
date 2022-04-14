@@ -68,7 +68,7 @@ def glue(name, var, **kwargs):
     default_glue(name, var, FILENAME, display=False, **kwargs)
 
 
-RESAVE = True
+RESAVE = False
 
 print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
@@ -129,8 +129,8 @@ right_adj = remove_loops(right_adj)
 
 n_left_unmatched = left_adj.shape[0]
 n_right_unmatched = right_adj.shape[0]
-glue("n_left_unmatched", n_left_unmatched)
-glue("n_right_unmatched", n_right_unmatched)
+glue("n_left_unmatched", n_left_unmatched, form="long")
+glue("n_right_unmatched", n_right_unmatched, form="long")
 
 
 #%% [markdown]

@@ -3,7 +3,7 @@ import numpy as np
 from statsmodels.stats.proportion import proportion_confint
 
 
-def plot_density(misc, palette=None, ax=None):
+def plot_density(misc, palette=None, ax=None, coverage=0.95):
     if ax is None:
         fig, ax = plt.subplots(1, 1, figsize=(4, 6))
 
@@ -18,8 +18,6 @@ def plot_density(misc, palette=None, ax=None):
 
     # ax.bar(0, density_left, color=palette["Left"])
     # ax.bar(1, density_right, color=palette["Right"])
-
-    coverage = 0.99
 
     left_lower, left_upper = proportion_confint(
         n_edges_left, n_possible_left, alpha=1 - coverage, method="beta"

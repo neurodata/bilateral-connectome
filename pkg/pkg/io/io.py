@@ -70,17 +70,22 @@ def glue(name, var, filename, figure=False, display=False, form=None):
     if figure:
         savename = "fig:" + savename
     else:
+        # JSON
         with open(RESULTS_PATH / "glued_variables.json", "r") as f:
             variables = json.load(f)
-
         # numpy types are not json serializable
         if isinstance(var, np.generic):
             var = var.item()
-
         variables[savename] = var
-
         with open(RESULTS_PATH / "glued_variables.json", "w") as f:
             json.dump(variables, f)
+
+        # TXT
+        text = ""
+        for key, val in variables.items():
+            text += key + " " + str(val) + "\n"
+        with open(RESULTS_PATH / "glued_variables.txt", "w") as f:
+            f.write(text)
 
     default_glue(savename, var, display=display)
 
@@ -90,6 +95,14 @@ def glue(name, var, filename, figure=False, display=False, form=None):
         else:
             factor = int(np.ceil(np.log10(var)))
             var = r"${<}10^{" + str(factor) + r"}$"
+    elif form == "long":
+        var = f"{var:,}"
+    elif form == "2.0f%":
+        var = f"{var*100:2.0f}"
+    elif form == "0.2f":
+        var = f"{var:0.2f}"
+    elif form == "0.2g":
+        var = f"{var:0.2g}"
 
     if form is not None:
         glue(
