@@ -68,6 +68,7 @@ right_labels = right_nodes[GROUP_KEY].values
 
 #%%
 
+set_theme()
 np.random.seed(888888)
 ns = [5, 6, 7]
 B = np.array([[0.8, 0.2, 0.05], [0.05, 0.9, 0.2], [0.05, 0.05, 0.7]])
@@ -109,7 +110,7 @@ Bhat1 = misc["probabilities1"].values
 top_ax, left_ax = heatmap_grouped(Bhat1, [1, 2, 3], palette=palette, ax=ax)
 top_ax.set_title(r"$\hat{B}^{(R)}$", color=network_palette["Right"], size="large")
 ax.set_title(
-    "Adjust connection probabilities\nfor group connection test",
+    "Scale connection probabilities\nto match densities",
     fontsize="large",
     x=1.1,
     y=1.3,
@@ -318,8 +319,8 @@ gluefig("sbm_pvalues_unlabeled", fig)
 fontsize = 10
 
 methods = SmartSVG(FIG_PATH / "adjusted_methods_explain.svg")
-methods.set_width(350)
-methods.move(15, 35)
+methods.set_width(200)
+methods.move(10, 15)
 methods_panel = Panel(
     methods,
     Text(
@@ -333,17 +334,17 @@ methods_panel = Panel(
 
 
 pvalues = SmartSVG(FIG_PATH / "sbm_pvalues.svg")
-pvalues.set_width(250)
+pvalues.set_width(200)
 pvalues.move(0, 20)
 pvalues_panel = Panel(
     pvalues,
     Text("C) Connection p-values", 5, 10, size=fontsize, weight="bold"),
 )
-pvalues_panel.move(methods.width * 0.9, 0)
+pvalues_panel.move(methods.width * 0.95, 0)
 
 fig = Figure(
-    (methods.width + pvalues.width) * 0.9,
-    (pvalues.height) * 0.9,
+    (methods.width + pvalues.width) * 0.88,
+    (pvalues.height) * 0.95,
     methods_panel,
     pvalues_panel,
 )

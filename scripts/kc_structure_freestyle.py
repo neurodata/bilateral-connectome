@@ -181,10 +181,7 @@ n_sims = 100
 for sim in tqdm(range(n_sims)):
     A_sim = er_subgraph(left_sub_adj.shape, p_left, rng)
     B_sim = er_subgraph(right_sub_adj.shape, p_right, rng)
-    #     # A = er_np(n, p, directed=True, loops=False)
-    #     # B = er_np(n, p, directed=True, loops=False)
-    #     # A = make_subgraph(A)
-    #     # B = make_subgraph(B)
+
     gm = GraphMatch(n_init=n_init)
     gm.fit(A_sim, B_sim, seeds_A=np.arange(n_upns), seeds_B=np.arange(n_upns))
     perm_inds = gm.perm_inds_
