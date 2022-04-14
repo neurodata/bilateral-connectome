@@ -524,7 +524,7 @@ plt.tight_layout()</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">erdos_renyi_test</span><span class="p">(</span><span class="n">sub_left_adj</span><span class="p">,</span> <span class="n">sub_right_adj</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;er_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;er_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_density</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">)</span>
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;densities&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
@@ -535,7 +535,7 @@ plt.tight_layout()</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.040225929736058e-27
 </pre></div>
 </div>
-<img alt="_images/kc_minus_5_3.png" src="_images/kc_minus_5_3.png" />
+<img alt="_images/kc_minus_5_4.png" src="_images/kc_minus_5_4.png" />
 </div>
 </div>
 </div>
@@ -552,7 +552,7 @@ plt.tight_layout()</p>
     <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;tippett&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;sbm_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;sbm_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 
 <span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
 
@@ -565,7 +565,7 @@ plt.tight_layout()</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0026526463992977527
 </pre></div>
 </div>
-<img alt="_images/kc_minus_7_3.png" src="_images/kc_minus_7_3.png" />
+<img alt="_images/kc_minus_7_4.png" src="_images/kc_minus_7_4.png" />
 </div>
 </div>
 </div>
@@ -583,8 +583,7 @@ plt.tight_layout()</p>
     <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;tippett&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;asbm_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;asbm_pvalue_formatted&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;asbm_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_pvalues</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;dasbm_pvalues&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
@@ -660,8 +659,8 @@ plt.tight_layout()</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:10.285544
-Completed at 2022-03-21 10:02:07.518540
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:12.351282
+Completed at 2022-04-13 16:44:18.562663
 </pre></div>
 </div>
 </div>
