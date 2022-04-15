@@ -28,6 +28,10 @@ parts:
       title: Lab meeting
     - url: https://docs.neurodata.io/bilateral-connectome/nmc.pdf
       title: neuromatch 4.0
+  - caption: Posters
+    chapters: 
+    - url: https://docs.neurodata.io/bilateral-connectome/naisys-2022.pdf
+      title: NAISys
   - caption: Errata
     chapters:
     - file: nhypergeom_sims
