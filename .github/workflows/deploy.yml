@@ -15,8 +15,8 @@ jobs:
         os: [ubuntu-latest]
         python-version: [3.8]
     steps:
-    - uses: actions/checkout@v2
-
+    - name: Checkout
+      uses: actions/checkout@v2
 
     # Install dependencies
     - name: Set up Python ${{ matrix.python-version }}
@@ -25,11 +25,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     # Caching
-    - uses: actions/cache@v2
+    - name: Try to uncache environment
+      uses: actions/cache@v2
       with:
         path: ${{ env.pythonLocation }}
         key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
 
+    # Installing
     - name: Install dependencies
       run: |
         pip install -r ./docs/requirements.txt --upgrade --upgrade-strategy eager
@@ -39,36 +41,10 @@ jobs:
       run: |
         jupyter-book build docs
 
+    # Move pdfs
     - name: Moving slides to static HTML
       run: |
-        sh ./shell/copy_slides.sh
-
-    # # NMC talk
-    # - name: Copy static PDF
-    #   uses: canastro/copy-file-action@master
-    #   with: 
-    #     source: docs/slides/nmc.pdf
-    #     target: docs/_build/html/nmc.pdf
-
-    # # Lab meeting talk
-    # - name: Copy static HTML
-    #   uses: canastro/copy-file-action@master
-    #   with: 
-    #     source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.html
-    #     target: docs/_build/html/lab-meeting-2022-02-24.html
-      
-    # - name: Copy static PDF
-    #   uses: canastro/copy-file-action@master
-    #   with: 
-    #     source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.pdf
-    #     target: docs/_build/html/lab-meeting-2022-02-24.pdf
-
-    # # Drexel talk
-    # - name: Copy static PDF
-    #   uses: canastro/copy-file-action@master
-    #   with: 
-    #     source: docs/slides/drexel/drexel.pdf
-    #     target: docs/_build/html/drexel.pdf
+        cat ./docs/slides/manifest.txt | xargs -I % cp -r ./docs/slides/%/%.pdf ./docs/_build/html/
 
     # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
