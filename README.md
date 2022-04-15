@@ -57,6 +57,9 @@ reproducible environment for running the code for this project.
 ### Using `pip`
 *Coming soon*
 
+## Getting the data 
+*Coming soon*
+
 ## Running the code
 - Make sure your virtual environment from the last section is active.
 - 
