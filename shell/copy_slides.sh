@@ -1,1 +1,1 @@
-cat ./docs/slides/manifest.txt | xargs -J % echo cp -r %/*.pdf ./docs/_build/html/
+cat ./docs/slides/manifest.txt | xargs -I % echo cp -r %/*.pdf ./docs/_build/html/
