@@ -24,8 +24,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip install -r ./docs/requirements.txt
-
+        pip install -r ./docs/requirements.txt --upgrade --upgrade-strategy eager
+      
     # Build the book
     - name: Build the book
       run: |
