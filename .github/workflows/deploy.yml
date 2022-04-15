@@ -32,16 +32,10 @@ jobs:
         jupyter-book build docs
 
     # NMC talk
-    - name: Copy static HTML
-      uses: canastro/copy-file-action@master
-      with: 
-        source: slides/nmc.html
-        target: docs/_build/html/nmc.html
-
     - name: Copy static PDF
       uses: canastro/copy-file-action@master
       with: 
-        source: slides/nmc.pdf
+        source: docs/slides/nmc.pdf
         target: docs/_build/html/nmc.pdf
 
     # Lab meeting talk
