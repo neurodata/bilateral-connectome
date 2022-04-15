@@ -14,20 +14,45 @@ Comparing connectomes can help explain how neural connectivity is related to gen
 ## Building the book 
 *Coming soon*
 
-## Setting up and running the code
+## Setting up an environment
 Prerequisites: `git`, working knowledge of Python and command line tools.
 
+### Using Poetry
 I recommend using [Poetry](https://python-poetry.org/) to create and manage a 
 reproducible environment for running the code for this project. 
 - If you don't have it already, [install Poetry](https://python-poetry.org/docs/#installation) following their linked instructions.
 - Navigate to a directory where you want to store the project, and clone this repo: 
-    ```
-    git clone https://github.com/neurodata/bilateral-connectome
-    ```
-- Enter the newly cloned directory
+   ```
+   git clone https://github.com/neurodata/bilateral-connectome
+   ```
+- (TEMPORARY) Clone the sister repository, `giskard`:
+  ```
+  git clone https://github.com/bdpedigo/giskard.git
+  ```
+- Enter the newly cloned directory:
   ```
   cd bilateral-connectome
   ```
+- Create a Poetry environment:
+  ```
+  poetry env use python3.9
+  ```
+  - For me, the output looks like
+     ```
+    Creating virtualenv bilateral-connectome in /Users/bpedigo/bilateral-test/bilateral-connectome/.venv
+    Using virtualenv: /Users/bpedigo/bilateral-test/bilateral-connectome/.venv
+    ```
+  - Note: this requires that you have a python3.9 installation on your machine. It is
+    possible that the code for this project will run with other versions of Python,
+    but I haven't tested it.
+- To activate the new environment, do 
+  ```
+  source .venv/bin/activate
+  ```
+  - If you need to deactivate this environment, just type `deactivate`
+
+### Using `pip`
+*Coming soon*
 
 ## Running the code
 *Coming soon*
