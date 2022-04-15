@@ -29,6 +29,7 @@ reproducible environment for running the code for this project.
   ```
   git clone https://github.com/bdpedigo/giskard.git
   ```
+  - Note: once the code is stable, this will be replaced by an install from PyPI
 - Enter the newly cloned directory:
   ```
   cd bilateral-connectome
@@ -55,7 +56,8 @@ reproducible environment for running the code for this project.
 *Coming soon*
 
 ## Running the code
-*Coming soon*
+- Make sure your virtual environment from the last section is active.
+- 
 
 <!-- ## Usage
 

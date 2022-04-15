@@ -144,8 +144,9 @@ pkg/pkg/pymaid/pymaid_credentials.json
 # not storing the data for now 
 /data
 
-# not storing figures
-results
+# not storing figures, outputs etc
+results/*
+!results/.gitkeep
 sandbox/light_speed.py
 docs/glued_variables.json
 docs/glued_variables.txt
