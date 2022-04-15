@@ -652,8 +652,8 @@ alternative hypotheses above.</p>
 
 <span class="n">density_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probability1&quot;</span><span class="p">]</span>
 <span class="n">density_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probability2&quot;</span><span class="p">]</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_left&quot;</span><span class="p">,</span> <span class="n">density_left</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_right&quot;</span><span class="p">,</span> <span class="n">density_right</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_left&quot;</span><span class="p">,</span> <span class="n">density_left</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;0.2g&quot;</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_right&quot;</span><span class="p">,</span> <span class="n">density_right</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;0.2g&quot;</span><span class="p">)</span>
 
 <span class="n">n_edges_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;observed1&quot;</span><span class="p">]</span>
 <span class="n">n_edges_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;observed2&quot;</span><span class="p">]</span>
@@ -665,14 +665,16 @@ alternative hypotheses above.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_density</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coverage</span> <span class="o">=</span> <span class="mf">0.95</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;coverage&quot;</span><span class="p">,</span> <span class="n">coverage</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;2.0f%&quot;</span><span class="p">)</span>
+<span class="n">plot_density</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">)</span>
 
 <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;er_density&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/er_unmatched_test_8_1.png" src="_images/er_unmatched_test_8_1.png" />
+<img alt="_images/er_unmatched_test_8_3.png" src="_images/er_unmatched_test_8_3.png" />
 </div>
 </div>
 </div>
@@ -680,7 +682,7 @@ alternative hypotheses above.</p>
 <h2>Reject bilateral symmetry under the ER model<a class="headerlink" href="#reject-bilateral-symmetry-under-the-er-model" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-default" id="fig-er-unmatched-test-er-density">
 <div class="cell_output docutils container">
-<img alt="_images/er_unmatched_test_8_0.png" src="_images/er_unmatched_test_8_0.png" />
+<img alt="_images/er_unmatched_test_8_2.png" src="_images/er_unmatched_test_8_2.png" />
 </div>
 <p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Comparison of estimated densities for the left and right hemisphere networks. The
 estimated density (probability of any edge across the entire network), <span class="math notranslate nohighlight">\(\hat{p}\)</span>, for
@@ -770,8 +772,8 @@ explained by this difference in density alone.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:05.114774
-Completed at 2022-04-13 16:42:48.313330
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:05.257255
+Completed at 2022-04-15 10:37:27.775041
 </pre></div>
 </div>
 </div>
