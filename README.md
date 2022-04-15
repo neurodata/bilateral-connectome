@@ -6,15 +6,17 @@
 Comparing connectomes can help explain how neural connectivity is related to genetics, disease, development, or learning. However, making statistical inferences about the significance and nature of differences between two networks is an open problem, and such analysis has not been extensively applied to nanoscale connectomes. Here, we investigate this problem via a case study on the bilateral symmetry of a larval *Drosophila* brain connectome. We translate notions of “bilateral symmetry” to generative models of the network structure of the left and right hemispheres, allowing us to test and refine our understanding of symmetry. We find significant differences in connection probabilities both across the entire left and right networks and between specific cell types. By rescaling connection probabilities or removing certain edges based on weight, we also present adjusted definitions of bilateral symmetry exhibited by this connectome. This work shows how statistical inferences from networks can inform the study of connectomes, facilitating future comparisons of neural structures.
 
 ## Repo structure 
-- ``.github``: Files specifying how the repo behaves on GitHub
+- ``.github``: Files specifying how the repo behaves on GitHub.
 - ``data``: Directory to store the raw data. 
-- ``docs``: Files to build the documentation website in the form of a [Jupyter Book](https://jupyterbook.org/intro.html)
-- ``pkg``: A local Python package used for analysis in the Jupyter Notebooks
+- ``docs``: Files to build the documentation website (in the form of a [Jupyter Book](https://jupyterbook.org/intro.html)), talks, and posters.
+- ``overleaf``: Link to an Overleaf document as a git submodule.
+- ``pkg``: A local Python package used for analysis in the Jupyter Notebooks/Python scripts.
+- ``results``: Place to store intermediate outputs, figures, and saved variables. 
+- ``sandbox``: Junk scripts not part of the final paper/project.
+- ``scripts``: Python scripts used to do all analyses
+- ``shell``: Shell scripts used to run the entire project, copy results, etc.
 
-## Building the book 
-*Coming soon*
-
-## Setting up an environment
+## Getting the code and setting up an environment
 Prerequisites: `git`, working knowledge of Python and command line tools.
 
 ### Using Poetry
@@ -58,6 +60,9 @@ reproducible environment for running the code for this project.
 ## Running the code
 - Make sure your virtual environment from the last section is active.
 - 
+
+## Building the book 
+*Coming soon*
 
 <!-- ## Usage
 
