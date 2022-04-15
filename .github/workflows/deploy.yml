@@ -31,32 +31,36 @@ jobs:
       run: |
         jupyter-book build docs
 
-    # NMC talk
-    - name: Copy static PDF
-      uses: canastro/copy-file-action@master
-      with: 
-        source: docs/slides/nmc.pdf
-        target: docs/_build/html/nmc.pdf
+    - name: Moving slides to static HTML
+      run: |
+        sh ./shell/copy_slides.sh
 
-    # Lab meeting talk
-    - name: Copy static HTML
-      uses: canastro/copy-file-action@master
-      with: 
-        source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.html
-        target: docs/_build/html/lab-meeting-2022-02-24.html
+    # # NMC talk
+    # - name: Copy static PDF
+    #   uses: canastro/copy-file-action@master
+    #   with: 
+    #     source: docs/slides/nmc.pdf
+    #     target: docs/_build/html/nmc.pdf
+
+    # # Lab meeting talk
+    # - name: Copy static HTML
+    #   uses: canastro/copy-file-action@master
+    #   with: 
+    #     source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.html
+    #     target: docs/_build/html/lab-meeting-2022-02-24.html
       
-    - name: Copy static PDF
-      uses: canastro/copy-file-action@master
-      with: 
-        source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.pdf
-        target: docs/_build/html/lab-meeting-2022-02-24.pdf
+    # - name: Copy static PDF
+    #   uses: canastro/copy-file-action@master
+    #   with: 
+    #     source: docs/slides/lab-meeting-2022-02-24/lab-meeting-2022-02-24.pdf
+    #     target: docs/_build/html/lab-meeting-2022-02-24.pdf
 
-    # Drexel talk
-    - name: Copy static PDF
-      uses: canastro/copy-file-action@master
-      with: 
-        source: docs/slides/drexel/drexel.pdf
-        target: docs/_build/html/drexel.pdf
+    # # Drexel talk
+    # - name: Copy static PDF
+    #   uses: canastro/copy-file-action@master
+    #   with: 
+    #     source: docs/slides/drexel/drexel.pdf
+    #     target: docs/_build/html/drexel.pdf
 
     # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
