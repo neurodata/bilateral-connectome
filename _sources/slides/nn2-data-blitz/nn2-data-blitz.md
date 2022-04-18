@@ -1,9 +1,13 @@
 ---
 marp: true
 theme: slides
-paginate: true
 size: 16:9
+paginate: false
 ---
+
+
+![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
+
 
 <style scoped> 
 /* h1 {
@@ -14,10 +18,14 @@ p {
 }
 </style>
 
-# Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome
+<!-- # Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
+<!-- ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) -->
 
-### Benjamin D. Pedigo
-_(he/him) - [NeuroData lab](https://neurodata.io/)_
+# Model-based comparison of connectomes: applications in a whole insect brain
+
+## Benjamin D. Pedigo
+_(he/him) - ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) 
+[NeuroData lab](https://neurodata.io/)_
 _Johns Hopkins University - Biomedical Engineering_
 
 #### Acknowledgements
@@ -75,8 +83,9 @@ Joshua Vogelstein
 
 <!-- End people panels -->
 </div>
+<!-- 
 
-![bg center blur:1px opacity:60%](./../../images/temp-maggot-brain-umap-omni-hue_key=merge_class.png)
+<!-- ![bg center blur:2.5px opacity:20%](./../../../results/figs/background/background.svg) -->
 
 <!-- ![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png) -->
 
@@ -88,8 +97,12 @@ Joshua Vogelstein
 ![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) -->
 
 
+<!-- <!-- --- -->
+
 <!-- ---
-# Motivation -->
+# Motivation
+- This is why we need to compare connectomes to understand x,y,z
+- Need methods etc. -->
 
 --- 
 # _Drosophila_ larva brain connectome
@@ -116,9 +129,9 @@ h2 {
 
 ## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
 
-<footer>
+<!-- <footer>
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
-</footer>
+</footer> -->
 
 ---
 # We reject even the simplest notion of symmetry
@@ -126,12 +139,27 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <div class="columns">
 <div>
 
-![](../../../results/figs/er_unmatched_test/er_methods.png)
+- Fit Erdos-Renyi models to the left and the right brain networks
+![](./../../../results/figs/er_unmatched_test/er_explain.svg)
+- Compare densities:
+  $H_0: \color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  
+  $H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}$
+
+<!-- ![center h:300](../../../results/figs/er_unmatched_test/er_methods.png) -->
+
 
 </div>
 <div>
 
-![center h:500](./../../../results/figs/er_unmatched_test/er_density.png)
+![center h:350](./../../../results/figs/er_unmatched_test/er_density.png)
+
+<br>
+
+<div class='center'>
+
+p-value: ${<}10^{-23}$
+
+</div>
 
 </div>
 </div>
@@ -143,15 +171,22 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <div class="columns">
 <div>
 
-![](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
-
-$$H0:$$
-$$HA:$$
+- Fit block models to both hemispheres
+  ![](./../../images/sbm-methods-short.png)
+- Compare group connection probabilities:
+  $H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$ 
+  $H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}$
 
 </div>
 <div>
 
-![](./../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg)
+![center h:400](./../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg)
+
+<div class='center'>
+
+p-value: ${<}10^{-7}$
+
+</div>
 
 </div>
 </div>
@@ -162,23 +197,27 @@ $$HA:$$
 <div class="columns">
 <div>
 
-#### Rescaled connection probabilities AND removing Kenyon cells
+#### Rescaled connection probabilities AND removed Kenyon cells
 
-![center h:400](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
+![center h:350](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
+
+<div class='center'>
+
+p-value: ~$0.51$
+
+</div>
 
 </div>
 <div>
 
-#### Using only top ~50-percentile edges by input proportion
+#### Used only high weight edges<br>(by input proportion)
 
 ![center h:400](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
 
 </div>
 </div>
 
-
---- 
-
+<!-- ---
 <div class="columns">
 <div>
 
@@ -193,18 +232,31 @@ $$HA:$$
 </div>
 <div>
 
+
 ## This work:
 [github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) 
 ![center w:400](./../../images/jb_example.png)
 [![h:50](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
 
-
 </div>
-</div>
-
-<footer>Chung, Pedigo et al. JMLR (2019)</footer>
+</div> -->
 
 ---
+# Conclusions 
+- Testing hypotheses in connectomics requires specialized techniques for networks
+  - We presented 2-sample testing procedures for comparing connectomes
+  - [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
+  - This work: [github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
+- We applied these tools to evaluate bilateral symmetry as a case study, finding several ways in which this brain is/is not bilaterally symmetric
+- Poised to apply to new datasets to answer...
+   - **{Your question here}**
+   - Get in touch: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)
+
+![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
+
+<!-- <footer>Chung, Pedigo et al. JMLR (2019) <br> Winding, Pedigo et al. In prep. (2022) <br> Pedigo et al. In prep. (2022)</footer> -->
+
+<!-- ---
 # Questions?
 
 ![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
@@ -224,6 +276,18 @@ section {
 
 ### Benjamin D. Pedigo
 ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
-![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
 ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
-![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/)
+![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
+![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) -->
+
+<!-- fold this into one of the previous -->
+
+<!-- refs at the end in like quesions or something -->
+
+<!-- cite stat conn and/or connectal coding -->
+
+<!-- email terry -->
+<!-- cover letter -->
+<!-- email marta alberta -->
+<!-- check with Michael about timing -->
+<!-- we have a draft cover letter somewhere -->

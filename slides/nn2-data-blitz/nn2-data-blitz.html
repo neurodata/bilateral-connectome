@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome &#8212; Bilateral Connectome</title>
+    <title>Model-based comparison of connectomes: applications in a whole insect brain &#8212; Bilateral Connectome</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -337,7 +337,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome
+   Model-based comparison of connectomes: applications in a whole insect brain
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -399,38 +399,23 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rescaled-connection-probabilities-and-removing-kenyon-cells">
-     Rescaled connection probabilities AND removing Kenyon cells
+    <a class="reference internal nav-link" href="#rescaled-connection-probabilities-and-removed-kenyon-cells">
+     Rescaled connection probabilities AND removed Kenyon cells
     </a>
    </li>
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-only-top-50-percentile-edges-by-input-proportion">
-     Using only top ~50-percentile edges by input proportion
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#graspologic">
-     graspologic:
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#this-work">
-     This work:
+    <a class="reference internal nav-link" href="#used-only-high-weight-edges-br-by-input-proportion">
+     Used only high weight edges
+     <br/>
+     (by input proportion)
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#questions">
-   Questions?
+  <a class="reference internal nav-link" href="#conclusions">
+   Conclusions
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Benjamin D. Pedigo
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -442,7 +427,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome</h1>
+                <h1>Model-based comparison of connectomes: applications in a whole insect brain</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -454,7 +439,7 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome
+   Model-based comparison of connectomes: applications in a whole insect brain
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -516,38 +501,23 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rescaled-connection-probabilities-and-removing-kenyon-cells">
-     Rescaled connection probabilities AND removing Kenyon cells
+    <a class="reference internal nav-link" href="#rescaled-connection-probabilities-and-removed-kenyon-cells">
+     Rescaled connection probabilities AND removed Kenyon cells
     </a>
    </li>
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-only-top-50-percentile-edges-by-input-proportion">
-     Using only top ~50-percentile edges by input proportion
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#graspologic">
-     graspologic:
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#this-work">
-     This work:
+    <a class="reference internal nav-link" href="#used-only-high-weight-edges-br-by-input-proportion">
+     Used only high weight edges
+     <br/>
+     (by input proportion)
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#questions">
-   Questions?
+  <a class="reference internal nav-link" href="#conclusions">
+   Conclusions
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Benjamin D. Pedigo
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -558,7 +528,8 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <style scoped> 
+  <p><img alt="bg center blur:3px opacity:15%" src="../results/figs/background/background.svg" /></p>
+<style scoped> 
 /* h1 {
     font-size:40px;
 } */
@@ -566,11 +537,14 @@ p {
     font-size: 24px;
 }
 </style>
-<div class="tex2jax_ignore mathjax_ignore section" id="generative-network-modeling-reveals-a-first-quantitative-definition-of-bilateral-symmetry-exhibited-by-a-whole-insect-brain-connectome">
-<h1>Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome<a class="headerlink" href="#generative-network-modeling-reveals-a-first-quantitative-definition-of-bilateral-symmetry-exhibited-by-a-whole-insect-brain-connectome" title="Permalink to this headline">¶</a></h1>
+<!-- # Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
+<!-- ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) -->
+<div class="tex2jax_ignore mathjax_ignore section" id="model-based-comparison-of-connectomes-applications-in-a-whole-insect-brain">
+<h1>Model-based comparison of connectomes: applications in a whole insect brain<a class="headerlink" href="#model-based-comparison-of-connectomes-applications-in-a-whole-insect-brain" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="benjamin-d-pedigo">
 <h2>Benjamin D. Pedigo<a class="headerlink" href="#benjamin-d-pedigo" title="Permalink to this headline">¶</a></h2>
-<p><em>(he/him) - <a class="reference external" href="https://neurodata.io/">NeuroData lab</a></em>
+<p><em>(he/him) - <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a>
+<a class="reference external" href="https://neurodata.io/">NeuroData lab</a></em>
 <em>Johns Hopkins University - Biomedical Engineering</em></p>
 <div class="section" id="acknowledgements">
 <h3>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h3>
@@ -606,15 +580,19 @@ Joshua Vogelstein</p>
 </div>
 <!-- End people panels -->
 </div>
-<p><img alt="bg center blur:1px opacity:60%" src="../../_images/temp-maggot-brain-umap-omni-hue_key=merge_class.png" /></p>
+<!-- 
+<!-- ![bg center blur:2.5px opacity:20%](./../../../results/figs/background/background.svg) -->
 <!-- ![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png) -->
 <!-- 
 ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
 ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
 ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
 ![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) -->
+<!-- <!-- --- -->
 <!-- ---
-# Motivation -->
+# Motivation
+- This is why we need to compare connectomes to understand x,y,z
+- Need methods etc. -->
 </div>
 </div>
 </div>
@@ -637,9 +615,9 @@ h2 {
 </style>
 <div class="section" id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
 <h2>Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> <em>different</em>?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different" title="Permalink to this headline">¶</a></h2>
-<footer>
+<!-- <footer>
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
-</footer>
+</footer> -->
 </div>
 </div>
 <hr class="docutils" />
@@ -647,10 +625,21 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <h1>We reject even the simplest notion of symmetry<a class="headerlink" href="#we-reject-even-the-simplest-notion-of-symmetry" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
-<p><img alt="" src="../results/figs/er_unmatched_test/er_methods.png" /></p>
+<ul class="simple">
+<li><p>Fit Erdos-Renyi models to the left and the right brain networks
+<img alt="" src="../results/figs/er_unmatched_test/er_explain.svg" /></p></li>
+<li><p>Compare densities:
+<span class="math notranslate nohighlight">\(H_0: \color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span><br />
+<span class="math notranslate nohighlight">\(H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}\)</span></p></li>
+</ul>
+<!-- ![center h:300](../../../results/figs/er_unmatched_test/er_methods.png) -->
 </div>
 <div>
-<p><img alt="center h:500" src="../results/figs/er_unmatched_test/er_density.png" /></p>
+<p><img alt="center h:350" src="../results/figs/er_unmatched_test/er_density.png" /></p>
+<br>
+<div class='center'>
+<p>p-value: <span class="math notranslate nohighlight">\({&lt;}10^{-23}\)</span></p>
+</div>
 </div>
 </div>
 </div>
@@ -659,14 +648,19 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <h1>Localizing differences to cell type connections<a class="headerlink" href="#localizing-differences-to-cell-type-connections" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
-<p><img alt="" src="../results/figs/sbm_unmatched_test/sbm_explain.svg" /></p>
-<div class="math notranslate nohighlight">
-\[H0:\]</div>
-<div class="math notranslate nohighlight">
-\[HA:\]</div>
+<ul class="simple">
+<li><p>Fit block models to both hemispheres
+<img alt="" src="../../_images/sbm-methods-short.png" /></p></li>
+<li><p>Compare group connection probabilities:
+<span class="math notranslate nohighlight">\(H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span>
+<span class="math notranslate nohighlight">\(H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}\)</span></p></li>
+</ul>
 </div>
 <div>
-<p><img alt="" src="../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg" /></p>
+<p><img alt="center h:400" src="../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg" /></p>
+<div class='center'>
+<p>p-value: <span class="math notranslate nohighlight">\({&lt;}10^{-7}\)</span></p>
+</div>
 </div>
 </div>
 </div>
@@ -675,62 +669,97 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <h1>Modified definitions of symmetry which ARE exhibited<a class="headerlink" href="#modified-definitions-of-symmetry-which-are-exhibited" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
-<div class="section" id="rescaled-connection-probabilities-and-removing-kenyon-cells">
-<h2>Rescaled connection probabilities AND removing Kenyon cells<a class="headerlink" href="#rescaled-connection-probabilities-and-removing-kenyon-cells" title="Permalink to this headline">¶</a></h2>
-<p><img alt="center h:400" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg" /></p>
+<div class="section" id="rescaled-connection-probabilities-and-removed-kenyon-cells">
+<h2>Rescaled connection probabilities AND removed Kenyon cells<a class="headerlink" href="#rescaled-connection-probabilities-and-removed-kenyon-cells" title="Permalink to this headline">¶</a></h2>
+<p><img alt="center h:350" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg" /></p>
+<div class='center'>
+<p>p-value: ~<span class="math notranslate nohighlight">\(0.51\)</span></p>
+</div>
 </div>
 <div>
 </div>
-<div class="section" id="using-only-top-50-percentile-edges-by-input-proportion">
-<h2>Using only top ~50-percentile edges by input proportion<a class="headerlink" href="#using-only-top-50-percentile-edges-by-input-proportion" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="used-only-high-weight-edges-br-by-input-proportion">
+<h2>Used only high weight edges<br>(by input proportion)<a class="headerlink" href="#used-only-high-weight-edges-br-by-input-proportion" title="Permalink to this headline">¶</a></h2>
 <p><img alt="center h:400" src="../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg" /></p>
 </div>
 </div>
-<hr class="docutils" />
+<!-- ---
 <div class="columns">
 <div>
-</div>
-<div class="section" id="graspologic">
-<h2>graspologic:<a class="headerlink" href="#graspologic" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/microsoft/graspologic">github.com/microsoft/graspologic</a></p>
-<p><img alt="w:450" src="../../_images/graspologic_svg.svg" /></p>
-<p><a class="reference external" href="https://pepy.tech/project/graspologic"><img alt="h:50" src="https://pepy.tech/badge/graspologic" /></a>  <a class="reference external" href="https://github.com/microsoft/graspologic"><img alt="h:50" src="https://img.shields.io/github/stars/microsoft/graspologic?style=social" /></a>  <a class="reference external" href="https://github.com/microsoft/graspologic/graphs/contributors"><img alt="h:50" src="https://img.shields.io/github/contributors/microsoft/graspologic" /></a>  <a class="reference external" href="https://opensource.org/licenses/MIT"><img alt="h:50" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a></p>
+
+## graspologic:
+
+[github.com/microsoft/graspologic](https://github.com/microsoft/graspologic)
+
+![w:450](./../../images/graspologic_svg.svg)
+
+[![h:50](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:50](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors)  [![h:50](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 </div>
 <div>
+
+
+## This work:
+[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) 
+![center w:400](./../../images/jb_example.png)
+[![h:50](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
+
 </div>
-<div class="section" id="this-work">
-<h2>This work:<a class="headerlink" href="#this-work" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/neurodata/bilateral-connectome">github.com/neurodata/bilateral-connectome</a>
-<img alt="center w:400" src="../../_images/jb_example.png" />
-<a class="reference external" href="http://docs.neurodata.io/bilateral-connectome/"><img alt="h:50" src="https://jupyterbook.org/badge.svg" /></a></p>
-</div>
-</div>
-<footer>Chung, Pedigo et al. JMLR (2019)</footer>
+</div> -->
 </div>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="questions">
-<h1>Questions?<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h1>
-<p><img alt="bg opacity:.6 95%" src="../results/figs/plot_side_layouts/2_network_layout.png" /></p>
-<p><span> </span>
+<div class="tex2jax_ignore mathjax_ignore section" id="conclusions">
+<h1>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Testing hypotheses in connectomics requires specialized techniques for networks</p>
+<ul>
+<li><p>We presented 2-sample testing procedures for comparing connectomes</p></li>
+<li><p><a class="reference external" href="https://github.com/microsoft/graspologic"><img alt="icon h:80" src="../../_images/graspologic_svg.svg" /></a> <a class="reference external" href="https://pepy.tech/project/graspologic"><img alt="icon" src="https://pepy.tech/badge/graspologic" /></a></p></li>
+<li><p>This work: <a class="reference external" href="https://github.com/neurodata/bilateral-connectome">github.com/neurodata/bilateral-connectome</a> <a class="reference external" href="http://docs.neurodata.io/bilateral-connectome/"><img alt="icon" src="https://jupyterbook.org/badge.svg" /></a></p></li>
+</ul>
+</li>
+<li><p>We applied these tools to evaluate bilateral symmetry as a case study, finding several ways in which this brain is/is not bilaterally symmetric</p></li>
+<li><p>Poised to apply to new datasets to answer…</p>
+<ul>
+<li><p><strong>{Your question here}</strong></p></li>
+<li><p>Get in touch: <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a> <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:jovo&#37;&#52;&#48;jhu&#46;edu"><em>jovo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a></p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="bg center blur:3px opacity:15%" src="../results/figs/background/background.svg" /></p>
+<!-- <footer>Chung, Pedigo et al. JMLR (2019) <br> Winding, Pedigo et al. In prep. (2022) <br> Pedigo et al. In prep. (2022)</footer> -->
+<!-- ---
+# Questions?
+
+![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+
 <span> </span>
 <span> </span>
 <span> </span>
-<span> </span></p>
+<span> </span>
+<span> </span>
+
 <style scoped>
 section {
     justify-content: center;
     text-align: center;
 }
 </style>
-<div class="section" id="id1">
-<h2>Benjamin D. Pedigo<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p><img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a>
-<img alt="icon" src="../../_images/github.png" /> <a class="reference external" href="https://github.com/bdpedigo"><em>&#64;bdpedigo (Github)</em></a>
-<img alt="icon" src="../../_images/twitter.png" /> <a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod (Twitter)</em></a>
-<img alt="icon" src="../../_images/web.png" /> <a class="reference external" href="https://bdpedigo.github.io/">https://bdpedigo.github.io/</a></p>
-</div>
-</div>
+
+### Benjamin D. Pedigo
+![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
+![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
+![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
+![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) -->
+<!-- fold this into one of the previous -->
+<!-- refs at the end in like quesions or something -->
+<!-- cite stat conn and/or connectal coding -->
+<!-- email terry -->
+<!-- cover letter -->
+<!-- email marta alberta -->
+<!-- check with Michael about timing -->
+<!-- we have a draft cover letter somewhere --></div>
 
     <script type="text/x-thebe-config">
     {
