@@ -157,5 +157,3 @@ results/outputs/*
 !results/outputs/.gitkeep
 
 sandbox/light_speed.py
-docs/glued_variables.json
-docs/glued_variables.txt
