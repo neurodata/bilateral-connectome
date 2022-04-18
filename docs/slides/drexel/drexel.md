@@ -197,7 +197,6 @@ section {
 
 # Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
 
-
 ---
 
 # Are these populations different?
