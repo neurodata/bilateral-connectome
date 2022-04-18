@@ -157,3 +157,4 @@ results/outputs/*
 !results/outputs/.gitkeep
 
 sandbox/light_speed.py
+docs/images/neurodata.io

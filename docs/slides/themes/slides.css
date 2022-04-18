@@ -33,6 +33,13 @@ img[alt~="icon"] {
     height: 30px;
 }
 
+img[alt~="person"] {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    text-align: center;
+}
+
 header {
     top: 0px;
     margin-top: auto;
@@ -52,6 +59,22 @@ header {
 
 .minipanels {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 1rem;
+    text-align: center;
+    grid-template-columns: repeat(8, 120px);
+    gap: 0.5rem;
+}
+
+/* 
+h4 {
+    margin-top: 0;
+} */
+
+/* h1, */
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0.1em;
+    margin-bottom: 0.2em;
 }
