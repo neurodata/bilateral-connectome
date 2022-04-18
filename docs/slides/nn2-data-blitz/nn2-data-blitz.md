@@ -1,10 +1,13 @@
 ---
 marp: true
 theme: slides
-paginate: true
-_paginate: false
 size: 16:9
+paginate: false
 ---
+
+
+![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
+
 
 <style scoped> 
 /* h1 {
@@ -81,9 +84,8 @@ Joshua Vogelstein
 <!-- End people panels -->
 </div>
 <!-- 
-![bg center blur:1px opacity:60%](./../../images/temp-maggot-brain-umap-omni-hue_key=merge_class.png) -->
 
-![bg center blur:2.5px opacity:20%](./../../../results/figs/background/background.svg)
+<!-- ![bg center blur:2.5px opacity:20%](./../../../results/figs/background/background.svg) -->
 
 <!-- ![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png) -->
 
@@ -215,7 +217,7 @@ p-value: ~$0.51$
 </div>
 </div>
 
----
+<!-- ---
 <div class="columns">
 <div>
 
@@ -237,19 +239,22 @@ p-value: ~$0.51$
 [![h:50](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
 
 </div>
-</div>
+</div> -->
 
 ---
 # Conclusions 
-- Valid testing of hypotheses in connectomics requires an understanding of networks their implications for statistical inference
-  - We present procedures which can be applied to networks...
-- We present an example of applying novel network 2-sample testing to compare connectomes
-    - We find quantitative definitions of bilateral symmetry which are and aren't exhibited by the larva connectome
-- Poised to apply to new datasets to answer x,y,z
+- Testing hypotheses in connectomics requires specialized techniques for networks
+  - We presented 2-sample testing procedures for comparing connectomes
+  - [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
+  - This work: [github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
+- We applied these tools to evaluate bilateral symmetry as a case study, finding several ways in which this brain is/is not bilaterally symmetric
+- Poised to apply to new datasets to answer...
    - **{Your question here}**
    - Get in touch: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)
 
-<!-- <footer>Chung, Pedigo et al. JMLR (2019)</footer> -->
+![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
+
+<!-- <footer>Chung, Pedigo et al. JMLR (2019) <br> Winding, Pedigo et al. In prep. (2022) <br> Pedigo et al. In prep. (2022)</footer> -->
 
 <!-- ---
 # Questions?
