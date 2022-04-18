@@ -40,7 +40,7 @@ img[alt~="person"] {
     text-align: center;
 }
 
-header {
+h1 {
     top: 0px;
     margin-top: auto;
 }
@@ -70,7 +70,7 @@ h4 {
     margin-top: 0;
 } */
 
-/* h1, */
+h1,
 h2,
 h3,
 h4,
