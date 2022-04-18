@@ -48,7 +48,7 @@ h1 {
 .columns {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .social_icons {
@@ -78,4 +78,10 @@ h5,
 h6 {
     margin-top: 0.1em;
     margin-bottom: 0.2em;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    text-align: center;
 }
