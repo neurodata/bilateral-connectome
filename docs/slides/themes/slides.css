@@ -51,6 +51,12 @@ h1 {
     gap: 1.5rem;
 }
 
+/* .columns-bl {
+    display: grid;
+    grid-template-columns: 500px 100px;
+    gap: 1em;
+} */
+
 .social_icons {
     padding: 0em;
     display: inline-block;
@@ -84,4 +90,10 @@ h6 {
     margin: auto;
     width: 50%;
     text-align: center;
+}
+
+.columns2-bl {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
 }

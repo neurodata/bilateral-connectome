@@ -197,7 +197,7 @@ p-value: ${<}10^{-7}$
 <div class="columns">
 <div>
 
-#### Rescaled connection probabilities AND removed Kenyon cells
+#### Rescal connection probabilities AND remove Kenyon cells
 
 ![center h:350](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
@@ -210,7 +210,7 @@ p-value: ~$0.51$
 </div>
 <div>
 
-#### Used only high weight edges<br>(by input proportion)
+#### Threshold by edge weight (input proportion to postsynaptic neuron)
 
 ![center h:400](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
 
@@ -242,17 +242,35 @@ p-value: ~$0.51$
 </div> -->
 
 ---
-# Conclusions 
-- Testing hypotheses in connectomics requires specialized techniques for networks
-  - Presented 2-sample testing procedures for comparing connectomes
-  - [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
-  - This work: [github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
-- Applied these tools to evaluate bilateral symmetry, finding several ways in which this brain is/is not bilaterally symmetric
-- Poised to apply to new datasets to answer...
-   - **{Your question here}**
-   - Get in touch: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)
+<!-- # Conclusions  -->
 
 ![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
+
+<div class='columns2-bl'>
+<div>
+
+## Conclusions
+
+- Testing hypotheses in connectomics requires techniques for networks
+    - We presented procedures for comparing connectomes
+- Used to evaluate bilateral symmetry, finding how this brain is/is not bilaterally symmetric
+- Poised to apply these tools to answer...
+   - **{Your question here}**
+   - Get in touch: 
+     - ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) 
+     - ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)
+
+</div>
+<div>
+
+## More info
+- [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
+- This work: [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome)
+- Chung et al. *Statistical connectomics* (2021)
+- Data: Winding, Pedigo et al. *In preparation* (2022)
+
+</div>
+</div>
 
 <!-- <footer>Chung, Pedigo et al. JMLR (2019) <br> Winding, Pedigo et al. In prep. (2022) <br> Pedigo et al. In prep. (2022)</footer> -->
 
