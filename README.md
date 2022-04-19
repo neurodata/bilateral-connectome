@@ -104,6 +104,11 @@ The notebooks associated with this project are assembled into a
   browser. For me, the built index is stored at `./bilateral-connectome/docs/_build/html/index.html`
 
 ## Linking Overleaf and writing the paper
+*Coming soon*
+
+## Questions about the code or paper 
+Please get in touch! You are welcome to [make an issue](https://github.com/neurodata/bilateral-connectome/issues/new)
+or email me at bpedigo [ at ] jhu [ dot ] edu.
 
 <!-- ## Building the book 
 *Coming soon* -->
