@@ -121,12 +121,12 @@ right_adj, right_nodes = load_unmatched("right")
 
 
 np.random.seed(8888)
-ps = [0.2, 0.4, 0.6, 0.8]
+ps = [0.2, 0.5, 0.8]
 n_steps = len(ps)
 fig, axs = plt.subplots(
     2,
     n_steps,
-    figsize=(8, 3),
+    figsize=(6, 3),
     gridspec_kw=dict(height_ratios=[2, 0.5]),
     constrained_layout=True,
 )
@@ -142,7 +142,7 @@ for i, p in enumerate(ps):
     label_text = f"{p}"
     if i == 0:
         label_text = r"$p = $" + label_text
-    ax.set_title(label_text)
+    ax.set_title(label_text, pad=10)
 
 fig.set_facecolor("w")
 
