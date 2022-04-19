@@ -62,7 +62,27 @@ reproducible environment for running the code for this project.
 
 ## Running the code
 - Make sure your virtual environment from the last section is active.
-- 
+- Now you should be able to run any individual python files like normal, for example: 
+  ```
+  python ./bilateral-connectome/scripts/er_unmatched_test.py
+  ```
+- Instead of running as a Python file, you can also easily convert a Python file to a
+  notebook, execute it, and have it included in the documentation folder for rendering
+  as a JupyterBook. To do so, use the `make_notebook.sh` script and pass in the name of 
+  the python file (without the `.py` file extension):
+  ```
+  sh ./bilateral-connectome/shell/make_notebook er_unmatched_test
+  ```
+  If you'd like to build that individual notebook and then rebuild the documentation,
+  just add the `-b` argument to the same script:
+  ```
+  sh ./bilateral-connectome/shell/make_notebook -b er_unmatched_test
+  ```
+- You can also build and run all notebooks which are essential to the final paper via
+  the `make_project.sh` script: 
+  ```
+  sh ./bilateral-connectome/shell/make_project.sh
+  ```
 
 ## Building the book 
 *Coming soon*
