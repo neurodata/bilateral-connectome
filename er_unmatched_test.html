@@ -475,7 +475,7 @@ alternative hypotheses above.</p>
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">erdos_renyi_test</span>
 <span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">sample_toy_networks</span>
 <span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
-<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">draw_hypothesis_box</span>
+<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">draw_hypothesis_box</span><span class="p">,</span> <span class="n">rainbowarrow</span>
 
 
 <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">True</span>
@@ -514,12 +514,12 @@ alternative hypotheses above.</p>
 
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
-<span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]</span>
 <span class="n">n_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
     <span class="mi">2</span><span class="p">,</span>
     <span class="n">n_steps</span><span class="p">,</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
     <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
     <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
@@ -535,7 +535,7 @@ alternative hypotheses above.</p>
     <span class="n">label_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">label_text</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$p = $&quot;</span> <span class="o">+</span> <span class="n">label_text</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label_text</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label_text</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
 
@@ -543,27 +543,6 @@ alternative hypotheses above.</p>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">rainbowarrow</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="c1"># REF: https://stackoverflow.com/questions/47163796/using-colormap-with-annotate-arrow-in-matplotlib</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-    <span class="c1"># Arrow shaft: LineCollection</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">segments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">points</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">lc</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-    <span class="n">lc</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
-    <span class="c1"># Arrow head: Triangle</span>
-    <span class="n">tricoords</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">)]</span>
-    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">rot</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">tricoords2</span> <span class="o">=</span> <span class="n">rot</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tricoords</span><span class="p">)</span>
-    <span class="n">tri</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tricoords2</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">lw</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">tri</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">autoscale_view</span><span class="p">()</span>
 
 
 <span class="n">rainbowarrow</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
@@ -789,8 +768,8 @@ explained by this difference in density alone.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:05.257255
-Completed at 2022-04-15 10:37:27.775041
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:05.504017
+Completed at 2022-04-19 15:39:29.815304
 </pre></div>
 </div>
 </div>
