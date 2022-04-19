@@ -37,17 +37,26 @@ reproducible environment for running the code for this project.
   cd bilateral-connectome
   ```
 - Create a Poetry environment:
-  ```
-  poetry env use python3.9
-  ```
+  - Note: this requires that you have a Python 3.9 installation on your machine. It is
+    possible that the code for this project will run with other versions of Python,
+    but I haven't tested it. To check if you have Python 3.9, you can do: 
+    ```
+    which python3.9
+    ```
+    If the result says `python3.9 not found` then you'll need to get a 3.9 interpreter
+    on your machine. Common ways to install an interpreter are via
+    [python.org](https://www.python.org/downloads/), [brew](https://docs.brew.sh/Homebrew-and-Python), or 
+    [conda](https://anaconda.org/anaconda/python).
+  - After you have ensured you have a Python 3.9 installation, do:
+    ```
+    poetry env use python3.9
+    ```
   - For me, the output looks like
      ```
     Creating virtualenv bilateral-connectome in /Users/bpedigo/bilateral-test/bilateral-connectome/.venv
     Using virtualenv: /Users/bpedigo/bilateral-test/bilateral-connectome/.venv
     ```
-  - Note: this requires that you have a python3.9 installation on your machine. It is
-    possible that the code for this project will run with other versions of Python,
-    but I haven't tested it.
+  
 - To activate the new environment, do 
   ```
   source .venv/bin/activate
