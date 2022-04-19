@@ -400,23 +400,26 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rescaled-connection-probabilities-and-removed-kenyon-cells">
-     Rescaled connection probabilities AND removed Kenyon cells
+    <a class="reference internal nav-link" href="#rescal-connection-probabilities-and-remove-kenyon-cells">
+     Rescal connection probabilities AND remove Kenyon cells
     </a>
    </li>
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#used-only-high-weight-edges-br-by-input-proportion">
-     Used only high weight edges
-     <br/>
-     (by input proportion)
+    <a class="reference internal nav-link" href="#threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron">
+     Threshold by edge weight (input proportion to postsynaptic neuron)
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conclusions">
+     Conclusions
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#more-info">
+     More info
     </a>
    </li>
   </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conclusions">
-   Conclusions
-  </a>
  </li>
 </ul>
 
@@ -503,23 +506,26 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rescaled-connection-probabilities-and-removed-kenyon-cells">
-     Rescaled connection probabilities AND removed Kenyon cells
+    <a class="reference internal nav-link" href="#rescal-connection-probabilities-and-remove-kenyon-cells">
+     Rescal connection probabilities AND remove Kenyon cells
     </a>
    </li>
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#used-only-high-weight-edges-br-by-input-proportion">
-     Used only high weight edges
-     <br/>
-     (by input proportion)
+    <a class="reference internal nav-link" href="#threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron">
+     Threshold by edge weight (input proportion to postsynaptic neuron)
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conclusions">
+     Conclusions
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#more-info">
+     More info
     </a>
    </li>
   </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conclusions">
-   Conclusions
-  </a>
  </li>
 </ul>
 
@@ -671,8 +677,8 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <h1>Modified definitions of symmetry which ARE exhibited<a class="headerlink" href="#modified-definitions-of-symmetry-which-are-exhibited" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
-<div class="section" id="rescaled-connection-probabilities-and-removed-kenyon-cells">
-<h2>Rescaled connection probabilities AND removed Kenyon cells<a class="headerlink" href="#rescaled-connection-probabilities-and-removed-kenyon-cells" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="rescal-connection-probabilities-and-remove-kenyon-cells">
+<h2>Rescal connection probabilities AND remove Kenyon cells<a class="headerlink" href="#rescal-connection-probabilities-and-remove-kenyon-cells" title="Permalink to this headline">¶</a></h2>
 <p><img alt="center h:350" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg" /></p>
 <div class='center'>
 <p>p-value: ~<span class="math notranslate nohighlight">\(0.51\)</span></p>
@@ -680,8 +686,8 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </div>
 <div>
 </div>
-<div class="section" id="used-only-high-weight-edges-br-by-input-proportion">
-<h2>Used only high weight edges<br>(by input proportion)<a class="headerlink" href="#used-only-high-weight-edges-br-by-input-proportion" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron">
+<h2>Threshold by edge weight (input proportion to postsynaptic neuron)<a class="headerlink" href="#threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron" title="Permalink to this headline">¶</a></h2>
 <p><img alt="center h:400" src="../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg" /></p>
 </div>
 </div>
@@ -708,28 +714,46 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 
 </div>
 </div> -->
-</div>
-</div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="conclusions">
-<h1>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h1>
+<!-- # Conclusions  -->
+<p><img alt="bg center blur:3px opacity:15%" src="../results/figs/background/background.svg" /></p>
+<div class='columns2-bl'>
+<div>
+</div>
+<div class="section" id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Testing hypotheses in connectomics requires specialized techniques for networks</p>
+<li><p>Testing hypotheses in connectomics requires techniques for networks</p>
 <ul>
-<li><p>Presented 2-sample testing procedures for comparing connectomes</p></li>
-<li><p><a class="reference external" href="https://github.com/microsoft/graspologic"><img alt="icon h:80" src="../../_images/graspologic_svg.svg" /></a> <a class="reference external" href="https://pepy.tech/project/graspologic"><img alt="icon" src="https://pepy.tech/badge/graspologic" /></a></p></li>
-<li><p>This work: <a class="reference external" href="https://github.com/neurodata/bilateral-connectome">github.com/neurodata/bilateral-connectome</a> <a class="reference external" href="http://docs.neurodata.io/bilateral-connectome/"><img alt="icon" src="https://jupyterbook.org/badge.svg" /></a></p></li>
+<li><p>We presented procedures for comparing connectomes</p></li>
 </ul>
 </li>
-<li><p>Applied these tools to evaluate bilateral symmetry, finding several ways in which this brain is/is not bilaterally symmetric</p></li>
-<li><p>Poised to apply to new datasets to answer…</p>
+<li><p>Used to evaluate bilateral symmetry, finding how this brain is/is not bilaterally symmetric</p></li>
+<li><p>Poised to apply these tools to answer…</p>
 <ul>
 <li><p><strong>{Your question here}</strong></p></li>
-<li><p>Get in touch: <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a> <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:jovo&#37;&#52;&#48;jhu&#46;edu"><em>jovo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a></p></li>
+<li><p>Get in touch:</p>
+<ul>
+<li><p><img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a></p></li>
+<li><p><img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:jovo&#37;&#52;&#48;jhu&#46;edu"><em>jovo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a></p></li>
 </ul>
 </li>
 </ul>
-<p><img alt="bg center blur:3px opacity:15%" src="../results/figs/background/background.svg" /></p>
+</li>
+</ul>
+</div>
+<div>
+</div>
+<div class="section" id="more-info">
+<h2>More info<a class="headerlink" href="#more-info" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/microsoft/graspologic"><img alt="icon h:80" src="../../_images/graspologic_svg.svg" /></a> <a class="reference external" href="https://pepy.tech/project/graspologic"><img alt="icon" src="https://pepy.tech/badge/graspologic" /></a></p></li>
+<li><p>This work: <a class="reference external" href="http://docs.neurodata.io/bilateral-connectome/"><img alt="icon" src="https://jupyterbook.org/badge.svg" /></a><a class="reference external" href="https://github.com/neurodata/bilateral-connectome">github.com/neurodata/bilateral-connectome</a></p></li>
+<li><p>Chung et al. <em>Statistical connectomics</em> (2021)</p></li>
+<li><p>Data: Winding, Pedigo et al. <em>In preparation</em> (2022)</p></li>
+</ul>
+</div>
+</div>
 <!-- <footer>Chung, Pedigo et al. JMLR (2019) <br> Winding, Pedigo et al. In prep. (2022) <br> Pedigo et al. In prep. (2022)</footer> -->
 <!-- ---
 # Questions?
@@ -762,6 +786,7 @@ section {
 <!-- email marta alberta -->
 <!-- check with Michael about timing -->
 <!-- we have a draft cover letter somewhere --></div>
+</div>
 
     <script type="text/x-thebe-config">
     {
