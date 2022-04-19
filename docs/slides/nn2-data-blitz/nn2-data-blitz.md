@@ -105,7 +105,7 @@ Joshua Vogelstein
 - Need methods etc. -->
 
 --- 
-# _Drosophila_ larva brain connectome
+# Larval _Drosophila_ brain connectome
 
 <div class="columns">
 <div>
@@ -244,10 +244,10 @@ p-value: ~$0.51$
 ---
 # Conclusions 
 - Testing hypotheses in connectomics requires specialized techniques for networks
-  - We presented 2-sample testing procedures for comparing connectomes
+  - Presented 2-sample testing procedures for comparing connectomes
   - [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
   - This work: [github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
-- We applied these tools to evaluate bilateral symmetry as a case study, finding several ways in which this brain is/is not bilaterally symmetric
+- Applied these tools to evaluate bilateral symmetry, finding several ways in which this brain is/is not bilaterally symmetric
 - Poised to apply to new datasets to answer...
    - **{Your question here}**
    - Get in touch: ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)

@@ -33,7 +33,7 @@ def gluefig(name, fig, **kwargs):
 
 #%%
 
-rng = np.random.default_rng(8888)
+rng = np.random.default_rng(888888)
 
 width=16
 height = 9
