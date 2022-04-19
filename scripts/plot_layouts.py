@@ -104,8 +104,8 @@ lr_n_edges = np.count_nonzero(adj[np.ix_(left_inds, right_inds)])
 rl_n_edges = np.count_nonzero(adj[np.ix_(right_inds, left_inds)])
 n_edges_matrix = np.array([[ll_n_edges, lr_n_edges], [rl_n_edges, rr_n_edges]])
 
-ll_p_edge = ll_n_edges / (n_left ** 2)
-rr_p_edge = rr_n_edges / (n_right ** 2)
+ll_p_edge = ll_n_edges / (n_left**2)
+rr_p_edge = rr_n_edges / (n_right**2)
 lr_p_edge = lr_n_edges / (n_left * n_right)
 rl_p_edge = rl_n_edges / (n_left * n_right)
 p_edge_matrix = np.array([[ll_p_edge, lr_p_edge], [rl_p_edge, rr_p_edge]])
@@ -164,7 +164,7 @@ stashfig("connection-probabilities")
 # ## Plot the number of edges for each lateral type with 99% confidence intervals
 #%%
 fig, ax = plt.subplots(1, 1, figsize=(6, 3))
-ns = [n_left ** 2, n_right ** 2, n_left * n_right, n_left * n_right]
+ns = [n_left**2, n_right**2, n_left * n_right, n_left * n_right]
 edge_counts = [ll_n_edges, rr_n_edges, lr_n_edges, rl_n_edges]
 for i, (n_edges, n) in enumerate(zip(edge_counts, ns)):
     p_edge = n_edges / n

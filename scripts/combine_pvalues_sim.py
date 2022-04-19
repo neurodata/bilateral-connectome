@@ -117,7 +117,7 @@ for i, perturb_size in enumerate(perturb_size_range):
 
     ylim = ax.get_ylim()
     if ylim[0] < lower_limit:
-        ax.set_ylim((lower_limit/10, ylim[1]))
+        ax.set_ylim((lower_limit / 10, ylim[1]))
 
 handles, labels = ax.get_legend_handles_labels()
 

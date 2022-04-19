@@ -65,7 +65,6 @@ def gluefig(name, fig, **kwargs):
         plt.close()
 
 
-
 t0 = time.time()
 set_theme()
 rng = np.random.default_rng(8888)
@@ -175,12 +174,12 @@ right_labels = right_nodes[GROUP_KEY].values
 
 
 np.random.seed(8888)
-ps = [0.2, 0.4, 0.6, 0.8]
+ps = [0.2, 0.4, 0.6]
 n_steps = len(ps)
 fig, axs = plt.subplots(
     3,
     n_steps,
-    figsize=(8, 4),
+    figsize=(6, 4),
     gridspec_kw=dict(height_ratios=[2, 2, 1], wspace=0),
     constrained_layout=True,
 )
@@ -188,7 +187,6 @@ fig, axs = plt.subplots(
 
 ns = [5, 6, 7]
 B = np.array([[0.8, 0.2, 0.05], [0.05, 0.9, 0.2], [0.05, 0.05, 0.7]])
-ps = [0.2, 0.4, 0.6, 0.8]
 palette = get_toy_palette()
 
 
@@ -560,6 +558,12 @@ for ax in axs.flat:
 fig.set_facecolor("w")
 gluefig("sbm_methods_explain", fig)
 
+#%%
+
+fig, ax = plt.subplots(1, 2, figsize=(6, 3))
+A1, A2, node_data = sample_toy_networks()
+palette = get_toy_palette()
+
 
 #%%
 
@@ -572,7 +576,7 @@ stat, pvalue, misc = stochastic_block_test(
     combine_method="tippett",
     correct_method="bonferroni",
 )
-glue("pvalue", pvalue, form='pvalue')
+glue("pvalue", pvalue, form="pvalue")
 n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
 print(pvalue)

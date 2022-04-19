@@ -97,7 +97,7 @@ def compute_density(adjacency, loops=False):
     else:
         n_edges = np.count_nonzero(adjacency)
     n_nodes = adjacency.shape[0]
-    n_possible = n_nodes ** 2
+    n_possible = n_nodes**2
     if not loops:
         n_possible -= n_nodes
     return n_edges / n_possible
@@ -110,7 +110,7 @@ def compute_alignment_strength(A, B, perm=None):
     else:
         B_perm = B
     n_disagreements = np.count_nonzero(A - B_perm)  # TODO this assumes loopless
-    p_disagreements = n_disagreements / (n ** 2 - n)
+    p_disagreements = n_disagreements / (n**2 - n)
     densityA = compute_density(A)
     densityB = compute_density(B)
     denominator = densityA * (1 - densityB) + densityB * (1 - densityA)

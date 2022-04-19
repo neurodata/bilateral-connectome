@@ -190,7 +190,7 @@ for i, ind in enumerate(choice_inds):
         0.05,
         0.95,
         f"n={ns[ind]}\np={base_probs[ind]:0.2g}\nnp={ns[ind]*base_probs[ind]:0.2g}",
-        va='top',
+        va="top",
         transform=ax.transAxes,
     )
     gluefig(f"pvalue-dist-example{i}", fig)

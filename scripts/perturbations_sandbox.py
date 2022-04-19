@@ -111,4 +111,3 @@ heatmap(B, ax=axs[1])
 heatmap(A - B, ax=axs[2])
 
 #%%
-

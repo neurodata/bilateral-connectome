@@ -146,10 +146,10 @@ n_edges_left = np.count_nonzero(left_adj)
 n_edges_right = np.count_nonzero(right_adj)
 n_left = left_adj.shape[0]
 n_right = right_adj.shape[0]
-density_left = n_edges_left / (n_left ** 2)
-density_right = n_edges_right / (n_right ** 2)
+density_left = n_edges_left / (n_left**2)
+density_right = n_edges_right / (n_right**2)
 
-n_remove = int((density_right - density_left) * (n_right ** 2))
+n_remove = int((density_right - density_left) * (n_right**2))
 
 glue("density_left", density_left)
 glue("density_right", density_right)

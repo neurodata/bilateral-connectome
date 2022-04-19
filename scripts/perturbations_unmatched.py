@@ -288,10 +288,10 @@ simple_results = results[
         "sim",
         "perturb_elapsed",
         "test_elapsed",
-        'target',
-        'perturbation_type',
-        'model_base', 
-        'model_postfix',
+        "target",
+        "perturbation_type",
+        "model_base",
+        "model_postfix",
     ]
 ]
 simple_results.to_csv(out_path / "unmatched_power_simple.csv")
