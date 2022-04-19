@@ -108,7 +108,7 @@ The notebooks associated with this project are assembled into a
 
 ## Questions about the code or paper 
 Please get in touch! You are welcome to [make an issue](https://github.com/neurodata/bilateral-connectome/issues/new)
-or email me at bpedigo [ at ] jhu [ dot ] edu.
+or email me at bpedigo[ at ]jhu[ dot ]edu.
 
 <!-- ## Building the book 
 *Coming soon* -->
