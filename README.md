@@ -68,7 +68,7 @@ reproducible environment for running the code for this project.
   ```
 - Instead of running as a Python file, you can also easily convert a Python file to a
   notebook, execute it, and have it included in the documentation folder for rendering
-  as a JupyterBook. To do so, use the `make_notebook.sh` script and pass in the name of 
+  as a Jupyter Book. To do so, use the `make_notebook.sh` script and pass in the name of 
   the python file (without the `.py` file extension):
   ```
   sh ./bilateral-connectome/shell/make_notebook er_unmatched_test
@@ -84,8 +84,20 @@ reproducible environment for running the code for this project.
   sh ./bilateral-connectome/shell/make_project.sh
   ```
 
-## Building the book 
-*Coming soon*
+## Building the documentation Jupyter Book
+The notebooks associated with this project are assembled into a
+[Jupyter Book](https://jupyterbook.org/). 
+- To build the documentation, do:
+  ```
+  jb build ./bilateral-connectome/docs
+  ```
+- You can then view the locally built HTML by pasting the produced link into your
+  browser. For me, the built index is stored at `./bilateral-connectome/docs/_build/html/index.html`
+
+## Linking Overleaf and writing the paper
+
+<!-- ## Building the book 
+*Coming soon* -->
 
 <!-- ## Usage
 
