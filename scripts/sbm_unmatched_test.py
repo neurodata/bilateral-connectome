@@ -200,6 +200,7 @@ def label_matrix_element(
     fontsize="small",
     cmap=None,
     color=None,
+    linewidth=2,
 ):
     xlow = col_ind + pad
     xhigh = col_ind + 1 - pad
@@ -211,6 +212,7 @@ def label_matrix_element(
         zorder=100,
         color="red",
         clip_on=False,
+        linewidth=linewidth,
     )
 
     if color is None:
@@ -560,10 +562,70 @@ gluefig("sbm_methods_explain", fig)
 
 #%%
 
-fig, ax = plt.subplots(1, 2, figsize=(6, 3))
-A1, A2, node_data = sample_toy_networks()
-palette = get_toy_palette()
+set_theme(font_scale=1)
 
+# axs[0, 0].set_title("Group neurons", fontsize="medium")
+# axs[0, 2].set_title("Estimate group\nconnection probabilities", x=0.45, ha="center")
+# axs[0, 4].set_title("Compare probabilities,\ncompute p-values", fontsize="medium")
+# axs[0, 6].set_title("Combine p-values\nfor overall test", fontsize="medium")
+
+fig, axs = plt.subplots(
+    1,
+    2,
+    figsize=(6, 3),
+    gridspec_kw=dict(
+        wspace=0.3,
+    ),
+    constrained_layout=True,
+)
+# A1, A2, node_data = sample_toy_networks()
+# palette = get_toy_palette()
+
+
+ax = axs[0]
+node_data = networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
+centroids = node_data.groupby("labels").mean()
+ax.annotate(
+    "",
+    xy=centroids.loc[2],
+    xytext=centroids.loc[1],
+    arrowprops=dict(arrowstyle="-|>", linewidth=4, color="red"),
+)
+ax.set_title("Group neurons", pad=10)
+# ax.axis("off")
+ax.autoscale(False)
+ax.plot([1.15, 1.15], [-1, 1], color="lightgrey", linewidth=1.5, clip_on=False)
+# ax.set_xlim((0, 1))
+
+ax = axs[1]
+top_ax, left_ax = heatmap_grouped(
+    Bhat1,
+    [1, 2, 3],
+    palette=palette,
+    ax=ax,
+    xlabel_loc="top",
+
+)
+top_ax.set_title(
+    "Estimate group-to-group\nconnection probabilities " + r"($\hat{B}$)", pad=10
+)
+left_ax.set_ylabel("Source group", fontsize="medium")
+ax.set_xlabel("Target group", fontsize="medium")
+
+label_matrix_element(
+    Bhat1,
+    0,
+    1,
+    r"$\hat{B}_{12}$",
+    ax,
+    fontsize="medium",
+    pad=0.03,
+    linewidth=3,
+)
+
+fig.set_facecolor("w")
+
+gluefig("sbm_simple_methods", fig)
 
 #%%
 
@@ -582,6 +644,8 @@ glue("n_tests", n_tests)
 print(pvalue)
 
 #%%
+
+set_theme(font_scale=1)
 
 
 # TODO should be a better way with melt?

@@ -239,18 +239,23 @@ def heatmap_grouped(
     title="",
     xlabel="",
     ylabel="",
+    xlabel_loc="top",
 ):
     heatmap(Bhat, ax=ax, cmap=cmap, vmin=vmin, vmax=vmax, center=center, cbar=False)
     divider = make_axes_locatable(ax)
-    top_ax = divider.append_axes("top", size=color_size, pad=pad, sharex=ax)
+    top_ax = divider.append_axes(xlabel_loc, size=color_size, pad=pad, sharex=ax)
     remove_shared_ax(top_ax)
     draw_colors(top_ax, "x", labels=labels, palette=palette)
     left_ax = divider.append_axes("left", size=color_size, pad=pad, sharex=ax)
     remove_shared_ax(left_ax)
     draw_colors(left_ax, "y", labels=labels, palette=palette)
-    top_ax.set_title(title)
+    if xlabel_loc == "top":
+        top_ax.set_title(title)
+        ax.set_xlabel(xlabel)
+    else:
+        ax.set_title(title)
+        top_ax.set_xlabel(xlabel)
     left_ax.set_ylabel(ylabel)
-    ax.set_xlabel(xlabel)
     return top_ax, left_ax
 
 
