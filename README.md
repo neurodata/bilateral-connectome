@@ -16,10 +16,11 @@ Comparing connectomes can help explain how neural connectivity is related to gen
 - ``scripts``: Python scripts used to do all analyses
 - ``shell``: Shell scripts used to run the entire project, copy results, etc.
 
-## Getting the code and setting up an environment
+## Guide to using the repository
+### Getting the code and setting up an environment
 Prerequisites: `git`, working knowledge of Python and command line tools.
 
-### Using Poetry
+#### Using Poetry
 I recommend using [Poetry](https://python-poetry.org/) to create and manage a 
 reproducible environment for running the code for this project. 
 - If you don't have it already, [install Poetry](https://python-poetry.org/docs/#installation) following their linked instructions.
@@ -63,13 +64,13 @@ reproducible environment for running the code for this project.
   ```
   - If you need to deactivate this environment, just type `deactivate`
 
-### Using `pip`
+#### Using `pip`
 *Coming soon*
 
-## Getting the data 
+### Getting the data 
 *Coming soon*
 
-## Running the code
+### Running the code
 - Make sure your virtual environment from the last section is active.
 - Now you should be able to run any individual python files like normal, for example: 
   ```
@@ -93,7 +94,7 @@ reproducible environment for running the code for this project.
   sh ./bilateral-connectome/shell/make_project.sh
   ```
 
-## Building the documentation Jupyter Book
+### Building the documentation Jupyter Book
 The notebooks associated with this project are assembled into a
 [Jupyter Book](https://jupyterbook.org/). 
 - To build the documentation, do:
@@ -103,7 +104,7 @@ The notebooks associated with this project are assembled into a
 - You can then view the locally built HTML by pasting the produced link into your
   browser. For me, the built index is stored at `./bilateral-connectome/docs/_build/html/index.html`
 
-## Linking Overleaf and writing the paper
+### Linking Overleaf and writing the paper
 *Coming soon*
 
 ## Questions about the code or paper 
