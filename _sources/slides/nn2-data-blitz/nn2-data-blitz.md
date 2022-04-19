@@ -172,8 +172,8 @@ p-value: ${<}10^{-23}$
 <div>
 
 - Fit block models to both hemispheres
-  ![](./../../images/sbm-methods-short.png)
-- Compare group connection probabilities:
+  ![](./../../../results/figs/sbm_unmatched_test/sbm_simple_methods.svg)
+- Compare connection probabilities:
   $H_0: \color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$ 
   $H_A: \color{#66c2a5} B^{(L)} \color{black} \neq  \color{#fc8d62} B^{(R)}$
 
