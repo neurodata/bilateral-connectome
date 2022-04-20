@@ -197,7 +197,7 @@ p-value: ${<}10^{-7}$
 <div class="columns">
 <div>
 
-#### Rescal connection probabilities AND remove Kenyon cells
+#### Rescale connection probabilities AND remove Kenyon cells
 
 ![center h:350](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
