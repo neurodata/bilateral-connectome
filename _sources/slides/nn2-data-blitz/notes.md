@@ -10,7 +10,8 @@
 - has around 3,000 neurons in its brain, and crucially, they've reconstructed all neurons on both hemispheres
 - this gave us the opportunity to try to understand if this connectome is bilaterally symmetric
 - we can treat each hemisphere of the brain as its own network, and then we're going to ask a very simple question: are left right different
-- to do so, we'll need to formalize what we mean by different
+- now, answering this question requires that we write down what do we mean by different
+  for these two networks
 
 # slide 3
 - the simplest model we started with is the erdos-renyi model, which only cares about one parameter: the density
