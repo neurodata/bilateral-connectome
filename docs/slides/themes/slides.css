@@ -20,6 +20,11 @@ section {
     --target: #e78ac3;
 }
 
+/* REF: https://github.com/yhatt/marp/issues/119 */
+img {
+    background-color: transparent !important;
+}
+
 img[alt~="center"] {
     display: block;
     margin: 0 auto;
@@ -51,12 +56,6 @@ h1 {
     gap: 1.5rem;
 }
 
-/* .columns-bl {
-    display: grid;
-    grid-template-columns: 500px 100px;
-    gap: 1em;
-} */
-
 .social_icons {
     padding: 0em;
     display: inline-block;
@@ -70,11 +69,6 @@ h1 {
     gap: 0.5rem;
     /* margin: 0 auto; */
 }
-
-/* 
-h4 {
-    margin-top: 0;
-} */
 
 h1,
 h2,
