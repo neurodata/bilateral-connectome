@@ -1,13 +1,14 @@
 # slide 1
 - Introduction
-- Tell you today about comparison of 
-- weve been looking at developing methods for understanding the signifigance and nature of differences between connectomes
+- Tell you today about comparison of connectomes
+- we think this kind of comparison will be important as the field is collecting more
+  and more connectome samples, and we want to make claims about the significance and the nature of the differences between them.
 - as a case study, i'll tell you about one application of these tools to an insect brain connectome
 
 # slide 2
 - the dataset we've been working on is the connectome of the larval drosophila brain, mapped by our collaborators at the university of cambridge
 - has around 3,000 neurons in its brain, and crucially, they've reconstructed all neurons on both hemispheres
-- this gave us the opportunity to try to understand whether this brain was bilaterally symmetriy
+- this gave us the opportunity to try to understand if this connectome is bilaterally symmetric
 - we can treat each hemisphere of the brain as its own network, and then we're going to ask a very simple question: are left right different
 - to do so, we'll need to formalize what we mean by different
 
@@ -37,4 +38,3 @@ if you use the right one can also get to "symmetry" under each test we looked at
 # slide 6
 - to sum up, testing hypotheses in connectomics requires specialized procedures adapted to connectomes
 - we presented several two-sample testing tools which correspond to different notions of what it means for networks to be different
-- 
