@@ -36,6 +36,7 @@ parts:
       title: NAISys
   - caption: Errata
     chapters:
+    - file: ad
     - file: nhypergeom_sims
     - file: rdpg_unmatched_test
     - file: er_matched_test
