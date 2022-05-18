@@ -22,6 +22,8 @@ parts:
     - file: references
   - caption: Slides
     chapters:
+    - url: https://docs.neurodata.io/bilateral-connectome/berlin.pdf
+      title: Berlin Connectomics
     - url: https://docs.neurodata.io/bilateral-connectome/drexel.pdf
       title: Drexel
     - url: https://docs.neurodata.io/bilateral-connectome/lab-meeting-2022-02-24.pdf
