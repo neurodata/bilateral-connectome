@@ -1,4 +1,4 @@
-# Further Info
+# Further info
 
 ## graspologic
 
