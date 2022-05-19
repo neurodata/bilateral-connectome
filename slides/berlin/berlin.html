@@ -405,20 +405,15 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#modified-definitions-of-symmetry-which-are-exhibited">
-   Modified definitions of symmetry which ARE exhibited
+  <a class="reference internal nav-link" href="#rescaling-connection-probabilities-focuses-remaining-asymmetry-on-kenyon-cells">
+   Rescaling connection probabilities focuses remaining asymmetry on Kenyon cells
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#higher-edge-weights-as-neuron-s-input-percentage-are-more-symmetric">
+   Higher edge weights (as neuron’s input percentage) are more symmetric
   </a>
   <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rescale-connection-probabilities-and-remove-kenyon-cells">
-     Rescale connection probabilities AND remove Kenyon cells
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron">
-     Threshold by edge weight (input proportion to postsynaptic neuron)
-    </a>
-   </li>
    <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#conclusions">
      Conclusions
@@ -516,20 +511,15 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#modified-definitions-of-symmetry-which-are-exhibited">
-   Modified definitions of symmetry which ARE exhibited
+  <a class="reference internal nav-link" href="#rescaling-connection-probabilities-focuses-remaining-asymmetry-on-kenyon-cells">
+   Rescaling connection probabilities focuses remaining asymmetry on Kenyon cells
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#higher-edge-weights-as-neuron-s-input-percentage-are-more-symmetric">
+   Higher edge weights (as neuron’s input percentage) are more symmetric
   </a>
   <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rescale-connection-probabilities-and-remove-kenyon-cells">
-     Rescale connection probabilities AND remove Kenyon cells
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron">
-     Threshold by edge weight (input proportion to postsynaptic neuron)
-    </a>
-   </li>
    <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#conclusions">
      Conclusions
@@ -687,7 +677,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </ul>
 </div>
 <div>
-<p><img alt="center h:400" src="../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg" /></p>
+<p><img alt="center h:400" src="../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues_unlabeled.svg" /></p>
 <div class='center'>
 <p>p-value: <span class="math notranslate nohighlight">\({&lt;}10^{-7}\)</span></p>
 </div>
@@ -695,22 +685,34 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </div>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="modified-definitions-of-symmetry-which-are-exhibited">
-<h1>Modified definitions of symmetry which ARE exhibited<a class="headerlink" href="#modified-definitions-of-symmetry-which-are-exhibited" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="rescaling-connection-probabilities-focuses-remaining-asymmetry-on-kenyon-cells">
+<h1>Rescaling connection probabilities focuses remaining asymmetry on Kenyon cells<a class="headerlink" href="#rescaling-connection-probabilities-focuses-remaining-asymmetry-on-kenyon-cells" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
-<div class="section" id="rescale-connection-probabilities-and-remove-kenyon-cells">
-<h2>Rescale connection probabilities AND remove Kenyon cells<a class="headerlink" href="#rescale-connection-probabilities-and-remove-kenyon-cells" title="Permalink to this headline">¶</a></h2>
-<p><img alt="center h:350" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg" /></p>
-<div class='center'>
-<p>p-value: ~<span class="math notranslate nohighlight">\(0.51\)</span></p>
-</div>
+<p><img alt="center" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg" /></p>
 </div>
 <div>
+<p><img alt="center h:400" src="../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg" /></p>
+<div class='center'>
+<p>Remove Kenyon cells <span class="math notranslate nohighlight">\(\rightarrow\)</span> <span class="math notranslate nohighlight">\(p \approx 0.51\)</span></p>
 </div>
-<div class="section" id="threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron">
-<h2>Threshold by edge weight (input proportion to postsynaptic neuron)<a class="headerlink" href="#threshold-by-edge-weight-input-proportion-to-postsynaptic-neuron" title="Permalink to this headline">¶</a></h2>
-<p><img alt="center h:400" src="../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg" /></p>
+<!-- 
+
+<!-- p-value: ~$0.51$ -->
+<!--  -->
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="higher-edge-weights-as-neuron-s-input-percentage-are-more-symmetric">
+<h1>Higher edge weights (as neuron’s input percentage) are more symmetric<a class="headerlink" href="#higher-edge-weights-as-neuron-s-input-percentage-are-more-symmetric" title="Permalink to this headline">¶</a></h1>
+<div class='columns'>
+<div>
+<p><img alt="" src="../results/figs/thresholding_tests/thresholding_methods.svg" /></p>
+</div>
+<div>
+<p><img alt="" src="../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg" /></p>
+<!-- *Only occurs when using input percentage as edge weight* -->
 </div>
 </div>
 <!-- ---
@@ -741,7 +743,6 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <p><img alt="bg center blur:3px opacity:15%" src="../results/figs/background/background.svg" /></p>
 <div class='columns2-bl'>
 <div>
-</div>
 <div class="section" id="conclusions">
 <h2>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
