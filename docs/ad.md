@@ -32,6 +32,6 @@
 ## Get in touch
 - Email: [bpedigo@jhu.edu](mailto:bpedigo@jhu.edu)
 - Twitter: [@bpedigod](https://twitter.com/bpedigod)
-- GitHub: [@bpedigod](https://github.com/bdpedigo)
+- GitHub: [@bdpedigo](https://github.com/bdpedigo)
 - Website: [bdpedigo.github.io](https://bdpedigo.github.io/)
 - Lab website: [neurodata.io](https://neurodata.io/)
