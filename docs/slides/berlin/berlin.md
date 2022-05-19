@@ -182,7 +182,7 @@ p-value: ${<}10^{-23}$
 </div>
 <div>
 
-![center h:400](./../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues.svg)
+![center h:400](./../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues_unlabeled.svg)
 
 <div class='center'>
 
@@ -194,27 +194,48 @@ p-value: ${<}10^{-7}$
 </div>
 
 ---
-# Modified definitions of symmetry which ARE exhibited
+# Rescaling connection probabilities focuses remaining asymmetry on Kenyon cells
 
 <div class="columns">
 <div>
 
-#### Rescale connection probabilities AND remove Kenyon cells
-
-![center h:350](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
-
-<div class='center'>
-
-p-value: ~$0.51$
-
-</div>
+![center](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
 </div>
 <div>
 
-#### Threshold by edge weight (input proportion to postsynaptic neuron)
+![center h:400](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
 
-![center h:400](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
+<div class='center'>
+
+Remove Kenyon cells $\rightarrow$ $p \approx 0.51$
+
+</div>
+
+<!-- 
+
+<!-- p-value: ~$0.51$ -->
+<!--  -->
+
+</div>
+</div>
+
+
+
+---
+# Higher edge weights (as neuron's input percentage) are more symmetric
+
+<div class='columns'>
+<div>
+
+![](./../../../results/figs/thresholding_tests/thresholding_methods.svg)
+
+</div>
+<div>
+
+![](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
+
+<!-- *Only occurs when using input percentage as edge weight* -->
 
 </div>
 </div>
