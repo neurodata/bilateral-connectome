@@ -347,7 +347,11 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#graspologic">
-   graspologic
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     graspologic
+    </span>
+   </code>
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -359,6 +363,23 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#related-work">
    Related work
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bisected-graph-matching">
+     Bisected graph matching
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#statistical-connectomics">
+     Statistical connectomics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#network-data-science-course">
+     Network data science course
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get-in-touch">
@@ -387,7 +408,11 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#graspologic">
-   graspologic
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     graspologic
+    </span>
+   </code>
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -399,6 +424,23 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#related-work">
    Related work
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bisected-graph-matching">
+     Bisected graph matching
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#statistical-connectomics">
+     Statistical connectomics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#network-data-science-course">
+     Network data science course
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get-in-touch">
@@ -417,9 +459,9 @@ const thebe_selector_output = ".output, .cell_output"
   <div class="tex2jax_ignore mathjax_ignore section" id="further-info">
 <h1>Further info<a class="headerlink" href="#further-info" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="graspologic">
-<h2>graspologic<a class="headerlink" href="#graspologic" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference external" href="https://github.com/microsoft/graspologic"><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></a><a class="headerlink" href="#graspologic" title="Permalink to this headline">¶</a></h2>
 <a class="reference internal image-reference" href="_images/graspologic_svg.svg"><img alt="graspologic logo" class="align-center" src="_images/graspologic_svg.svg" width="300px" /></a>
-<p><a class="reference external" href="https://github.com/microsoft/graspologic"><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></a> - our Python package for statistical and machine learning analyses on networks.</p>
+<p>Our Python package for statistical and machine learning analyses on networks.</p>
 <ul class="simple">
 <li><p>Fully open-source</p></li>
 <li><p>Co-developed with Microsoft Research</p></li>
@@ -435,16 +477,25 @@ const thebe_selector_output = ".output, .cell_output"
 studied here is forthcoming, but tests could already be applied to other data.</p></li>
 <li><p><a class="reference external" href="http://docs.neurodata.io/bilateral-connectome/">JupyterBook</a> with explanation for
 key results/experiments.</p></li>
+<li><p><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/berlin.pdf">Slides</a> from my talk at
+Berlin Connectomics 2022.</p></li>
 </ul>
 </div>
 <div class="section" id="related-work">
 <h2>Related work<a class="headerlink" href="#related-work" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://www.annualreviews.org/doi/abs/10.1146/annurev-statistics-042720-023234">“Statistical connectomics”</a> - our recent review describing many related techniques and concepts.</p></li>
-<li><p><a class="reference external" href="https://bdpedigo.github.io/networks-course/">Network data science course</a> with more
-in-depth walkthroughs of a few areas in statistical/machine learning analysis of
-networks.</p></li>
-</ul>
+<div class="section" id="bisected-graph-matching">
+<h3><a class="reference external" href="https://www.biorxiv.org/content/10.1101/2022.05.19.492713">Bisected graph matching</a><a class="headerlink" href="#bisected-graph-matching" title="Permalink to this headline">¶</a></h3>
+<p>Work describing graph matching for finding neuron pairs, and in particular how we adapted
+off-the-shelf algorithms to allow us to incorporate connections between hemispheres.</p>
+</div>
+<div class="section" id="statistical-connectomics">
+<h3><a class="reference external" href="https://www.annualreviews.org/doi/abs/10.1146/annurev-statistics-042720-023234">Statistical connectomics</a><a class="headerlink" href="#statistical-connectomics" title="Permalink to this headline">¶</a></h3>
+<p>Our recent review describing many related techniques and concepts.</p>
+</div>
+<div class="section" id="network-data-science-course">
+<h3><a class="reference external" href="https://bdpedigo.github.io/networks-course/">Network data science course</a><a class="headerlink" href="#network-data-science-course" title="Permalink to this headline">¶</a></h3>
+<p>Hands-on walkthroughs of a few areas in statistical/machine learning analysis of networks.</p>
+</div>
 </div>
 <div class="section" id="get-in-touch">
 <h2>Get in touch<a class="headerlink" href="#get-in-touch" title="Permalink to this headline">¶</a></h2>
