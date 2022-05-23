@@ -1,6 +1,6 @@
 # Further info
 
-## graspologic
+## [`graspologic`](https://github.com/microsoft/graspologic)
 
 ```{image} images/graspologic_svg.svg
 :alt: graspologic logo
@@ -8,7 +8,8 @@
 :align: center
 ```
 
-[`graspologic`](https://github.com/microsoft/graspologic) - our Python package for statistical and machine learning analyses on networks. 
+Our Python package for statistical and machine learning analyses on networks. 
+
 - Fully open-source
 - Co-developed with Microsoft Research
 - [GitHub](https://github.com/microsoft/graspologic)
@@ -21,12 +22,20 @@
   studied here is forthcoming, but tests could already be applied to other data.
 - [JupyterBook](http://docs.neurodata.io/bilateral-connectome/) with explanation for 
   key results/experiments.
+- [Slides](https://docs.neurodata.io/bilateral-connectome/berlin.pdf) from my talk at 
+  Berlin Connectomics 2022. 
 
 ## Related work
-- ["Statistical connectomics"](https://www.annualreviews.org/doi/abs/10.1146/annurev-statistics-042720-023234) - our recent review describing many related techniques and concepts.
-- [Network data science course](https://bdpedigo.github.io/networks-course/) with more
-  in-depth walkthroughs of a few areas in statistical/machine learning analysis of
-  networks.
+
+### [Bisected graph matching](https://www.biorxiv.org/content/10.1101/2022.05.19.492713)
+Work describing graph matching for finding neuron pairs, and in particular how we adapted
+off-the-shelf algorithms to allow us to incorporate connections between hemispheres.
+
+### [Statistical connectomics](https://www.annualreviews.org/doi/abs/10.1146/annurev-statistics-042720-023234)
+Our recent review describing many related techniques and concepts.
+
+### [Network data science course](https://bdpedigo.github.io/networks-course/)
+Hands-on walkthroughs of a few areas in statistical/machine learning analysis of networks.
 
 
 ## Get in touch
