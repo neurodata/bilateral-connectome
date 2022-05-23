@@ -106,6 +106,16 @@ Joshua Vogelstein
 - This is why we need to compare connectomes to understand x,y,z
 - Need methods etc. -->
 
+
+<!-- ---
+# What we do (notes)
+- clustering
+- model estimation
+- flow
+- testing for differences (e.g. left/right)
+- matching (e.g. left/right)
+- testing for stereotypy at the edge level (combo of the above two) -->
+
 --- 
 # Larval _Drosophila_ brain connectome
 
@@ -134,6 +144,9 @@ h2 {
 <!-- <footer>
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
 </footer> -->
+
+---
+# Explain the statistical approach
 
 ---
 # We reject even the simplest notion of symmetry
@@ -204,11 +217,12 @@ p-value: ${<}10^{-7}$
 </div>
 <div>
 
-![center h:400](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
+![center h:350](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
 
 <div class='center'>
 
-Remove Kenyon cells $\rightarrow$ $p \approx 0.51$
+w/ Kenyon cells: $p < 0.05$
+w/o Kenyon cells: $p \approx 0.51$
 
 </div>
 
@@ -264,9 +278,9 @@ Remove Kenyon cells $\rightarrow$ $p \approx 0.51$
 </div>
 </div> -->
 
----
 <!-- # Conclusions  -->
 
+<!-- ---
 ![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
 
 <div class='columns2-bl'>
@@ -284,13 +298,14 @@ Remove Kenyon cells $\rightarrow$ $p \approx 0.51$
      - ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)
 
 </div>
-<div>
+<div> -->
 
-## More info
+
+<!-- ## More info
 - [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
 - This work: [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome)
 - Chung et al. *Statistical connectomics* (2021)
-- Data: Winding, Pedigo et al. *In preparation* (2022)
+- Data: Winding, Pedigo et al. *In preparation* (2022) -->
 
 ---
 # An invitation!
@@ -300,7 +315,8 @@ Remove Kenyon cells $\rightarrow$ $p \approx 0.51$
 <div class="columns">
 <div>
 
-- We focus on statistical analyses of (connectome) networks
+- We focus on statistical analyses of connectome networks
+  - Today, I talked about work on comparing two connectomes and applying these tools to the bilateral symmetry of the larva
 - Want to use anything I talked about today?
 - OR have another network question you want to test?
 - **Get in touch!**
@@ -343,14 +359,5 @@ section {
 ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
 ![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) -->
 
-<!-- fold this into one of the previous -->
 
-<!-- refs at the end in like quesions or something -->
 
-<!-- cite stat conn and/or connectal coding -->
-
-<!-- email terry -->
-<!-- cover letter -->
-<!-- email marta alberta -->
-<!-- check with Michael about timing -->
-<!-- we have a draft cover letter somewhere -->
