@@ -246,23 +246,18 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <div>
 
 ### Are these two populations different?
-<div class="columns">
-<div>
 
-![center h:400](./../../../results/figs/two_sample_testing/2_sample_real_line.svg)
+![center h:250](./../../../results/figs/two_sample_testing/2_sample_real_line_wide.svg)
 
-</div>
-<div>
+<div class='center'>
 
-<br>
-
-$\color{#66c2a5} Y^{(1)} \sim F^{(1)}$ $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
+&nbsp; &nbsp; $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$ &nbsp; &nbsp; &nbsp;  $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
 
 $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
 $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
 
 </div>
-</div>
+
 
 </div>
 <div>
