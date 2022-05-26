@@ -6,7 +6,7 @@ paginate: true
 ---
 <!-- _paginate: false -->
 
-![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
+![bg center blur:3px opacity:30%](./../../../results/figs/background/background.svg)
 
 
 <style scoped> 
@@ -31,6 +31,7 @@ _(he/him) - ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@j
 _Johns Hopkins University - Biomedical Engineering_
 
 #### Team
+
 <!-- Start people panels -->
 <div class='minipanels'>
 
@@ -149,7 +150,7 @@ h2 {
 # Why bilateral symmetry?
 - Fundamental property of almost all animals
 - Often (implicitly or explicitly) assumed in connectomics
-- ...but many ways to write down what we mean when we say it for the networks
+- ...but many ways to write down what we mean for the networks
 
 # Why else?
 - As more connectomes are mapped, we'll want evaluate the *significance* and *nature* of differences between them
@@ -415,19 +416,19 @@ w/o Kenyon cells: $p \approx 0.51$
 </div>
 
 ---
-# Extensions: incorporating neuron matching
+# Extensions: incorporating neuron/connection matching
 
 <div class="columns-bl">
 <div>
 
 ![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
 
+Neuron pair predictions from connectivity using improved graph matching tools
+
 </div>
 <div>
 
-- Neuron pair predictions from connectivity based on graph matching tools
-- *Ongoing work*: combining matching and testing frameworks to evaluate stereotypy at
-  at the edge-level
+*Ongoing work*: combining matching and testing frameworks to evaluate stereotypy at the edge-level
 
 </div>
 </div>
@@ -565,3 +566,9 @@ section {
 
 
 
+<!-- Ross: better summary of what the actual summary/conclusion is -->
+<!-- Never say the method that we're using -->
+<!-- Talk about it as a toolbox? -->
+<!-- Sell the work a bit more in terms of novelty - nobody else has done x -->
+<!-- Toolset vs. symmetry is complicated -->
+<!--  -->
