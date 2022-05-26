@@ -45,15 +45,23 @@ img[alt~="person"] {
     text-align: center;
 }
 
-h1 {
-    top: 0px;
-    margin-top: auto;
-}
 
 .columns {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(10%, 1fr));
     gap: 1.5rem;
+}
+
+.columns-bl {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+}
+
+.columns-nospace {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10%, 1fr));
+    gap: 0;
 }
 
 .social_icons {
@@ -70,15 +78,38 @@ h1 {
     /* margin: 0 auto; */
 }
 
+
+section {
+    padding: 60px;
+    padding-top: 40px;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    margin-top: 0.1em;
-    margin-bottom: 0.2em;
+    /* margin-top: 0.0em; */
+    padding-top: 10px;
+    margin-bottom: 0.1em;
 }
+
+h1 {
+    /* top: 0px; */
+    /* margin-top: 0; */
+    /* padding-top: 0; */
+}
+
+hr {
+    height: 0;
+    padding-top: 0.0em;
+}
+
+header {
+    top: 0px;
+}
+
 
 .center {
     margin: auto;
@@ -90,4 +121,9 @@ h6 {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 1.5rem;
+}
+
+/* adds total slides to paginate */
+section::after {
+    content: attr(data-marpit-pagination) '/' attr(data-marpit-pagination-total);
 }
