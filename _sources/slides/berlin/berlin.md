@@ -513,7 +513,7 @@ w/o Kenyon cells: $p \approx 0.51$
 
 
 ---
-# Summary!
+# An invitation!
 
 ![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
 
