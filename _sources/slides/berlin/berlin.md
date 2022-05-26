@@ -22,8 +22,8 @@ p {
 <!-- ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) -->
 
 
-<!-- # Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
-# Model-based comparison of connectomes: applications in a whole insect brain
+<!-- # Generative network modeling reveals a quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
+# Model-based comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain
 
 ## Benjamin D. Pedigo
 _(he/him) - ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) 
@@ -85,6 +85,8 @@ Joshua Vogelstein
 
 <!-- End people panels -->
 </div>
+
+
 <!-- 
 
 <!-- ![bg center blur:2.5px opacity:20%](./../../../results/figs/background/background.svg) -->
@@ -116,7 +118,52 @@ Joshua Vogelstein
 - matching (e.g. left/right)
 - testing for stereotypy at the edge level (combo of the above two) -->
 
+<!-- --- 
+# Approaches for analyzing connectome data
+
+<div class="columns">
+<div>
+
+- Model-based clustering of neurons by connectivity 
+- Graph matching to estimate correspondence of neurons between datasets/brain hemispheres
+- **Statistical testing for connectome comparison**
+
+</div>
+<div>
+
+![center](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+
+</div>
+</div>
+
+<style scoped>
+h2 {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of the larva brain connectome <p> </p> *different*? -->
+
 --- 
+# Why bilateral symmetry?
+- Fundamental property of almost all animals
+- Often (implicitly or explicitly) assumed in connectomics
+- ...but many ways to write down what we mean when we say it for the networks
+
+# Why else?
+- As more connectomes are mapped, we'll want evaluate the *significance* and *nature* of differences between them
+
+<style scoped>
+h2 {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of the larva brain connectome <p> </p> *different*?
+
+<!-- --- 
 # Larval _Drosophila_ brain connectome
 
 <div class="columns">
@@ -139,14 +186,103 @@ h2 {
 }
 </style>
 
-## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
+## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*? -->
 
 <!-- <footer>
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
 </footer> -->
-
+<!-- 
 ---
 # Explain the statistical approach
+- Decide what you want to quantify or compare -->
+
+<!-- --- -->
+
+<!-- # Are these populations different?
+
+<div class="columns">
+<div>
+
+![center w:400](./../../../results/figs/two_sample_testing/2_sample_real_line.svg)
+
+</div>
+<div>
+
+- Known as two-sample testing
+- $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$, $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
+- $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
+  $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
+
+</div>
+</div> -->
+
+<!-- --- 
+# Are these two _networks_ different?
+
+<div class="columns">
+<div>
+
+![center w:1000](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+
+</div>
+<div>
+
+
+- Want a **two-network-sample** test!
+- <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span>, <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
+- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
+  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
+- What's $F$ for a network?
+- We'll start with $A$ (the networks) being directed, unweighted (for now)
+
+</div>
+</div> -->
+
+---
+# Testing for differences
+
+<div class="columns">
+<div>
+
+### Are these two populations different?
+<div class="columns">
+<div>
+
+![center h:400](./../../../results/figs/two_sample_testing/2_sample_real_line.svg)
+
+</div>
+<div>
+
+<br>
+
+$\color{#66c2a5} Y^{(1)} \sim F^{(1)}$ $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
+
+$H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
+$H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
+
+</div>
+</div>
+
+</div>
+<div>
+
+### Are these two *networks* different?
+
+![center h:250](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+
+
+<div class='center'>
+
+<span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
+
+$H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
+$H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
+
+</div>
+
+
+</div>
+</div>
 
 ---
 # We reject even the simplest notion of symmetry
@@ -199,14 +335,43 @@ p-value: ${<}10^{-23}$
 
 <div class='center'>
 
-p-value: ${<}10^{-7}$
+Overall comparison: $p < 10^{-7}$
+
+After adjusting for density: $p <0.01$
 
 </div>
 
 </div>
 </div>
 
----
+
+
+
+<!-- # Extensions (current and future)
+
+- How does evaluation of symmetry depend on what you call a "cell type"?
+  - Clustering neurons by connectivity
+- Evaluating symmetry at the edge-level using neuron pairs
+  - Testing for significant alignment with graph matching
+- Power analysis: what differences could one even conceivably detect in a comparative connectomics experiment?
+- **What about edge weights?** -->
+
+<!-- <div class="columns">
+<div>
+
+
+
+
+</div>
+<div>
+
+
+
+</div>
+</div> -->
+
+
+<!-- ---
 # Rescaling connection probabilities focuses remaining asymmetry on Kenyon cells
 
 <div class="columns">
@@ -226,18 +391,13 @@ w/o Kenyon cells: $p \approx 0.51$
 
 </div>
 
-<!-- 
-
-<!-- p-value: ~$0.51$ -->
-<!--  -->
 
 </div>
-</div>
-
+</div> -->
 
 
 ---
-# Higher edge weights (as neuron's input percentage) are more symmetric
+# Extentions: examining the effect of edge weights
 
 <div class='columns'>
 <div>
@@ -247,12 +407,32 @@ w/o Kenyon cells: $p \approx 0.51$
 </div>
 <div>
 
-![](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
+![h:400](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
 
-<!-- *Only occurs when using input percentage as edge weight* -->
+*Only occurs when using input percentage as edge weight, not synapse number*
 
 </div>
 </div>
+
+---
+# Extensions: incorporating neuron matching
+
+<div class="columns-bl">
+<div>
+
+![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
+
+</div>
+<div>
+
+- Neuron pair predictions from connectivity based on graph matching tools
+- *Ongoing work*: combining matching and testing frameworks to evaluate stereotypy at
+  at the edge-level
+
+</div>
+</div>
+
+<!-- *Ongoing work: testing for a significant matching/symmetry using tools from graph matching* -->
 
 <!-- ---
 <div class="columns">
@@ -307,19 +487,43 @@ w/o Kenyon cells: $p \approx 0.51$
 - Chung et al. *Statistical connectomics* (2021)
 - Data: Winding, Pedigo et al. *In preparation* (2022) -->
 
+<!-- --- 
+
+![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
+
+
+<div class="columns">
+<div>
+
+## Conclusions
+
+- We focus on statistical analyses of connectome networks
+- We developed tools for testing for differences between connectome networks
+- Found ways in which the hemispheres of larval brain could or could not be considered "different" 
+
+</div>
+<div>
+
+## Future work
+- Testing for stereotypy/differences *at an *
+
+
+</div>
+</div> -->
+
+
 ---
-# An invitation!
+# Summary!
 
 ![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
 
 <div class="columns">
 <div>
 
-- We focus on statistical analyses of connectome networks
-  - Today, I talked about work on comparing two connectomes and applying these tools to the bilateral symmetry of the larva
+
 - Want to use anything I talked about today?
 - OR have another network question you want to test?
-- **Get in touch!**
+- **Let's chat!**
 
 </div>
 <div>
