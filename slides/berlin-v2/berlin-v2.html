@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Model-based comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain &#8212; Bilateral Connectome</title>
+    <title>Tools for comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain &#8212; Bilateral Connectome</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -299,7 +299,7 @@ const thebe_selector_output = ".output, .cell_output"
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/slides/berlin/berlin.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/slides/berlin-v2/berlin-v2.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -319,7 +319,7 @@ const thebe_selector_output = ".output, .cell_output"
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fslides/berlin/berlin.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fslides/berlin-v2/berlin-v2.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -347,7 +347,9 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Model-based comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain
+   Tools for comparison of connectomes:
+   <br/>
+   evaluating the bilateral symmetry of a whole insect brain
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -365,18 +367,18 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
-   Why bilateral symmetry?
+  <a class="reference internal nav-link" href="#comparing-connectomes">
+   Comparing connectomes
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#why-else">
-   Why else?
+  <a class="reference internal nav-link" href="#today-s-talk">
+   Today’s talk
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-p-p-different">
-     Are the
+    <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-different">
+     1.  Are the
      <span style="color: var(--left)">
       left
      </span>
@@ -385,12 +387,19 @@ const thebe_selector_output = ".output, .cell_output"
       right
      </span>
      sides of the larva brain connectome
-     <p>
-     </p>
      <em>
       different
      </em>
      ?
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-can-we-automatically-estimate-neuron-pairing-between-brain-hemispheres">
+     2. How can we
+     <em>
+      automatically
+     </em>
+     estimate neuron pairing between brain hemispheres?
     </a>
    </li>
   </ul>
@@ -414,36 +423,48 @@ const thebe_selector_output = ".output, .cell_output"
      different?
     </a>
    </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#many-ways-to-write-what-symmetry-means">
+     Many ways to write what “symmetry” means!
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-reject-even-the-simplest-notion-of-symmetry">
-   We reject even the simplest notion of symmetry
+  <a class="reference internal nav-link" href="#example-testing-for-differences-in-cell-type-connections">
+   Example: testing for differences in cell type connections
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#localizing-differences-to-cell-type-connections">
-   Localizing differences to cell type connections
+  <a class="reference internal nav-link" href="#examining-the-effect-of-edge-weights">
+   Examining the effect of edge weights
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extentions-examining-the-effect-of-edge-weights">
-   Extentions: examining the effect of edge weights
+  <a class="reference internal nav-link" href="#estimating-neuron-pairing-using-graph-matching">
+   Estimating neuron pairing using graph matching
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extensions-incorporating-neuron-connection-matching">
-   Extensions: incorporating neuron/connection matching
+  <a class="reference internal nav-link" href="#improving-graph-matching-to-suit-connectomes">
+   Improving graph matching to suit connectomes
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#incorporating-contralateral-connections-improves-matching-accuracy">
+     Incorporating contralateral connections improves matching accuracy
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#improving-accuracy-and-scalability">
+     Improving accuracy and scalability
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusions">
    Conclusions
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#an-invitation">
-   An invitation!
   </a>
  </li>
 </ul>
@@ -456,7 +477,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Model-based comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain</h1>
+                <h1>Tools for comparison of connectomes: <br> evaluating the bilateral symmetry of a whole insect brain</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -468,7 +489,9 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Model-based comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain
+   Tools for comparison of connectomes:
+   <br/>
+   evaluating the bilateral symmetry of a whole insect brain
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -486,18 +509,18 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
-   Why bilateral symmetry?
+  <a class="reference internal nav-link" href="#comparing-connectomes">
+   Comparing connectomes
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#why-else">
-   Why else?
+  <a class="reference internal nav-link" href="#today-s-talk">
+   Today’s talk
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-p-p-different">
-     Are the
+    <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-different">
+     1.  Are the
      <span style="color: var(--left)">
       left
      </span>
@@ -506,12 +529,19 @@ const thebe_selector_output = ".output, .cell_output"
       right
      </span>
      sides of the larva brain connectome
-     <p>
-     </p>
      <em>
       different
      </em>
      ?
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-can-we-automatically-estimate-neuron-pairing-between-brain-hemispheres">
+     2. How can we
+     <em>
+      automatically
+     </em>
+     estimate neuron pairing between brain hemispheres?
     </a>
    </li>
   </ul>
@@ -535,36 +565,48 @@ const thebe_selector_output = ".output, .cell_output"
      different?
     </a>
    </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#many-ways-to-write-what-symmetry-means">
+     Many ways to write what “symmetry” means!
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-reject-even-the-simplest-notion-of-symmetry">
-   We reject even the simplest notion of symmetry
+  <a class="reference internal nav-link" href="#example-testing-for-differences-in-cell-type-connections">
+   Example: testing for differences in cell type connections
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#localizing-differences-to-cell-type-connections">
-   Localizing differences to cell type connections
+  <a class="reference internal nav-link" href="#examining-the-effect-of-edge-weights">
+   Examining the effect of edge weights
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extentions-examining-the-effect-of-edge-weights">
-   Extentions: examining the effect of edge weights
+  <a class="reference internal nav-link" href="#estimating-neuron-pairing-using-graph-matching">
+   Estimating neuron pairing using graph matching
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extensions-incorporating-neuron-connection-matching">
-   Extensions: incorporating neuron/connection matching
+  <a class="reference internal nav-link" href="#improving-graph-matching-to-suit-connectomes">
+   Improving graph matching to suit connectomes
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#incorporating-contralateral-connections-improves-matching-accuracy">
+     Incorporating contralateral connections improves matching accuracy
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#improving-accuracy-and-scalability">
+     Improving accuracy and scalability
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusions">
    Conclusions
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#an-invitation">
-   An invitation!
   </a>
  </li>
 </ul>
@@ -577,7 +619,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <!-- _paginate: false -->
-<p><img alt="bg center blur:3px opacity:30%" src="../results/figs/background/background.svg" /></p>
+<p><img alt="bg center blur:3px opacity:20%" src="../results/figs/background/background.svg" /></p>
 <style scoped> 
 /* h1 {
     font-size:40px;
@@ -589,8 +631,9 @@ p {
 <!-- # Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
 <!-- ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) -->
 <!-- # Generative network modeling reveals a quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
-<div class="tex2jax_ignore mathjax_ignore section" id="model-based-comparison-of-connectomes-evaluating-the-bilateral-symmetry-of-a-whole-insect-brain">
-<h1>Model-based comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain<a class="headerlink" href="#model-based-comparison-of-connectomes-evaluating-the-bilateral-symmetry-of-a-whole-insect-brain" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="tools-for-comparison-of-connectomes-br-evaluating-the-bilateral-symmetry-of-a-whole-insect-brain">
+<h1>Tools for comparison of connectomes: <br> evaluating the bilateral symmetry of a whole insect brain<a class="headerlink" href="#tools-for-comparison-of-connectomes-br-evaluating-the-bilateral-symmetry-of-a-whole-insect-brain" title="Permalink to this headline">¶</a></h1>
+<br>
 <div class="section" id="benjamin-d-pedigo">
 <h2>Benjamin D. Pedigo<a class="headerlink" href="#benjamin-d-pedigo" title="Permalink to this headline">¶</a></h2>
 <p><em>(he/him) - <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a>
@@ -601,16 +644,19 @@ p {
 <!-- Start people panels -->
 <div class='minipanels'>
 <div>
+<p><img alt="person" src="../../_images/michael_winding.png" />
+Michael Winding</p>
+</div>
+<div>
+<p><img alt="person" src="../../_images/people" /></p>
+</div>
+<div>
 <p><img alt="person" src="../../_images/mike-powell.jpg" />
 Mike Powell</p>
 </div>
 <div>
 <p><img alt="person" src="../../_images/bridgeford.jpg" />
 Eric Bridgeford</p>
-</div>
-<div>
-<p><img alt="person" src="../../_images/michael_winding.png" />
-Michael Winding</p>
 </div>
 <div>
 <p><img alt="person" src="../../_images/marta_zlatic.jpeg" />
@@ -682,97 +728,24 @@ h2 {
 </div>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="why-bilateral-symmetry">
-<h1>Why bilateral symmetry?<a class="headerlink" href="#why-bilateral-symmetry" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>Fundamental property of almost all animals</p></li>
-<li><p>Often (implicitly or explicitly) assumed in connectomics</p></li>
-<li><p>…but many ways to write down what we mean for the networks</p></li>
-</ul>
+<div class="tex2jax_ignore mathjax_ignore section" id="comparing-connectomes">
+<h1>Comparing connectomes<a class="headerlink" href="#comparing-connectomes" title="Permalink to this headline">¶</a></h1>
+<p>As more connectomes are mapped, we’ll want evaluate the <em>significance</em> and <em>nature</em> of differences between them</p>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="why-else">
-<h1>Why else?<a class="headerlink" href="#why-else" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>As more connectomes are mapped, we’ll want evaluate the <em>significance</em> and <em>nature</em> of differences between them</p></li>
-</ul>
+<div class="tex2jax_ignore mathjax_ignore section" id="today-s-talk">
+<h1>Today’s talk<a class="headerlink" href="#today-s-talk" title="Permalink to this headline">¶</a></h1>
 <style scoped>
 h2 {
-    justify-content: center;
-    text-align: center;
+  padding-left: 100px
+    /* justify-content: center; */
+    /* text-align: center; */
 }
 </style>
-<div class="section" id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-p-p-different">
-<h2>Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of the larva brain connectome <p> </p> <em>different</em>?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-p-p-different" title="Permalink to this headline">¶</a></h2>
-<!-- --- 
-# Larval _Drosophila_ brain connectome
-
-<div class="columns">
-<div>
-
-![center w:375](./images/../../../images/Figure1-brain-render.png)
-
+<div class="section" id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-different">
+<h2>1.  Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of the larva brain connectome <em>different</em>?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-the-larva-brain-connectome-different" title="Permalink to this headline">¶</a></h2>
 </div>
-<div>
-
-![center](./../../../results/figs/plot_side_layouts/2_network_layout.png)
-
-</div>
-</div>
-
-<style scoped>
-h2 {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
-## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*? -->
-<!-- <footer>
-Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
-</footer> -->
-<!-- 
----
-# Explain the statistical approach
-- Decide what you want to quantify or compare -->
-<!-- --- -->
-<!-- # Are these populations different?
-
-<div class="columns">
-<div>
-
-![center w:400](./../../../results/figs/two_sample_testing/2_sample_real_line.svg)
-
-</div>
-<div>
-
-- Known as two-sample testing
-- $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$, $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
-- $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
-  $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
-
-</div>
-</div> -->
-<!-- --- 
-# Are these two _networks_ different?
-
-<div class="columns">
-<div>
-
-![center w:1000](./../../../results/figs/plot_side_layouts/2_network_layout.png)
-
-</div>
-<div>
-
-
-- Want a **two-network-sample** test!
-- <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span>, <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
-- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
-  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
-- What's $F$ for a network?
-- We'll start with $A$ (the networks) being directed, unweighted (for now)
-
-</div>
-</div> -->
+<div class="section" id="how-can-we-automatically-estimate-neuron-pairing-between-brain-hemispheres">
+<h2>2. How can we <em>automatically</em> estimate neuron pairing between brain hemispheres?<a class="headerlink" href="#how-can-we-automatically-estimate-neuron-pairing-between-brain-hemispheres" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 <hr class="docutils" />
@@ -784,9 +757,8 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <h2>Are these two populations different?<a class="headerlink" href="#are-these-two-populations-different" title="Permalink to this headline">¶</a></h2>
 <p><img alt="center h:250" src="../results/figs/two_sample_testing/2_sample_real_line_wide.svg" /></p>
 <div class='center'>
-<p>    <span class="math notranslate nohighlight">\(\color{#66c2a5} Y^{(1)} \sim F^{(1)}\)</span>        <span class="math notranslate nohighlight">\(\color{#fc8d62} Y^{(2)} \sim F^{(2)}\)</span></p>
-<p><span class="math notranslate nohighlight">\(H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}\)</span><br />
-<span class="math notranslate nohighlight">\(H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}\)</span></p>
+<p>    <span class="math notranslate nohighlight">\(\color{#66c2a5} Y^{(1)} \sim F^{(1)}\)</span>        <span class="math notranslate nohighlight">\(\color{#fc8d62} Y^{(2)} \sim F^{(2)}\)</span>
+<span class="math notranslate nohighlight">\(H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}\)</span> vs. <span class="math notranslate nohighlight">\(H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}\)</span></p>
 </div>
 </div>
 <div>
@@ -795,40 +767,21 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <h2>Are these two <em>networks</em> different?<a class="headerlink" href="#are-these-two-networks-different" title="Permalink to this headline">¶</a></h2>
 <p><img alt="center h:250" src="../results/figs/plot_side_layouts/2_network_layout.png" /></p>
 <div class='center'>
-<p><span style='color: var(--left)'> <span class="math notranslate nohighlight">\(A^{(L)} \sim F^{(L)}\)</span></span>         <span style='color: var(--right)'> <span class="math notranslate nohighlight">\(A^{(R)} \sim F^{(R)}\)</span> </span></p>
-<p><span class="math notranslate nohighlight">\(H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}\)</span><br />
-<span class="math notranslate nohighlight">\(H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}\)</span></p>
+<p><span style='color: var(--left)'> <span class="math notranslate nohighlight">\(A^{(L)} \sim F^{(L)}\)</span></span>         <span style='color: var(--right)'> <span class="math notranslate nohighlight">\(A^{(R)} \sim F^{(R)}\)</span> </span>
+<span class="math notranslate nohighlight">\(H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}\)</span> vs. <span class="math notranslate nohighlight">\(H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}\)</span></p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="we-reject-even-the-simplest-notion-of-symmetry">
-<h1>We reject even the simplest notion of symmetry<a class="headerlink" href="#we-reject-even-the-simplest-notion-of-symmetry" title="Permalink to this headline">¶</a></h1>
-<div class="columns">
-<div>
-<ul class="simple">
-<li><p>Fit Erdos-Renyi models to the left and the right brain networks
-<img alt="" src="../results/figs/er_unmatched_test/er_explain.svg" /></p></li>
-<li><p>Compare densities:
-<span class="math notranslate nohighlight">\(H_0: \color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span><br />
-<span class="math notranslate nohighlight">\(H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}\)</span></p></li>
-</ul>
-<!-- ![center h:300](../../../results/figs/er_unmatched_test/er_methods.png) -->
-</div>
-<div>
-<p><img alt="center h:350" src="../results/figs/er_unmatched_test/er_density.png" /></p>
-<br>
 <div class='center'>
-<p>p-value: <span class="math notranslate nohighlight">\({&lt;}10^{-23}\)</span></p>
 </div>
+<div class="section" id="many-ways-to-write-what-symmetry-means">
+<h2>Many ways to write what “symmetry” means!<a class="headerlink" href="#many-ways-to-write-what-symmetry-means" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="localizing-differences-to-cell-type-connections">
-<h1>Localizing differences to cell type connections<a class="headerlink" href="#localizing-differences-to-cell-type-connections" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="example-testing-for-differences-in-cell-type-connections">
+<h1>Example: testing for differences in cell type connections<a class="headerlink" href="#example-testing-for-differences-in-cell-type-connections" title="Permalink to this headline">¶</a></h1>
 <div class="columns">
 <div>
 <ul class="simple">
@@ -843,211 +796,153 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <p><img alt="center h:400" src="../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues_unlabeled.svg" /></p>
 <div class='center'>
 <p>Overall comparison: <span class="math notranslate nohighlight">\(p &lt; 10^{-7}\)</span></p>
-<p>After adjusting for density: <span class="math notranslate nohighlight">\(p &lt;0.01\)</span></p>
+<!-- After adjusting for density: $p <0.01$ -->
 </div>
 </div>
 </div>
-<!-- # Extensions (current and future)
-
-- How does evaluation of symmetry depend on what you call a "cell type"?
-  - Clustering neurons by connectivity
-- Evaluating symmetry at the edge-level using neuron pairs
-  - Testing for significant alignment with graph matching
-- Power analysis: what differences could one even conceivably detect in a comparative connectomics experiment?
-- **What about edge weights?** -->
-<!-- <div class="columns">
-<div>
-
-
-
-
-</div>
-<div>
-
-
-
-</div>
-</div> -->
 <!-- ---
-# Rescaling connection probabilities focuses remaining asymmetry on Kenyon cells
+# We reject simple notions of symmetry
 
 <div class="columns">
 <div>
 
-![center](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
+### Density test
+Compares global connection probabilities
+(Erdos-Renyi models)
+
+<div class="columns2-bl">
+<div>
+
+![center h:350](./../../../results/figs/er_unmatched_test/er_density.png)
 
 </div>
 <div>
 
-![center h:350](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
 
-<div class='center'>
+p-value: 
+$p < 10^{-23}$
 
-w/ Kenyon cells: $p < 0.05$
-w/o Kenyon cells: $p \approx 0.51$
-
+</div>
 </div>
 
 
 </div>
-</div> -->
+<div>
+
+### Cell type connection test
+Compares between-cell-type connection probabilities (stochastic block models)
+
+<div class="columns2-bl">
+<div>
+
+![center h:350](./../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues_unlabeled.svg)
+
+
+</div>
+<div>
+
+Overall comparison: $p < 10^{-7}$
+
+Density-adjusted: $p <0.01$
+
+
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+
+ -->
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="extentions-examining-the-effect-of-edge-weights">
-<h1>Extentions: examining the effect of edge weights<a class="headerlink" href="#extentions-examining-the-effect-of-edge-weights" title="Permalink to this headline">¶</a></h1>
+<div class="tex2jax_ignore mathjax_ignore section" id="examining-the-effect-of-edge-weights">
+<h1>Examining the effect of edge weights<a class="headerlink" href="#examining-the-effect-of-edge-weights" title="Permalink to this headline">¶</a></h1>
 <div class='columns'>
 <div>
 <p><img alt="" src="../results/figs/thresholding_tests/thresholding_methods.svg" /></p>
 </div>
 <div>
-<p><img alt="h:400" src="../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg" /></p>
-<p><em>Only occurs when using input percentage as edge weight, not synapse number</em></p>
+<p><img alt="" src="../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg" /></p>
 </div>
 </div>
 </div>
 <hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="extensions-incorporating-neuron-connection-matching">
-<h1>Extensions: incorporating neuron/connection matching<a class="headerlink" href="#extensions-incorporating-neuron-connection-matching" title="Permalink to this headline">¶</a></h1>
-<div class="columns-bl">
+<div class="tex2jax_ignore mathjax_ignore section" id="estimating-neuron-pairing-using-graph-matching">
+<h1>Estimating neuron pairing using graph matching<a class="headerlink" href="#estimating-neuron-pairing-using-graph-matching" title="Permalink to this headline">¶</a></h1>
+<div class="columns-br">
+<div>
+<p><img alt="" src="../../_images/explain-gm.png" /></p>
+</div>
 <div>
 <p><img alt="center h:400" src="_build/html/_images/left-pair-predictions.svg" /></p>
-<p>Neuron pair predictions from connectivity using improved graph matching tools</p>
-</div>
-<div>
-<p><em>Ongoing work</em>: combining matching and testing frameworks to evaluate stereotypy at the edge-level</p>
+<div class='center'>
+~80-85% agreement with an expert annotator
 </div>
 </div>
-<!-- *Ongoing work: testing for a significant matching/symmetry using tools from graph matching* -->
-<!-- ---
-<div class="columns">
+</div>
+<!-- <div class="columns-br">
 <div>
 
-## graspologic:
-
-[github.com/microsoft/graspologic](https://github.com/microsoft/graspologic)
-
-![w:450](./../../images/graspologic_svg.svg)
-
-[![h:50](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:50](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors)  [![h:50](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+- Neuron pair predictions from connectivity using improved graph matching tools
 
 </div>
 <div>
 
 
-## This work:
-[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) 
-![center w:400](./../../images/jb_example.png)
-[![h:50](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
-
-</div>
-</div> -->
-<!-- # Conclusions  -->
-<!-- ---
-![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
-
-<div class='columns2-bl'>
-<div>
-
-## Conclusions
-
-- Testing hypotheses in connectomics requires techniques for networks
-    - We presented procedures for comparing connectomes
-- Used to evaluate bilateral symmetry, finding how this brain is/is not bilaterally symmetric
-- Poised to apply these tools to answer...
-   - **{Your question here}**
-   - Get in touch: 
-     - ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) 
-     - ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)
-
-</div>
-<div> -->
-<!-- ## More info
-- [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
-- This work: [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome)
-- Chung et al. *Statistical connectomics* (2021)
-- Data: Winding, Pedigo et al. *In preparation* (2022) -->
-<!-- --- 
-
-![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
-
-
-<div class="columns">
-<div>
-
-
-</div>
-<div>
-
-## Future work
-- Testing for stereotypy/differences *at an *
 
 
 </div>
 </div> -->
+</div>
+<hr class="docutils" />
+<div class="tex2jax_ignore mathjax_ignore section" id="improving-graph-matching-to-suit-connectomes">
+<h1>Improving graph matching to suit connectomes<a class="headerlink" href="#improving-graph-matching-to-suit-connectomes" title="Permalink to this headline">¶</a></h1>
+<div class="columns">
+<div>
+<div class="section" id="incorporating-contralateral-connections-improves-matching-accuracy">
+<h2>Incorporating contralateral connections improves matching accuracy<a class="headerlink" href="#incorporating-contralateral-connections-improves-matching-accuracy" title="Permalink to this headline">¶</a></h2>
+<p><img alt="" src="../../_images/match_accuracy_comparison.svg" /></p>
+</div>
+<div>
+</div>
+<div class="section" id="improving-accuracy-and-scalability">
+<h2>Improving accuracy and scalability<a class="headerlink" href="#improving-accuracy-and-scalability" title="Permalink to this headline">¶</a></h2>
+<p><img alt="" src="../../_images/msr_corr.png" /></p>
+<p>Runs in ~1hr for 10k node networks</p>
+</div>
+</div>
+<!-- _footer: Pedigo et al. bioarxiv (2022), Saad-Eldin et al. arxiv (2021)-->
+</div>
 </div>
 <hr class="docutils" />
 <div class="tex2jax_ignore mathjax_ignore section" id="conclusions">
 <h1>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h1>
+<p><img alt="bg center blur:3px opacity:20%" src="../results/figs/background/background.svg" /></p>
+<div class="columns-bl">
+<div>
 <ul class="simple">
-<li><p>We focus on statistical tools for analyzing connectome networks</p></li>
-<li><p>We developed methods for quantitative comparison of connectomes</p>
+<li><p>Demonstrated use of novel tools for comparing between sides of a connectome:</p>
 <ul>
-<li><p>Applied to the larval connectome and found that the answer to “bilateral symmetry” depends on the specific definition</p></li>
-<li><p>Can be applied more generally to compare connectomes!</p></li>
+<li><p>Model-based network comparison</p></li>
+<li><p>Improved methods for matching neurons via connectivity</p></li>
 </ul>
 </li>
-<li></li>
-</ul>
-</div>
-<hr class="docutils" />
-<div class="tex2jax_ignore mathjax_ignore section" id="an-invitation">
-<h1>An invitation!<a class="headerlink" href="#an-invitation" title="Permalink to this headline">¶</a></h1>
-<p><img alt="bg center blur:3px opacity:15%" src="../results/figs/background/background.svg" /></p>
-<div class="columns">
-<div>
-<ul class="simple">
-<li><p>Want to use anything I talked about today?</p></li>
-<li><p>OR have another network question you want to test?</p></li>
-<li><p><strong>Let’s chat!</strong></p></li>
+<li><p>Can be applied more generally to compare connectomes!</p></li>
+<li><p><em>Ongoing work</em>: combining testing and matching frameworks to evaluate stereotypy at the edge-level</p></li>
+<li><p>Have other network analysis questions? <strong>Let’s chat!</strong></p></li>
 </ul>
 </div>
 <div>
-<p><strong>Code, slides, papers, contact info:</strong>
+<p><strong>Slides, code, papers, contact</strong>
 <img alt="center h:350" src="../../_images/further-info-qr.svg" /></p>
-<p><img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a>     <img alt="icon" src="../../_images/twitter.png" /><a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod</em></a>
-<img alt="icon" src="../../_images/github.png" /> <a class="reference external" href="https://github.com/bdpedigo"><em>&#64;bdpedigo</em></a> <img alt="icon" src="../../_images/web.png" /><a class="reference external" href="https://bdpedigo.github.io/">bdpedigo.github.io</a></p>
+<p><img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a><br />
+<img alt="icon" src="../../_images/twitter.png" /><a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod</em></a>
+<img alt="icon" src="../../_images/web.png" /><a class="reference external" href="https://bdpedigo.github.io/">bdpedigo.github.io</a></p>
 </div>
-</div>
-<!-- <footer>Chung, Pedigo et al. JMLR (2019) <br> Winding, Pedigo et al. In prep. (2022) <br> Pedigo et al. In prep. (2022)</footer> -->
-<!-- ---
-# Questions?
-
-![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
-
-<span> </span>
-<span> </span>
-<span> </span>
-<span> </span>
-<span> </span>
-
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
-### Benjamin D. Pedigo
-![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
-![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
-![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
-![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) -->
-<!-- Ross: better summary of what the actual summary/conclusion is -->
-<!-- Never say the method that we're using -->
-<!-- Talk about it as a toolbox? -->
-<!-- Sell the work a bit more in terms of novelty - nobody else has done x -->
-<!-- Toolset vs. symmetry is complicated -->
-<!--  --></div>
+</div></div>
 
     <script type="text/x-thebe-config">
     {
@@ -1062,7 +957,7 @@ section {
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./slides/berlin"
+            path: "./slides/berlin-v2"
         },
         predefinedOutput: true
     }

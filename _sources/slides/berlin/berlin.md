@@ -491,11 +491,6 @@ Neuron pair predictions from connectivity using improved graph matching tools
 <div class="columns">
 <div>
 
-## Conclusions
-
-- We focus on statistical analyses of connectome networks
-- We developed tools for testing for differences between connectome networks
-- Found ways in which the hemispheres of larval brain could or could not be considered "different" 
 
 </div>
 <div>
@@ -507,6 +502,15 @@ Neuron pair predictions from connectivity using improved graph matching tools
 </div>
 </div> -->
 
+
+---
+# Conclusions
+
+- We focus on statistical tools for analyzing connectome networks
+- We developed methods for quantitative comparison of connectomes
+  - Applied to the larval connectome and found that the answer to "bilateral symmetry" depends on the specific definition
+  - Can be applied more generally to compare connectomes!
+- 
 
 ---
 # An invitation!
@@ -524,7 +528,7 @@ Neuron pair predictions from connectivity using improved graph matching tools
 </div>
 <div>
 
-Code, slides, papers, contact info:
+**Code, slides, papers, contact info:**
 ![center h:350](../../images/further-info-qr.svg)
 
 ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)     ![icon](../../images/twitter.png)[_@bpedigod_](https://twitter.com/bpedigod)
