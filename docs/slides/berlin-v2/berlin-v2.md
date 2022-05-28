@@ -23,7 +23,7 @@ p {
 
 
 <!-- # Generative network modeling reveals a quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
-# Tools for comparison of connectomes: <br> evaluating the bilateral symmetry of a whole insect brain
+# Tools for comparing connectomes: <br> evaluating the bilateral symmetry of a whole insect brain
 
 <br>
 
@@ -44,11 +44,6 @@ Michael Winding
 
 </div>
 
-<div>
-
-![person](./../../images/people/)
-
-</div>
 
 <div>
 
@@ -64,6 +59,12 @@ Eric Bridgeford
 
 </div>
 
+<div>
+
+![person](./../../images/people/ali_saad_eldin.jpeg)
+Ali <br> Saad-Eldin
+
+</div>
 
 
 <div>
@@ -157,10 +158,11 @@ h2 {
 ## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of the larva brain connectome <p> </p> *different*? -->
 
 --- 
-# Comparing connectomes
-As more connectomes are mapped, we'll want evaluate the *significance* and *nature* of differences between them
+# Comparative connectomics 
+- Connectomes $\leftrightarrow$ {disease, evolution, development, experience, ...}
+- As related connectomes are mapped, we'll want evaluate the *significance* and *nature* of differences between them
   
-# Today's talk
+# Examples for today's talk
 <style scoped>
 h2 {
   padding-left: 100px
@@ -208,7 +210,7 @@ $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$ vs. $H_A: 
 </div>
 <div class='center'>
 
-### Many ways to write what "symmetry" means!
+### Many ways to write what "symmetry" means! (different $F$, different statistics)
 
 </div>
 
@@ -326,7 +328,7 @@ Density-adjusted: $p <0.01$
 ![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
 
 <div class='center'>
-~80-85% agreement with an expert annotator
+Morphologies of pairings predicted from connectivity.<br> ~80-85% agreement with an expert annotator.
 </div>
 
 </div>
