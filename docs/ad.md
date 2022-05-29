@@ -45,14 +45,14 @@ Our work on statistical comparisons of connectome networks, in this case to eval
 
 Finding bilaterally homologous neuron pairs by adapding off-the-shelf graph matching algorithms to allow us to incorporate connections between hemispheres.
 - [Manuscript on bioRxiv](https://www.biorxiv.org/content/10.1101/2022.05.19.492713)
-- [GitHub repo] with all code and data.
-- [Jupyter Book] with code to run experiments and reproduce results.
+- [GitHub repo](https://github.com/neurodata/bgm) with all code and data.
+- [Jupyter Book](http://docs.neurodata.io/bgm/) with code to run experiments and reproduce results.
 
 ### Graph matching via optimal transport (GOAT)
-An improved graph matching procedure which scales better to large networks, and often provides improved matching accuracy over previous approaches (especially when the correlation between the networks is not perfect (i.e. close to 1)).
-- [Manuscript on arxiv]
-- [GitHub repo]
-- [Jupyter Book]
+An improved graph matching procedure which scales better to large networks, and often provides improved matching accuracy over previous approaches (especially when the correlation between the networks is not perfect (i.e. not close to 1)).
+- [Manuscript on arxiv](https://arxiv.org/abs/2111.05366)
+- [GitHub repo](https://github.com/neurodata/goat)
+- [Jupyter Book](http://docs.neurodata.io/goat/outline.html)
 
 ## Further reading
 ### Statistical connectomics
