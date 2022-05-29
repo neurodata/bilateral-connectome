@@ -328,7 +328,7 @@ Density-adjusted: $p <0.01$
 ![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
 
 <div class='center'>
-Morphologies of pairings predicted from connectivity.<br> ~80-85% agreement with an expert annotator.
+Morphologies of pairs predicted from connectivity.<br> ~80-85% agreement with an expert annotator.
 </div>
 
 </div>
@@ -363,7 +363,9 @@ Morphologies of pairings predicted from connectivity.<br> ~80-85% agreement with
 
 ### Improving accuracy and scalability
 
-![](./../../images/msr_corr.png)
+<!-- ![](./../../images/msr_corr.png) -->
+
+![](../../images/goat-title.png)
 
 Runs in ~1hr for 10k node networks
 
@@ -380,12 +382,12 @@ Runs in ~1hr for 10k node networks
 <div class="columns-bl">
 <div>
 
-- Demonstrated use of novel tools for comparing between sides of a connectome:
+- Demonstrated novel tools for comparing connectomes, case study on symmetry in a *Drosophila* larva 
   - Model-based network comparison
   - Improved methods for matching neurons via connectivity
 - Can be applied more generally to compare connectomes!
 - *Ongoing work*: combining testing and matching frameworks to evaluate stereotypy at the edge-level
-- Have other network analysis questions? **Let's chat!**
+- **Have other network analysis questions? Let's chat!**
 
 </div>
 <div>
