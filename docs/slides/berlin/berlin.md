@@ -6,7 +6,7 @@ paginate: true
 ---
 <!-- _paginate: false -->
 
-![bg center blur:3px opacity:30%](./../../../results/figs/background/background.svg)
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
 
 <style scoped> 
@@ -23,7 +23,9 @@ p {
 
 
 <!-- # Generative network modeling reveals a quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
-# Model-based comparison of connectomes: evaluating the bilateral symmetry of a whole insect brain
+# Tools for comparing connectomes: <br> evaluating the bilateral symmetry of a whole insect brain
+
+<br>
 
 ## Benjamin D. Pedigo
 _(he/him) - ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) 
@@ -34,6 +36,13 @@ _Johns Hopkins University - Biomedical Engineering_
 
 <!-- Start people panels -->
 <div class='minipanels'>
+
+<div>
+
+![person](./../../images/people/michael_winding.png)
+Michael Winding
+
+</div>
 
 <div>
 
@@ -51,10 +60,11 @@ Eric Bridgeford
 
 <div>
 
-![person](./../../images/people/michael_winding.png)
-Michael Winding
+![person](./../../images/people/ali_saad_eldin.jpeg)
+Ali <br> Saad-Eldin
 
 </div>
+
 
 <div>
 
@@ -147,97 +157,22 @@ h2 {
 ## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of the larva brain connectome <p> </p> *different*? -->
 
 --- 
-# Why bilateral symmetry?
-- Fundamental property of almost all animals
-- Often (implicitly or explicitly) assumed in connectomics
-- ...but many ways to write down what we mean for the networks
-
-# Why else?
-- As more connectomes are mapped, we'll want evaluate the *significance* and *nature* of differences between them
-
+# Comparative connectomics 
+- Connectomes $\leftrightarrow$ {disease, evolution, development, experience, ...}
+- As related connectomes are mapped, we'll want evaluate the *significance* and *nature* of differences between them
+  
+# Examples for today's talk
 <style scoped>
 h2 {
-    justify-content: center;
-    text-align: center;
+  padding-left: 100px
+    /* justify-content: center; */
+    /* text-align: center; */
 }
 </style>
 
-## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of the larva brain connectome <p> </p> *different*?
+ ## 1.  Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of a larva brain connectome *different*?
 
-<!-- --- 
-# Larval _Drosophila_ brain connectome
-
-<div class="columns">
-<div>
-
-![center w:375](./images/../../../images/Figure1-brain-render.png)
-
-</div>
-<div>
-
-![center](./../../../results/figs/plot_side_layouts/2_network_layout.png)
-
-</div>
-</div>
-
-<style scoped>
-h2 {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
-## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*? -->
-
-<!-- <footer>
-Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
-</footer> -->
-<!-- 
----
-# Explain the statistical approach
-- Decide what you want to quantify or compare -->
-
-<!-- --- -->
-
-<!-- # Are these populations different?
-
-<div class="columns">
-<div>
-
-![center w:400](./../../../results/figs/two_sample_testing/2_sample_real_line.svg)
-
-</div>
-<div>
-
-- Known as two-sample testing
-- $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$, $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
-- $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
-  $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
-
-</div>
-</div> -->
-
-<!-- --- 
-# Are these two _networks_ different?
-
-<div class="columns">
-<div>
-
-![center w:1000](./../../../results/figs/plot_side_layouts/2_network_layout.png)
-
-</div>
-<div>
-
-
-- Want a **two-network-sample** test!
-- <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span>, <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
-- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
-  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
-- What's $F$ for a network?
-- We'll start with $A$ (the networks) being directed, unweighted (for now)
-
-</div>
-</div> -->
+## 2. How can we *automatically* estimate neuron pairing between brain hemispheres?
 
 ---
 # Testing for differences
@@ -252,9 +187,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 <div class='center'>
 
 &nbsp; &nbsp; $\color{#66c2a5} Y^{(1)} \sim F^{(1)}$ &nbsp; &nbsp; &nbsp;  $\color{#fc8d62} Y^{(2)} \sim F^{(2)}$
-
-$H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
-$H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
+$H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$ vs. $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
 
 </div>
 
@@ -266,54 +199,22 @@ $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
 
 ![center h:250](./../../../results/figs/plot_side_layouts/2_network_layout.png)
 
-
 <div class='center'>
 
 <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
-
-$H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
-$H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
-
-</div>
-
+$H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$ vs. $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
 
 </div>
 </div>
-
----
-# We reject even the simplest notion of symmetry
-
-<div class="columns">
-<div>
-
-- Fit Erdos-Renyi models to the left and the right brain networks
-![](./../../../results/figs/er_unmatched_test/er_explain.svg)
-- Compare densities:
-  $H_0: \color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  
-  $H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}$
-
-<!-- ![center h:300](../../../results/figs/er_unmatched_test/er_methods.png) -->
-
-
 </div>
-<div>
-
-![center h:350](./../../../results/figs/er_unmatched_test/er_density.png)
-
-<br>
-
 <div class='center'>
 
-p-value: ${<}10^{-23}$
+### Many ways to write what "symmetry" means! (different $F$, different statistics)
 
 </div>
-
-</div>
-</div>
-
 
 ---
-# Localizing differences to cell type connections
+# Example: testing for differences in cell type connections
 
 <div class="columns">
 <div>
@@ -332,68 +233,72 @@ p-value: ${<}10^{-23}$
 <div class='center'>
 
 Overall comparison: $p < 10^{-7}$
-
-After adjusting for density: $p <0.01$
-
-</div>
+<!-- After adjusting for density: $p <0.01$ -->
 
 </div>
-</div>
-
-
-
-
-<!-- # Extensions (current and future)
-
-- How does evaluation of symmetry depend on what you call a "cell type"?
-  - Clustering neurons by connectivity
-- Evaluating symmetry at the edge-level using neuron pairs
-  - Testing for significant alignment with graph matching
-- Power analysis: what differences could one even conceivably detect in a comparative connectomics experiment?
-- **What about edge weights?** -->
-
-<!-- <div class="columns">
-<div>
-
-
-
 
 </div>
-<div>
-
-
-
 </div>
-</div> -->
-
 
 <!-- ---
-# Rescaling connection probabilities focuses remaining asymmetry on Kenyon cells
+# We reject simple notions of symmetry
 
 <div class="columns">
 <div>
 
-![center](../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
+### Density test
+Compares global connection probabilities
+(Erdos-Renyi models)
+
+<div class="columns2-bl">
+<div>
+
+![center h:350](./../../../results/figs/er_unmatched_test/er_density.png)
 
 </div>
 <div>
 
-![center h:350](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
 
-<div class='center'>
+p-value: 
+$p < 10^{-23}$
 
-w/ Kenyon cells: $p < 0.05$
-w/o Kenyon cells: $p \approx 0.51$
-
+</div>
 </div>
 
 
 </div>
-</div> -->
+<div>
 
+### Cell type connection test
+Compares between-cell-type connection probabilities (stochastic block models)
+
+<div class="columns2-bl">
+<div>
+
+![center h:350](./../../../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues_unlabeled.svg)
+
+
+</div>
+<div>
+
+Overall comparison: $p < 10^{-7}$
+
+Density-adjusted: $p <0.01$
+
+
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+
+ -->
 
 ---
-# Extentions: examining the effect of edge weights
+# Examining the effect of edge weights
 
 <div class='columns'>
 <div>
@@ -403,171 +308,96 @@ w/o Kenyon cells: $p \approx 0.51$
 </div>
 <div>
 
-![h:400](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
-
-*Only occurs when using input percentage as edge weight, not synapse number*
+![](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
 
 </div>
 </div>
 
 ---
-# Extensions: incorporating neuron/connection matching
+# Estimating neuron pairing using graph matching
 
-<div class="columns-bl">
+<div class="columns-br">
+<div>
+
+![](../../images/explain-gm.png)
+
+</div>
 <div>
 
 ![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
 
-Neuron pair predictions from connectivity using improved graph matching tools
+<div class='center'>
+Morphologies of pairs predicted from connectivity.<br> ~80-85% agreement with an expert annotator.
+</div>
 
 </div>
+</div>
+
+<!-- <div class="columns-br">
 <div>
 
-*Ongoing work*: combining matching and testing frameworks to evaluate stereotypy at the edge-level
-
-</div>
-</div>
-
-<!-- *Ongoing work: testing for a significant matching/symmetry using tools from graph matching* -->
-
-<!-- ---
-<div class="columns">
-<div>
-
-## graspologic:
-
-[github.com/microsoft/graspologic](https://github.com/microsoft/graspologic)
-
-![w:450](./../../images/graspologic_svg.svg)
-
-[![h:50](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:50](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors)  [![h:50](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+- Neuron pair predictions from connectivity using improved graph matching tools
 
 </div>
 <div>
 
 
-## This work:
-[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome) 
-![center w:400](./../../images/jb_example.png)
-[![h:50](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
-
-</div>
-</div> -->
-
-<!-- # Conclusions  -->
-
-<!-- ---
-![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
-
-<div class='columns2-bl'>
-<div>
-
-## Conclusions
-
-- Testing hypotheses in connectomics requires techniques for networks
-    - We presented procedures for comparing connectomes
-- Used to evaluate bilateral symmetry, finding how this brain is/is not bilaterally symmetric
-- Poised to apply these tools to answer...
-   - **{Your question here}**
-   - Get in touch: 
-     - ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu) 
-     - ![icon](../../images/email.png) [_jovo@jhu.edu_](mailto:jovo@jhu.edu)
-
-</div>
-<div> -->
-
-
-<!-- ## More info
-- [![icon h:80](./../../images/graspologic_svg.svg)](https://github.com/microsoft/graspologic) [![icon](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)
-- This work: [![icon](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)[github.com/neurodata/bilateral-connectome](https://github.com/neurodata/bilateral-connectome)
-- Chung et al. *Statistical connectomics* (2021)
-- Data: Winding, Pedigo et al. *In preparation* (2022) -->
-
-<!-- --- 
-
-![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
-
-
-<div class="columns">
-<div>
-
-
-</div>
-<div>
-
-## Future work
-- Testing for stereotypy/differences *at an *
 
 
 </div>
 </div> -->
 
+--- 
+# Improving graph matching to suit connectomes
+
+<div class="columns">
+<div>
+
+### Incorporating contralateral connections improves matching accuracy
+
+![](./../../images/match_accuracy_comparison.svg)
+
+</div>
+<div>
+
+### Improving accuracy and scalability
+
+<!-- ![](./../../images/msr_corr.png) -->
+
+![](../../images/goat-title.png)
+
+Runs in ~1hr for 10k node networks
+
+</div>
+</div>
+
+<!-- _footer: Pedigo et al. bioarxiv (2022), Saad-Eldin et al. arxiv (2021)-->
 
 ---
 # Conclusions
 
-- We focus on statistical tools for analyzing connectome networks
-- We developed methods for quantitative comparison of connectomes
-  - Applied to the larval connectome and found that the answer to "bilateral symmetry" depends on the specific definition
-  - Can be applied more generally to compare connectomes!
-- 
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
----
-# An invitation!
-
-![bg center blur:3px opacity:15%](./../../../results/figs/background/background.svg)
-
-<div class="columns">
+<div class="columns-bl">
 <div>
 
-
-- Want to use anything I talked about today?
-- OR have another network question you want to test?
-- **Let's chat!**
+- Demonstrated novel tools for comparing connectomes, case study on symmetry in a *Drosophila* larva 
+  - Model-based network comparison
+  - Improved methods for matching neurons via connectivity
+- Can be applied more generally to compare connectomes!
+- *Ongoing work*: combining testing and matching frameworks to evaluate stereotypy at the edge-level
+- **Have other network analysis questions? Let's chat!**
 
 </div>
 <div>
 
-**Code, slides, papers, contact info:**
+**Slides, code, papers, contact**
 ![center h:350](../../images/further-info-qr.svg)
 
-![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)     ![icon](../../images/twitter.png)[_@bpedigod_](https://twitter.com/bpedigod)
-![icon](../../images/github.png) [_@bdpedigo_](https://github.com/bdpedigo) ![icon](../../images/web.png)[bdpedigo.github.io](https://bdpedigo.github.io/)
+![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)  
+![icon](../../images/twitter.png)[_@bpedigod_](https://twitter.com/bpedigod)
+![icon](../../images/web.png)[bdpedigo.github.io](https://bdpedigo.github.io/)
+
 
 </div>
 </div>
-
-<!-- <footer>Chung, Pedigo et al. JMLR (2019) <br> Winding, Pedigo et al. In prep. (2022) <br> Pedigo et al. In prep. (2022)</footer> -->
-
-<!-- ---
-# Questions?
-
-![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
-
-<span> </span>
-<span> </span>
-<span> </span>
-<span> </span>
-<span> </span>
-
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
-### Benjamin D. Pedigo
-![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
-![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
-![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
-![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/) -->
-
-
-
-<!-- Ross: better summary of what the actual summary/conclusion is -->
-<!-- Never say the method that we're using -->
-<!-- Talk about it as a toolbox? -->
-<!-- Sell the work a bit more in terms of novelty - nobody else has done x -->
-<!-- Toolset vs. symmetry is complicated -->
-<!--  -->
