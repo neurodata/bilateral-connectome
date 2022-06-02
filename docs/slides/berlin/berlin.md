@@ -303,7 +303,7 @@ Density-adjusted: $p <0.01$
 <div class='columns'>
 <div>
 
-![](./../../../results/figs/thresholding_tests/thresholding_methods.png$$)
+![](./../../../results/figs/thresholding_tests/thresholding_methods.png)
 
 </div>
 <div>
