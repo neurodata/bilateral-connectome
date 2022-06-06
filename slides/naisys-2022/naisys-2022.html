@@ -4,11 +4,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Generative network modeling reveals a quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome &#8212; Bilateral Connectome</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,21 +20,17 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=62ba249389abaaa9ffc34bf36a076bdc1d65ee18" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -40,13 +38,14 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=f31d14ad54b65d19161ba51d4ffff3a77ae00456"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -65,7 +64,21 @@ const thebe_selector_output = ".output, .cell_output"
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -74,9 +87,10 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -94,14 +108,15 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../abstract.html">
-   Abstract
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../abstract.html">
+                    Abstract
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Preliminaries
  </span>
@@ -261,90 +276,180 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/slides/naisys-2022/naisys-2022.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/neurodata/bilateral-connectome"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fslides/naisys-2022/naisys-2022.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/neurodata/bilateral-connectome"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fslides/naisys-2022/naisys-2022.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/slides/naisys-2022/naisys-2022.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span">
    Benjamin D. Pedigo
@@ -495,12 +600,11 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Generative network modeling reveals a quantitative definition <br> of bilateral symmetry exhibited by a whole insect brain connectome</h1>
@@ -667,7 +771,8 @@ const thebe_selector_output = ".output, .cell_output"
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
   <div class="header">
@@ -683,13 +788,13 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div>
 <!-- # Is a whole insect brain connectome bilaterally symmetric? <br> A case study on comparing two networks -->
-<div class="tex2jax_ignore mathjax_ignore section" id="generative-network-modeling-reveals-a-quantitative-definition-br-of-bilateral-symmetry-exhibited-by-a-whole-insect-brain-connectome">
-<h1>Generative network modeling reveals a quantitative definition <br> of bilateral symmetry exhibited by a whole insect brain connectome<a class="headerlink" href="#generative-network-modeling-reveals-a-quantitative-definition-br-of-bilateral-symmetry-exhibited-by-a-whole-insect-brain-connectome" title="Permalink to this headline">¶</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="generative-network-modeling-reveals-a-quantitative-definition-br-of-bilateral-symmetry-exhibited-by-a-whole-insect-brain-connectome">
+<h1>Generative network modeling reveals a quantitative definition <br> of bilateral symmetry exhibited by a whole insect brain connectome<a class="headerlink" href="#generative-network-modeling-reveals-a-quantitative-definition-br-of-bilateral-symmetry-exhibited-by-a-whole-insect-brain-connectome" title="Permalink to this headline">#</a></h1>
 <!-- # Towards statistical comparative connectomics:<br> A case study on the bilateral symmetry of an insect brain connectome -->
-<div class="section" id="benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span">
-<h2>Benjamin D. Pedigo<span class=super>1*</span>, Mike Powell<span class=super>1</span>, Eric W. Bridgeford<span class=super>1</span>, Michael Winding<span class=super>2</span>, Carey E. Priebe<span class=super>1</span>, Joshua T. Vogelstein<span class=super>1</span><a class="headerlink" href="#benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="johns-hopkins-university-2-university-of-cambridge-ast-correspondence-icon-bpedigo-jhu-edu-icon-bdpedigo-github-icon-bpedigod-twitter-icon-bdpedigo-github-io">
-<h3>1 - Johns Hopkins University, 2 - University of Cambridge, <span class="math notranslate nohighlight">\(\ast\)</span> - correspondence: <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a> <img alt="icon" src="../../_images/github.png" /> <a class="reference external" href="https://github.com/bdpedigo"><em>&#64;bdpedigo (Github)</em></a> <img alt="icon" src="../../_images/twitter.png" /> <a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod (Twitter)</em></a> <img alt="icon" src="../../_images/web.png" /> <a class="reference external" href="https://bdpedigo.github.io/"><em>bdpedigo.github.io</em></a><a class="headerlink" href="#johns-hopkins-university-2-university-of-cambridge-ast-correspondence-icon-bpedigo-jhu-edu-icon-bdpedigo-github-icon-bpedigod-twitter-icon-bdpedigo-github-io" title="Permalink to this headline">¶</a></h3>
+<section id="benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span">
+<h2>Benjamin D. Pedigo<span class=super>1*</span>, Mike Powell<span class=super>1</span>, Eric W. Bridgeford<span class=super>1</span>, Michael Winding<span class=super>2</span>, Carey E. Priebe<span class=super>1</span>, Joshua T. Vogelstein<span class=super>1</span><a class="headerlink" href="#benjamin-d-pedigo-span-class-super-1-span-mike-powell-span-class-super-1-span-eric-w-bridgeford-span-class-super-1-span-michael-winding-span-class-super-2-span-carey-e-priebe-span-class-super-1-span-joshua-t-vogelstein-span-class-super-1-span" title="Permalink to this headline">#</a></h2>
+<section id="johns-hopkins-university-2-university-of-cambridge-ast-correspondence-icon-bpedigo-jhu-edu-icon-bdpedigo-github-icon-bpedigod-twitter-icon-bdpedigo-github-io">
+<h3>1 - Johns Hopkins University, 2 - University of Cambridge, <span class="math notranslate nohighlight">\(\ast\)</span> - correspondence: <img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a> <img alt="icon" src="../../_images/github.png" /> <a class="reference external" href="https://github.com/bdpedigo"><em>&#64;bdpedigo (Github)</em></a> <img alt="icon" src="../../_images/twitter.png" /> <a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod (Twitter)</em></a> <img alt="icon" src="../../_images/web.png" /> <a class="reference external" href="https://bdpedigo.github.io/"><em>bdpedigo.github.io</em></a><a class="headerlink" href="#johns-hopkins-university-2-university-of-cambridge-ast-correspondence-icon-bpedigo-jhu-edu-icon-bdpedigo-github-icon-bpedigod-twitter-icon-bdpedigo-github-io" title="Permalink to this headline">#</a></h3>
 </div>
 <div>
 <p><img alt="headerlogo" src="../../_images/nd_logo.png" /></p>
@@ -735,18 +840,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="columns3">
 <div>
-</div>
-<div class="section" id="motivation">
-<h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="motivation">
+<h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Connectomes are rich sources of inspiration for architectures in artificial intelligence.</p></li>
 <li><p>Comparing connectomes could help elucidate which structural features are necessary for yielding the capabilities animal intelligences.</p></li>
 <li><p>Bilateral symmetry for connectomes is one such comparison; has been investigated, but not clearly defined as a network hypothesis.</p></li>
 </ul>
 <!-- - We explored statistically principled connectome comparison via a case study of a *Drosophila* larva connectome -->
-</div>
-<div class="section" id="larval-drosophila-brain-connectome">
-<h3>Larval <em>Drosophila</em> brain connectome<a class="headerlink" href="#larval-drosophila-brain-connectome" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="larval-drosophila-brain-connectome">
+<h3>Larval <em>Drosophila</em> brain connectome<a class="headerlink" href="#larval-drosophila-brain-connectome" title="Permalink to this headline">#</a></h3>
 <!-- START subcolumns -->
 <div class=columns2>
 <div>
@@ -761,15 +866,15 @@ const thebe_selector_output = ".output, .cell_output"
 <!-- - Connectome of a larval *Drosophila* [1] has xxx neurons and xxx synapses -->
 <!-- END subcolumns -->
 <!-- ![center](../../../results/figs/show_data/adj_and_layout.png) -->
-</div>
-</div>
-<div class="section" id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-networks-different">
-<h2>Are the <span style="color:var(--left)"> left </span> and <span style="color:var(--right)"> right </span> networks “different”?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-networks-different" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-networks-different">
+<h2>Are the <span style="color:var(--left)"> left </span> and <span style="color:var(--right)"> right </span> networks “different”?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-networks-different" title="Permalink to this headline">#</a></h2>
 <br>
 <!-- - Two sample testing problem! But for networks -->
 <p>Requires that we define what we could mean by “different” for a pair of networks, develop a test procedure for each definition.</p>
-<div class="section" id="density-test-model-1">
-<h3>Density test (Model 1)<a class="headerlink" href="#density-test-model-1" title="Permalink to this headline">¶</a></h3>
+<section id="density-test-model-1">
+<h3>Density test (Model 1)<a class="headerlink" href="#density-test-model-1" title="Permalink to this headline">#</a></h3>
 <div class=columns2>
 <div>
 <p><img alt="" src="../results/figs/er_unmatched_test/er_methods.svg" /></p>
@@ -788,9 +893,9 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div>
-</div>
-<div class="section" id="group-connection-test-model-2">
-<h3>Group connection test (Model 2)<a class="headerlink" href="#group-connection-test-model-2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="group-connection-test-model-2">
+<h3>Group connection test (Model 2)<a class="headerlink" href="#group-connection-test-model-2" title="Permalink to this headline">#</a></h3>
 <!-- #### A -->
 <p><img alt="center w:10.5in" src="../results/figs/sbm_unmatched_test/sbm_methods_explain.svg" />
 <strong>Fig 3A:</strong> Testing under stochastic block model (SBM) compares probabilities of connections between groups (here using cell types [1]).</p>
@@ -812,9 +917,9 @@ const thebe_selector_output = ".output, .cell_output"
 <p><strong>Fig 3C:</strong> For significant group connections, denser hemisphere probability is always higher.</p>
 </div>
 </div>
-</div>
-<div class="section" id="density-adjusted-group-connection-test-model-3">
-<h3>Density-adjusted group connection test (Model 3)<a class="headerlink" href="#density-adjusted-group-connection-test-model-3" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="density-adjusted-group-connection-test-model-3">
+<h3>Density-adjusted group connection test (Model 3)<a class="headerlink" href="#density-adjusted-group-connection-test-model-3" title="Permalink to this headline">#</a></h3>
 <!-- ![](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
 ![](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues.svg) -->
@@ -844,9 +949,9 @@ const thebe_selector_output = ".output, .cell_output"
 - Density-adjusted group connection test: $p \approx 0.5$ -->
 <!-- ### Removing Kenyon cells
 Reran all tests after removing the asymmetric cell type (see below) -->
-</div>
-<div class="section" id="notions-of-bilateral-symmetry">
-<h3>Notions of bilateral symmetry<a class="headerlink" href="#notions-of-bilateral-symmetry" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="notions-of-bilateral-symmetry">
+<h3>Notions of bilateral symmetry<a class="headerlink" href="#notions-of-bilateral-symmetry" title="Permalink to this headline">#</a></h3>
 <!-- <style scoped>
 table {
     font-size: 0.3in;
@@ -856,8 +961,8 @@ table {
 </style> -->
 <div class="columns2">
 <div>
-<div class="section" id="with-kenyon-cells">
-<h4>With Kenyon cells<a class="headerlink" href="#with-kenyon-cells" title="Permalink to this headline">¶</a></h4>
+<section id="with-kenyon-cells">
+<h4>With Kenyon cells<a class="headerlink" href="#with-kenyon-cells" title="Permalink to this headline">#</a></h4>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="text-align:center head"><p>Model</p></th>
@@ -882,9 +987,9 @@ table {
 </table>
 </div>
 <div>
-</div>
-<div class="section" id="without-kenyon-cells">
-<h4>Without Kenyon cells<a class="headerlink" href="#without-kenyon-cells" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="without-kenyon-cells">
+<h4>Without Kenyon cells<a class="headerlink" href="#without-kenyon-cells" title="Permalink to this headline">#</a></h4>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="text-align:center head"><p>Model</p></th>
@@ -922,10 +1027,10 @@ table {
 | ER     |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  |    x    |
 | SBM    | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |    d    |
 | DA-SBM | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |         | --> |
-</div>
-</div>
-<div class="section" id="edge-weight-thresholds">
-<h3>Edge weight thresholds<a class="headerlink" href="#edge-weight-thresholds" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="edge-weight-thresholds">
+<h3>Edge weight thresholds<a class="headerlink" href="#edge-weight-thresholds" title="Permalink to this headline">#</a></h3>
 <!-- ![](../../../results/figs/thresholding_tests/edge_weight_dist_input_proportion.png) -->
 <div class="columns2">
 <div>
@@ -943,21 +1048,21 @@ table {
 <p><strong>Fig 5B:</strong> Did not detect asymmetry in networks of only top ~<span class="math notranslate nohighlight">\(50\%\)</span> of edges (by input percentage) under models studied here. Not true using synapse counts edge weights (not shown).</p>
 </div>
 </div>
-</div>
-<div class="section" id="limitations-and-extensions">
-<h3>Limitations and extensions<a class="headerlink" href="#limitations-and-extensions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="limitations-and-extensions">
+<h3>Limitations and extensions<a class="headerlink" href="#limitations-and-extensions" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Other models to consider (e.g. random dot product graph [3])</p></li>
 <li><p>Other sensible neuron groupings for group connection test</p></li>
 <li><p>Matching nodes across networks leads to new models, likely more power</p></li>
 </ul>
-</div>
-<div class="section" id="id1">
-<h3><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id1">
+<h3><a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <div class="columns2">
 <div>
-<div class="section" id="code">
-<h4>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h4>
+<section id="code">
+<h4>Code<a class="headerlink" href="#code" title="Permalink to this headline">#</a></h4>
 <div class="columns3-np">
 <div>
 <p><img alt="left h:1in" src="../../_images/graspologic_svg.svg" /></p>
@@ -982,26 +1087,26 @@ table {
 <p><img alt="center h:1in" src="../../_images/bilateral-qr.svg" /></p>
 </div>
 </div>
-</div>
-<div class="section" id="acknowledgements">
-<h4>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="acknowledgements">
+<h4>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">#</a></h4>
 <footer>
 Marta Zlatic's lab, Albert Cardona's lab and all tracers for the amazing dataset and many ideas. NeuroData lab for feedback. Many at Microsoft Research for w/ graspologic.
 </footer>
 </div>
 <div>
-</div>
-<div class="section" id="references">
-<h4>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="references">
+<h4>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h4>
 <footer>
 [1] Winding, Pedigo et al. "The complete connectome of an insect brain," In preparation (2022) 
 <br>
 [2] Chung et al. "Statistical connectomics," Ann. Rev. Statistics and its Application (2021) <br>
 [3] Athreya et al. "Statistical inference on random dot product graphs: a survey," JMLR (2017)
 </footer>
-</div>
-<div class="section" id="funding">
-<h4>Funding<a class="headerlink" href="#funding" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="funding">
+<h4>Funding<a class="headerlink" href="#funding" title="Permalink to this headline">#</a></h4>
 <!-- ![h:1in](../../images/NSF_4-Color_bitmap_Logo.png) -->
 <footer>
 B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Award (1942963). J.T.V + C.E.P supported by NIH BRAIN Initiative (RF1MH123233). Findings and conclusions expressed are  those of the authors and not necessarily those of the funders.
@@ -1014,10 +1119,10 @@ B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Aw
 </div> -->
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1041,28 +1146,34 @@ B.D.P. supported by the NSF GRFP (DGE1746891). J.T.V. supported by NSF CAREER Aw
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
 <div class='prev-next-area'>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Benjamin D. Pedigo<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
     
-      By Benjamin D. Pedigo<br/>
-    
-        &copy; Copyright 2022.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>
