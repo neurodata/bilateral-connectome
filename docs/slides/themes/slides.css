@@ -23,7 +23,7 @@ section {
 /* REF: https://github.com/yhatt/marp/issues/119 */
 img {
     background-color: transparent !important;
-    padding-top: 20px;
+    /* padding-top: 20px; */
 }
 
 img[alt~="center"] {
@@ -105,7 +105,7 @@ h5,
 h6 {
     /* margin-top: 0.0em; */
     padding-top: 10px;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
     margin-bottom: 0.0em;
     margin-top: 0.0em;
     /* background-color: #66c2a5; */
