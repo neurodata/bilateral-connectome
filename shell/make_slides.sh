@@ -6,8 +6,8 @@ FILE=$SLIDE_DIR/$1.md
 
 if test -f "$FILE"; then
     echo "$FILE exists."
-    marp --pdf $FILE 
-    marp --html $FILE
+    marp --pdf --allow-local-files $FILE 
+    marp --html --allow-local-files $FILE
 else
     echo "$FILE does not exist."
 fi

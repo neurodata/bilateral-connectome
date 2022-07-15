@@ -95,7 +95,7 @@ Johns Hopkins University - Biomedical Engineering
 
 ---
 
-# But it is methodologically hard to compare connectomes!
+# But it is methodologically hard to compare connectomes! this is a test
 
 --- 
 
@@ -124,7 +124,7 @@ section {
 
 ---
 
-# _Drosophila_ larva (AKA a maggot) brain connectome
+# _Drosophila_ larva (AKA a maggot) brain connectome 
 
 
 <div class="columns">
