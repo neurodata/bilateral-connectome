@@ -5,7 +5,7 @@ SLIDE_DIR=$BASE_DIR/docs/slides/$1
 FILE=$SLIDE_DIR/$1.md
 
 if test -f "$FILE"; then
-    echo "$FILE exists."
+    # echo "$FILE exists."
     marp --pdf --allow-local-files $FILE 
     marp --html --allow-local-files $FILE
 else

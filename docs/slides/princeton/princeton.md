@@ -139,7 +139,7 @@ section {
 </div>
 <div>
 
-![](./../../images/Figure1-brain-render.png)
+<!-- ![](./../../images/Figure1-brain-render.png) -->
 <!-- ![w:600](./../../../results/figs/plot_layouts/whole-network-layout.png) -->
 
 </div>
