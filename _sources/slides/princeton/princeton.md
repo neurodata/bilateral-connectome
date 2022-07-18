@@ -55,6 +55,10 @@ Johns Hopkins University - Biomedical Engineering
 
 # Connectomics is useful...
 
+{plot of "connectome prevalence over time"}
+
+{highlight one example fly result (? maybe central complex)}
+
 ---
 
 # Many of the stated goals of connectomics rely on linking connectome to other domains...
@@ -76,6 +80,8 @@ Johns Hopkins University - Biomedical Engineering
 
 *Emphasis added*
 
+{diagram of linking connectome and memory}
+
 <!-- _footer: Mind of a mouse, Abbott et al. 2020 -->
 
 ---
@@ -85,10 +91,12 @@ Johns Hopkins University - Biomedical Engineering
 
 *Emphasis added*
 
+{diagram of comparing connectomes across species}
+
 <!-- _footer: Neural architectures in the light of comparative connectomics, Barsotti + Correia et al. 2021-->
 
 ---
-# Connectomes across development
+# Connectome $\leftrightarrow$ development
 ![center h:475](./../../images/witvliet-fig1.png)
 
 <footer>Witvliet et al. Nature (2021)</footer>
@@ -96,18 +104,23 @@ Johns Hopkins University - Biomedical Engineering
 ---
 
 # But it is methodologically hard to compare connectomes!
-
+- ~~Data are networks~~
+  - Data are networks with rich attributes
+- Data are noisy
+  - "Developmental noise" 
+  - "Experimental noise"
+- Data are big (and getting bigger)
+ 
 --- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
 # Outline for today
 
-- Describe a dataset that I'll use for these examples throughout
+- Describe larval connectome dataset
 - Show how connectome comparison can be framed as network hypothesis testing
-- Show how we can use automated tools for predicting the correspondence of neurons
-  across datasets
-- Mention some extensions to use/combine/extend these tools that we're working on
+- Show how we can use automated tools for predicting the correspondence of neurons across datasets
+- Mention extensions to use/combine/extend these tools
 
 <!-- ---
 
@@ -124,23 +137,36 @@ section {
 
 ---
 
-# _Drosophila_ larva (AKA a maggot) brain connectome
+# Larval _Drosophila_ brain connectome 
 
 
 <div class="columns">
 <div>
 
 <!-- See [Michael Windings's talk](https://conference.neuromatch.io/abstract?edition=2021-4&submission_id=recVeh4RZFFRAQnIo) -->
-- Collaboration with Marta Zlatic/Albert Cardona's groups - led by Michael Winding
-- First whole-brain, single-cell connectome of any insect
-- ~3000 neurons, ~550K synapses
-- Both hemispheres of the brain reconstructed
+<!-- - Collaboration with Marta Zlatic/Albert Cardona's groups - led by Michael Winding -->
+<!-- - First whole-brain, single-cell connectome of any insect -->
+<!-- - Both hemispheres of the brain reconstructed -->
+
+<style scoped>
+p {
+  justify-content: center;
+  text-align: center;
+  padding-top: 0px;
+  margin-top: 0px;
+}
+</style>
+
+![center h:400](./../../images/Figure1-brain-render.png)
+~3k neurons, ~550K synapses
+**Both hemispheres**
+
 
 </div>
 <div>
 
-![](./../../images/Figure1-brain-render.png)
-<!-- ![w:600](./../../../results/figs/plot_layouts/whole-network-layout.png) -->
+
+![center h:500](./../../../results/figs/plot_layouts/whole-network-layout.png)
 
 </div>
 </div>
