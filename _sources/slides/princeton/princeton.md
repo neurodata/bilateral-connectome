@@ -80,7 +80,7 @@ Johns Hopkins University - Biomedical Engineering
 
 *Emphasis added*
 
-{diagram of linking connectome and memory}
+<!-- TODO: diagram of linking connectome and memory -->
 
 <!-- _footer: Mind of a mouse, Abbott et al. 2020 -->
 
@@ -91,7 +91,7 @@ Johns Hopkins University - Biomedical Engineering
 
 *Emphasis added*
 
-{diagram of comparing connectomes across species}
+<!-- TODO: diagram of comparing connectomes across species -->
 
 <!-- _footer: Neural architectures in the light of comparative connectomics, Barsotti + Correia et al. 2021-->
 
@@ -121,19 +121,6 @@ Johns Hopkins University - Biomedical Engineering
 - Show how connectome comparison can be framed as network hypothesis testing
 - Show how we can use automated tools for predicting the correspondence of neurons across datasets
 - Mention extensions to use/combine/extend these tools
-
-<!-- ---
-
-
-<style scoped>
-section {
-    justify-content: center;
-    text-align: center;
-}
-</style>
-
-# Data -->
-
 
 ---
 
@@ -345,8 +332,6 @@ section {
 </div>
 </div>
 
-
-
 ---
 # Should we be surprised?
 <div class="columns">
@@ -442,6 +427,129 @@ section {
 
 # Matching neurons
 
+---
+# Bilaterally homologous neuron pairs 
+![center](./../../images/mbon-expression.jpg)
+
+<footer>Eschbach et al. eLife (2021)</footer>
+
+---
+
+# Can we use networks structure to predict this pairing?
+
+<div class="columns">
+<div>
+
+![](../../images/the-wire.png)
+
+
+</div>
+<div>
+
+- Week 1: observe a network of cell phone #s and the calls they make to each other
+- Week 2: all of the #s change! But a (noisy) version of that network still exists, with different labels...
+- How to map network from week 1 ($A$) to network from week 2 ($B$)?
+
+</div>
+</div>
+
+
+<!-- _footer: The Wire, Season 3, Episode 7 -->
+
+--- 
+# What is graph matching?
+
+![center](../../images/network-matching-explanation.svg)
+
+---
+# How do we measure network overlap?
+
+
+<style scoped>
+h2 {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+<div class="columns">
+<div>
+
+## $\min_{P \in \mathcal{P}} \|A - PBP^T\|_F^2$
+
+where $\mathcal{P}$ is the set of permutation matrices
+
+<!-- TODO: make a figure diagraming a permutation/matching of nodes -->
+
+</div>
+<div>
+
+- Measures the number of edge disagreements for unweighted networks,
+- Norm of edge disagreements for weighted networks
+
+</div>
+</div>
+
+---
+# How do we do graph matching?
+
+---
+# Matching the two hemispheres
+
+<div class="columns2-bl">
+<div>
+
+![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
+
+</div>
+<div>
+
+- ~76-80% correct on the full brain connectome for left-right pair prediction
+- Lots of bells and whistles one can add:
+    - Edge types
+    - Seeds
+    - Morphology
+
+</div>
+</div>
+
+---
+
+<style scoped>
+h1, h2 {
+    padding-top: 140px;
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+# Thus far, we've not used the contralateral connections
+
+## These are about 1/3 of the edges in the brain!
+
+---
+# From graph matching to bisected graph matching
+
+<!-- ![](../../../results/figs/explain/explain.svg) -->
+
+![](../../images/explain-bgm.svg)
+
+<!-- --LL: #66c2a5;
+    --RR: #fc8d62;
+    --source: #8da0cb;
+    --target: #e78ac3;
+    --LR: #8da0cb;
+    --RL: #e78ac3; -->
+
+<!-- New gradient: 
+
+$$\nabla f(P) = - \textcolor{#66c2a5}{A_{LL}} P \textcolor{#fc8d62}{A_{RR}}^T + \textcolor{#66c2a5}{A_{LL}}^TP\textcolor{#fc8d62}{A_{RR}} + \textcolor{#8da0cb}{A_{LR}} P^T \textcolor{#e78ac3}{A_{RL}}^T + \textcolor{#e78ac3}{A_{RL}}^T P^T \textcolor{#8da0cb}{A_{LR}}$$ -->
+
+--- 
+# Contralateral connections are helpful!
+
+![center h:550](../../images/match_accuracy_comparison.svg)
+
 --- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
@@ -458,15 +566,21 @@ section {
 ---
 # matched versions of our tests
 - we think greater power, basically
+<!-- TODO: figure to describe the matched version of SBM test or something? -->
 
 ---
 # testing for a significant matching
-- evaluate stereotypy at a single neuron level, basically
+
+<!-- TODO: show kenyon cell testing result -->
 
 ---
-# the value of pairs - looking at models
-- show the hierarchical clustering
-- SBM cross validation curve 
+# The value of pairs - looking at models
+
+<!-- TODO: show the hierarchical clustering -->
+
+---
+# The value of pairs - looking at models
+<!-- TODO: show SBM cross validation curve  -->
 
 --- 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
