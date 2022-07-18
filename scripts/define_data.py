@@ -68,7 +68,7 @@ def glue(name, var, **kwargs):
     default_glue(name, var, FILENAME, display=False, **kwargs)
 
 
-RESAVE = False
+RESAVE = True
 
 print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
@@ -191,8 +191,6 @@ right_nodes = right_mg.nodes
 left_adj = left_mg.sum.adj
 right_adj = right_mg.sum.adj
 
-left_adj = binarize(left_adj)
-right_adj = binarize(right_adj)
 
 left_adj = remove_loops(left_adj)
 right_adj = remove_loops(right_adj)
@@ -209,24 +207,32 @@ glue("n_right_matched", n_right_matched)
 # hemisphere, and {glue:text}`n_right_matched` neurons in the right hemisphere.
 
 # %%
-left_adj = pd.DataFrame(data=left_adj, index=left_nodes.index, columns=left_nodes.index)
+left_adj = pd.DataFrame(
+    data=left_adj.astype(int), index=left_nodes.index, columns=left_nodes.index
+)
 left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
 if RESAVE:
     nx.write_edgelist(
-        left_g, output_dir / "matched_left_edgelist.csv", delimiter=",", data=False
+        left_g,
+        output_dir / "matched_left_edgelist.csv",
+        delimiter=",",
+        data=["weight"],
     )
 
     left_nodes.to_csv(output_dir / "matched_left_nodes.csv")
 
 
 right_adj = pd.DataFrame(
-    data=right_adj, index=right_nodes.index, columns=right_nodes.index
+    data=right_adj.astype(int), index=right_nodes.index, columns=right_nodes.index
 )
 right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
 
 if RESAVE:
     nx.write_edgelist(
-        right_g, output_dir / "matched_right_edgelist.csv", delimiter=",", data=False
+        right_g,
+        output_dir / "matched_right_edgelist.csv",
+        delimiter=",",
+        data=["weight"],
     )
     right_nodes.to_csv(output_dir / "matched_right_nodes.csv")
 
