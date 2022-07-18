@@ -23,6 +23,8 @@ section {
 /* REF: https://github.com/yhatt/marp/issues/119 */
 img {
     background-color: transparent !important;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
     /* padding-top: 20px; */
 }
 
