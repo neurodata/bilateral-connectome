@@ -55,15 +55,17 @@ Johns Hopkins University - Biomedical Engineering
 
 # Connectomics is useful...
 
-{plot of "connectome prevalence over time"}
+TODO: (3) plot of "connectome prevalence over time"
 
-{highlight one example fly result (? maybe central complex)}
+TODO: (4) highlight one example fly result (? maybe central complex)
 
 ---
 
 # Many of the stated goals of connectomics rely on linking connectome to other domains...
 
 ![center h:500](./../../images/link_connectome.svg)
+
+<!-- TODO: (3) finish this figure draw arrows -->
 
 <!-- /Users/bpedigo/JHU_code/pcc/pcc/results/figs/diagram/link_connectome.png -->
 
@@ -80,7 +82,7 @@ Johns Hopkins University - Biomedical Engineering
 
 *Emphasis added*
 
-<!-- TODO: diagram of linking connectome and memory -->
+TODO: (2) diagram of linking connectome and memory
 
 <!-- _footer: Mind of a mouse, Abbott et al. 2020 -->
 
@@ -91,7 +93,7 @@ Johns Hopkins University - Biomedical Engineering
 
 *Emphasis added*
 
-<!-- TODO: diagram of comparing connectomes across species -->
+TODO: (2) diagram of comparing connectomes across species
 
 <!-- _footer: Neural architectures in the light of comparative connectomics, Barsotti + Correia et al. 2021-->
 
@@ -479,7 +481,7 @@ h2 {
 
 where $\mathcal{P}$ is the set of permutation matrices
 
-<!-- TODO: make a figure diagraming a permutation/matching of nodes -->
+TODO: (3) make a figure diagraming a permutation/matching of nodes
 
 </div>
 <div>
@@ -566,26 +568,52 @@ section {
 ---
 # matched versions of our tests
 - we think greater power, basically
-<!-- TODO: figure to describe the matched version of SBM test or something? -->
+
+TODO: (4) figure to describe the matched version of SBM test or something?
 
 ---
-# testing for a significant matching
+# Testing for a significant matching
 
-<!-- TODO: show kenyon cell testing result -->
+Is matching stronger than expected under some model of independent networks?
+
+<div class="columns">
+<div>
+
+![](../../images/kc-stereotypy-diagram.svg)
+
+</div>
+<div>
+
+![](../../images/kc_alignment_dist.svg)
+
+</div>
+</div>
+
+<!-- _footer: TODO: (5) cite fishkind paper -->
+
+---
+
+<!-- # The value of pairs - looking at models -->
+
+# Hierarchical clustering of neurons based on observed connectivity
+
+![center](../../images/bar-dendrogram-wide.svg)
+
+![center w:700](../../images/cell-type-labels-legend.png)
+
+<footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
 
 ---
 # The value of pairs - looking at models
-
-<!-- TODO: show the hierarchical clustering -->
-
----
-# The value of pairs - looking at models
-<!-- TODO: show SBM cross validation curve  -->
+TODO: (1) show SBM cross validation curve  -->
 
 --- 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
 # Summary 
+- Model based network comparison
+- Finding (and evaluating) correspondence of neurons across datasets
+
 
 ---
 
@@ -674,6 +702,7 @@ Joshua Vogelstein
 </div>
 
 #### Funding
+TODO: (5) write funding
 
 ---
 # Questions?
@@ -697,4 +726,4 @@ section {
 ![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
 ![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
 ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
-![icon](../../images/web.png) [https://bdpedigo.github.io/](https://bdpedigo.github.io/)
+![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)
