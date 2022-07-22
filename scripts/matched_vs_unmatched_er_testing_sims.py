@@ -26,7 +26,7 @@ from pkg.plot import draw_hypothesis_box
 
 DISPLAY_FIGS = True
 
-FILENAME = "er_unmatched_test"
+FILENAME = "matched_vs_unmatched_sims"
 
 
 def gluefig(name, fig, **kwargs):
@@ -50,16 +50,72 @@ node_palette, NODE_KEY = load_node_palette()
 
 #%%
 from graspologic.simulations import er_np
-from pkg.perturb import shuffle_edges
+from pkg.perturb import shuffle_edges, add_edges
+from pkg.stats import erdos_renyi_test, erdos_renyi_test_paired
+from tqdm.autonotebook import tqdm
 
 p = 0.1
-n = 20
-A1 = er_np(n, p, directed=True)
-p_shuffle = 0.4
-n_edges = np.count_nonzero(A1)
-n_shuffle = int(n_edges * p_shuffle)
-A2 = shuffle_edges(A1, effect_size=n_shuffle)
+n = 50
 
+effect_sizes = np.linspace(0, 50, 51, dtype=int)
+n_sims = 10
+rows = []
+
+with tqdm(total=n_sims * len(effect_sizes) * 2) as pbar:
+    for effect_size in effect_sizes:
+        for sim in range(n_sims):
+            A1 = er_np(n, p, directed=True)
+            A2 = add_edges(A1, effect_size=effect_size)
+
+            for test in ["er", "er_paired"]:
+                if test == "er":
+                    name = "Density test"
+                    stat, pvalue, misc = erdos_renyi_test(A1, A2)
+                elif test == "er_paired":
+                    name = "Paired density test"
+                    stat, pvalue, misc = erdos_renyi_test_paired(A1, A2)
+                else:
+                    raise ValueError()
+
+                result = {
+                    "test": test,
+                    "stat": stat,
+                    "pvalue": pvalue,
+                    "effect_size": effect_size,
+                    "name": name,
+                }
+                rows.append(result)
+                pbar.update(1)
+#%%
+results = pd.DataFrame(rows)
+
+#%%
+
+
+def add_alpha_line(ax, xytext=(-45, -15)):
+    ax.axhline(0.05, color="black", linestyle=":", zorder=-1)
+    ax.annotate(
+        r"0.05",
+        (ax.get_xlim()[0], 0.05),
+        xytext=xytext,
+        textcoords="offset points",
+        arrowprops=dict(arrowstyle="-", color="black"),
+        clip_on=False,
+        ha="right",
+    )
+
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+
+sns.lineplot(data=results, x="effect_size", y="pvalue", hue="name")
+ax.set(ylabel="p-value", xlabel="# perturbed edges")
+sns.move_legend(ax, loc="upper right", title="")
+add_alpha_line(ax, xytext=(-45, 15))
+gluefig("er-power-comparison", fig)
+
+# ax.axhline(0.05, color="black", linestyle="--")
+# ax.text(max(effect_sizes), 0.05, "alpha")
+# ax.set_yscale('log')
 
 #%%
 

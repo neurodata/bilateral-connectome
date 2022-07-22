@@ -17,6 +17,7 @@ jupyter-client = "6.1.12" # https://github.com/jupyter/jupyter_client/issues/637
 svgutils = "^0.3.4"
 navis = "^1.2.1"
 python-catmaid = "^2.0.6"
+scikit-image = "^0.19.3"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

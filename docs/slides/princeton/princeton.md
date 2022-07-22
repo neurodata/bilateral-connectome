@@ -61,7 +61,7 @@ TODO: (4) highlight one example fly result (? maybe central complex)
 
 ---
 
-# Many of the stated goals of connectomics rely on linking connectome to other domains...
+# Many stated goals of connectomics are to link connectome to other properties
 
 ![center h:500](./../../images/link_connectome.svg)
 
@@ -82,9 +82,9 @@ TODO: (4) highlight one example fly result (? maybe central complex)
 
 *Emphasis added*
 
-TODO: (2) diagram of linking connectome and memory
+<!-- TODO: (2) diagram of linking connectome and memory -->
 
-<!-- _footer: Mind of a mouse, Abbott et al. 2020 -->
+<!-- _footer: Abbott et al. Cell (2020) -->
 
 ---
 # Connectome $\leftrightarrow$ evolution
@@ -93,15 +93,15 @@ TODO: (2) diagram of linking connectome and memory
 
 *Emphasis added*
 
-TODO: (2) diagram of comparing connectomes across species
+<!-- TODO: (2) diagram of comparing connectomes across species -->
 
-<!-- _footer: Neural architectures in the light of comparative connectomics, Barsotti + Correia et al. 2021-->
+<!-- _footer: Barsotti + Correia et al. Curr. Opi. Neurobio. (2021)-->
 
 ---
 # Connectome $\leftrightarrow$ development
 ![center h:475](./../../images/witvliet-fig1.png)
 
-<footer>Witvliet et al. Nature (2021)</footer>
+<!-- _footer: Witvliet et al. Nature (2021) -->
 
 ---
 
@@ -132,11 +132,6 @@ TODO: (2) diagram of comparing connectomes across species
 <div class="columns">
 <div>
 
-<!-- See [Michael Windings's talk](https://conference.neuromatch.io/abstract?edition=2021-4&submission_id=recVeh4RZFFRAQnIo) -->
-<!-- - Collaboration with Marta Zlatic/Albert Cardona's groups - led by Michael Winding -->
-<!-- - First whole-brain, single-cell connectome of any insect -->
-<!-- - Both hemispheres of the brain reconstructed -->
-
 <style scoped>
 p {
   justify-content: center;
@@ -150,19 +145,15 @@ p {
 ~3k neurons, ~550K synapses
 **Both hemispheres**
 
-
 </div>
 <div>
-
 
 ![center h:500](./../../../results/figs/plot_layouts/whole-network-layout.png)
 
 </div>
 </div>
 
-<footer>
-Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
-</footer>
+<!-- _footer: Winding, Pedigo et al. Submitted (2022) -->
 
 ---
 
@@ -318,7 +309,7 @@ section {
 
 
 --- 
-# We detect a difference in group-to-group connection probabilities
+# Detect a difference in group connection probabilities
 
 <div class="columns">
 <div>
@@ -353,10 +344,9 @@ section {
 </div>
 </div>
 
----
-# Adjusting for a difference in density
+<!-- ---
+# Adjusting for a difference in density -->
 
-![center](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
 
 <!-- ---
 # Even with density adjustment, we detect a difference
@@ -375,11 +365,23 @@ section {
 </div> -->
 
 ---
-# Remaining differences are isolated to KCs
+# After adjusting for density, differences are in KCs
+
+<div class="columns">
+<div>
+
+![center](./../../../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg)
+
+</div>
+<div>
+
 ![h:500](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
 
+</div>
+</div>
+
 ---
-# So the Kenyon cells (KCs) are the only group where we detect remaining differences...
+# When we remove KCs...
 
 <div class="columns">
 <div>
@@ -390,9 +392,12 @@ section {
 </div>
 <div>
 
-- ER test: $p <10^{-26}$
-- SBM test: $p \approx 0.003$
-- Adjusted SBM test: $p \approx 0.43$
+- Density test: 
+  $p <10^{-26}$
+- Group connection test:
+  $p \approx 0.003$
+- **Density-adjusted group connection test: 
+  $p \approx 0.43$**
 
 </div>
 </div>
@@ -407,6 +412,7 @@ table {
 }
 </style>
 
+<!-- TODO: (3) clean up table to make it like poster -->
 | Model | $H_0$ (vs. $H_A \neq$)                                             |  KCs  |     p-value     | Interpretation                                           |
 | ----- | ------------------------------------------------------------------ | :---: | :-------------: | -------------------------------------------------------- |
 | ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$   | Reject densities the same                                |
@@ -415,6 +421,23 @@ table {
 | ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$   | Reject densities the same (w/o KCs)                      |
 | SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.003$ | Reject group connection probabilities the same (w/o KCs) |
 | aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   | $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    |
+
+---
+# Examining the effect of edge weights
+
+<div class='columns'>
+<div>
+
+![](./../../../results/figs/thresholding_tests/thresholding_methods.png)
+
+</div>
+<div>
+
+![](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
+
+</div>
+</div>
+
 
 ---
 
@@ -433,7 +456,7 @@ section {
 # Bilaterally homologous neuron pairs 
 ![center](./../../images/mbon-expression.jpg)
 
-<footer>Eschbach et al. eLife (2021)</footer>
+<!-- _footer: Eschbach et al. eLife (2021) -->
 
 ---
 
@@ -456,7 +479,7 @@ section {
 </div>
 
 
-<!-- _footer: The Wire, Season 3, Episode 7 -->
+<!-- _footer: The Wire Season 3 Episode 7, HBO -->
 
 --- 
 # What is graph matching?
@@ -477,11 +500,11 @@ h2 {
 <div class="columns">
 <div>
 
-## $\min_{P \in \mathcal{P}} \|A - PBP^T\|_F^2$
+## $\min_{P \in \mathcal{P}} \underbrace{\|A - \overbrace{PBP^T}^{\text{reordered } B}\|_F^2}_{\text{distance between adj. mats.}}$
 
 where $\mathcal{P}$ is the set of permutation matrices
 
-TODO: (3) make a figure diagraming a permutation/matching of nodes
+<!-- TODO: (3) make a figure diagraming a permutation/matching of nodes -->
 
 </div>
 <div>
@@ -494,6 +517,9 @@ TODO: (3) make a figure diagraming a permutation/matching of nodes
 
 ---
 # How do we do graph matching?
+
+<!-- _footer: Vogelstein et al. PLOS One (2015 -->
+<!-- _footer: Vogelstein et al. PLOS One (2015 -->
 
 ---
 # Matching the two hemispheres
@@ -547,10 +573,14 @@ h1, h2 {
 
 $$\nabla f(P) = - \textcolor{#66c2a5}{A_{LL}} P \textcolor{#fc8d62}{A_{RR}}^T + \textcolor{#66c2a5}{A_{LL}}^TP\textcolor{#fc8d62}{A_{RR}} + \textcolor{#8da0cb}{A_{LR}} P^T \textcolor{#e78ac3}{A_{RL}}^T + \textcolor{#e78ac3}{A_{RL}}^T P^T \textcolor{#8da0cb}{A_{LR}}$$ -->
 
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
+
 --- 
 # Contralateral connections are helpful!
 
 ![center h:550](../../images/match_accuracy_comparison.svg)
+
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 --- 
 
@@ -566,10 +596,9 @@ section {
 # Extensions and ongoing work
 
 ---
-# matched versions of our tests
-- we think greater power, basically
+# Testing with pairs yields more powerful tests
 
-TODO: (4) figure to describe the matched version of SBM test or something?
+![center](./../../../results/figs/matched_vs_unmatched_sims/er-power-comparison.svg) 
 
 ---
 # Testing for a significant matching
@@ -589,43 +618,105 @@ Is matching stronger than expected under some model of independent networks?
 </div>
 </div>
 
-<!-- _footer: TODO: (5) cite fishkind paper -->
+<!-- _footer: Fishkind et al. Applied Network Science (2021) -->
 
 ---
 
 <!-- # The value of pairs - looking at models -->
 
-# Hierarchical clustering of neurons based on observed connectivity
+# Hierarchical clustering of neurons by connectivity
 
 ![center](../../images/bar-dendrogram-wide.svg)
 
 ![center w:700](../../images/cell-type-labels-legend.png)
 
-<footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
+<!-- _footer: Winding, Pedigo et al. Submitted (2022) -->
 
 ---
-# The value of pairs - looking at models
-TODO: (1) show SBM cross validation curve  -->
+# Using pairs and models to evaluate cell type groupings
+<!-- TODO: (4) fix up SBM cross validation curve  -->
+
+![center h:550](../../images/lik-by-n_params-blind.png)
 
 --- 
-![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+<!-- ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg) -->
 
 # Summary 
-- Model based network comparison
-- Finding (and evaluating) correspondence of neurons across datasets
 
+<div class="columns-br">
+<div>
+
+![](./../../../results/figs/draw_brain_comparisons/brain_approx_equals.svg)
+
+</div>
+<div>
+
+- Model-based network comparison enables testing hypotheses about connectomes
+  - We proposed a few tests, but just the beginning! 
+
+</div>
+</div>
+
+<div class="columns-br">
+<div>
+
+![](./../../../results/figs/draw_brain_comparisons/brain_matching.svg)
+
+</div>
+<div>
+
+- Graph matching can pair neurons across datasets
+  - Can incorporate biological info like morphology, partial matchings, contralateral connections, etc. 
+</div>
+</div>
+
+
+- **Aim to apply these (and other) tools to understand similarities/differences between connectomes**
 
 ---
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
-# How to use these tools?
+# How to use these (and other) tools?
+
+<div class="columns">
+<div>
+
 ## graspologic
+
+[github.com/microsoft/graspologic](https://github.com/microsoft/graspologic)
+
+![w:450](./../../images/graspologic_svg.svg)
+
+[![h:30](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:30](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:30](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors)
+
+</div>
+<div>
+
+## Model-based testing
+github.com/neurodata/bilateral-connectome
+[![h:30](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
+
+
+## Improved matching
+github.com/neurodata/bgm
+[![h:30](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
+
+(Or for WIP final implementation see
+github.com/microsoft/graspologic/pull/960)
+
+</div>
+</div>
+
+<!-- ## graspologic
 ## bilateral repo 
 ## bgm 
-## get in touch! 
+## get in touch!  -->
 
 --- 
+
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+
 # Acknowledgements
 
 #### Team
@@ -701,8 +792,13 @@ Joshua Vogelstein
 <!-- End people panels -->
 </div>
 
+Tracers who contributed to larva connectome, NeuroData lab, Microsoft Research
+
 #### Funding
-TODO: (5) write funding
+NSF Graduate Research Fellowship (Grant no. DGE1746891) to B.D.P.
+NSF CAREER Award (Grant no. 1942963) to J.T.V.
+NSF NeuroNex Award (Grant no. 2014862) to J.T.V and C.E.P.
+NIH BRAIN Initiative (Grant no. 1RF1MH123233-01) to J.T.V.
 
 ---
 # Questions?
