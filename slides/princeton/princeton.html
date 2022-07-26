@@ -624,6 +624,18 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#to-sum-up">
    To sum up…
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#with-kenyon-cells">
+     With Kenyon cells
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#without-kenyon-cells">
+     Without Kenyon cells
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#examining-the-effect-of-edge-weights">
@@ -633,6 +645,11 @@ title="Print to PDF"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#matching-neurons">
    Matching neurons
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bilaterally-homologous-neuron-pairs">
+   Bilaterally homologous neuron pairs
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -983,6 +1000,18 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#to-sum-up">
    To sum up…
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#with-kenyon-cells">
+     With Kenyon cells
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#without-kenyon-cells">
+     Without Kenyon cells
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#examining-the-effect-of-edge-weights">
@@ -992,6 +1021,11 @@ title="Print to PDF"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#matching-neurons">
    Matching neurons
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bilaterally-homologous-neuron-pairs">
+   Bilaterally homologous neuron pairs
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -1384,7 +1418,12 @@ section {
 </div>
 <div>
 <p><img alt="center h:400" src="../results/figs/er_unmatched_test/er_density.svg" /></p>
-<!-- TODO: center this -->
+<style scoped>
+p {
+  justify-content: center;
+  text-align: center;
+}
+</style>
 <p>p-value &lt; <span class="math notranslate nohighlight">\(10^{-22}\)</span></p>
 </div>
 </div>
@@ -1511,61 +1550,76 @@ where <span class="math notranslate nohighlight">\(c\)</span> is a density-adjus
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="to-sum-up">
 <h1>To sum up…<a class="headerlink" href="#to-sum-up" title="Permalink to this headline">#</a></h1>
-<style scoped>
+<!-- <style scoped>
 table {
     font-size: 24px;
     margin-bottom: 50px;
 }
-</style>
-<!-- TODO: (3) clean up table to make it like poster -->
+</style> -->
+<!-- | Model | $H_0$ (vs. $H_A \neq$)                                             |  KCs  |     p-value     | Interpretation                                           |
+| ----- | ------------------------------------------------------------------ | :---: | :-------------: | -------------------------------------------------------- |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$   | Reject densities the same                                |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$   | Reject group connection probabilities the same           |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.002$ | Reject above even after accounting for density           |
+| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$   | Reject densities the same (w/o KCs)                      |
+| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.003$ | Reject group connection probabilities the same (w/o KCs) |
+| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   | $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    | -->
+<div class="columns">
+<div>
+<section id="with-kenyon-cells">
+<h2>With Kenyon cells<a class="headerlink" href="#with-kenyon-cells" title="Permalink to this headline">#</a></h2>
 <table class="colwidths-auto table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Model</p></th>
-<th class="head"><p><span class="math notranslate nohighlight">\(H_0\)</span> (vs. <span class="math notranslate nohighlight">\(H_A \neq\)</span>)</p></th>
-<th class="text-align:center head"><p>KCs</p></th>
+<tr class="row-odd"><th class="text-align:center head"><p>Model</p></th>
+<th class="text-align:center head"><p><span class="math notranslate nohighlight">\(H_0\)</span> (vs. <span class="math notranslate nohighlight">\(H_A \neq\)</span>)</p></th>
 <th class="text-align:center head"><p>p-value</p></th>
-<th class="head"><p>Interpretation</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>ER</p></td>
-<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>+</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-23}\)</span></p></td>
-<td><p>Reject densities the same</p></td>
+<tr class="row-even"><td class="text-align:center"><p><strong>ER</strong></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\({&lt;}10^{-23}\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p>SBM</p></td>
-<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>+</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt; 10^{-7}\)</span></p></td>
-<td><p>Reject group connection probabilities the same</p></td>
+<tr class="row-odd"><td class="text-align:center"><p><strong>SBM</strong></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\({&lt;}10^{-7}\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p>aSBM</p></td>
-<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>+</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.002\)</span></p></td>
-<td><p>Reject above even after accounting for density</p></td>
-</tr>
-<tr class="row-odd"><td><p>ER</p></td>
-<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-26}\)</span></p></td>
-<td><p>Reject densities the same (w/o KCs)</p></td>
-</tr>
-<tr class="row-even"><td><p>SBM</p></td>
-<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.003\)</span></p></td>
-<td><p>Reject group connection probabilities the same (w/o KCs)</p></td>
-</tr>
-<tr class="row-odd"><td><p>aSBM</p></td>
-<td><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.43\)</span></p></td>
-<td><p>Don’t reject above after density adjustment (w/o KCs)</p></td>
+<tr class="row-even"><td class="text-align:center"><p><strong>daSBM</strong></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\({&lt;}10^{-2}\)</span></p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div>
+</section>
+<section id="without-kenyon-cells">
+<h2>Without Kenyon cells<a class="headerlink" href="#without-kenyon-cells" title="Permalink to this headline">#</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:center head"><p>Model</p></th>
+<th class="text-align:center head"><p><span class="math notranslate nohighlight">\(H_0\)</span> (vs. <span class="math notranslate nohighlight">\(H_A \neq\)</span>)</p></th>
+<th class="text-align:center head"><p>p-value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:center"><p><strong>ER</strong></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\({&lt;}10^{-26}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:center"><p><strong>SBM</strong></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\({&lt;}10^{-2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-align:center"><p><strong>daSBM</strong></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
+<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.51\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="examining-the-effect-of-edge-weights">
@@ -1589,11 +1643,13 @@ section {
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="matching-neurons">
 <h1>Matching neurons<a class="headerlink" href="#matching-neurons" title="Permalink to this headline">#</a></h1>
-<!-- 
----
-# Bilaterally homologous neuron pairs 
-![center](./../../images/mbon-expression.jpg)
-<!-- Timing: 23:00 -->
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="bilaterally-homologous-neuron-pairs">
+<h1>Bilaterally homologous neuron pairs<a class="headerlink" href="#bilaterally-homologous-neuron-pairs" title="Permalink to this headline">#</a></h1>
+<p><img alt="center" src="../../_images/mbon-expression.jpg" /></p>
+<!-- Timing: 23:00
+
 <!-- _footer: Eschbach et al. eLife (2021) -->
 </section>
 <hr class="docutils" />
@@ -1718,7 +1774,6 @@ $$\nabla f(P) = - \textcolor{#66c2a5}{A_{LL}} P \textcolor{#fc8d62}{A_{RR}}^T + 
 <section class="tex2jax_ignore mathjax_ignore" id="performance-improvement-on-the-full-brain">
 <h1>Performance improvement on the full brain<a class="headerlink" href="#performance-improvement-on-the-full-brain" title="Permalink to this headline">#</a></h1>
 <p><img alt="center" src="../../_images/matching_accuracy_upset.svg" /></p>
-<!-- TODO: (3) add figure about final accuracy results? -->
 <hr class="docutils" />
 <p><img alt="bg center blur:3px opacity:20%" src="../results/figs/background/background.svg" /></p>
 <style scoped>
