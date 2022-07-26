@@ -455,7 +455,7 @@ section {
 </style>
 
 # Matching neurons
-
+<!-- 
 ---
 # Bilaterally homologous neuron pairs 
 ![center](./../../images/mbon-expression.jpg)
@@ -688,7 +688,7 @@ Is matching stronger than expected under some model of independent networks?
 <div class="columns-br">
 <div>
 
-![](./../../../results/figs/draw_brain_comparisons/brain_approx_equals.svg)
+![](./../../../results/figs/draw_brain_comparisons/brain_approx_equals.png)
 
 </div>
 <div>
@@ -702,7 +702,7 @@ Is matching stronger than expected under some model of independent networks?
 <div class="columns-br">
 <div>
 
-![](./../../../results/figs/draw_brain_comparisons/brain_matching.svg)
+![](./../../../results/figs/draw_brain_comparisons/brain_matching.png)
 
 </div>
 <div>
@@ -864,7 +864,7 @@ section {
 </style>
 
 ### Benjamin D. Pedigo
-![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
-![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
-![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
-![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)
+![icon](../../images/email.png) [bpedigo@jhu.edu](mailto:bpedigo@jhu.edu)
+![icon](../../images/github.png) [@bdpedigo (Github)](https://github.com/bdpedigo)
+![icon](../../images/twitter.png) [@bpedigod (Twitter)](https://twitter.com/bpedigod)
+![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/) -->
