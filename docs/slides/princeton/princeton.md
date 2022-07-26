@@ -864,7 +864,7 @@ section {
 </style>
 
 ### Benjamin D. Pedigo
-![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
-![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
-![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
+![icon](../../images/email.png) [bpedigo@jhu.edu](mailto:bpedigo@jhu.edu)
+![icon](../../images/github.png) [@bdpedigo (Github)](https://github.com/bdpedigo)
+![icon](../../images/twitter.png) [@bpedigod (Twitter)](https://twitter.com/bpedigod)
 ![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)

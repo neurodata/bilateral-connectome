@@ -6,7 +6,9 @@ FILE=$SLIDE_DIR/$1.md
 
 if test -f "$FILE"; then
     echo "$FILE exists."
-    marp --pdf --allow-local-files $FILE 
+    # REF: https://github.com/orgs/marp-team/discussions/225
+    # had timeout issues on some large presentations
+    PUPPETEER_TIMEOUT=60000 marp --pdf --allow-local-files $FILE 
     marp --html --allow-local-files $FILE
 else
     echo "$FILE does not exist."
