@@ -109,20 +109,20 @@ TODO: (4) highlight one example fly result (? maybe central complex)
 - ~~Data are networks~~
   - Data are networks with rich attributes
 - Data are noisy
-  - "Developmental noise" 
   - "Experimental noise"
+  - "Developmental noise" 
 - Data are big (and getting bigger)
  
 --- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
-# Outline for today
+# Outline
 
-- Describe larval connectome dataset
+- **Describe larval connectome dataset**
 - Show how connectome comparison can be framed as network hypothesis testing
-- Show how we can use automated tools for predicting the correspondence of neurons across datasets
-- Mention extensions to use/combine/extend these tools
+- Show how graph matching can find the correspondence of neurons across connectomes
+- Mention ongoing extensions to extend/apply these (and other) tools
 
 ---
 
@@ -169,6 +169,17 @@ section {
 
 # Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
 
+--- 
+
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+
+# Outline
+
+- Describe larval connectome dataset
+- **Show how connectome comparison can be framed as network hypothesis testing**
+- Show how graph matching can find the correspondence of neurons across connectomes
+- Mention ongoing extensions to extend/apply these (and other) tools
+
 
 ---
 
@@ -192,7 +203,7 @@ section {
 </div>
 
 --- 
-# Are these two _networks_ different?
+# Are these _networks_ different?
 
 <div class="columns">
 <div>
@@ -224,7 +235,7 @@ section {
 # Erdos-Renyi model
 <!-- about 10 minutes to this point -->
 
-- All edges are indepentent
+- All edges are independent
 - All edges generated with the same probability, $p$
 
 ![center](../../../results/figs/er_unmatched_test/er_explain.svg)
@@ -274,11 +285,10 @@ p-value < $10^{-22}$
 </div>
 </div>
 
-
 --- 
 # Stochastic block model
 
-- Edge probabilities are a function of a neuron's group
+Edge probabilities are a function of a neuron's group
 
 ![center h:450](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
 
@@ -472,24 +482,23 @@ table {
 </div>
 </div>
 
-
----
+--- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
-<style scoped>
-section {
-  justify-content: center;
-  text-align: center;
-}
-</style>
+# Outline
 
-# Matching neurons
+- Describe larval connectome dataset
+- Show how connectome comparison can be framed as network hypothesis testing
+- **Show how graph matching can find the correspondence of neurons across connectomes**
+- Mention ongoing extensions to extend/apply these (and other) tools
 
 ---
+
+<!-- Timing: 23:00  -->
+
 # Bilaterally homologous neuron pairs 
 ![center](./../../images/mbon-expression.jpg)
-<!-- Timing: 23:00
 
 <!-- _footer: Eschbach et al. eLife (2021) -->
 
@@ -642,14 +651,12 @@ $$\nabla f(P) = - \textcolor{#66c2a5}{A_{LL}} P \textcolor{#fc8d62}{A_{RR}}^T + 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
-<style scoped>
-section {
-  justify-content: center;
-  text-align: center;
-}
-</style>
+# Outline
 
-# Extensions and ongoing work
+- Describe larval connectome dataset
+- Show how connectome comparison can be framed as network hypothesis testing
+- Show how graph matching can find the correspondence of neurons across connectomes
+- **Mention ongoing extensions to extend/apply these (and other) tools**
 
 ---
 # Pairs facilitate more powerful tests
@@ -774,7 +781,7 @@ github.com/neurodata/bgm
 [![h:30](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
 
 (Or for WIP final implementation see
-github.com/microsoft/graspologic/pull/960)
+[github.com/microsoft/graspologic/pull/960](github.com/microsoft/graspologic/pull/960))
 
 </div>
 </div>
