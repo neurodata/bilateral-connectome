@@ -106,132 +106,157 @@ def add_alpha_line(ax, xytext=(-45, -15)):
 
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-
+colors = sns.color_palette()
+palette = dict(zip(["er", "er_paired"], colors))
 sns.lineplot(data=results, x="effect_size", y="pvalue", hue="name")
-ax.set(ylabel="p-value", xlabel="# perturbed edges")
+ax.set_ylabel("p-value") 
+ax.set_xlabel("# added edges (effect size)", labelpad=15)
 sns.move_legend(ax, loc="upper right", title="")
 add_alpha_line(ax, xytext=(-45, 15))
-gluefig("er-power-comparison", fig)
 
-# ax.axhline(0.05, color="black", linestyle="--")
-# ax.text(max(effect_sizes), 0.05, "alpha")
-# ax.set_yscale('log')
+ax.tick_params(axis='both', length=5)
+plt.autoscale(False)
+
+xytexts=[(10,-35), (-10,-35)]
+for i, test in enumerate(["er", "er_paired"]):
+    sub_results = results[results["test"] == test]
+    means = sub_results.groupby("effect_size")["pvalue"].mean()
+    x = means[means < 0.05].index[0]
+    # x = sub_results[sub_results["pvalue"] < 0.05].iloc[0]["effect_size"]
+
+    ax.axvline(x, ymax=0.095, color=palette[test], linestyle=':', linewidth=3)
+    # ax.text(x, 0, x, va='top', ha='center', clip_on=False)
+    ax.annotate(
+        x,
+        (x, ax.get_ylim()[0]),
+        xytext=xytexts[i],
+        textcoords="offset points",
+        arrowprops=dict(arrowstyle="-", color=palette[test]),
+        clip_on=False,
+        ha="center",
+        color=palette[test]
+    )
+
+gluefig("er_power_comparison", fig)
 
 #%%
 
-# #%%
-
-# from graspologic.simulations import er_np
-# from pkg.perturb import remove_edges
-# from pkg.stats import compute_density, erdos_renyi_test, erdos_renyi_test_paired
-# from tqdm import tqdm
-
-# p1 = 0.1
-# n = 20
-# n_sims_alt = 100
-# n_sims_null = 1000
-# p_equalize = 0.5
-# ps = np.linspace(0.1, 0.3, 10)
-
-# rows = []
-# for p2 in ps:
-#     if p2 == p1:
-#         n_sims = n_sims_null
-#     else:
-#         n_sims = n_sims_alt
-#     for sim in tqdm(range(n_sims)):
-#         A1 = er_np(n, p1, directed=True)
-#         A2 = er_np(n, p2, directed=True)
-
-#         n_set = A1.size * p_equalize
-#         choice_edge_indices = np.random.choice(A1.size, size=n_set, replace=False)
-#         row_inds, col_inds = np.unravel_index(choice_edge_indices, A1.shape)
-#         A2[]
-
-#         # density_before = compute_density(A2)
-#         # flat_edges1 = np.nonzero(A1.ravel())[0]
-#         # flat_edges2 = np.nonzero(A2.ravel())[0]
-#         # edges1_not2 = np.setdiff1d(flat_edges1, flat_edges2)
-#         # n_edges = np.count_nonzero(A1)
-#         # n_set = int(n_edges * p_equalize)
-#         # A2 = remove_edges(A2, effect_size=n_set)
-#         #
-#         # A2[row_inds, col_inds] = 1
-#         # density_after = compute_density(A2)
-
-#         stat, pvalue, misc = erdos_renyi_test(A1, A2)
-#         rows.append(
-#             {
-#                 "stat": stat,
-#                 "pvalue": pvalue,
-#                 "sim": sim,
-#                 "p_equalize": p_equalize,
-#                 "p1": p1,
-#                 "p2": p2,
-#                 "method": "Fisher's",
-#             }
-#         )
-#         stat, pvalue, misc = erdos_renyi_test_paired(A1, A2)
-#         rows.append(
-#             {
-#                 "stat": stat,
-#                 "pvalue": pvalue,
-#                 "sim": sim,
-#                 "p_equalize": p_equalize,
-#                 "p1": p1,
-#                 "p2": p2,
-#                 "method": "McNemar's",
-#             }
-#         )
-# results = pd.DataFrame(rows)
+rng = np.random.default_rng()
+n_swap = 10
 
 
-# #%%
-# results["detected"] = 0
-# results.at[results[results["pvalue"] < 0.05].index, "detected"] = 1
+p = 0.2
+n = 50
 
-# #%%
-# squashed_results = results.groupby(["p1", "p2", "method"]).mean().reset_index()
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.lineplot(data=squashed_results, y="detected", x="p2", hue="method", ax=ax)
-# ax.set(ylabel=r"Power (@ $\alpha$ = 0.05)", xlabel="Effect size")
-# ax.get_legend().set_title("Test")
+effect_sizes = np.arange(0, 55, 5)  # np.linspace(0, 50, 51, dtype=int)
+n_sims = 1
+n_swaps_range = np.arange(0, 55, 5)  # np.linspace(0, 50, 51, dtype=int)
+rows = []
 
-# #%%
-# fig, axs = plt.subplots(1, 2, figsize=(10, 5), constrained_layout=True)
+with tqdm(total=n_sims * len(effect_sizes) * 2 * len(n_swaps_range)) as pbar:
+    for effect_size in effect_sizes:
+        for n_swaps in n_swaps_range:
+            for sim in range(n_sims):
+                A1 = er_np(n, p, directed=True)
+                A2 = add_edges(A1, effect_size=effect_size)
+                n_keep = n - n_swaps
+                keep_inds = np.arange(n_keep)
+                swap_inds = np.arange(n_keep, n)
+                swap_inds = rng.permutation(swap_inds)
+                permutation = np.concatenate((keep_inds, swap_inds))
 
-# from giskard.plot import subuniformity_plot
+                A2 = A2[permutation][:, permutation]
 
-# subuniformity_plot(
-#     results[(results["method"] == "Fisher's") & (results["p1"] == results["p2"])][
-#         "pvalue"
-#     ],
-#     ax=axs[0],
-# )
+                for test in ["er", "er_paired"]:
+                    if test == "er":
+                        name = "Density test"
+                        stat, pvalue, misc = erdos_renyi_test(A1, A2, method="fisher")
+                    elif test == "er_paired":
+                        name = "Paired density test"
+                        stat, pvalue, misc = erdos_renyi_test_paired(A1, A2)
+                    else:
+                        raise ValueError()
 
-# subuniformity_plot(
-#     results[(results["method"] == "McNemar's") & (results["p1"] == results["p2"])][
-#         "pvalue"
-#     ],
-#     ax=axs[1],
-# )
+                    result = {
+                        "test": test,
+                        "stat": stat,
+                        "pvalue": pvalue,
+                        "effect_size": effect_size,
+                        "name": name,
+                        "n_swaps": n_swaps,
+                    }
+                    rows.append(result)
+                    pbar.update(1)
 
-# # %%
-# from scipy.stats import binom
-# from statsmodels.stats.contingency_tables import mcnemar
-# from pkg.stats import binom_2samp_paired
+results = pd.DataFrame(rows)
+results
 
-# p = 0.1
-# n = 1000
-# n_same = 10
 
-# pvalues = []
-# for i in range(n_sims):
-#     samples1 = binom(1, p).rvs(size=100)
-#     samples2 = binom(1, p).rvs(size=100)
-#     samples2[:n_same] = samples1[:n_same]
-#     stat, pvalue, misc = binom_2samp_paired(samples1, samples2)
-#     pvalues.append(pvalue)
-# pvalues = np.array(pvalues)
+#%%
+fig, axs = plt.subplots(1, 3, figsize=(24, 8))
+ax = axs[0]
+unpaired_results = results[results["test"] == "er"]
+unpaired_square_results = unpaired_results.pivot(
+    index="n_swaps", columns="effect_size", values="pvalue"
+)
+unpaired_square_results = unpaired_square_results.iloc[::-1]
+sns.heatmap(unpaired_square_results, ax=ax, square=True, cbar_kws=dict(shrink=0.6))
 
-# subuniformity_plot(pvalues)
+ax = axs[1]
+paired_results = results[results["test"] == "er_paired"]
+paired_square_results = paired_results.pivot(
+    index="n_swaps", columns="effect_size", values="pvalue"
+)
+paired_square_results = paired_square_results.iloc[::-1]
+sns.heatmap(paired_square_results, ax=ax, square=True, cbar_kws=dict(shrink=0.6))
+
+ax = axs[2]
+relative_pvalue = paired_square_results / unpaired_square_results
+sns.heatmap(
+    relative_pvalue,
+    ax=ax,
+    square=True,
+    cbar_kws=dict(shrink=0.6),
+    cmap="RdBu_r",
+    center=1,
+)
+gluefig("pvalue_comparison", fig)
+
+# %%
+rng = np.random.default_rng()
+
+n = 100000
+p1 = 0.1
+p2 = 0.11
+x1s = rng.binomial(1, p1, size=n)
+x2s = rng.binomial(1, p2, size=n)
+x = np.column_stack((x1s, x2s))
+
+chi2_table = np.empty((2, 2))
+chi2_table[0, 0] = np.sum(x1s)
+chi2_table[0, 1] = n - chi2_table[0, 0]
+chi2_table[1, 0] = np.sum(x2s)
+chi2_table[1, 1] = n - chi2_table[1, 0]
+
+
+from scipy.stats import chi2_contingency
+
+from statsmodels.stats.contingency_tables import mcnemar
+
+stat, pvalue, _, _ = chi2_contingency(chi2_table, correction=False)
+print(stat)
+print(pvalue)
+
+
+mcnemars_table = np.empty((2, 2))
+both_fail = (x.sum(axis=1) == 0).sum()
+both_success = (x.sum(axis=1) == 2).sum()
+only_x1 = ((x[:, 0] == 1) & (x[:, 1] == 0)).sum()
+only_x2 = ((x[:, 0] == 0) & (x[:, 1] == 1)).sum()
+mcnemars_table = np.array([[both_success, only_x1], [only_x2, both_fail]])
+
+out = mcnemar(mcnemars_table, exact=False, correction=False)
+stat = out.statistic
+pvalue = out.pvalue
+print(stat)
+print(pvalue)

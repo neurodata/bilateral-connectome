@@ -222,14 +222,15 @@ section {
 
 ---
 # Erdos-Renyi model
+<!-- about 10 minutes to this point -->
 
 - All edges are indepentent
 - All edges generated with the same probability, $p$
 
 ![center](../../../results/figs/er_unmatched_test/er_explain.svg)
 
----
-# Density-based testing
+<!-- --- -->
+<!-- # Density-based testing -->
 
 <!-- <div class="columns">
 <div> -->
@@ -242,7 +243,6 @@ section {
 <!-- </div>
 <div> -->
 
-![center h:500](./../../../results/figs/er_unmatched_test/er_methods.svg)
 
 <!-- </div>
 </div> -->
@@ -253,12 +253,16 @@ section {
 <div class="columns">
 <div>
 
-![](../../../results/figs/er_unmatched_test/er_density.svg)
+![center h:500](./../../../results/figs/er_unmatched_test/er_methods.svg)
+
 
 </div>
 <div>
 
-- p-value < $10^{-22}$
+![center h:400](../../../results/figs/er_unmatched_test/er_density.svg)
+
+<!-- TODO: center this -->
+p-value < $10^{-22}$
 
 
 </div>
@@ -455,6 +459,7 @@ section {
 ---
 # Bilaterally homologous neuron pairs 
 ![center](./../../images/mbon-expression.jpg)
+<!-- Timing: 23:00 -->
 
 <!-- _footer: Eschbach et al. eLife (2021) -->
 
@@ -515,31 +520,47 @@ where $\mathcal{P}$ is the set of permutation matrices
 </div>
 </div>
 
----
+<!-- ---
 # How do we do graph matching?
 
-<!-- _footer: Vogelstein et al. PLOS One (2015 -->
-<!-- _footer: Vogelstein et al. PLOS One (2015 -->
+_footer: Vogelstein et al. PLOS One (2015) -->
 
 ---
-# Matching the two hemispheres
+# Matching (by connectivity only) performs fairly well
 
-<div class="columns2-bl">
+![center h:450](./../../_build/html/_images/left-pair-predictions.svg)
+
+
+<style scoped>
+p {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+With "vanilla" graph matching: ~80% correct (according to expert annotator)
+
+---
+# Many ways to try to improve on this...
+
+<div class="columns">
 <div>
 
-![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
+- Edge types allow for "multilayer" graph matching
+- Partial knowledge of the matching (seeds)
+- Morphology (e.g. NBLAST)
 
 </div>
 <div>
 
-- ~76-80% correct on the full brain connectome for left-right pair prediction
-- Lots of bells and whistles one can add:
-    - Edge types
-    - Seeds
-    - Morphology
+![h:400](./../../images/fig2-connection-types.png)
+
+*Summary of "edge types" based on neuron compartments*
 
 </div>
 </div>
+
+<!-- _footer: Pantazis et al. Applied Network Science (2022), Fishkind et al. Pattern Recognition (2019) -->
 
 ---
 
@@ -582,6 +603,12 @@ $$\nabla f(P) = - \textcolor{#66c2a5}{A_{LL}} P \textcolor{#fc8d62}{A_{RR}}^T + 
 
 <!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
+---
+<!-- Timing: 31:00 -->
+# Performance improvement on the full brain
+![center](./../../images/matching_accuracy_upset.svg)
+<!-- TODO: (3) add figure about final accuracy results? -->
+
 --- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
@@ -596,12 +623,26 @@ section {
 # Extensions and ongoing work
 
 ---
-# Testing with pairs yields more powerful tests
+# Pairs facilitate more powerful tests
 
-![center](./../../../results/figs/matched_vs_unmatched_sims/er-power-comparison.svg) 
+<div class="columns-br">
+<div>
+
+- Generate an Erdos-Renyi network ($A$)
+- Perturb a copy of it ($B$)
+- Test for differences between $A$ and $B$
+
+</div>
+<div>
+
+![](./../../../results/figs/matched_vs_unmatched_sims/er_power_comparison.svg)
+
+
+</div>
+</div>
 
 ---
-# Testing for a significant matching
+# Testing for "stereotypy" at the edge level
 
 Is matching stronger than expected under some model of independent networks?
 
@@ -618,7 +659,7 @@ Is matching stronger than expected under some model of independent networks?
 </div>
 </div>
 
-<!-- _footer: Fishkind et al. Applied Network Science (2021) -->
+<!-- _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (2021) -->
 
 ---
 
@@ -633,8 +674,9 @@ Is matching stronger than expected under some model of independent networks?
 <!-- _footer: Winding, Pedigo et al. Submitted (2022) -->
 
 ---
-# Using pairs and models to evaluate cell type groupings
-<!-- TODO: (4) fix up SBM cross validation curve  -->
+# Using *pairs* and *models* to evaluate cell type groupings
+<!-- TODO: (3) fix up SBM cross validation curve  -->
+<!-- TODO: (2) diagram/describe SBM cross validation -->
 
 ![center h:550](../../images/lik-by-n_params-blind.png)
 
@@ -642,7 +684,7 @@ Is matching stronger than expected under some model of independent networks?
 <!-- ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg) -->
 
 # Summary 
-
+<!-- 41 min -->
 <div class="columns-br">
 <div>
 
@@ -651,7 +693,7 @@ Is matching stronger than expected under some model of independent networks?
 </div>
 <div>
 
-- Model-based network comparison enables testing hypotheses about connectomes
+- Model-based network comparison enables testing (and refining) hypotheses about connectomes
   - We proposed a few tests, but just the beginning! 
 
 </div>
@@ -805,7 +847,10 @@ NIH BRAIN Initiative (Grant no. 1RF1MH123233-01) to J.T.V.
 
 ![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
 
-<span> </span>
+#### Slides: 
+#### [tinyurl.com/princeton-bilarva](https://tinyurl.com/princeton-bilarva)
+
+
 <span> </span>
 <span> </span>
 <span> </span>
