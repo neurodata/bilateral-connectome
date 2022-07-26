@@ -10,19 +10,11 @@ paginate: true
 
 
 <style scoped> 
-/* h1 {
-    font-size:40px;
-} */
 p {
     font-size: 24px;
 }
 </style>
 
-<!-- # Generative network modeling reveals a first quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
-<!-- ![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod) -->
-
-
-<!-- # Generative network modeling reveals a quantitative definition of bilateral symmetry exhibited by a whole insect brain connectome -->
 # Tools for comparative connectomics: <br> case studies from two sides of a larval Drosophila brain
 
 <br>
@@ -66,13 +58,6 @@ TODO: (4) highlight one example fly result (? maybe central complex)
 ![center h:500](./../../images/link_connectome.svg)
 
 <!-- TODO: (3) finish this figure draw arrows -->
-
-<!-- /Users/bpedigo/JHU_code/pcc/pcc/results/figs/diagram/link_connectome.png -->
-
-<!-- ![](../../../../../pcc/pcc/results/figs/diagram/link_connectome.svg) -->
-
-
-<!-- ![](Users/bpedigo/JHU_code/pcc/pcc/results/figs/diagram/link_connectome.png) -->
 
 ---
 
@@ -233,30 +218,12 @@ section {
 
 ---
 # Erdos-Renyi model
-<!-- about 10 minutes to this point -->
+<!-- Timing: ~10 -->
 
 - All edges are independent
 - All edges generated with the same probability, $p$
 
 ![center](../../../results/figs/er_unmatched_test/er_explain.svg)
-
-<!-- --- -->
-<!-- # Density-based testing -->
-
-<!-- <div class="columns">
-<div> -->
-
-<!-- - $P[i \rightarrow j] = p$ -->
-<!-- - Compare probabilities:
-  $H_0: \color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  
-  $H_A: \color{#66c2a5} p^{(L)} \color{black} \neq  \color{#fc8d62} p^{(R)}$ -->
-
-<!-- </div>
-<div> -->
-
-
-<!-- </div>
-</div> -->
 
 ---
 # We detect a difference in density
@@ -295,9 +262,6 @@ Edge probabilities are a function of a neuron's group
 ---
 # Connection probabilities between groups
 
-<!-- ![center h:160](./../../images/Figure1-cell-classes.png)
-
-![center h:350](../../../results/figs/sbm_unmatched_test/sbm_uncorrected.svg) -->
 <style scoped>
     .columns {
         display: grid;
@@ -364,25 +328,6 @@ Edge probabilities are a function of a neuron's group
 </div>
 </div>
 
-<!-- ---
-# Adjusting for a difference in density -->
-
-
-<!-- ---
-# Even with density adjustment, we detect a difference
-
-<div class="columns">
-<div>
-
-![center](./../../../results/figs/adjusted_sbm_unmatched_test/resampled_pvalues_distribution.svg)
-
-</div>
-<div>
-
-![center w:500](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
-
-</div>
-</div> -->
 
 ---
 # After adjusting for density, differences are in KCs
@@ -424,22 +369,6 @@ Edge probabilities are a function of a neuron's group
 
 ---
 # To sum up...
-
-<!-- <style scoped>
-table {
-    font-size: 24px;
-    margin-bottom: 50px;
-}
-</style> -->
-
-<!-- | Model | $H_0$ (vs. $H_A \neq$)                                             |  KCs  |     p-value     | Interpretation                                           |
-| ----- | ------------------------------------------------------------------ | :---: | :-------------: | -------------------------------------------------------- |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   +   |   $<10^{-23}$   | Reject densities the same                                |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   +   |   $< 10^{-7}$   | Reject group connection probabilities the same           |
-| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   +   | $\approx 0.002$ | Reject above even after accounting for density           |
-| ER    | $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$   |   -   |   $<10^{-26}$   | Reject densities the same (w/o KCs)                      |
-| SBM   | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |   -   | $\approx 0.003$ | Reject group connection probabilities the same (w/o KCs) |
-| aSBM  | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |   -   | $\approx 0.43$  | Don't reject above after density adjustment (w/o KCs)    | -->
 
 <div class="columns">
 <div>
@@ -559,10 +488,12 @@ where $\mathcal{P}$ is the set of permutation matrices
 </div>
 </div>
 
-<!-- ---
+---
 # How do we do graph matching?
 
-_footer: Vogelstein et al. PLOS One (2015) -->
+TODO: decide what to say or show here?
+
+<!-- _footer: Vogelstein et al. PLOS One (2015) -->
 
 ---
 # Matching (by connectivity only) performs fairly well
@@ -618,20 +549,8 @@ h1, h2 {
 ---
 # From graph matching to bisected graph matching
 
-<!-- ![](../../../results/figs/explain/explain.svg) -->
-
 ![](../../images/explain-bgm.svg)
 
-<!-- --LL: #66c2a5;
-    --RR: #fc8d62;
-    --source: #8da0cb;
-    --target: #e78ac3;
-    --LR: #8da0cb;
-    --RL: #e78ac3; -->
-
-<!-- New gradient: 
-
-$$\nabla f(P) = - \textcolor{#66c2a5}{A_{LL}} P \textcolor{#fc8d62}{A_{RR}}^T + \textcolor{#66c2a5}{A_{LL}}^TP\textcolor{#fc8d62}{A_{RR}} + \textcolor{#8da0cb}{A_{LR}} P^T \textcolor{#e78ac3}{A_{RL}}^T + \textcolor{#e78ac3}{A_{RL}}^T P^T \textcolor{#8da0cb}{A_{LR}}$$ -->
 
 <!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
@@ -699,8 +618,6 @@ Is matching stronger than expected under some model of independent networks?
 
 ---
 
-<!-- # The value of pairs - looking at models -->
-
 # Hierarchical clustering of neurons by connectivity
 
 ![center](../../images/bar-dendrogram-wide.svg)
@@ -717,7 +634,6 @@ Is matching stronger than expected under some model of independent networks?
 ![center h:550](../../images/lik-by-n_params-blind.png)
 
 --- 
-<!-- ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg) -->
 
 # Summary 
 <!-- 41 min -->
@@ -786,11 +702,6 @@ github.com/neurodata/bgm
 </div>
 </div>
 
-<!-- ## graspologic
-## bilateral repo 
-## bgm 
-## get in touch!  -->
-
 --- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
@@ -807,7 +718,6 @@ p {
 </style>
 
 
-<!-- Start people panels -->
 <div class='minipanels'>
 
 <div>
@@ -867,7 +777,6 @@ Joshua Vogelstein
 
 </div>
 
-<!-- End people panels -->
 </div>
 
 Tracers who contributed to larva connectome, NeuroData lab, Microsoft Research
