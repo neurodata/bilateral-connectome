@@ -28,9 +28,9 @@ p {
 Johns Hopkins University - Biomedical Engineering
 
 
-![icon](../../images/email.png) [_bpedigo@jhu.edu_](mailto:bpedigo@jhu.edu)
-![icon](../../images/github.png) [_@bdpedigo (Github)_](https://github.com/bdpedigo)
-![icon](../../images/twitter.png) [_@bpedigod (Twitter)_](https://twitter.com/bpedigod)
+![icon](../../images/email.png) [bpedigo@jhu.edu](mailto:bpedigo@jhu.edu)
+![icon](../../images/github.png) [@bdpedigo (Github)](https://github.com/bdpedigo)
+![icon](../../images/twitter.png) [@bpedigod (Twitter)](https://twitter.com/bpedigod)
 ![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)
 
 </div>
@@ -43,13 +43,13 @@ Johns Hopkins University - Biomedical Engineering
 </div>
 </div>
 
----
+<!-- ---
 
 # Connectomics is useful...
 
-TODO: (3) plot of "connectome prevalence over time"
+TODO: (5) plot of "connectome prevalence over time"
 
-TODO: (4) highlight one example fly result (? maybe central complex)
+TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 ---
 
@@ -57,7 +57,7 @@ TODO: (4) highlight one example fly result (? maybe central complex)
 
 ![center h:500](./../../images/link_connectome.svg)
 
-<!-- TODO: (3) finish this figure draw arrows -->
+<!-- TODO: (4) finish this figure draw arrows -->
 
 ---
 
@@ -90,7 +90,11 @@ TODO: (4) highlight one example fly result (? maybe central complex)
 
 ---
 
-# But it is methodologically hard to compare connectomes!
+# Why is comparative connectomics hard?
+
+## Collecting the data is still a large effort...
+
+## But how do we even compare connectomes?
 - ~~Data are networks~~
   - Data are networks with rich attributes
 - Data are noisy
@@ -104,12 +108,13 @@ TODO: (4) highlight one example fly result (? maybe central complex)
 
 # Outline
 
-- **Describe larval connectome dataset**
-- Show how connectome comparison can be framed as network hypothesis testing
-- Show how graph matching can find the correspondence of neurons across connectomes
-- Mention ongoing extensions to extend/apply these (and other) tools
+- ### **Larval connectome dataset**
+- ### Connectome comparison via network hypothesis testing
+- ### Pairing neurons across connectomes via graph matching
+- ### Ongoing extensions/applications
 
 ---
+<!-- Timing: ~6 min -->
 
 # Larval _Drosophila_ brain connectome 
 
@@ -133,6 +138,7 @@ p {
 </div>
 <div>
 
+<!-- TODO(2) make this a adjacency matrix -->
 ![center h:500](./../../../results/figs/plot_layouts/whole-network-layout.png)
 
 </div>
@@ -160,11 +166,10 @@ section {
 
 # Outline
 
-- Describe larval connectome dataset
-- **Show how connectome comparison can be framed as network hypothesis testing**
-- Show how graph matching can find the correspondence of neurons across connectomes
-- Mention ongoing extensions to extend/apply these (and other) tools
-
+- ### Larval connectome dataset
+- ### **Connectome comparison via network hypothesis testing**
+- ### Pairing neurons across connectomes via graph matching
+- ### Ongoing extensions/applications
 
 ---
 
@@ -340,7 +345,18 @@ Edge probabilities are a function of a neuron's group
 </div>
 <div>
 
-![h:500](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
+![h:450](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
+
+<!-- TODO: check this number is right -->
+
+<style scoped>
+p {
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+Overall p-value: $<10^{-3}$
 
 </div>
 </div>
@@ -369,6 +385,11 @@ Edge probabilities are a function of a neuron's group
 
 ---
 # To sum up...
+
+> "The brain is bilaterally symmetric"
+> people
+
+Depends on what you mean...
 
 <div class="columns">
 <div>
@@ -417,11 +438,10 @@ Edge probabilities are a function of a neuron's group
 
 # Outline
 
-- Describe larval connectome dataset
-- Show how connectome comparison can be framed as network hypothesis testing
-- **Show how graph matching can find the correspondence of neurons across connectomes**
-- Mention ongoing extensions to extend/apply these (and other) tools
-
+- ### Larval connectome dataset
+- ### Connectome comparison via network hypothesis testing
+- ### **Pairing neurons across connectomes via graph matching**
+- ### Ongoing extensions/applications
 ---
 
 <!-- Timing: 23:00  -->
@@ -491,7 +511,7 @@ where $\mathcal{P}$ is the set of permutation matrices
 ---
 # How do we do graph matching?
 
-TODO: decide what to say or show here?
+TODO: (3) decide what to say or show here?
 
 <!-- _footer: Vogelstein et al. PLOS One (2015) -->
 
@@ -572,11 +592,11 @@ h1, h2 {
 
 # Outline
 
-- Describe larval connectome dataset
-- Show how connectome comparison can be framed as network hypothesis testing
-- Show how graph matching can find the correspondence of neurons across connectomes
-- **Mention ongoing extensions to extend/apply these (and other) tools**
-
+- ### Larval connectome dataset
+- ### Connectome comparison via network hypothesis testing
+- ### Pairing neurons across connectomes via graph matching
+- ### **Ongoing extensions/applications**
+  
 ---
 # Pairs facilitate more powerful tests
 
@@ -779,7 +799,8 @@ Joshua Vogelstein
 
 </div>
 
-Tracers who contributed to larva connectome, NeuroData lab, Microsoft Research
+Tracers who contributed to larva connectome, Heather Patsolic, Youngser Park, NeuroData lab, Microsoft Research
+Figures from Scidraw + Noun Project (Alexander Bates, Xuan Ma, Gil Costa, Vivek Kumar, Leslie Coonrod)
 
 #### Funding
 NSF Graduate Research Fellowship (Grant no. DGE1746891) to B.D.P.
@@ -812,4 +833,4 @@ section {
 ![icon](../../images/email.png) [bpedigo@jhu.edu](mailto:bpedigo@jhu.edu)
 ![icon](../../images/github.png) [@bdpedigo (Github)](https://github.com/bdpedigo)
 ![icon](../../images/twitter.png) [@bpedigod (Twitter)](https://twitter.com/bpedigod)
-![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/) -->
+![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)
