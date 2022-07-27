@@ -800,7 +800,7 @@ Joshua Vogelstein
 </div>
 
 Tracers who contributed to larva connectome, Heather Patsolic, Youngser Park, NeuroData lab, Microsoft Research
-Figures from Scidraw + Noun Project (Alex Bates, Xuan Ma, Gil Costa, Vivek Kumar, Leslie Coonrod)
+Figures from Scidraw + Noun Project (Alexander Bates, Xuan Ma, Gil Costa, Vivek Kumar, Leslie Coonrod)
 
 #### Funding
 NSF Graduate Research Fellowship (Grant no. DGE1746891) to B.D.P.
@@ -834,7 +834,3 @@ section {
 ![icon](../../images/github.png) [@bdpedigo (Github)](https://github.com/bdpedigo)
 ![icon](../../images/twitter.png) [@bpedigod (Twitter)](https://twitter.com/bpedigod)
 ![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)
-
---- 
-# References
-
