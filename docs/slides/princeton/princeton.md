@@ -15,7 +15,7 @@ p {
 }
 </style>
 
-# Tools for comparative connectomics: <br> case studies from two sides of a larval Drosophila brain
+# Tools for comparative connectomics: <br> case studies from two sides of a larval *Drosophila* brain
 
 <br>
 
@@ -53,9 +53,11 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 ---
 
-# Many stated goals of connectomics are to link connectome to other properties
+# Many goals of connectomics involve linking connectome to other properties
 
-![center h:500](./../../images/link_connectome.svg)
+![center h:350](./../../images/link_connectome.svg)
+
+## Comparative connectomics as a potential solution? 
 
 <!-- TODO: (4) finish this figure draw arrows -->
 
@@ -67,20 +69,16 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 *Emphasis added*
 
-<!-- TODO: (2) diagram of linking connectome and memory -->
+<!-- TODO: (3) diagram of linking connectome and memory -->
 
 <!-- _footer: Abbott et al. Cell (2020) -->
 
----
-# Connectome $\leftrightarrow$ evolution
+--- 
+# Connectome $\leftrightarrow$ {development, genetics}
 
-> Comparative connectomics of [...] **species across the phylogenetic tree** can infer the archetypal neural architecture of each bauplan and identify any circuits that possibly converged onto a shared and potentially optimal, structure.
+> ... we selectively altered the location or activity of [...] neurons and generated new EM volumes of the manipulated samples **to investigate the effects on connectivity**.
 
 *Emphasis added*
-
-<!-- TODO: (2) diagram of comparing connectomes across species -->
-
-<!-- _footer: Barsotti + Correia et al. Curr. Opi. Neurobio. (2021)-->
 
 ---
 # Connectome $\leftrightarrow$ development
@@ -138,8 +136,8 @@ p {
 </div>
 <div>
 
-<!-- TODO(2) make this a adjacency matrix -->
-![center h:500](./../../../results/figs/plot_layouts/whole-network-layout.png)
+<!-- ![center h:500](./../../../results/figs/plot_layouts/whole-network-layout.png) -->
+![h:450](./../../../results/figs/show_data/adjacencies.png)
 
 </div>
 </div>
@@ -148,17 +146,25 @@ p {
 
 ---
 
-![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+# Bilateral symmetry
+
+> "This brain is bilaterally symmetric"
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists
+
+> "What does that even mean? And how would we know if it wasn't?"
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Us
+
+<!-- ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg) -->
 <!-- ![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png) -->
 
 <style scoped>
-section {
+h2 {
     justify-content: center;
     text-align: center;
 }
 </style>
 
-# Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
+## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
 
 --- 
 
@@ -347,8 +353,6 @@ Edge probabilities are a function of a neuron's group
 
 ![h:450](./../../../results/figs/adjusted_sbm_unmatched_test/sbm_pvalues_unlabeled.svg)
 
-<!-- TODO: check this number is right -->
-
 <style scoped>
 p {
     justify-content: center;
@@ -356,7 +360,7 @@ p {
 }
 </style>
 
-Overall p-value: $<10^{-3}$
+Overall p-value: $<10^{-2}$
 
 </div>
 </div>
@@ -376,9 +380,9 @@ Overall p-value: $<10^{-3}$
 - Density test: 
   $p <10^{-26}$
 - Group connection test:
-  $p \approx 0.003$
+  $p \approx <10^{-2}$
 - **Density-adjusted group connection test: 
-  $p \approx 0.43$**
+  $p \approx 0.51$**
 
 </div>
 </div>
@@ -386,19 +390,19 @@ Overall p-value: $<10^{-3}$
 ---
 # To sum up...
 
-> "The brain is bilaterally symmetric"
-> people
+> "This brain is bilaterally symmetric"
+>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists
 
-Depends on what you mean...
+Depends on what you mean...w
 
 <div class="columns">
 <div>
 
 #### With Kenyon cells
-| Model |                       $H_0$ (vs. $H_A \neq$)                       |    p-value    |
-| :---: | :----------------------------------------------------------------: | :-----------: |
-| **ER** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-23}$ |
-| **SBM** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-7}$  |
+|   Model   |                       $H_0$ (vs. $H_A \neq$)                       |    p-value    |
+| :-------: | :----------------------------------------------------------------: | :-----------: |
+|  **ER**   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-23}$ |
+|  **SBM**  | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-7}$  |
 | **daSBM** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | ${<}10^{-2}$  |
 
 
@@ -406,11 +410,11 @@ Depends on what you mean...
 <div>
 
 #### Without Kenyon cells
-| Model |                       $H_0$ (vs. $H_A \neq$)                       |    p-value    |
-| :---: | :----------------------------------------------------------------: | :-----------: |
-| **ER** |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-26}$ |
-| **SBM** | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  | ${<}10^{-2}$  |
-| **daSBM** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ |  $\approx 0.51$     |
+|   Model   |                       $H_0$ (vs. $H_A \neq$)                       |    p-value     |
+| :-------: | :----------------------------------------------------------------: | :------------: |
+|  **ER**   |  $\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}$  | ${<}10^{-26}$  |
+|  **SBM**  | $\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}$  |  ${<}10^{-2}$  |
+| **daSBM** | $\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}$ | $\approx 0.51$ |
 
 </div>
 </div>
@@ -419,15 +423,30 @@ Depends on what you mean...
 ---
 # Examining the effect of edge weights
 
+![center h:500](./../../../results/figs/thresholding_tests/thresholding_methods.png)
+
+---
+# What is an edge weight anyway?
+
+![center](./../../../results/figs/thresholding_tests/weight_notions.svg)
+
+---
+
+# Some high-edge weight networks show no asymmetry
+
 <div class='columns'>
 <div>
 
-![](./../../../results/figs/thresholding_tests/thresholding_methods.png)
+## Synapse count thresholding 
+
+![center h:400](./../../../results/figs/thresholding_tests/synapse_threshold_pvalues.svg)
 
 </div>
 <div>
 
-![](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
+## Input proportion thresholding
+
+![center h:400](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
 
 </div>
 </div>
@@ -447,13 +466,16 @@ Depends on what you mean...
 <!-- Timing: 23:00  -->
 
 # Bilaterally homologous neuron pairs 
+
+We believe a matching exists!
+
 ![center](./../../images/mbon-expression.jpg)
 
 <!-- _footer: Eschbach et al. eLife (2021) -->
 
 ---
 
-# Can we use networks structure to predict this pairing?
+# Can we use network structure to predict this pairing?
 
 <div class="columns">
 <div>
@@ -464,9 +486,9 @@ Depends on what you mean...
 </div>
 <div>
 
-- Week 1: observe a network of cell phone #s and the calls they make to each other
-- Week 2: all of the #s change! But a (noisy) version of that network still exists, with different labels...
-- How to map network from week 1 ($A$) to network from week 2 ($B$)?
+- Week 1: observe a network ($A$) of phone #s and the calls they make to each other
+- Week 2: all of the #s change! But a (noisy) version of that network still exists, with different labels... ($B$)
+- How to map nodes of network $A$ to those of network $B$?
 
 </div>
 </div>
@@ -511,7 +533,10 @@ where $\mathcal{P}$ is the set of permutation matrices
 ---
 # How do we do graph matching?
 
-TODO: (3) decide what to say or show here?
+- Relax the problem to a continuos space
+  - Convex hull of permutation matrices
+- Minimize a linear approximation of objective function (repeat)
+- Project back to the closest permutation matrix
 
 <!-- _footer: Vogelstein et al. PLOS One (2015) -->
 
@@ -638,7 +663,9 @@ Is matching stronger than expected under some model of independent networks?
 
 ---
 
-# Hierarchical clustering of neurons by connectivity
+# Neurons clustered by connectivity using recursive spectral clustering
+
+Where to stop splitting?
 
 ![center](../../images/bar-dendrogram-wide.svg)
 
@@ -648,10 +675,24 @@ Is matching stronger than expected under some model of independent networks?
 
 ---
 # Using *pairs* and *models* to evaluate cell type groupings
-<!-- TODO: (3) fix up SBM cross validation curve  -->
 <!-- TODO: (2) diagram/describe SBM cross validation -->
 
-![center h:550](../../images/lik-by-n_params-blind.png)
+<!-- ![center h:550](../../images/lik-by-n_params-blind.png) -->
+
+<div class="columns">
+<div>
+
+- Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)...
+- How well do these models generalize to the other side of the brain (let alone the next maggot)?
+
+</div>
+<div>
+
+![center h:550](../../images/dcsbm-swap-arrows.png)
+
+</div>
+</div>
+
 
 --- 
 
@@ -680,12 +721,12 @@ Is matching stronger than expected under some model of independent networks?
 <div>
 
 - Graph matching can pair neurons across datasets
-  - Can incorporate biological info like morphology, partial matchings, contralateral connections, etc. 
+  - Helpful to adapt off-the-shelf algos. to use biological info (e.g contralaterals, edge types)
 </div>
 </div>
 
 
-- **Aim to apply these (and other) tools to understand similarities/differences between connectomes**
+**Aim to apply these (and other) tools to make inferences from connectome comparisons!**
 
 ---
 
