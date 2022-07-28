@@ -69,7 +69,7 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
   - Life experience
   - Developmental stage
 - Compare connectomes
-- Understand how $X$ affects or is associated with connectome structure
+- Understand how $X$ {affects, is affected by, is associated with} connectome structure
 
 ---
 
@@ -176,7 +176,7 @@ p {
 
 # Bilateral symmetry
 
-> "This brain is bilaterally symmetric"
+> "This brain is bilaterally symmetric."
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists
 
 > "What does that even mean? And how would we know if it wasn't?"
@@ -418,7 +418,7 @@ Overall p-value: $<10^{-2}$
 ---
 # To sum up...
 
-> "This brain is bilaterally symmetric"
+> "This brain is bilaterally symmetric."
 >   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists
 
 Depends on what you mean...
@@ -658,7 +658,7 @@ h1, h2 {
 <div>
 
 - Generate an Erdos-Renyi network ($A$)
-- Perturb a copy of it ($B$)
+- Perturb a copy of it ($B$) (add edges)
 - Test for differences between $A$ and $B$
 
 </div>
@@ -778,12 +778,12 @@ Where to stop splitting?
 <div>
 
 ## Model-based testing
-github.com/neurodata/bilateral-connectome
+[github.com/neurodata/bilateral-connectome](github.com/neurodata/bilateral-connectome)
 [![h:30](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
 
 
 ## Improved matching
-github.com/neurodata/bgm
+[github.com/neurodata/bgm](github.com/neurodata/bgm)
 [![h:30](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
 
 (Or for WIP final implementation see
