@@ -55,30 +55,58 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 # Many goals of connectomics involve linking connectome to other properties
 
-![center h:350](./../../images/link_connectome.svg)
-
-## Comparative connectomics as a potential solution? 
+![center h:500](./../../images/link_connectome.svg)
 
 <!-- TODO: (4) finish this figure draw arrows -->
 
 ---
 
+# Comparative connectomics as a potential solution? 
+
+- Map connectomes from related individuals/organisms which may differ in feature $X$: 
+  - Genome
+  - Behavioral patterns/habits
+  - Life experience
+  - Developmental stage
+- Compare connectomes
+- Understand how $X$ affects or is associated with connectome structure
+
+---
+
 # Connectome $\leftrightarrow$ memory
 
-> ...the acquisition of wiring diagrams across multiple individuals will yield insights into **how experiences shape neural connections.**
+![center h:200](../../images/mind-of-a-mouse.png)
 
-*Emphasis added*
+> ...the acquisition of wiring diagrams across multiple individuals will yield insights into how experiences shape neural connections.
 
-<!-- TODO: (3) diagram of linking connectome and memory -->
+<!-- *Emphasis added* -->
+
 
 <!-- _footer: Abbott et al. Cell (2020) -->
 
---- 
+---
+
+# Connectome $\leftrightarrow$ disease
+
+![center h:200](../../images/mind-of-a-mouse.png)
+
+> The first step would be to learn what the normal wiring diagram is [...] it should be feasible to do many additional connectomes [...] of animal models of brain disorders
+
+<!-- *Emphasis added* -->
+
+
+<!-- _footer: Abbott et al. Cell (2020) -->
+
+
+<!-- TODO: (3) diagram of linking connectome and memory -->
+
+
+<!-- --- 
 # Connectome $\leftrightarrow$ {development, genetics}
 
 > ... we selectively altered the location or activity of [...] neurons and generated new EM volumes of the manipulated samples **to investigate the effects on connectivity**.
 
-*Emphasis added*
+*Emphasis added* -->
 
 ---
 # Connectome $\leftrightarrow$ development
@@ -92,12 +120,12 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 ## Collecting the data is still a large effort...
 
-## But how do we even compare connectomes?
+## But how do we even compare connectomes once we have them?
 - ~~Data are networks~~
   - Data are networks with rich attributes
-- Data are noisy
+- Data will always have noise
   - "Experimental noise"
-  - "Developmental noise" 
+  - "Biological noise"
 - Data are big (and getting bigger)
  
 --- 
@@ -220,9 +248,9 @@ h2 {
 
 ---
 # Assumptions
-- We know the direction of synapses, so network is *directed*.
-- For simplicity (for now), consider networks to be *unweighted*.
-- For simplicity (for now), consider the <span style='color: var(--left)'> left $\rightarrow$ left </span> and <span style='color: var(--right)'> right $\rightarrow$ right </span> (*ipsilateral*) connections only.
+- Know the direction of synapses, so network is *directed*
+- For simplicity (for now), consider networks to be *unweighted*
+- For simplicity (for now), consider the <span style='color: var(--left)'> left $\rightarrow$ left </span> and <span style='color: var(--right)'> right $\rightarrow$ right </span> (*ipsilateral*) connections
 - Not going to assume any nodes are matched
 
 ![center h:250](../../../results/figs/unmatched_vs_matched/unmatched_vs_matched.svg)
@@ -237,7 +265,7 @@ h2 {
 ![center](../../../results/figs/er_unmatched_test/er_explain.svg)
 
 ---
-# We detect a difference in density
+# Detect a difference in density
 
 <div class="columns">
 <div>
@@ -298,13 +326,13 @@ Edge probabilities are a function of a neuron's group
 </div>
 
 --- 
-# Group-based testing
+# Group connection test
 
 ![center](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
 
 
 --- 
-# Detect a difference in group connection probabilities
+# Detect differences in group connection probabilities
 
 <div class="columns">
 <div>
@@ -314,8 +342,8 @@ Edge probabilities are a function of a neuron's group
 </div>
 <div>
 
-- After multiple comparison, find 5 group-to-group connections which are significantly different
-- Combine (uncorrected) p-values (like a meta-analysis), leads to p-value for overall test of $<10^{-7}$
+- 5 group-to-group connections are significantly different (after multiple comparisons correction)
+- Overall test (comparing all blocks):<br> p-value $<10^{-7}$
 
 </div>
 </div>
@@ -380,7 +408,7 @@ Overall p-value: $<10^{-2}$
 - Density test: 
   $p <10^{-26}$
 - Group connection test:
-  $p \approx <10^{-2}$
+  $p <10^{-2}$
 - **Density-adjusted group connection test: 
   $p \approx 0.51$**
 
@@ -393,7 +421,7 @@ Overall p-value: $<10^{-2}$
 > "This brain is bilaterally symmetric"
 >   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists
 
-Depends on what you mean...w
+Depends on what you mean...
 
 <div class="columns">
 <div>
@@ -425,31 +453,32 @@ Depends on what you mean...w
 
 ![center h:500](./../../../results/figs/thresholding_tests/thresholding_methods.png)
 
----
+<!-- ---
 # What is an edge weight anyway?
 
-![center](./../../../results/figs/thresholding_tests/weight_notions.svg)
+![center](./../../../results/figs/thresholding_tests/weight_notions.svg) -->
 
 ---
 
-# Some high-edge weight networks show no asymmetry
+# Highest edge weight networks show no asymmetry
 
-<div class='columns'>
+<!-- <div class='columns'>
 <div>
 
-## Synapse count thresholding 
+## Synapse count thresholding  -->
 
-![center h:400](./../../../results/figs/thresholding_tests/synapse_threshold_pvalues.svg)
+<!-- ![center h:400](./../../../results/figs/thresholding_tests/synapse_threshold_pvalues.svg) -->
 
-</div>
+<!-- </div>
 <div>
 
-## Input proportion thresholding
-
-![center h:400](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
-
+## Input proportion thresholding -->
+<!-- 
 </div>
-</div>
+</div> -->
+
+![center h:500](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
+
 
 --- 
 
@@ -575,7 +604,7 @@ With "vanilla" graph matching: ~80% correct (according to expert annotator)
 </div>
 </div>
 
-<!-- _footer: Pantazis et al. Applied Network Science (2022), Fishkind et al. Pattern Recognition (2019) -->
+<!-- _footer: Pantazis et al. Applied Network Science (2022), Fishkind et al. Pattern Recognition (2019), Winding, Pedigo et al. Submitted (2022) -->
 
 ---
 
@@ -642,7 +671,7 @@ h1, h2 {
 </div>
 
 ---
-# Testing for "stereotypy" at the edge level
+# Testing for "stereotypy" in edge structure
 
 Is matching stronger than expected under some model of independent networks?
 
@@ -763,6 +792,8 @@ github.com/neurodata/bgm
 </div>
 </div>
 
+<!-- _footer: Chung, Pedigo et al. JMLR (2019) -->
+
 --- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
@@ -844,10 +875,7 @@ Tracers who contributed to larva connectome, Heather Patsolic, Youngser Park, Ne
 Figures from Scidraw + Noun Project (Alexander Bates, Xuan Ma, Gil Costa, Vivek Kumar, Leslie Coonrod)
 
 #### Funding
-NSF Graduate Research Fellowship (Grant no. DGE1746891) to B.D.P.
-NSF CAREER Award (Grant no. 1942963) to J.T.V.
-NSF NeuroNex Award (Grant no. 2014862) to J.T.V and C.E.P.
-NIH BRAIN Initiative (Grant no. 1RF1MH123233-01) to J.T.V.
+NSF Graduate Research Fellowship (B.D.P.), NSF CAREER Award (J.T.V.), NSF NeuroNex Award (J.T.V and C.E.P.), NIH BRAIN Initiative (J.T.V.)
 
 ---
 # Questions?
