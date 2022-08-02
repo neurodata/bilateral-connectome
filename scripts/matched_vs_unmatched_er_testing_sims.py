@@ -53,6 +53,8 @@ from graspologic.simulations import er_np
 from pkg.perturb import shuffle_edges, add_edges
 from pkg.stats import erdos_renyi_test, erdos_renyi_test_paired
 from tqdm.autonotebook import tqdm
+from graspologic.match import GraphMatch
+
 
 p = 0.1
 n = 50
@@ -61,19 +63,28 @@ effect_sizes = np.linspace(0, 50, 51, dtype=int)
 n_sims = 10
 rows = []
 
-with tqdm(total=n_sims * len(effect_sizes) * 2) as pbar:
+with tqdm(total=n_sims * len(effect_sizes) * 3) as pbar:
     for effect_size in effect_sizes:
         for sim in range(n_sims):
             A1 = er_np(n, p, directed=True)
             A2 = add_edges(A1, effect_size=effect_size)
 
-            for test in ["er", "er_paired"]:
+            for test in ["er", "er_paired", "er_auto_paired"]:
                 if test == "er":
                     name = "Density test"
+                    match_ratio = np.nan
                     stat, pvalue, misc = erdos_renyi_test(A1, A2)
                 elif test == "er_paired":
-                    name = "Paired density test"
+                    name = "Paired density test (oracle)"
+                    match_ratio = np.nan
                     stat, pvalue, misc = erdos_renyi_test_paired(A1, A2)
+                elif test == "er_auto_paired":
+                    name = "Paired density test (matched)"
+                    gm = GraphMatch()
+                    pred_perm = gm.fit_predict(A1, A2)
+                    A2_pred = A2[pred_perm][:, pred_perm]
+                    match_ratio = (pred_perm == np.arange(len(A2))).mean()
+                    stat, pvalue, misc = erdos_renyi_test_paired(A1, A2_pred)
                 else:
                     raise ValueError()
 
@@ -83,6 +94,7 @@ with tqdm(total=n_sims * len(effect_sizes) * 2) as pbar:
                     "pvalue": pvalue,
                     "effect_size": effect_size,
                     "name": name,
+                    "match_ratio": match_ratio,
                 }
                 rows.append(result)
                 pbar.update(1)
@@ -107,24 +119,35 @@ def add_alpha_line(ax, xytext=(-45, -15)):
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 colors = sns.color_palette()
-palette = dict(zip(["er", "er_paired"], colors))
-sns.lineplot(data=results, x="effect_size", y="pvalue", hue="name")
-ax.set_ylabel("p-value") 
+palette = dict(zip(["er", "er_paired", "er_auto_paired"], colors))
+# styles = dict(zip(["Density test", "Paired density test (oracle)", "Paired density test (matched)"], ['-', '-', '--']))
+sns.lineplot(
+    data=results,
+    x="effect_size",
+    y="pvalue",
+    hue="name",
+    style="name",
+    dashes=["", "", (2, 2)],
+)
+ax.set_ylabel("p-value")
 ax.set_xlabel("# added edges (effect size)", labelpad=15)
 sns.move_legend(ax, loc="upper right", title="")
 add_alpha_line(ax, xytext=(-45, 15))
 
-ax.tick_params(axis='both', length=5)
+# auto_results = results[results["test"] == "er_auto_paired"]
+# sns.lineplot(data=auto_results, x='effect_size', y='match_ratio', linestyle='--', ax=ax)
+
+ax.tick_params(axis="both", length=5)
 plt.autoscale(False)
 
-xytexts=[(10,-35), (-10,-35)]
-for i, test in enumerate(["er", "er_paired"]):
+xytexts = [(10, -35), (-10, -35), (10, -35)]
+for i, test in enumerate(["er", "er_paired", "er_auto_paired"]):
     sub_results = results[results["test"] == test]
     means = sub_results.groupby("effect_size")["pvalue"].mean()
     x = means[means < 0.05].index[0]
     # x = sub_results[sub_results["pvalue"] < 0.05].iloc[0]["effect_size"]
 
-    ax.axvline(x, ymax=0.095, color=palette[test], linestyle=':', linewidth=3)
+    ax.axvline(x, ymax=0.095, color=palette[test], linestyle=":", linewidth=3)
     # ax.text(x, 0, x, va='top', ha='center', clip_on=False)
     ax.annotate(
         x,
@@ -134,10 +157,11 @@ for i, test in enumerate(["er", "er_paired"]):
         arrowprops=dict(arrowstyle="-", color=palette[test]),
         clip_on=False,
         ha="center",
-        color=palette[test]
+        color=palette[test],
     )
 
 gluefig("er_power_comparison", fig)
+
 
 #%%
 
