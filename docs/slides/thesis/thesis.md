@@ -422,7 +422,9 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 <!-- _footer: Adapted from Lalanti Venkatasubramanian -->
 
 --- 
-# Testing for edge-level stereotypy structure
+# A few others... 
+- Testing for "edge-level" stereotypy (Cardona lab)
+- Analysis of *Drosophila* visual connectome (Reiser lab + Janelia)
 
 ---
 
@@ -505,6 +507,25 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 </div>
 
 <!-- _footer: Modi, Shuai et al. *Ann. Rev. of Neuro.* (2020) -->
+
+---
+# Pairs facilitate more powerful tests
+
+<div class="columns-br">
+<div>
+
+- Generate an Erdos-Renyi network ($A$)
+- Perturb a copy of it ($B$) (add edges)
+- Test for differences between $A$ and $B$
+
+</div>
+<div>
+
+![](./../../../results/figs/matched_vs_unmatched_sims/er_power_comparison.svg)
+
+
+</div>
+</div>
 
 --- 
 # On the power of comparative connectomics
@@ -598,11 +619,19 @@ ul,p {
 - "On the power of comparative connectomics" 
 
 #### Conferences 
-SfN, COSYNE, OHBM, NetSci
+- SfN
+- COSYNE
+- OHBM
+- NetSci
 
 
 </div>
 <div>
+
+#### Code 
+- Continue adding everything we develop to `graspologic`
+- Continue documenting our analyses for others
+- `neuropull` - Python package for easily getting well-annotated connectome data
 
 #### Graduation
 *June 2022*
@@ -610,145 +639,6 @@ SfN, COSYNE, OHBM, NetSci
 
 </div>
 </div>
-
-
----
----
----
----
-
-
-
-
-
-
-
----
-<!-- Timing: 31:00 -->
-# Performance improvement on the full brain
-![center](./../../images/matching_accuracy_upset.svg)
-
---- 
-
-![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
-
-# Outline
-
-- ### Larval connectome dataset
-- ### Connectome comparison via network hypothesis testing
-- ### Pairing neurons across connectomes via graph matching
-- ### **Ongoing extensions/applications**
-  
----
-# Pairs facilitate more powerful tests
-
-<div class="columns-br">
-<div>
-
-- Generate an Erdos-Renyi network ($A$)
-- Perturb a copy of it ($B$) (add edges)
-- Test for differences between $A$ and $B$
-
-</div>
-<div>
-
-![](./../../../results/figs/matched_vs_unmatched_sims/er_power_comparison.svg)
-
-
-</div>
-</div>
-
----
-# Testing for "stereotypy" in edge structure
-
-Is matching stronger than expected under some model of independent networks?
-
-<div class="columns">
-<div>
-
-![](../../images/kc-stereotypy-diagram.svg)
-
-</div>
-<div>
-
-![](../../images/kc_alignment_dist.svg)
-
-</div>
-</div>
-
-<!-- _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (2021) -->
-
-
---- 
-
-# Summary 
-<!-- 41 min -->
-<div class="columns-br">
-<div>
-
-![](./../../../results/figs/draw_brain_comparisons/brain_approx_equals.png)
-
-</div>
-<div>
-
-- Model-based network comparison enables testing (and refining) hypotheses about connectomes
-  - We proposed a few tests, but just the beginning! 
-
-</div>
-</div>
-
-<div class="columns-br">
-<div>
-
-![](./../../../results/figs/draw_brain_comparisons/brain_matching.png)
-
-</div>
-<div>
-
-- Graph matching can pair neurons across datasets
-  - Helpful to adapt off-the-shelf algos. to use biological info (e.g contralaterals, edge types)
-</div>
-</div>
-
-
-**Aim to apply these (and other) tools to make inferences from connectome comparisons!**
-
----
-
-![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
-
-# How to use these (and other) tools?
-
-<div class="columns">
-<div>
-
-## graspologic
-
-[github.com/microsoft/graspologic](https://github.com/microsoft/graspologic)
-
-![w:450](./../../images/graspologic_svg.svg)
-
-[![h:30](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:30](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:30](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors)
-
-</div>
-<div>
-
-## Model-based testing
-[github.com/neurodata/bilateral-connectome](github.com/neurodata/bilateral-connectome)
-[![h:30](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
-
-
-## Improved matching
-[github.com/neurodata/bgm](github.com/neurodata/bgm)
-[![h:30](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/)
-
-(Or for WIP final implementation see
-[github.com/microsoft/graspologic/pull/960](github.com/microsoft/graspologic/pull/960))
-
-</div>
-</div>
-
-<!-- _footer: Chung, Pedigo et al. JMLR (2019) -->
 
 --- 
 
@@ -796,6 +686,12 @@ Ali <br> Saad-Eldin
 
 </div>
 
+<div>
+
+![person](./../../images/people/jaewon.jpeg)
+Jaewon <br> Chung
+
+</div>
 
 <div>
 
@@ -834,13 +730,10 @@ Figures from Scidraw + Noun Project (Alexander Bates, Xuan Ma, Gil Costa, Vivek 
 NSF Graduate Research Fellowship (B.D.P.), NSF CAREER Award (J.T.V.), NSF NeuroNex Award (J.T.V and C.E.P.), NIH BRAIN Initiative (J.T.V.)
 
 ---
-# Questions?
 
-![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
-#### Slides: 
-#### [tinyurl.com/princeton-bilarva](https://tinyurl.com/princeton-bilarva)
-
+# Feedback?
 
 <span> </span>
 <span> </span>
