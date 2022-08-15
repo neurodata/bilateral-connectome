@@ -56,6 +56,7 @@ Department of Biomedical Engineering
 - Future work
   - Collaborative investigations
   - On the power of comparative connectomics
+  - Plan towards graduation
 
 ---
 
@@ -87,7 +88,7 @@ p {
 </div>
 </div>
 
-<!-- _footer: Winding, Pedigo et al. *Under review at Science* (2022) -->
+<!-- _footer: Winding, Pedigo et al. *Under review, Science* (2022) -->
 
 
 ---
@@ -100,13 +101,10 @@ Where to stop splitting?
 
 ![center w:700](../../images/cell-type-labels-legend.png)
 
-<!-- _footer: Winding, Pedigo et al. Submitted (2022) -->
+<!-- _footer: Winding, Pedigo et al. *Under review, Science*  (2022) -->
 
 ---
 # Using *pairs* and *models* to evaluate cell type groupings
-<!-- TODO: (2) diagram/describe SBM cross validation -->
-
-<!-- ![center h:550](../../images/lik-by-n_params-blind.png) -->
 
 <div class="columns">
 <div>
@@ -139,6 +137,7 @@ Where to stop splitting?
 - Future work
   - Collaborative investigations
   - On the power of comparative connectomics
+  - Plan towards graduation
 
 ---
 
@@ -195,6 +194,7 @@ Edge probabilities are a function of a neuron's group
 
 ![center](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
 
+<!-- _footer: Pedigo et al. *In preparation, eLife* -->
 
 --- 
 # Detect differences in group connection probabilities
@@ -212,6 +212,9 @@ Edge probabilities are a function of a neuron's group
 
 </div>
 </div>
+
+<!-- _footer: Pedigo et al. *In preparation, eLife* -->
+
 
 ---
 # To sum up...
@@ -245,6 +248,8 @@ Depends on what you mean...
 </div>
 </div>
 
+<!-- _footer: Pedigo et al. *In preparation, eLife* -->
+
 ---
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
@@ -259,6 +264,7 @@ Depends on what you mean...
 - Future work
   - Collaborative investigations
   - On the power of comparative connectomics
+  - Plan towards graduation
 
 ---
 # Matching (by connectivity only) performs fairly well
@@ -275,6 +281,22 @@ p {
 
 With "vanilla" graph matching: ~80% correct (according to expert annotator)
 
+<!-- _footer: Vogelstein et al. *PLOS One* (2015) -->
+
+---
+
+<style scoped>
+h1, h2 {
+    padding-top: 140px;
+    justify-content: center;
+    text-align: center;
+}
+</style>
+
+# Thus far, we've not used the contralateral connections
+
+## These are about 1/3 of the edges in the brain!
+
 ---
 # From graph matching to bisected graph matching
 
@@ -282,14 +304,14 @@ With "vanilla" graph matching: ~80% correct (according to expert annotator)
 
 We show how BGM can be solved via a simple modification of the FAQ algorithm
 
-<!-- _footer: Pedigo et al. bioRxiv (2022) -->
+<!-- _footer: Pedigo et al. *bioRxiv, in revision at Network Neuro* (2022) -->
 
 --- 
 # Contralateral connections are helpful!
 
 ![center h:550](../../images/match_accuracy_comparison.svg)
 
-<!-- _footer: Pedigo et al. bioRxiv (2022) -->
+<!-- _footer: Pedigo et al. *bioRxiv, in revision at Network Neuro* (2022) -->
 
 ---
 
@@ -306,6 +328,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 - Future work
   - Collaborative investigations
   - On the power of comparative connectomics
+  - Plan towards graduation
 
 
 ---
@@ -338,7 +361,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 </div>
 </div>
 
-<!-- _footer: Chung, Pedigo et al. JMLR (2019) -->
+<!-- _footer: Chung, Pedigo et al. *JMLR* (2019) -->
 
 ---
 
@@ -354,6 +377,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 - Future work
   - **Collaborative investigations**
   - On the power of comparative connectomics
+  - Plan towards graduation
 
 ---
 # Male adult nerve cord connectome
@@ -414,6 +438,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 - Future work
   - Collaborative investigations
   - **On the power of comparative connectomics**
+  - Plan towards graduation
 
 ---
 
@@ -461,34 +486,140 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - "Biological noise"
 - Data are big (and getting bigger)
  
+---
+# A proposed experiment...
+
+<div class="columns">
+<div>
+
+![](./../../images/mushroom-body-learning.png)
+
+</div>
+<div>
+
+- Optogenetically activate mushroom body input neurons (DANs) which convey reward or punishment
+- Map connectomes, look for changes in KC $\rightarrow$ MBON connectivity
+- *How big does the {sample size, effect size} need to be such that we can detect a change 95% of the time?*
+
+</div>
+</div>
+
+<!-- _footer: Modi, Shuai et al. *Ann. Rev. of Neuro.* (2020) -->
+
 --- 
 # On the power of comparative connectomics
 
-
-
-
----
----
----
----
-
-
-
-
+- Still many extensions to simple network comparison tests we proposed in *Pedigo et al.* (bilateral symmetry manuscript)
+  - Tests for weighted models
+  - Tests for paired/matched networks
 
 ---
 
-<style scoped>
-h1, h2 {
-    padding-top: 140px;
-    justify-content: center;
-    text-align: center;
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+
+# Outline
+
+- Prior work 
+  - Connectome of an insect brain
+  - Analysis of bilateral symmetry
+  - Matching neurons between brain hemispheres
+  - graspologic
+- Future work
+  - Collaborative investigations
+  - On the power of comparative connectomics
+  - **Plan towards graduation**
+
+---
+# Summary of work so far
+
+<style scoped> 
+
+ul,p {
+    font-size: 26px;
 }
 </style>
 
-# Thus far, we've not used the contralateral connections
 
-## These are about 1/3 of the edges in the brain!
+<div class="columns">
+<div>
+
+#### (Co)-first papers/manuscripts
+- Graspologic, JMLR (2019)
+- Maggot brain, in review at *Science*
+- Bilateral symmetry, submitting to *eLife*
+- Bisected matching, resubmission at *Net. Neuro.* 
+
+#### Other papers/manuscripts
+- 3 published reviews
+- 3 manuscripts in review
+
+</div>
+<div>
+
+<!-- - Graph matching via optimal transport, under review at *Pattern Recognition Letters*
+- Statistical connectomics -->
+
+#### Conference presentations 
+- Berlin Connectomics (x2)
+- Neuromatch (x2)
+- NAISys (x2)
+
+#### Invited talks
+- Drexel BME/Neuro seminar
+- Princeton Murthy/Seung labs meeting
+
+#### Awards
+- NSF GRFP Fellowship
+- BRAIN Initiative Trainee Highlight Award
+
+</div>
+</div>
+
+
+
+---
+
+
+<style scoped> 
+
+ul,p {
+    font-size: 26px;
+}
+</style>
+
+
+# Summary of work to be done
+
+<div class="columns">
+<div>
+
+#### Manuscripts
+- 1-2 collaborations with experimentalists (e.g., MANC connectome, behavior + larva connectome)
+- "On the power of comparative connectomics" 
+
+#### Conferences 
+SfN, COSYNE, OHBM, NetSci
+
+
+</div>
+<div>
+
+#### Graduation
+*June 2022*
+
+
+</div>
+</div>
+
+
+---
+---
+---
+---
+
+
+
+
 
 
 
