@@ -22,6 +22,11 @@ from pkg.stats import erdos_renyi_test
 from pkg.utils import sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
 from pkg.plot import draw_hypothesis_box
+from graspologic.simulations import er_np
+from pkg.perturb import shuffle_edges, add_edges
+from pkg.stats import erdos_renyi_test, erdos_renyi_test_paired
+from tqdm.autonotebook import tqdm
+from graspologic.match import GraphMatch
 
 
 DISPLAY_FIGS = True
@@ -48,12 +53,26 @@ set_theme(font_scale=1.25)
 network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
 
+rng = np.random.default_rng(88)
+np.random.seed(77)
+
+# #%%
+# p = 0.1
+# n = 50
+# n_sims = 1000
+# rows = []
+# for sim in tqdm(range(n_sims)):
+#     A1 = er_np(n, p, directed=True)
+#     perm = rng.permutation(n)
+#     A2_pred = A1[perm][:, perm]
+#     stat, pvalue, misc = erdos_renyi_test_paired(A1, A2_pred)
+#     rows.append({"stat": stat, "pvalue": pvalue, "sim": sim})
+# results = pd.DataFrame(rows)
+
+# from giskard.plot import subuniformity_plot
+
+# subuniformity_plot(x=results["pvalue"].values)
 #%%
-from graspologic.simulations import er_np
-from pkg.perturb import shuffle_edges, add_edges
-from pkg.stats import erdos_renyi_test, erdos_renyi_test_paired
-from tqdm.autonotebook import tqdm
-from graspologic.match import GraphMatch
 
 
 p = 0.1
@@ -63,13 +82,13 @@ effect_sizes = np.linspace(0, 50, 51, dtype=int)
 n_sims = 10
 rows = []
 
-with tqdm(total=n_sims * len(effect_sizes) * 3) as pbar:
+with tqdm(total=n_sims * len(effect_sizes) * 4) as pbar:
     for effect_size in effect_sizes:
         for sim in range(n_sims):
             A1 = er_np(n, p, directed=True)
             A2 = add_edges(A1, effect_size=effect_size)
 
-            for test in ["er", "er_paired", "er_auto_paired"]:
+            for test in ["er", "er_paired", "er_auto_paired", "er_rand_paired"]:
                 if test == "er":
                     name = "Density test"
                     match_ratio = np.nan
@@ -84,6 +103,12 @@ with tqdm(total=n_sims * len(effect_sizes) * 3) as pbar:
                     pred_perm = gm.fit_predict(A1, A2)
                     A2_pred = A2[pred_perm][:, pred_perm]
                     match_ratio = (pred_perm == np.arange(len(A2))).mean()
+                    stat, pvalue, misc = erdos_renyi_test_paired(A1, A2_pred)
+                elif test == "er_rand_paired":
+                    name = "Paired density test (random)"
+                    rand_perm = rng.permutation(n)
+                    A2_pred = A2[rand_perm][:, rand_perm]
+                    match_ratio = (rand_perm == np.arange(len(A2))).mean()
                     stat, pvalue, misc = erdos_renyi_test_paired(A1, A2_pred)
                 else:
                     raise ValueError()
@@ -119,7 +144,8 @@ def add_alpha_line(ax, xytext=(-45, -15)):
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 colors = sns.color_palette()
-palette = dict(zip(["er", "er_paired", "er_auto_paired"], colors))
+palette = dict(zip(["er", "er_paired", "er_auto_paired", "er_rand_paired"], colors))
+results = results.query("test != 'er_rand_paired'")
 # styles = dict(zip(["Density test", "Paired density test (oracle)", "Paired density test (matched)"], ['-', '-', '--']))
 sns.lineplot(
     data=results,
