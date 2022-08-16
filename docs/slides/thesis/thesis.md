@@ -15,7 +15,7 @@ p {
 }
 </style>
 
-# Analytical tools for comparative connectomics
+# Analytical tools for connectomics
 
 ## Thesis committee meeting
 
@@ -52,11 +52,11 @@ Department of Biomedical Engineering
   - **Connectome of an insect brain**
   - Analysis of bilateral symmetry
   - Matching neurons between brain hemispheres 
-  - graspologic
+  - `graspologic`
 - Future work
-  - Collaborative investigations
+  - Collaborative real-data investigations
   - On the power of comparative connectomics
-  - Plan towards graduation
+  - Graduation plan
 
 ---
 
@@ -88,23 +88,31 @@ p {
 </div>
 </div>
 
-<!-- _footer: Winding, Pedigo et al. *Under review, Science* (2022) -->
+<!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
+
+---
+# Analysis of the maggot brain
+- **Clustering neurons by connectivity**
+- Network "sorting" (from sensory $\rightarrow$ motor)
+- Analysis of different "edge type" (e.g., axon $\rightarrow$ axon vs. axon $\rightarrow$ dendrite)
+- Assessing neuron pairings via graph matching
+- Methods for understanding potential signal transmission ("cascades")
+
+<!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
 
 
 ---
 
 # Neurons clustered by connectivity using recursive spectral clustering
 
-Where to stop splitting?
-
 ![center](../../images/bar-dendrogram-wide.svg)
 
 ![center w:700](../../images/cell-type-labels-legend.png)
 
-<!-- _footer: Winding, Pedigo et al. *Under review, Science*  (2022) -->
+<!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
 
 ---
-# Using *pairs* and *models* to evaluate cell type groupings
+# Using models to evaluate cell type groupings
 
 <div class="columns">
 <div>
@@ -121,9 +129,6 @@ Where to stop splitting?
 </div>
 
 ---
-# TODO: show something else on the maggot brain
-
----
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
@@ -133,11 +138,11 @@ Where to stop splitting?
   - Connectome of an insect brain
   - **Analysis of bilateral symmetry**
   - Matching neurons between brain hemispheres 
-  - graspologic
+  - `graspologic`
 - Future work
-  - Collaborative investigations
+  - Collaborative real-data investigations
   - On the power of comparative connectomics
-  - Plan towards graduation
+  - Graduation plan
 
 ---
 
@@ -260,11 +265,11 @@ Depends on what you mean...
   - Connectome of an insect brain
   - Analysis of bilateral symmetry
   - **Matching neurons between brain hemispheres**
-  - graspologic
+  - `graspologic`
 - Future work
-  - Collaborative investigations
+  - Collaborative real-data investigations
   - On the power of comparative connectomics
-  - Plan towards graduation
+  - Graduation plan
 
 ---
 # Matching (by connectivity only) performs fairly well
@@ -324,11 +329,11 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - Connectome of an insect brain
   - Analysis of bilateral symmetry
   - Matching neurons between brain hemispheres
-  - **graspologic**
+  - **`graspologic`**
 - Future work
-  - Collaborative investigations
+  - Collaborative real-data investigations
   - On the power of comparative connectomics
-  - Plan towards graduation
+  - Graduation plan
 
 
 ---
@@ -373,11 +378,11 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - Connectome of an insect brain
   - Analysis of bilateral symmetry
   - Matching neurons between brain hemispheres
-  - graspologic
+  - `graspologic`
 - Future work
-  - **Collaborative investigations**
+  - **Collaborative real-data investigations**
   - On the power of comparative connectomics
-  - Plan towards graduation
+  - Graduation plan
 
 ---
 # Male adult nerve cord connectome
@@ -436,27 +441,28 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - Connectome of an insect brain
   - Analysis of bilateral symmetry
   - Matching neurons between brain hemispheres
-  - graspologic
+  - `graspologic`
 - Future work
-  - Collaborative investigations
+  - Collaborative real-data investigations
   - **On the power of comparative connectomics**
-  - Plan towards graduation
+  - Graduation plan
 
----
+<!-- ---
 
 # Many goals of connectomics involve linking connectome to other properties
 
-![center h:500](./../../images/link_connectome.svg)
+![center h:500](./../../images/link_connectome.svg) -->
 
 ---
 
-# Comparative connectomics as a potential solution? 
+# Comparative connectomics as means to link connectome to diverse properties
 
 - Map connectomes from related individuals/organisms which may differ in feature $X$: 
   - Genome
   - Behavioral patterns/habits
   - Life experience
   - Developmental stage
+  - ...
 - Compare connectomes
 - Understand how $X$ {affects, is affected by, is associated with} connectome structure
   
@@ -489,7 +495,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 - Data are big (and getting bigger)
  
 ---
-# A proposed experiment...
+# A proposed experiment... (Zlatic lab)
 
 <div class="columns">
 <div>
@@ -500,7 +506,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 <div>
 
 - Optogenetically activate mushroom body input neurons (DANs) which convey reward or punishment
-- Map connectomes, look for changes in KC $\rightarrow$ MBON connectivity
+- Map connectomes, look for changes in KC $\rightarrow$ MBON connectivity (and other subgraphs)
 - *How big does the {sample size, effect size} need to be such that we can detect a change 95% of the time?*
 
 </div>
@@ -508,15 +514,26 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 
 <!-- _footer: Modi, Shuai et al. *Ann. Rev. of Neuro.* (2020) -->
 
+--- 
+# On the power of comparative connectomics
+
+- Still many extensions to simple network comparison tests we proposed in *Pedigo et al.* (bilateral symmetry manuscript)
+  - Tests for weighted models
+  - Tests for paired/matched networks
+  - Tests when group structure is not known
+- Implement these (and other) extensions
+- Study power of these approaches in simulations based on real connectome data (e.g, maggot memory and learning center)
+
 ---
-# Pairs facilitate more powerful tests
+# Example: neuron pairs can facilitate more powerful tests
 
 <div class="columns-br">
 <div>
 
+Simulation: 
 - Generate an Erdos-Renyi network ($A$)
-- Perturb a copy of it ($B$) (add edges)
-- Test for differences between $A$ and $B$
+- Perturb a copy of it ($B$) (add some # of edges)
+- Test for differences between $A$ and $B$ (density comparison)
 
 </div>
 <div>
@@ -526,13 +543,6 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 
 </div>
 </div>
-
---- 
-# On the power of comparative connectomics
-
-- Still many extensions to simple network comparison tests we proposed in *Pedigo et al.* (bilateral symmetry manuscript)
-  - Tests for weighted models
-  - Tests for paired/matched networks
 
 ---
 
@@ -544,11 +554,11 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - Connectome of an insect brain
   - Analysis of bilateral symmetry
   - Matching neurons between brain hemispheres
-  - graspologic
+  - `graspologic`
 - Future work
-  - Collaborative investigations
+  - Collaborative real-data investigations
   - On the power of comparative connectomics
-  - **Plan towards graduation**
+  - **Graduation plan**
 
 ---
 # Summary of work so far
@@ -565,7 +575,7 @@ ul,p {
 <div>
 
 #### (Co)-first papers/manuscripts
-- Graspologic, JMLR (2019)
+- `graspologic`, JMLR (2019)
 - Maggot brain, in review at *Science*
 - Bilateral symmetry, submitting to *eLife*
 - Bisected matching, resubmission at *Net. Neuro.* 
