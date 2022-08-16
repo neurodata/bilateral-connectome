@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Analytical tools for comparative connectomics &#8212; Bilateral Connectome</title>
+    <title>Analytical tools for connectomics &#8212; Bilateral Connectome</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -457,7 +457,7 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Analytical tools for comparative connectomics
+   Analytical tools for connectomics
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -489,26 +489,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analysis-of-the-maggot-brain">
+   Analysis of the maggot brain
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#neurons-clustered-by-connectivity-using-recursive-spectral-clustering">
    Neurons clustered by connectivity using recursive spectral clustering
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-pairs-and-models-to-evaluate-cell-type-groupings">
-   Using
-   <em>
-    pairs
-   </em>
-   and
-   <em>
-    models
-   </em>
-   to evaluate cell type groupings
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#todo-show-something-else-on-the-maggot-brain">
-   TODO: show something else on the maggot brain
+  <a class="reference internal nav-link" href="#using-models-to-evaluate-cell-type-groupings">
+   Using models to evaluate cell type groupings
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -668,13 +660,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#many-goals-of-connectomics-involve-linking-connectome-to-other-properties">
-   Many goals of connectomics involve linking connectome to other properties
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#comparative-connectomics-as-a-potential-solution">
-   Comparative connectomics as a potential solution?
+  <a class="reference internal nav-link" href="#comparative-connectomics-as-means-to-link-connectome-to-diverse-properties">
+   Comparative connectomics as means to link connectome to diverse properties
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -715,18 +702,18 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-proposed-experiment">
-   A proposed experiment…
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pairs-facilitate-more-powerful-tests">
-   Pairs facilitate more powerful tests
+  <a class="reference internal nav-link" href="#a-proposed-experiment-zlatic-lab">
+   A proposed experiment… (Zlatic lab)
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#on-the-power-of-comparative-connectomics">
    On the power of comparative connectomics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-neuron-pairs-can-facilitate-more-powerful-tests">
+   Example: neuron pairs can facilitate more powerful tests
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -831,7 +818,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Analytical tools for comparative connectomics</h1>
+                <h1>Analytical tools for connectomics</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -843,7 +830,7 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   Analytical tools for comparative connectomics
+   Analytical tools for connectomics
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -875,26 +862,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analysis-of-the-maggot-brain">
+   Analysis of the maggot brain
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#neurons-clustered-by-connectivity-using-recursive-spectral-clustering">
    Neurons clustered by connectivity using recursive spectral clustering
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-pairs-and-models-to-evaluate-cell-type-groupings">
-   Using
-   <em>
-    pairs
-   </em>
-   and
-   <em>
-    models
-   </em>
-   to evaluate cell type groupings
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#todo-show-something-else-on-the-maggot-brain">
-   TODO: show something else on the maggot brain
+  <a class="reference internal nav-link" href="#using-models-to-evaluate-cell-type-groupings">
+   Using models to evaluate cell type groupings
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -1054,13 +1033,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#many-goals-of-connectomics-involve-linking-connectome-to-other-properties">
-   Many goals of connectomics involve linking connectome to other properties
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#comparative-connectomics-as-a-potential-solution">
-   Comparative connectomics as a potential solution?
+  <a class="reference internal nav-link" href="#comparative-connectomics-as-means-to-link-connectome-to-diverse-properties">
+   Comparative connectomics as means to link connectome to diverse properties
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -1101,18 +1075,18 @@ title="Print to PDF"
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#a-proposed-experiment">
-   A proposed experiment…
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pairs-facilitate-more-powerful-tests">
-   Pairs facilitate more powerful tests
+  <a class="reference internal nav-link" href="#a-proposed-experiment-zlatic-lab">
+   A proposed experiment… (Zlatic lab)
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#on-the-power-of-comparative-connectomics">
    On the power of comparative connectomics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example-neuron-pairs-can-facilitate-more-powerful-tests">
+   Example: neuron pairs can facilitate more powerful tests
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -1225,8 +1199,8 @@ p {
     font-size: 24px;
 }
 </style>
-<section class="tex2jax_ignore mathjax_ignore" id="analytical-tools-for-comparative-connectomics">
-<h1>Analytical tools for comparative connectomics<a class="headerlink" href="#analytical-tools-for-comparative-connectomics" title="Permalink to this headline">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="analytical-tools-for-connectomics">
+<h1>Analytical tools for connectomics<a class="headerlink" href="#analytical-tools-for-connectomics" title="Permalink to this headline">#</a></h1>
 <section id="thesis-committee-meeting">
 <h2>Thesis committee meeting<a class="headerlink" href="#thesis-committee-meeting" title="Permalink to this headline">#</a></h2>
 <br>
@@ -1259,14 +1233,14 @@ Department of Biomedical Engineering</p>
 <li><p><strong>Connectome of an insect brain</strong></p></li>
 <li><p>Analysis of bilateral symmetry</p></li>
 <li><p>Matching neurons between brain hemispheres</p></li>
-<li><p>graspologic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></p></li>
 </ul>
 </li>
 <li><p>Future work</p>
 <ul>
-<li><p>Collaborative investigations</p></li>
+<li><p>Collaborative real-data investigations</p></li>
 <li><p>On the power of comparative connectomics</p></li>
-<li><p>Plan towards graduation</p></li>
+<li><p>Graduation plan</p></li>
 </ul>
 </li>
 </ul>
@@ -1293,19 +1267,30 @@ p {
 <p><img alt="h:450" src="../results/figs/show_data/adjacencies.png" /></p>
 </div>
 </div>
-<!-- _footer: Winding, Pedigo et al. *Under review, Science* (2022) -->
+<!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="analysis-of-the-maggot-brain">
+<h1>Analysis of the maggot brain<a class="headerlink" href="#analysis-of-the-maggot-brain" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p><strong>Clustering neurons by connectivity</strong></p></li>
+<li><p>Network “sorting” (from sensory <span class="math notranslate nohighlight">\(\rightarrow\)</span> motor)</p></li>
+<li><p>Analysis of different “edge type” (e.g., axon <span class="math notranslate nohighlight">\(\rightarrow\)</span> axon vs. axon <span class="math notranslate nohighlight">\(\rightarrow\)</span> dendrite)</p></li>
+<li><p>Assessing neuron pairings via graph matching</p></li>
+<li><p>Methods for understanding potential signal transmission (“cascades”)</p></li>
+</ul>
+<!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="neurons-clustered-by-connectivity-using-recursive-spectral-clustering">
 <h1>Neurons clustered by connectivity using recursive spectral clustering<a class="headerlink" href="#neurons-clustered-by-connectivity-using-recursive-spectral-clustering" title="Permalink to this headline">#</a></h1>
-<p>Where to stop splitting?</p>
 <p><img alt="center" src="../../_images/bar-dendrogram-wide.svg" /></p>
 <p><img alt="center w:700" src="../../_images/cell-type-labels-legend.png" /></p>
-<!-- _footer: Winding, Pedigo et al. *Under review, Science*  (2022) -->
+<!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
 </section>
 <hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="using-pairs-and-models-to-evaluate-cell-type-groupings">
-<h1>Using <em>pairs</em> and <em>models</em> to evaluate cell type groupings<a class="headerlink" href="#using-pairs-and-models-to-evaluate-cell-type-groupings" title="Permalink to this headline">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="using-models-to-evaluate-cell-type-groupings">
+<h1>Using models to evaluate cell type groupings<a class="headerlink" href="#using-models-to-evaluate-cell-type-groupings" title="Permalink to this headline">#</a></h1>
 <div class="columns">
 <div>
 <ul class="simple">
@@ -1317,10 +1302,6 @@ p {
 <p><img alt="center h:550" src="../../_images/dcsbm-swap-arrows.png" /></p>
 </div>
 </div>
-</section>
-<hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="todo-show-something-else-on-the-maggot-brain">
-<h1>TODO: show something else on the maggot brain<a class="headerlink" href="#todo-show-something-else-on-the-maggot-brain" title="Permalink to this headline">#</a></h1>
 <hr class="docutils" />
 <p><img alt="bg center blur:3px opacity:20%" src="../results/figs/background/background.svg" /></p>
 </section>
@@ -1332,14 +1313,14 @@ p {
 <li><p>Connectome of an insect brain</p></li>
 <li><p><strong>Analysis of bilateral symmetry</strong></p></li>
 <li><p>Matching neurons between brain hemispheres</p></li>
-<li><p>graspologic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></p></li>
 </ul>
 </li>
 <li><p>Future work</p>
 <ul>
-<li><p>Collaborative investigations</p></li>
+<li><p>Collaborative real-data investigations</p></li>
 <li><p>On the power of comparative connectomics</p></li>
-<li><p>Plan towards graduation</p></li>
+<li><p>Graduation plan</p></li>
 </ul>
 </li>
 </ul>
@@ -1488,14 +1469,14 @@ h2 {
 <li><p>Connectome of an insect brain</p></li>
 <li><p>Analysis of bilateral symmetry</p></li>
 <li><p><strong>Matching neurons between brain hemispheres</strong></p></li>
-<li><p>graspologic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></p></li>
 </ul>
 </li>
 <li><p>Future work</p>
 <ul>
-<li><p>Collaborative investigations</p></li>
+<li><p>Collaborative real-data investigations</p></li>
 <li><p>On the power of comparative connectomics</p></li>
-<li><p>Plan towards graduation</p></li>
+<li><p>Graduation plan</p></li>
 </ul>
 </li>
 </ul>
@@ -1550,14 +1531,14 @@ h1, h2 {
 <li><p>Connectome of an insect brain</p></li>
 <li><p>Analysis of bilateral symmetry</p></li>
 <li><p>Matching neurons between brain hemispheres</p></li>
-<li><p><strong>graspologic</strong></p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></strong></p></li>
 </ul>
 </li>
 <li><p>Future work</p>
 <ul>
-<li><p>Collaborative investigations</p></li>
+<li><p>Collaborative real-data investigations</p></li>
 <li><p>On the power of comparative connectomics</p></li>
-<li><p>Plan towards graduation</p></li>
+<li><p>Graduation plan</p></li>
 </ul>
 </li>
 </ul>
@@ -1599,14 +1580,14 @@ h1, h2 {
 <li><p>Connectome of an insect brain</p></li>
 <li><p>Analysis of bilateral symmetry</p></li>
 <li><p>Matching neurons between brain hemispheres</p></li>
-<li><p>graspologic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></p></li>
 </ul>
 </li>
 <li><p>Future work</p>
 <ul>
-<li><p><strong>Collaborative investigations</strong></p></li>
+<li><p><strong>Collaborative real-data investigations</strong></p></li>
 <li><p>On the power of comparative connectomics</p></li>
-<li><p>Plan towards graduation</p></li>
+<li><p>Graduation plan</p></li>
 </ul>
 </li>
 </ul>
@@ -1668,26 +1649,26 @@ h1, h2 {
 <li><p>Connectome of an insect brain</p></li>
 <li><p>Analysis of bilateral symmetry</p></li>
 <li><p>Matching neurons between brain hemispheres</p></li>
-<li><p>graspologic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></p></li>
 </ul>
 </li>
 <li><p>Future work</p>
 <ul>
-<li><p>Collaborative investigations</p></li>
+<li><p>Collaborative real-data investigations</p></li>
 <li><p><strong>On the power of comparative connectomics</strong></p></li>
-<li><p>Plan towards graduation</p></li>
+<li><p>Graduation plan</p></li>
 </ul>
 </li>
 </ul>
+<!-- ---
+
+# Many goals of connectomics involve linking connectome to other properties
+
+![center h:500](./../../images/link_connectome.svg) -->
 </section>
 <hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="many-goals-of-connectomics-involve-linking-connectome-to-other-properties">
-<h1>Many goals of connectomics involve linking connectome to other properties<a class="headerlink" href="#many-goals-of-connectomics-involve-linking-connectome-to-other-properties" title="Permalink to this headline">#</a></h1>
-<p><img alt="center h:500" src="../../_images/link_connectome.svg" /></p>
-</section>
-<hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="comparative-connectomics-as-a-potential-solution">
-<h1>Comparative connectomics as a potential solution?<a class="headerlink" href="#comparative-connectomics-as-a-potential-solution" title="Permalink to this headline">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="comparative-connectomics-as-means-to-link-connectome-to-diverse-properties">
+<h1>Comparative connectomics as means to link connectome to diverse properties<a class="headerlink" href="#comparative-connectomics-as-means-to-link-connectome-to-diverse-properties" title="Permalink to this headline">#</a></h1>
 <ul class="simple">
 <li><p>Map connectomes from related individuals/organisms which may differ in feature <span class="math notranslate nohighlight">\(X\)</span>:</p>
 <ul>
@@ -1695,6 +1676,7 @@ h1, h2 {
 <li><p>Behavioral patterns/habits</p></li>
 <li><p>Life experience</p></li>
 <li><p>Developmental stage</p></li>
+<li><p>…</p></li>
 </ul>
 </li>
 <li><p>Compare connectomes</p></li>
@@ -1741,8 +1723,8 @@ h1, h2 {
 </section>
 </section>
 <hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="a-proposed-experiment">
-<h1>A proposed experiment…<a class="headerlink" href="#a-proposed-experiment" title="Permalink to this headline">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="a-proposed-experiment-zlatic-lab">
+<h1>A proposed experiment… (Zlatic lab)<a class="headerlink" href="#a-proposed-experiment-zlatic-lab" title="Permalink to this headline">#</a></h1>
 <div class="columns">
 <div>
 <p><img alt="" src="../../_images/mushroom-body-learning.png" /></p>
@@ -1750,28 +1732,12 @@ h1, h2 {
 <div>
 <ul class="simple">
 <li><p>Optogenetically activate mushroom body input neurons (DANs) which convey reward or punishment</p></li>
-<li><p>Map connectomes, look for changes in KC <span class="math notranslate nohighlight">\(\rightarrow\)</span> MBON connectivity</p></li>
+<li><p>Map connectomes, look for changes in KC <span class="math notranslate nohighlight">\(\rightarrow\)</span> MBON connectivity (and other subgraphs)</p></li>
 <li><p><em>How big does the {sample size, effect size} need to be such that we can detect a change 95% of the time?</em></p></li>
 </ul>
 </div>
 </div>
 <!-- _footer: Modi, Shuai et al. *Ann. Rev. of Neuro.* (2020) -->
-</section>
-<hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="pairs-facilitate-more-powerful-tests">
-<h1>Pairs facilitate more powerful tests<a class="headerlink" href="#pairs-facilitate-more-powerful-tests" title="Permalink to this headline">#</a></h1>
-<div class="columns-br">
-<div>
-<ul class="simple">
-<li><p>Generate an Erdos-Renyi network (<span class="math notranslate nohighlight">\(A\)</span>)</p></li>
-<li><p>Perturb a copy of it (<span class="math notranslate nohighlight">\(B\)</span>) (add edges)</p></li>
-<li><p>Test for differences between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span></p></li>
-</ul>
-</div>
-<div>
-<p><img alt="" src="../results/figs/matched_vs_unmatched_sims/er_power_comparison.svg" /></p>
-</div>
-</div>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="on-the-power-of-comparative-connectomics">
@@ -1781,9 +1747,29 @@ h1, h2 {
 <ul>
 <li><p>Tests for weighted models</p></li>
 <li><p>Tests for paired/matched networks</p></li>
+<li><p>Tests when group structure is not known</p></li>
 </ul>
 </li>
+<li><p>Implement these (and other) extensions</p></li>
+<li><p>Study power of these approaches in simulations based on real connectome data (e.g, maggot memory and learning center)</p></li>
 </ul>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="example-neuron-pairs-can-facilitate-more-powerful-tests">
+<h1>Example: neuron pairs can facilitate more powerful tests<a class="headerlink" href="#example-neuron-pairs-can-facilitate-more-powerful-tests" title="Permalink to this headline">#</a></h1>
+<div class="columns-br">
+<div>
+<p>Simulation:</p>
+<ul class="simple">
+<li><p>Generate an Erdos-Renyi network (<span class="math notranslate nohighlight">\(A\)</span>)</p></li>
+<li><p>Perturb a copy of it (<span class="math notranslate nohighlight">\(B\)</span>) (add some # of edges)</p></li>
+<li><p>Test for differences between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> (density comparison)</p></li>
+</ul>
+</div>
+<div>
+<p><img alt="" src="../results/figs/matched_vs_unmatched_sims/er_power_comparison.svg" /></p>
+</div>
+</div>
 <hr class="docutils" />
 <p><img alt="bg center blur:3px opacity:20%" src="../results/figs/background/background.svg" /></p>
 </section>
@@ -1795,14 +1781,14 @@ h1, h2 {
 <li><p>Connectome of an insect brain</p></li>
 <li><p>Analysis of bilateral symmetry</p></li>
 <li><p>Matching neurons between brain hemispheres</p></li>
-<li><p>graspologic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graspologic</span></code></p></li>
 </ul>
 </li>
 <li><p>Future work</p>
 <ul>
-<li><p>Collaborative investigations</p></li>
+<li><p>Collaborative real-data investigations</p></li>
 <li><p>On the power of comparative connectomics</p></li>
-<li><p><strong>Plan towards graduation</strong></p></li>
+<li><p><strong>Graduation plan</strong></p></li>
 </ul>
 </li>
 </ul>
@@ -1821,7 +1807,7 @@ ul,p {
 <section id="co-first-papers-manuscripts">
 <h2>(Co)-first papers/manuscripts<a class="headerlink" href="#co-first-papers-manuscripts" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>Graspologic, JMLR (2019)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graspologic</span></code>, JMLR (2019)</p></li>
 <li><p>Maggot brain, in review at <em>Science</em></p></li>
 <li><p>Bilateral symmetry, submitting to <em>eLife</em></p></li>
 <li><p>Bisected matching, resubmission at <em>Net. Neuro.</em></p></li>
