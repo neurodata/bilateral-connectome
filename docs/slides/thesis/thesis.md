@@ -476,11 +476,11 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 ## Collecting the data is still a large effort...
 
 ## But how do we even compare connectomes once we have them?
-- ~~Data are networks~~
+<!-- - ~~Data are networks~~
   - Data are networks with rich attributes
 - Data are noisy
 - Data are big (and getting bigger)
-- What do we even mean by similar/different for two(+) networks?
+- What do we even mean by similar/different for two(+) networks? -->
   
 --- 
 # On the power of comparative connectomics
@@ -519,7 +519,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 <div>
 
 Simulation: 
-- Generate an Erdos-Renyi network ($A$)
+- Generate an Erdos-Renyi $(50,0.1)$ network ($A$)
 - Perturb a copy of it ($B$) (add some # of edges)
 - Test for differences between $A$ and $B$ (density comparison)
 
@@ -561,10 +561,11 @@ Simulation:
 <div>
 
 - Collaboration with Jefferis group
+- ~15k neurons
 - Similar questions to maggot brain, e.g., 
   - Connectivity types
   - Matching neurons 
-- Segmental homology, bilateral symmetry
+- Bilateral symmetry, segmental homology
 
 </div>
 </div>
@@ -658,7 +659,6 @@ ul,p {
 
 </div>
 </div>
-
 
 
 ---
