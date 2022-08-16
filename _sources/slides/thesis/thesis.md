@@ -44,6 +44,8 @@ Department of Biomedical Engineering
 
 ---
 
+<!-- :55 -->
+
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
 # Outline
@@ -54,11 +56,13 @@ Department of Biomedical Engineering
   - Matching neurons between brain hemispheres 
   - `graspologic`
 - Future work
-  - Collaborative real-data investigations
   - On the power of comparative connectomics
+  - Collaborative real-data investigations  
   - Graduation plan
 
 ---
+
+<!--  -->
 
 # Larval _Drosophila_ brain connectome 
 
@@ -91,6 +95,9 @@ p {
 <!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
 
 ---
+
+<!-- 2:25 -->
+
 # Analysis of the maggot brain
 - **Clustering neurons by connectivity**
 - Network "sorting" (from sensory $\rightarrow$ motor)
@@ -103,6 +110,8 @@ p {
 
 ---
 
+
+
 # Neurons clustered by connectivity using recursive spectral clustering
 
 ![center](../../images/bar-dendrogram-wide.svg)
@@ -113,6 +122,8 @@ p {
 
 ---
 # Using models to evaluate cell type groupings
+
+<!-- 4:50 -->
 
 <div class="columns">
 <div>
@@ -140,8 +151,8 @@ p {
   - Matching neurons between brain hemispheres 
   - `graspologic`
 - Future work
-  - Collaborative real-data investigations
   - On the power of comparative connectomics
+  - Collaborative real-data investigations
   - Graduation plan
 
 ---
@@ -167,6 +178,7 @@ h2 {
 ## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
 
 --- 
+
 # Are these _networks_ different?
 
 <div class="columns">
@@ -187,6 +199,9 @@ h2 {
 </div>
 
 --- 
+
+<!-- 6:00 -->
+
 # Stochastic block model
 
 Edge probabilities are a function of a neuron's group
@@ -202,6 +217,9 @@ Edge probabilities are a function of a neuron's group
 <!-- _footer: Pedigo et al. *In preparation, eLife* -->
 
 --- 
+
+<!-- 7:45 -->
+
 # Detect differences in group connection probabilities
 
 <div class="columns">
@@ -219,7 +237,6 @@ Edge probabilities are a function of a neuron's group
 </div>
 
 <!-- _footer: Pedigo et al. *In preparation, eLife* -->
-
 
 ---
 # To sum up...
@@ -256,6 +273,14 @@ Depends on what you mean...
 <!-- _footer: Pedigo et al. *In preparation, eLife* -->
 
 ---
+# We made many assumptions, including...
+- We knew the group for each neuron
+- No edge weights
+- **Neurons not paired between the hemispheres**
+
+---
+
+<!-- 10:00 -->
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
@@ -267,11 +292,22 @@ Depends on what you mean...
   - **Matching neurons between brain hemispheres**
   - `graspologic`
 - Future work
-  - Collaborative real-data investigations
   - On the power of comparative connectomics
+  - Collaborative real-data investigations
   - Graduation plan
 
 ---
+
+# Bilaterally homologous neuron pairs 
+
+We believe a matching exists!
+
+![center](./../../images/mbon-expression.jpg)
+
+<!-- _footer: Eschbach et al. eLife (2021) -->
+
+
+<!-- ---
 # Matching (by connectivity only) performs fairly well
 
 ![center h:450](./../../_build/html/_images/left-pair-predictions.svg)
@@ -284,7 +320,29 @@ p {
 }
 </style>
 
-With "vanilla" graph matching: ~80% correct (according to expert annotator)
+With "vanilla" graph matching: ~80% correct (according to expert annotator) -->
+
+
+---
+
+# Estimating neuron pairing using graph matching
+
+<div class="columns-br">
+<div>
+
+![](../../images/explain-gm.png)
+
+</div>
+<div>
+
+![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
+
+<div class='center'>
+Morphologies of pairs predicted from connectivity.<br> ~80-85% agreement with an expert annotator.
+</div>
+
+</div>
+</div>
 
 <!-- _footer: Vogelstein et al. *PLOS One* (2015) -->
 
@@ -331,8 +389,8 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - Matching neurons between brain hemispheres
   - **`graspologic`**
 - Future work
-  - Collaborative real-data investigations
   - On the power of comparative connectomics
+  - Collaborative real-data investigations
   - Graduation plan
 
 
@@ -380,78 +438,9 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - Matching neurons between brain hemispheres
   - `graspologic`
 - Future work
-  - **Collaborative real-data investigations**
-  - On the power of comparative connectomics
-  - Graduation plan
-
----
-# Male adult nerve cord connectome
-
-<div class="columns">
-<div>
-
-![center h:400](./../../images/vnc.png)
-
-</div>
-<div>
-
-- Collaboration with Jefferis' group
-- Similar questions to maggot brain, e.g., 
-  - Connectivity types
-  - Matching neurons 
-- Segmental homology, bilateral symmetry
-
-</div>
-</div>
-
-<!-- _footer: Adapted from Phelps et al. *Cell* 2021 -->
-
---- 
-# Linking behaviorally characterized neurons to a connectome
-
-<div class="columns-bl">
-<div>
-
-![](../../lalanti-talk.png)
-
-</div>
-<div>
-
-- Collab. w/ Zlatic group
-- ~70 neuron pairs linked to connectome
-- Goal: compare neighborhoods of each, detect signatures of "similar behavior neurons"
-
-</div>
-</div>
-
-<!-- _footer: Adapted from Lalanti Venkatasubramanian -->
-
---- 
-# A few others... 
-- Testing for "edge-level" stereotypy (Cardona lab)
-- Analysis of *Drosophila* visual connectome (Reiser lab + Janelia)
-
----
-
-![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
-
-# Outline
-
-- Prior work 
-  - Connectome of an insect brain
-  - Analysis of bilateral symmetry
-  - Matching neurons between brain hemispheres
-  - `graspologic`
-- Future work
-  - Collaborative real-data investigations
   - **On the power of comparative connectomics**
+  - Collaborative real-data investigations 
   - Graduation plan
-
-<!-- ---
-
-# Many goals of connectomics involve linking connectome to other properties
-
-![center h:500](./../../images/link_connectome.svg) -->
 
 ---
 
@@ -489,13 +478,21 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 ## But how do we even compare connectomes once we have them?
 - ~~Data are networks~~
   - Data are networks with rich attributes
-- Data will always have noise
-  - "Experimental noise"
-  - "Biological noise"
+- Data are noisy
 - Data are big (and getting bigger)
- 
+- What do we even mean by similar/different for two(+) networks?
+  
+--- 
+# On the power of comparative connectomics
+
+- Extend simple network comparison tests we proposed in *Pedigo et al.* (bilateral symmetry manuscript), e.g.,
+  - Tests for weighted models
+  - Tests for paired/matched networks
+  - Tests when group structure is not known
+- Study power of these approaches in simulations based on real connectome data (e.g, maggot memory and learning center)
+
 ---
-# A proposed experiment... (Zlatic lab)
+# A motivating comparative connectomics experiment...
 
 <div class="columns">
 <div>
@@ -512,17 +509,8 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
 </div>
 </div>
 
-<!-- _footer: Modi, Shuai et al. *Ann. Rev. of Neuro.* (2020) -->
+<!-- _footer: Modi, Shuai et al. *Ann. Rev. of Neuro.* (2020), Zlatic lab -->
 
---- 
-# On the power of comparative connectomics
-
-- Still many extensions to simple network comparison tests we proposed in *Pedigo et al.* (bilateral symmetry manuscript)
-  - Tests for weighted models
-  - Tests for paired/matched networks
-  - Tests when group structure is not known
-- Implement these (and other) extensions
-- Study power of these approaches in simulations based on real connectome data (e.g, maggot memory and learning center)
 
 ---
 # Example: neuron pairs can facilitate more powerful tests
@@ -544,6 +532,7 @@ Simulation:
 </div>
 </div>
 
+
 ---
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
@@ -556,8 +545,72 @@ Simulation:
   - Matching neurons between brain hemispheres
   - `graspologic`
 - Future work
-  - Collaborative real-data investigations
   - On the power of comparative connectomics
+  - **Collaborative real-data investigations**
+  - Graduation plan
+
+---
+# Male adult nerve cord connectome
+
+<div class="columns">
+<div>
+
+![center h:400](./../../images/vnc.png)
+
+</div>
+<div>
+
+- Collaboration with Jefferis group
+- Similar questions to maggot brain, e.g., 
+  - Connectivity types
+  - Matching neurons 
+- Segmental homology, bilateral symmetry
+
+</div>
+</div>
+
+<!-- _footer: Adapted from Phelps et al. *Cell* 2021 -->
+
+--- 
+# Linking behaviorally characterized neurons to a connectome
+
+<div class="columns-bl">
+<div>
+
+![](../../lalanti-talk.png)
+
+</div>
+<div>
+
+- Collab. w/ Zlatic group
+- ~70 neuron pairs linked to connectome
+- Goal: compare neighborhoods of each, detect signatures of "similar behavior neurons"
+
+</div>
+</div>
+
+<!-- _footer: Adapted from Lalanti Venkatasubramanian -->
+
+--- 
+# A few others... 
+- Testing for "edge-level" stereotypy (Cardona lab)
+- Analysis of *Drosophila* visual connectome (Reiser lab + Janelia)
+- Analysis of network time series over learning in simulation (Zlatic lab)
+
+---
+
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+
+# Outline
+
+- Prior work 
+  - Connectome of an insect brain
+  - Analysis of bilateral symmetry
+  - Matching neurons between brain hemispheres
+  - `graspologic`
+- Future work
+  - On the power of comparative connectomics
+  - Collaborative real-data investigations
   - **Graduation plan**
 
 ---
