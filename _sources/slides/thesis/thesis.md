@@ -120,6 +120,16 @@ p {
 
 <!-- _footer: Winding, Pedigo et al. *Under review, Science* -->
 
+--- 
+
+<!-- 6:00 -->
+
+# Stochastic block model
+
+Edge probabilities are a function of a neuron's group
+
+![center h:450](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
+
 ---
 # Using models to evaluate cell type groupings
 
@@ -198,15 +208,6 @@ h2 {
 </div>
 </div>
 
---- 
-
-<!-- 6:00 -->
-
-# Stochastic block model
-
-Edge probabilities are a function of a neuron's group
-
-![center h:450](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
 
 
 --- 
@@ -338,7 +339,7 @@ With "vanilla" graph matching: ~80% correct (according to expert annotator) -->
 ![center h:400](./../../_build/html/_images/left-pair-predictions.svg)
 
 <div class='center'>
-Morphologies of pairs predicted from connectivity.<br> ~80-85% agreement with an expert annotator.
+Morphologies of pairs predicted from connectivity.<br> ~80% agreement with an expert annotator.
 </div>
 
 </div>
@@ -490,6 +491,7 @@ We show how BGM can be solved via a simple modification of the FAQ algorithm
   - Tests for paired/matched networks
   - Tests when group structure is not known
 - Study power of these approaches in simulations based on real connectome data (e.g, maggot memory and learning center)
+- Provide recommendations for future comparative connectomics experiments
 
 ---
 # A motivating comparative connectomics experiment...
