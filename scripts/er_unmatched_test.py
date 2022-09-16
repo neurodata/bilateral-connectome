@@ -69,7 +69,6 @@ import datetime
 import time
 
 import matplotlib.pyplot as plt
-import matplotlib.transforms
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -92,8 +91,6 @@ from pkg.utils import sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
 
 _, _, DISPLAY_FIGS = get_environment_variables()
-
-print(DISPLAY_FIGS)
 
 FILENAME = "er_unmatched_test"
 
@@ -120,9 +117,9 @@ node_palette, NODE_KEY = load_node_palette()
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
 
+#%% [markdown]
+# ## Diagram of the ER model
 #%%
-# describe ER model
-
 
 np.random.seed(8888)
 ps = [0.2, 0.4, 0.6]
@@ -164,6 +161,9 @@ ax.set_yticks([])
 ax.set_xlabel("Increasing density")
 
 gluefig("er_explain", fig)
+
+#%% [markdown]
+# ## Diagram of the density test
 
 #%%
 A1, A2, node_data = sample_toy_networks()
@@ -340,7 +340,8 @@ fig = Figure(
 fig.save(FIG_PATH / "composite.svg")
 fig
 
-
+#%% [markdown]
+# ## End
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
