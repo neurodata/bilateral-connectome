@@ -1,3 +1,6 @@
+#%% [markdown]
+# # Visualize the connectome
+
 #%%
 
 import datetime
