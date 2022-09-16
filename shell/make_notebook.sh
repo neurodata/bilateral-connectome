@@ -10,6 +10,8 @@ done
 
 shift $((OPTIND -1))
 
+export DISPLAY_FIGS=False
+
 jupytext --to notebook --output $BASE_DIR/docs/$1.ipynb $BASE_DIR/scripts/$1.py
 jupyter nbconvert --to notebook --inplace --execute --ExecutePreprocessor.timeout=-1 $BASE_DIR/docs/$1.ipynb 
 python $BASE_DIR/docs/add_cell_tags.py $BASE_DIR/docs/$1.ipynb
