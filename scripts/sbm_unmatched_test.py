@@ -45,7 +45,7 @@ from pkg.plot import rainbowarrow
 import matplotlib as mpl
 
 
-DISPLAY_FIGS = False
+DISPLAY_FIGS = True
 
 FILENAME = "sbm_unmatched_test"
 
