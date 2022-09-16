@@ -68,7 +68,6 @@
 import datetime
 import time
 
-import matplotlib.path
 import matplotlib.pyplot as plt
 import matplotlib.transforms
 import numpy as np
@@ -76,20 +75,25 @@ import pandas as pd
 import seaborn as sns
 from giskard.plot import merge_axes, soft_axis_off
 from graspologic.simulations import er_np
-from matplotlib.collections import LineCollection
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import FIG_PATH
+from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import SmartSVG, networkplot_simple, set_theme
+from pkg.plot import (
+    SmartSVG,
+    draw_hypothesis_box,
+    networkplot_simple,
+    rainbowarrow,
+    set_theme,
+)
 from pkg.plot.er import plot_density
 from pkg.stats import erdos_renyi_test
 from pkg.utils import sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
-from pkg.plot import draw_hypothesis_box, rainbowarrow
 
+_, _, DISPLAY_FIGS = get_environment_variables()
 
-DISPLAY_FIGS = True
+print(DISPLAY_FIGS)
 
 FILENAME = "er_unmatched_test"
 

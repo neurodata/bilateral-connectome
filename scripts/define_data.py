@@ -57,6 +57,7 @@ import numpy as np
 import pandas as pd
 from graspologic.utils import binarize, remove_loops
 from pkg.io import glue as default_glue
+from pkg.io import get_environment_variables
 from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 
 t0 = time.time()
@@ -68,11 +69,11 @@ def glue(name, var, **kwargs):
     default_glue(name, var, FILENAME, display=False, **kwargs)
 
 
-RESAVE = True
+RESAVE_DATA, _, _ = get_environment_variables()
 
 print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
-output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-v2")
+output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-v3")
 output_dir = Path(output_dir)
 
 #%%
@@ -144,7 +145,7 @@ left_adj = pd.DataFrame(
 )
 left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
 
-if RESAVE:
+if RESAVE_DATA:
     nx.write_edgelist(
         left_g,
         output_dir / "unmatched_left_edgelist.csv",
@@ -159,7 +160,7 @@ right_adj = pd.DataFrame(
 )
 right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
 
-if RESAVE:
+if RESAVE_DATA:
     nx.write_edgelist(
         right_g,
         output_dir / "unmatched_right_edgelist.csv",
@@ -211,7 +212,7 @@ left_adj = pd.DataFrame(
     data=left_adj.astype(int), index=left_nodes.index, columns=left_nodes.index
 )
 left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
-if RESAVE:
+if RESAVE_DATA:
     nx.write_edgelist(
         left_g,
         output_dir / "matched_left_edgelist.csv",
@@ -227,7 +228,7 @@ right_adj = pd.DataFrame(
 )
 right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
 
-if RESAVE:
+if RESAVE_DATA:
     nx.write_edgelist(
         right_g,
         output_dir / "matched_right_edgelist.csv",

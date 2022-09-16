@@ -15,7 +15,7 @@ import seaborn as sns
 from giskard.plot import subuniformity_plot
 from matplotlib.transforms import Bbox
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import FIG_PATH
+from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.plot import SmartSVG, set_theme
@@ -26,7 +26,9 @@ from scipy.stats import ks_1samp, uniform
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
 
-DISPLAY_FIGS = False
+
+_, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
+
 
 FILENAME = "revamp_sbm_methods_sim"
 
@@ -313,7 +315,6 @@ def compare_individual_probabilities(counts1, n_possible1, counts2, n_possible2)
 
 #%%
 
-RERUN_SIM = False
 save_path = Path(
     "/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/"
     f"outputs/{FILENAME}/results.csv"
@@ -358,7 +359,7 @@ n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
 print(f"Number of runs: {n_runs}")
 
 
-if RERUN_SIM:
+if RERUN_SIMS:
     t0 = time.time()
     mean_itertimes = 0
     n_time_first = 5
@@ -493,7 +494,7 @@ plt.tight_layout()
 gluefig("null_distributions", fig)
 
 #%%
-if RERUN_SIM:
+if RERUN_SIMS:
     fig, axs = plt.subplots(
         len(perturb_size_range), len(n_perturb_range), figsize=(20, 20), sharey=True
     )

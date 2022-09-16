@@ -21,8 +21,11 @@ from pkg.io import savefig
 from pkg.plot import set_theme
 from scipy.cluster import hierarchy
 from umap import UMAP
+from pkg.io import get_environment_variables
 
-DISPLAY_FIGS = True
+
+_, _, DISPLAY_FIGS = get_environment_variables()
+
 FILENAME = "show_data"
 
 rng = np.random.default_rng(8888)

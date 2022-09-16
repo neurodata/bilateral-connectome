@@ -13,19 +13,21 @@
 import datetime
 import time
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtrans
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import merge_axes, rotate_labels
+from giskard.plot import merge_axes, rotate_labels, soft_axis_off
 from graspologic.simulations import sbm
 from matplotlib.font_manager import FontProperties
 from matplotlib.patches import PathPatch
 from matplotlib.text import TextPath
-from pkg.io import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import FIG_PATH, savefig
+from pkg.io import FIG_PATH, get_environment_variables
+from pkg.io import glue as default_glue
+from pkg.io import savefig
 from pkg.plot import (
     SmartSVG,
     draw_hypothesis_box,
@@ -34,18 +36,16 @@ from pkg.plot import (
     networkplot_simple,
     plot_pvalues,
     plot_stochastic_block_probabilities,
+    rainbowarrow,
     set_theme,
 )
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
-from svgutils.compose import Figure, Panel, Text
 from seaborn.utils import relative_luminance
-from giskard.plot import soft_axis_off
-from pkg.plot import rainbowarrow
-import matplotlib as mpl
+from svgutils.compose import Figure, Panel, Text
 
 
-DISPLAY_FIGS = True
+_, _, DISPLAY_FIGS = get_environment_variables()
 
 FILENAME = "sbm_unmatched_test"
 
@@ -604,7 +604,6 @@ top_ax, left_ax = heatmap_grouped(
     palette=palette,
     ax=ax,
     xlabel_loc="top",
-
 )
 top_ax.set_title(
     "Estimate group-to-group\nconnection probabilities " + r"($\hat{B}$)", pad=10

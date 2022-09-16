@@ -28,8 +28,9 @@ from pkg.plot import (
 from pkg.stats import compute_density, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
+from pkg.io import get_environment_variables
 
-DISPLAY_FIGS = False
+_, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 
 FILENAME = "adjusted_sbm_unmatched_test"
 
@@ -214,9 +215,8 @@ glue("n_remove", n_remove)
 rows = []
 n_resamples = 500
 glue("n_resamples", n_resamples)
-RERUN_SIM = False
 
-if RERUN_SIM:
+if RERUN_SIMS:
     for i in tqdm(range(n_resamples)):
         subsampled_right_adj = remove_edges(
             right_adj, effect_size=n_remove, random_seed=rng
@@ -270,12 +270,16 @@ left_kc_cn_adj = left_adj[left_kc_inds][:, left_cn_inds]
 right_kc_cn_adj = right_adj[right_kc_inds][:, right_cn_inds]
 
 #%%
-from graspologic.plot import heatmap
 
 fig, axs = plt.subplots(1, 2, figsize=(10, 5))
 ax = axs[0]
 heatmap_kws = dict(
-    xticklabels=False, yticklabels=False, cbar=False, cmap="RdBu_r", center=0, square=True
+    xticklabels=False,
+    yticklabels=False,
+    cbar=False,
+    cmap="RdBu_r",
+    center=0,
+    square=True,
 )
 ax.set_title("Left")
 sns.heatmap(left_kc_cn_adj, ax=ax, **heatmap_kws)
@@ -283,10 +287,10 @@ ax = axs[1]
 ax.set_title("Right")
 sns.heatmap(right_kc_cn_adj, ax=ax, **heatmap_kws)
 
-for ax in axs.flat: 
-    ax.set(xlabel='CNs', ylabel='KCs')
+for ax in axs.flat:
+    ax.set(xlabel="CNs", ylabel="KCs")
 
-fig.set_facecolor('w')
+fig.set_facecolor("w")
 
 #%%
 right_has_kc = right_kc_cn_adj.sum(axis=0) > 0

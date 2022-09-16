@@ -8,21 +8,22 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from bilateral-connectome.scripts.adjusted_sbm_unmatched_test import \
+    DISPLAY_FIGS
 from giskard.plot import merge_axes, soft_axis_off
 from pkg.data import load_network_palette, load_unmatched
-from pkg.io import FIG_PATH
+from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
+from pkg.io.environ import get_environment_variables
 from pkg.plot import SmartSVG, rainbowarrow, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
-from pkg.utils import sample_toy_networks
+from pkg.utils import remove_group, sample_toy_networks
 from scipy.interpolate import interp1d
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
-from pkg.utils import remove_group
 
-
-DISPLAY_FIGS = True
+_, _, DISPLAY_FIGS = get_environment_variables()
 
 FILENAME = "thresholding_tests"
 
@@ -141,8 +142,7 @@ fig.set_facecolor("w")
 
 #%%
 fig, axs = plt.subplots(2, 1, figsize=(4, 5), gridspec_kw=dict(hspace=0))
-from matplotlib.patches import FancyArrowPatch
-from matplotlib.patches import Circle
+from matplotlib.patches import Circle, FancyArrowPatch
 
 set_theme(font_scale=1)
 source_loc = (0.25, 0.5)
