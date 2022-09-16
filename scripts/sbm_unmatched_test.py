@@ -450,7 +450,6 @@ def compare_probability_column(i, j, x, Bhat1, Bhat2, ax=None, palette=None):
     ax.plot([x], [0.9], "s", markersize=15, color=cmap(prob1))
     ax.plot([x], [0.7], "s", markersize=15, color=cmap(prob2))
     ax.text(x, 0.78, r"$\overset{?}{=}$", fontsize="large", va="center", ha="center")
-    # ax.text(x, 10, r"$\rightarrow$", fontsize="large", va="center", ha="center")
 
     ax.annotate(
         "",
@@ -533,7 +532,6 @@ top_ax.set_title("p-values")
 label_matrix_element(uncorrected_pvalues, 0, 1, r"$p_{12}$", ax, color="w")
 
 
-# ax = axs[3, 6]
 ax = merge_axes(fig, axs, rows=(2, 4), cols=6)
 
 # REF: https://stackoverflow.com/questions/50039667/matplotlib-scale-text-curly-brackets
@@ -564,11 +562,6 @@ gluefig("sbm_methods_explain", fig)
 
 set_theme(font_scale=1)
 
-# axs[0, 0].set_title("Group neurons", fontsize="medium")
-# axs[0, 2].set_title("Estimate group\nconnection probabilities", x=0.45, ha="center")
-# axs[0, 4].set_title("Compare probabilities,\ncompute p-values", fontsize="medium")
-# axs[0, 6].set_title("Combine p-values\nfor overall test", fontsize="medium")
-
 fig, axs = plt.subplots(
     1,
     2,
@@ -578,9 +571,6 @@ fig, axs = plt.subplots(
     ),
     constrained_layout=True,
 )
-# A1, A2, node_data = sample_toy_networks()
-# palette = get_toy_palette()
-
 
 ax = axs[0]
 node_data = networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
@@ -592,10 +582,8 @@ ax.annotate(
     arrowprops=dict(arrowstyle="-|>", linewidth=4, color="red"),
 )
 ax.set_title("Group neurons", pad=10)
-# ax.axis("off")
 ax.autoscale(False)
 ax.plot([1.15, 1.15], [-1, 1], color="lightgrey", linewidth=1.5, clip_on=False)
-# ax.set_xlim((0, 1))
 
 ax = axs[1]
 top_ax, left_ax = heatmap_grouped(
@@ -647,10 +635,9 @@ print(pvalue)
 set_theme(font_scale=1)
 
 
-# TODO should be a better way with melt?
-
-
 def melt(misc, names):
+    # TODO should be a better way with melt?
+
     if isinstance(names, str):
         names = [names]
     df = misc[names[0]]
@@ -717,7 +704,6 @@ sns.scatterplot(
 )
 ax.set_yscale("log")
 ax.set_xscale("log")
-# ax.get_legend().set_title("Sample size")
 ax.set(xlabel="Right probability", ylabel="Left probability")
 ax.plot([0.00001, 1], [0.00001, 1], color="grey", zorder=-2)
 
@@ -1162,6 +1148,8 @@ fig = Figure(
 fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
 fig
 
+#%% [markdown]
+# ## End
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)
