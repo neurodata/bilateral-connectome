@@ -55,7 +55,7 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 import pandas as pd
-from graspologic.utils import binarize, remove_loops
+from graspologic.utils import remove_loops
 from pkg.io import glue as default_glue
 from pkg.io import get_environment_variables
 from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
@@ -79,7 +79,6 @@ output_dir = Path(output_dir)
 #%%
 mg = load_maggot_graph()
 
-# Used to be in "select_nice_nodes()"
 print(f"Before anything: {len(mg)}")
 mg = mg[mg.nodes["paper_clustered_neurons"] | mg.nodes["accessory_neurons"]]
 print(f"After filter by groups to consider for paper: {len(mg)}")
@@ -87,17 +86,7 @@ mg = mg[mg.nodes["hemisphere"].isin(["L", "R"])]
 print(f"After removing non left/right: {len(mg)}")
 mg.to_largest_connected_component(verbose=False)
 print(f"After largest connected component: {len(mg)}")
-# out_degrees = np.count_nonzero(mg.sum.adj, axis=0)
-# in_degrees = np.count_nonzero(mg.sum.adj, axis=1)
-# max_in_out_degree = np.maximum(out_degrees, in_degrees)
-# keep_inds = np.arange(len(mg.nodes))[max_in_out_degree > 2]
-# remove_ids = np.setdiff1d(mg.nodes.index, mg.nodes.index[keep_inds])
-# print(mg.nodes.loc[remove_ids])
-# mg.nodes = mg.nodes.iloc[keep_inds]
-# mg.g.remove_nodes_from(remove_ids)
-# print(f"After removing weakly connected nodes: {len(mg)}")
-# mg.to_largest_connected_component(verbose=False)
-# print(f"After taking largest connected component again: {len(mg)}")
+
 mg.nodes.sort_values("hemisphere", inplace=True)
 mg.nodes["_inds"] = range(len(mg.nodes))
 
@@ -111,8 +100,6 @@ print(
 left_adj = left_mg.sum.adj
 right_adj = right_mg.sum.adj
 
-# left_adj = binarize(left_adj)
-# right_adj = binarize(right_adj)
 
 #%%
 left_n_loops = np.count_nonzero(np.diag(left_adj))
