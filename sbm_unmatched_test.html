@@ -331,6 +331,35 @@ title="Toggle navigation"
         
     </div>
     <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/neurodata/bilateral-connectome/main?urlpath=tree/bilateral-connectome/sbm_unmatched_test.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
 <button onclick="toggleFullScreen()"
   class="headerbtn"
   data-toggle="tooltip"
@@ -582,7 +611,6 @@ groups for each neuron, which we do not explore here.</p>
         <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
-
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">set_theme</span><span class="p">()</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
@@ -683,12 +711,12 @@ the two hemispheres.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
-<span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]</span>
 <span class="n">n_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
     <span class="mi">3</span><span class="p">,</span>
     <span class="n">n_steps</span><span class="p">,</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
     <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
     <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
@@ -696,7 +724,6 @@ the two hemispheres.</p>
 
 <span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]])</span>
-<span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
 <span class="n">palette</span> <span class="o">=</span> <span class="n">get_toy_palette</span><span class="p">()</span>
 
 
@@ -710,6 +737,7 @@ the two hemispheres.</p>
     <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">,</span>
     <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="n">xlow</span> <span class="o">=</span> <span class="n">col_ind</span> <span class="o">+</span> <span class="n">pad</span>
     <span class="n">xhigh</span> <span class="o">=</span> <span class="n">col_ind</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span>
@@ -721,6 +749,7 @@ the two hemispheres.</p>
         <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
         <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1078,6 +1107,78 @@ the two hemispheres.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># axs[0, 0].set_title(&quot;Group neurons&quot;, fontsize=&quot;medium&quot;)</span>
+<span class="c1"># axs[0, 2].set_title(&quot;Estimate group\nconnection probabilities&quot;, x=0.45, ha=&quot;center&quot;)</span>
+<span class="c1"># axs[0, 4].set_title(&quot;Compare probabilities,\ncompute p-values&quot;, fontsize=&quot;medium&quot;)</span>
+<span class="c1"># axs[0, 6].set_title(&quot;Combine p-values\nfor overall test&quot;, fontsize=&quot;medium&quot;)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># A1, A2, node_data = sample_toy_networks()</span>
+<span class="c1"># palette = get_toy_palette()</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">node_data</span> <span class="o">=</span> <span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">centroids</span> <span class="o">=</span> <span class="n">node_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">xy</span><span class="o">=</span><span class="n">centroids</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">xytext</span><span class="o">=</span><span class="n">centroids</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-|&gt;&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Group neurons&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># ax.axis(&quot;off&quot;)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">autoscale</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># ax.set_xlim((0, 1))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">top_ax</span><span class="p">,</span> <span class="n">left_ax</span> <span class="o">=</span> <span class="n">heatmap_grouped</span><span class="p">(</span>
+    <span class="n">Bhat1</span><span class="p">,</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">xlabel_loc</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
+
+<span class="p">)</span>
+<span class="n">top_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="s2">&quot;Estimate group-to-group</span><span class="se">\n</span><span class="s2">connection probabilities &quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;($\hat</span><span class="si">{B}</span><span class="s2">$)&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+<span class="n">left_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Source group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Target group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+
+<span class="n">label_matrix_element</span><span class="p">(</span>
+    <span class="n">Bhat1</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">_</span><span class="si">{12}</span><span class="s2">$&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+    <span class="n">pad</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_simple_methods&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
     <span class="n">left_adj</span><span class="p">,</span>
     <span class="n">right_adj</span><span class="p">,</span>
@@ -1087,7 +1188,7 @@ the two hemispheres.</p>
     <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;tippett&quot;</span><span class="p">,</span>
     <span class="n">correct_method</span><span class="o">=</span><span class="s2">&quot;bonferroni&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;pvalue&#39;</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 <span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_tests&quot;</span><span class="p">,</span> <span class="n">n_tests</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
@@ -1095,14 +1196,17 @@ the two hemispheres.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.561229383235394e-08
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.573813232327992e-08
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO should be a better way with melt?</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c1"># TODO should be a better way with melt?</span>
 
 
 <span class="k">def</span> <span class="nf">melt</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
@@ -1256,7 +1360,7 @@ the two hemispheres.</p>
 </div>
 <figure class="align-default" id="fig-sbm-unmatched-test-group-counts">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_9_0.png" src="_images/sbm_unmatched_test_9_0.png" />
+<img alt="_images/sbm_unmatched_test_10_0.png" src="_images/sbm_unmatched_test_10_0.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 4 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
@@ -1312,7 +1416,7 @@ comparision of binomial proportions. We highlight these elements in the <span cl
 matrices with an explicit “0”, noting that we did not run the corresponding test in
 these cases.</p>
 <p>In <a class="reference internal" href="#fig-sbm-unmatched-test-sbm-uncorrected"><span class="std std-numref">Figure 5 B</span></a>, we see the
-p-values from all <span class="pasted-text">283</span> that were run. After
+p-values from all <span class="pasted-text">284</span> that were run. After
 Bonferroni-Holm correction, 5 tests yield p-values less than 0.05, indicating that
 we reject the null hypothesis that those elements of the <span class="math notranslate nohighlight">\(\hat{B}\)</span> matrices are the
 same between the two hemispheres. We also combine all p-values using Fisher’s method,
@@ -1321,7 +1425,7 @@ Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</
 .</p>
 <figure class="align-default" id="fig-sbm-unmatched-test-sbm-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_11_0.png" src="_images/sbm_unmatched_test_11_0.png" />
+<img alt="_images/sbm_unmatched_test_12_0.png" src="_images/sbm_unmatched_test_12_0.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
@@ -1473,7 +1577,7 @@ right.</p>
 </div>
 <figure class="align-default" id="fig-sbm-unmatched-test-probs-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_15_0.png" src="_images/sbm_unmatched_test_15_0.png" />
+<img alt="_images/sbm_unmatched_test_16_0.png" src="_images/sbm_unmatched_test_16_0.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
@@ -1577,7 +1681,7 @@ apparent here, as there are more negative than positive values.</span><a class="
 </div>
 <figure class="align-default" id="fig-sbm-unmatched-test-significant-p-comparison">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_17_1.png" src="_images/sbm_unmatched_test_17_1.png" />
+<img alt="_images/sbm_unmatched_test_18_1.png" src="_images/sbm_unmatched_test_18_1.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 7 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
@@ -1646,7 +1750,7 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_19_0.svg" src="_images/sbm_unmatched_test_19_0.svg" /></div>
+<img alt="_images/sbm_unmatched_test_20_0.svg" src="_images/sbm_unmatched_test_20_0.svg" /></div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -1658,8 +1762,8 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:31.938121
-Completed at 2022-04-13 16:43:31.447942
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:34.490891
+Completed at 2022-09-14 09:31:45.472251
 </pre></div>
 </div>
 </div>
