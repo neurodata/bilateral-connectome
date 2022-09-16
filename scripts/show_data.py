@@ -9,7 +9,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from giskard.plot import adjplot, scattermap, soft_axis_off
+from giskard.plot import adjplot, scattermap
 from graspologic.embed import AdjacencySpectralEmbed
 from graspologic.plot import networkplot
 from matplotlib.patheffects import Normal, Stroke
@@ -19,13 +19,12 @@ from pkg.data import (
     load_node_palette,
     load_unmatched,
 )
+from pkg.io import get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.plot import set_theme
 from scipy.cluster import hierarchy
 from umap import UMAP
-from pkg.io import get_environment_variables
-
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -93,7 +92,6 @@ networkplot_kws = dict(
 
 
 def soft_axis_off(ax, top=False, bottom=False, left=False, right=False):
-    # ax.set(xlabel="", ylabel="", xticks=[], yticks=[])
     ax.spines["top"].set_visible(top)
     ax.spines["bottom"].set_visible(bottom)
     ax.spines["left"].set_visible(left)
@@ -143,9 +141,6 @@ def specsort(X, metric="cosine"):
     return sorted_indices
 
 
-# left_adj_sorted = left_adj.copy()[np.ix_(sorted_indices, sorted_indices)]
-# adjplot(left_adj_sorted, plot_type="scattermap")
-
 #%%
 
 left_sort_inds = specsort(left_ase_embedding)
@@ -166,8 +161,6 @@ nodes = mg.nodes
 adj = mg.sum.adj
 
 #%%
-
-# from giskard.plot import adjplot
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 15))
 adjplot(
