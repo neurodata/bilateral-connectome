@@ -28,3 +28,7 @@ jupyter-book = "^0.12.1"
 jupytext = "^1.13.8"
 ghp-import = "^2.0.1"
 ipykernel = "^6.6.0"
+
+[tool.poetry.group.dev.dependencies]
+papermill = "^2.4.0"
+
