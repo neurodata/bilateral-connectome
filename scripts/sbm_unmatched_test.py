@@ -1049,7 +1049,7 @@ def plot_significant_probabilities(misc):
     mean_ps = sig_data.groupby("pair")["p"].mean()
     pair_orders = mean_ps.sort_values(ascending=False).index
 
-    fig, ax = plt.subplots(1, 1, figsize=(7, 6))
+    fig, ax = plt.subplots(1, 1, figsize=(9, 6))
     sns.pointplot(
         data=sig_data,
         y="p",
@@ -1127,8 +1127,8 @@ pvalues_panel = Panel(
 pvalues_panel.move(0, (methods.height + probs.height) * 0.9)
 
 comparison = SmartSVG(FIG_PATH / "significant_p_comparison.svg")
-comparison.set_width(150)
-comparison.move(10, 25)
+comparison.set_width(175)
+comparison.move(2, 25)
 comparison_panel = Panel(
     comparison,
     Text("D) Probabilities for", 5, 10, size=fontsize, weight="bold"),

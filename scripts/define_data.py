@@ -81,7 +81,11 @@ mg = load_maggot_graph()
 
 print(f"Before anything: {len(mg)}")
 mg = mg[mg.nodes["paper_clustered_neurons"] | mg.nodes["accessory_neurons"]]
+total_paper_neurons = len(mg)
+glue("total_paper_neurons", total_paper_neurons, form='long')
 print(f"After filter by groups to consider for paper: {len(mg)}")
+
+#%%
 mg = mg[mg.nodes["hemisphere"].isin(["L", "R"])]
 print(f"After removing non left/right: {len(mg)}")
 mg.to_largest_connected_component(verbose=False)
