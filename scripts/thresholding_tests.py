@@ -1,27 +1,28 @@
+#%% [markdown]
+# # Comparing edge weight thresholds
 #%%
 
 import datetime
 import time
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from bilateral-connectome.scripts.adjusted_sbm_unmatched_test import \
-    DISPLAY_FIGS
 from giskard.plot import merge_axes, soft_axis_off
 from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.io.environ import get_environment_variables
 from pkg.plot import SmartSVG, rainbowarrow, set_theme
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from pkg.utils import remove_group, sample_toy_networks
 from scipy.interpolate import interp1d
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
+from matplotlib.patches import Circle, FancyArrowPatch
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -63,86 +64,7 @@ left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 
 #%%
-fig, axs = plt.subplots(2, 1, figsize=(4, 5))
-
-
-g = nx.DiGraph()
-g.add_edge(0, 1, weight=4)
-pos = {0: (0.1, 0.65), 1: (0.5, 0.65)}
-ax = axs[0]
-soft_axis_off(ax)
-nx.draw_networkx(
-    g,
-    pos,
-    ax=ax,
-    arrowstyle="-",
-    connectionstyle="arc3,rad=-0.5",
-    width=3,
-    node_size=500,
-    with_labels=False,
-)
-nx.draw_networkx(
-    g,
-    pos,
-    ax=ax,
-    arrowstyle="-",
-    connectionstyle="arc3,rad=0.5",
-    width=3,
-    node_size=500,
-    with_labels=False,
-)
-ax.plot([0.45], [0.73], "o", color="black")
-ax.set(xlim=(0, 1), ylim=(0, 1))
-ax.set_ylabel("Synapse\ncount", rotation=0, ha="right")
-ax.text(0.65, 0.65, "Weight = 2", fontsize="medium")
-
-ax = axs[1]
-soft_axis_off(ax)
-nx.draw_networkx(
-    g,
-    pos,
-    ax=ax,
-    arrowstyle="-|>",
-    connectionstyle="arc3,rad=-0.5",
-    width=3,
-    node_size=500,
-    with_labels=False,
-)
-ax.set(xlim=(0, 1), ylim=(0, 1))
-ax.text(0.65, 0.65, "Weight = 2 / 5", fontsize="large")
-
-
-def draw_input(xytext):
-    ax.annotate(
-        "",
-        (0.5, 0.65),
-        xytext=xytext,
-        textcoords="offset points",
-        arrowprops=dict(
-            arrowstyle="-|>",
-            connectionstyle="arc3",
-            facecolor="grey",
-            linewidth=3,
-            shrinkB=10,
-            edgecolor="grey"
-            # width=0.5,
-            # mutation_scale=0.5,
-        ),
-    )
-
-
-draw_input((-25, -25))
-draw_input((0, -35))
-draw_input((-35, 0))
-draw_input((0, 35))
-
-ax.set_ylabel("Input\nproportion", rotation=0, ha="right")
-
-fig.set_facecolor("w")
-
-#%%
 fig, axs = plt.subplots(2, 1, figsize=(4, 5), gridspec_kw=dict(hspace=0))
-from matplotlib.patches import Circle, FancyArrowPatch
 
 set_theme(font_scale=1)
 source_loc = (0.25, 0.5)
@@ -228,13 +150,10 @@ ax.annotate(
 )
 
 
-# ax.text(0.65, 0.65, "Weight = 2", fontsize="medium")
-
 ax = axs[1]
 ax.text(0.93, 0.5, "2 / 5", fontsize="large", va="center", ha="center")
 soft_axis_off(ax)
 ax.set_ylabel("Input\nproportion", rotation=0, ha="right", va="center", labelpad=20)
-# ax.text(0.65, 0.65, "Weight = 2 / 5", fontsize="medium")
 
 draw_neurons()
 
@@ -280,10 +199,6 @@ fig.set_facecolor("w")
 fig.text(0.07, 0.89, "Weight\n type", fontsize="large", ha="right")
 fig.text(0.97, 0.89, "Weight\n" + r"$i \rightarrow$ j", fontsize="large")
 
-# fig.text(0.1, 0.9, "Source\nneuron")
-# fig.text(0.75, 0.9, "Target\nneuron")
-
-import matplotlib as mpl
 
 border_color = "lightgrey"
 line1 = mpl.lines.Line2D(
@@ -311,9 +226,6 @@ line3 = mpl.lines.Line2D(
 fig.lines = (line1, line2, line3)
 
 gluefig("weight_notions", fig)
-# %%
-
-# %%
 
 #%%
 rng = np.random.default_rng(8888)
@@ -430,7 +342,6 @@ def draw_comparison(ax):
     ax.text(
         0.48, 0.35, r"$\overset{?}{=}$", fontsize="xx-large", ha="center", va="center"
     )
-    # ax.plot([0.5, 0.5], [-0.5, 1.25], clip_on=False, linewidth=2, color='darkgrey')
     ax.set(ylim=(0, 1), xlim=(0, 1))
     ax.axis("off")
 
@@ -654,15 +565,12 @@ def plot_thresholding_pvalues(
     )
 
     ax2 = ax.secondary_xaxis(-0.2, functions=(prop_to_thresh, thresh_to_prop))
-    # ax2 = ax.secondary_xaxis(-0.2, functions=(thresh_to_prop, prop_to_thresh))
 
     if weight == "input_proportion":
         ax2.set_xticks([0.005, 0.01, 0.015, 0.02])
         ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
         ax2.set_xlabel("Weight threshold (input percentage)")
     elif weight == "synapse_count":
-        # ax2.set_xticks([2.0, 4.0, 6.0, 8.0])
-        # ax2.set_xticklabels(["0.5%", "1%", "1.5%", "2%"])
         ax2.set_xlabel("Weight threshold (synapse count)")
     ax2.tick_params(axis="both", length=5)
 
@@ -767,7 +675,6 @@ for threshold in tqdm(thresholds):
         }
         rows.append(row)
 input_results = pd.DataFrame(rows)
-input_results
 
 
 #%%
@@ -844,14 +751,6 @@ ax.annotate(
     color="black",
     arrowprops=dict(arrowstyle="-|>", facecolor="black", relpos=(1, 0.7)),
 )
-# ax.text(
-#     median - 0.005,
-#     ax.get_ylim()[1],
-#     "Critical point\n(Panel E)",
-#     ha="right",
-#     va="top",
-#     color="black",
-# )
 gluefig("input_proportion_histogram", fig)
 
 
@@ -964,14 +863,6 @@ sns.histplot(
 sns.move_legend(ax, loc="upper right", title="Hemisphere")
 ax.set(xlabel="Weight (input proportion)")
 ax.axvline(x_threshold, color="black", linestyle="--", linewidth=4, alpha=1)
-# ax.text(
-#     median - 0.001,
-#     ax.get_ylim()[1],
-#     "Median",
-#     ha="right",
-#     va="top",
-#     color="black",
-# )
 
 ax.set_title("KC-")
 gluefig("input_proportion_histogram_kc_minus", fig)

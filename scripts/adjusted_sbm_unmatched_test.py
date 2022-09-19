@@ -29,6 +29,8 @@ from pkg.stats import compute_density, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
 from pkg.io import get_environment_variables
+from giskard.plot import merge_axes
+
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 
@@ -85,7 +87,6 @@ fig, axs = plt.subplots(
     2,
     2,
     figsize=(6, 5),
-    # constrained_layout=True,
     gridspec_kw=dict(wspace=0.25, hspace=0, height_ratios=[2, 0.3]),
 )
 
@@ -102,8 +103,6 @@ line1 = mpl.lines.Line2D(
     color=border_color,
     linewidth=1.5,
 )
-
-# fig.lines = (line1,)
 
 
 ax = axs[0, 0]
@@ -126,7 +125,6 @@ top_ax.set_title(
 )
 top_ax.text(0.94, -1.2, r"$c$", size="large")
 
-# ax.autoscale("off")
 ax.annotate(
     "",
     xy=(0, 1.5),
@@ -141,10 +139,8 @@ ax.annotate(
     clip_on=False,
 )
 
-from giskard.plot import merge_axes
 
 ax = merge_axes(fig, axs, rows=1)
-# ax.set_title("Run group\nconnection test", y=1.1, x=0.6, fontsize="small")
 ax.axis("off")
 ax.set(xlim=(0, 1), ylim=(0, 2))
 
@@ -257,52 +253,6 @@ stat, pvalue, misc = stochastic_block_test(
     density_adjustment=True,
 )
 glue("pvalue", pvalue, form="pvalue")
-
-#%%
-left_nodes["inds"] = np.arange(len(left_nodes))
-right_nodes["inds"] = np.arange(len(right_nodes))
-left_kc_inds = left_nodes.query("simple_group == 'KCs'")["inds"]
-right_kc_inds = right_nodes.query("simple_group == 'KCs'")["inds"]
-left_cn_inds = left_nodes.query("simple_group == 'CNs'")["inds"]
-right_cn_inds = right_nodes.query("simple_group == 'CNs'")["inds"]
-
-left_kc_cn_adj = left_adj[left_kc_inds][:, left_cn_inds]
-right_kc_cn_adj = right_adj[right_kc_inds][:, right_cn_inds]
-
-#%%
-
-fig, axs = plt.subplots(1, 2, figsize=(10, 5))
-ax = axs[0]
-heatmap_kws = dict(
-    xticklabels=False,
-    yticklabels=False,
-    cbar=False,
-    cmap="RdBu_r",
-    center=0,
-    square=True,
-)
-ax.set_title("Left")
-sns.heatmap(left_kc_cn_adj, ax=ax, **heatmap_kws)
-ax = axs[1]
-ax.set_title("Right")
-sns.heatmap(right_kc_cn_adj, ax=ax, **heatmap_kws)
-
-for ax in axs.flat:
-    ax.set(xlabel="CNs", ylabel="KCs")
-
-fig.set_facecolor("w")
-
-#%%
-right_has_kc = right_kc_cn_adj.sum(axis=0) > 0
-cn_right_nodes = right_nodes.query("simple_group == 'CNs'").copy()
-cn_right_nodes["has_kc"] = right_has_kc
-cn_right_nodes.query("has_kc").to_csv(OUT_PATH / "cn_right_nodes_from_kc.csv")
-
-#%%
-right_has_cn = right_kc_cn_adj.sum(axis=1) > 0
-kc_right_nodes = right_nodes.query("simple_group == 'KCs'").copy()
-kc_right_nodes["has_cn"] = right_has_cn
-kc_right_nodes.query("has_cn").to_csv(OUT_PATH / "kc_right_nodes_to_cn.csv")
 
 
 #%%
@@ -440,6 +390,8 @@ fig = Figure(
 fig.save(FIG_PATH / "adjusted_sbm_random_composite.svg")
 fig
 
+#%% [markdown]
+# ## End
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)

@@ -79,7 +79,7 @@ sub_right_labels = sub_right_nodes[GROUP_KEY]
 #%% [markdown]
 # ## Methods
 
-
+#%%
 A1, A2, node_data = sample_toy_networks()
 palette = get_toy_palette()
 
@@ -239,6 +239,8 @@ fig = Figure(
 fig.save(FIG_PATH / "kc_minus_composite.svg")
 fig
 
+#%% [markdown]
+# End
 #%%
 elapsed = time.time() - t0
 delta = datetime.timedelta(seconds=elapsed)

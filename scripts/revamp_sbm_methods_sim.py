@@ -24,7 +24,6 @@ from scipy.stats import beta, binom, chi2
 from scipy.stats import combine_pvalues as scipy_combine_pvalues
 from scipy.stats import ks_1samp, uniform
 from svgutils.compose import Figure, Panel, Text
-from tqdm import tqdm
 
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
@@ -236,44 +235,6 @@ def bootstrap_test(counts1, n_possible1, counts2, n_possible2, n_bootstraps=200)
     return stat, pvalue, misc
 
 
-# bootstrap_test([10], [100], [30], [100], n_bootstraps=1000)
-
-
-# def multi_binom_2samp(
-#     counts1,
-#     n_possible1,
-#     counts2,
-#     n_possible2,
-#     test_method="fisher",
-#     methods=["fisher"],
-#     discrete_correct=False,
-# ):
-#     pvalue_collection = []
-#     for i in range(len(counts1)):
-#         sub_stat, sub_pvalue = binom_2samp(
-#             counts1[i],
-#             n_possible1[i],
-#             counts2[i],
-#             n_possible2[i],
-#             null_odds=1,
-#             method="fisher",
-#         )
-#         pvalue_collection.append(sub_pvalue)
-
-#     pvalue_collection = np.array(pvalue_collection)
-#     n_overall = len(pvalue_collection)
-#     pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
-#     n_tests = len(pvalue_collection)
-#     n_skipped = n_overall - n_tests
-
-#     rows = []
-#     for method in methods:
-#         stat, pvalue = my_combine_pvalues(pvalue_collection, method=method)
-#         rows.append({"stat": stat, "pvalue": pvalue, "method": method})
-
-#     return pvalue_collection, rows
-
-
 def compare_individual_probabilities(counts1, n_possible1, counts2, n_possible2):
     pvalue_collection = []
     for i in range(len(counts1)):
@@ -288,29 +249,8 @@ def compare_individual_probabilities(counts1, n_possible1, counts2, n_possible2)
         pvalue_collection.append(sub_pvalue)
 
     pvalue_collection = np.array(pvalue_collection)
-    # n_overall = len(pvalue_collection)
     pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
-    # n_tests = len(pvalue_collection)
-    # n_skipped = n_overall - n_tests
     return pvalue_collection
-
-
-# def run_test(
-#     counts1, n_possible1, counts2, n_possible2, method="fisher", n_bootstraps=1000
-# ):
-#     counts1 = counts1.copy()
-#     n_possible1 = n_possible1.copy()
-#     counts2 = counts2.copy()
-#     n_possible2 = n_possible2.copy()
-#     if method == "bootstrap":
-#         stat, pvalue, misc = bootstrap_test(
-#             counts1, n_possible1, counts2, n_possible2, n_bootstraps=n_bootstraps
-#         )
-#     elif method in ["fisher", "min"]:
-#         stat, pvalue, misc = multi_binom_2samp(
-#             counts1, n_possible1, counts2, n_possible2, method=method
-#         )
-#     return stat, pvalue, misc
 
 
 #%%
@@ -634,8 +574,6 @@ ratios_square = mean_diffs.pivot(
 
 v = np.max(np.abs(mean_diffs.values))
 
-# fig, axs = plt.subplots(1, 3, figsize=(12, 4), sharex=True, sharey=True)
-
 set_theme(font_scale=1.5)
 # set up plot
 pad = 0.5
@@ -711,11 +649,6 @@ pal = sns.diverging_palette(145, 300, s=60, as_cmap=True)
 
 ax = axs[ratio_col]
 im = power_heatmap(np.log10(ratios_square), ax=ax, vmin=-2, vmax=2, center=0, cmap=pal)
-# ax.set_title(r'$log_10(\frac{\text{Power}_{Fisher}}{\text{Power}_{Min}})$')
-# ax.set_title(
-#     r"$log_{10}($Fisher power$)$" + "\n" + r" - $log_{10}($Min power$)$",
-#     fontsize="large",
-# )
 ax.set(yticks=[])
 
 ax = axs[-1]
