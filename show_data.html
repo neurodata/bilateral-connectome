@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>&lt;no title&gt; &#8212; Bilateral Connectome</title>
+    <title>Visualize the connectome &#8212; Bilateral Connectome</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -55,6 +55,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="shortcut icon" href="_static/nd_logo_small.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Density test" href="er_unmatched_test.html" />
+    <link rel="prev" title="Larval Drosophila melanogaster brain connectome" href="define_data.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -119,7 +121,7 @@ const thebe_selector_output = ".output, .cell_output"
   Preliminaries
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="introduction.html">
    Introduction
@@ -142,6 +144,11 @@ const thebe_selector_output = ".output, .cell_output"
     Drosophila melanogaster
    </em>
    brain connectome
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Visualize the connectome
   </a>
  </li>
 </ul>
@@ -169,6 +176,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="kc_minus.html">
    Removing the Kenyon cells
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="thresholding_tests.html">
+   Comparing edge weight thresholds
   </a>
  </li>
 </ul>
@@ -431,50 +443,23 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1><no title></h1>
+                <h1>Visualize the connectome</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -482,7 +467,9 @@ title="Print to PDF"
                 
               <div>
                 
-  <div class="cell tag_hide-input docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="visualize-the-connectome">
+<h1>Visualize the connectome<a class="headerlink" href="#visualize-the-connectome" title="Permalink to this headline">#</a></h1>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -505,8 +492,11 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
 <span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>
 <span class="kn">from</span> <span class="nn">umap</span> <span class="kn">import</span> <span class="n">UMAP</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
 
-<span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
+
 <span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;show_data&quot;</span>
 
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
@@ -535,6 +525,14 @@ title="Print to PDF"
 
 <span class="n">left_adj</span><span class="p">,</span> <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
 <span class="n">right_adj</span><span class="p">,</span> <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
+   RESAVE_DATA: True
+   RERUN_SIMS: True
+   DISPLAY_FIGS: False
 </pre></div>
 </div>
 </div>
@@ -615,7 +613,6 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/show_data_2_1.png" src="_images/show_data_2_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -679,12 +676,12 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;AxesSubplot:&gt;,
- &lt;mpl_toolkits.axes_grid1.axes_divider.AxesDivider at 0x13eef1d60&gt;,
+ &lt;mpl_toolkits.axes_grid1.axes_divider.AxesDivider at 0x147567f70&gt;,
  &lt;AxesSubplot:&gt;,
  &lt;AxesSubplot:&gt;)
 </pre></div>
 </div>
-<img alt="_images/show_data_6_1.png" src="_images/show_data_6_1.png" />
+<img alt="_images/show_data_7_1.png" src="_images/show_data_7_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -758,7 +755,6 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/show_data_8_1.png" src="_images/show_data_8_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -871,7 +867,6 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/show_data_9_1.png" src="_images/show_data_9_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -884,12 +879,13 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:02:00.767422
-Completed at 2022-09-14 09:30:40.538645
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:53.124204
+Completed at 2022-09-16 14:04:30.858154
 </pre></div>
 </div>
 </div>
 </div>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -918,6 +914,20 @@ Completed at 2022-09-14 09:30:40.538645
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="define_data.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Larval <em>Drosophila melanogaster</em> brain connectome</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="er_unmatched_test.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Density test</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
             </footer>
         </div>

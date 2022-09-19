@@ -146,6 +146,11 @@ const thebe_selector_output = ".output, .cell_output"
    brain connectome
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="show_data.html">
+   Visualize the connectome
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -171,6 +176,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="kc_minus.html">
    Removing the Kenyon cells
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="thresholding_tests.html">
+   Comparing edge weight thresholds
   </a>
  </li>
 </ul>
@@ -329,35 +339,6 @@ title="Toggle navigation"
         
     </div>
     <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/neurodata/bilateral-connectome/main?urlpath=tree/bilateral-connectome/adjusted_sbm_unmatched_test.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
 <button onclick="toggleFullScreen()"
   class="headerbtn"
   data-toggle="tooltip"
@@ -462,12 +443,36 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#end">
+   End
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -479,6 +484,19 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#end">
+   End
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -515,8 +533,11 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">compute_density</span><span class="p">,</span> <span class="n">stochastic_block_test</span>
 <span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
+<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">merge_axes</span>
 
-<span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">RERUN_SIMS</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
 
 <span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;adjusted_sbm_unmatched_test&quot;</span>
 
@@ -556,6 +577,14 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
+   RESAVE_DATA: True
+   RERUN_SIMS: False
+   DISPLAY_FIGS: False
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -574,7 +603,6 @@ title="Print to PDF"
     <span class="mi">2</span><span class="p">,</span>
     <span class="mi">2</span><span class="p">,</span>
     <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-    <span class="c1"># constrained_layout=True,</span>
     <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]),</span>
 <span class="p">)</span>
 
@@ -591,8 +619,6 @@ title="Print to PDF"
     <span class="n">color</span><span class="o">=</span><span class="n">border_color</span><span class="p">,</span>
     <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># fig.lines = (line1,)</span>
 
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
@@ -615,7 +641,6 @@ title="Print to PDF"
 <span class="p">)</span>
 <span class="n">top_ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.94</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$c$&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">)</span>
 
-<span class="c1"># ax.autoscale(&quot;off&quot;)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
     <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span>
@@ -630,10 +655,8 @@ title="Print to PDF"
     <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">merge_axes</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># ax.set_title(&quot;Run group\nconnection test&quot;, y=1.1, x=0.6, fontsize=&quot;small&quot;)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
@@ -718,9 +741,8 @@ title="Print to PDF"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">n_resamples</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_resamples&quot;</span><span class="p">,</span> <span class="n">n_resamples</span><span class="p">)</span>
-<span class="n">RERUN_SIM</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="k">if</span> <span class="n">RERUN_SIM</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">RERUN_SIMS</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_resamples</span><span class="p">)):</span>
         <span class="n">subsampled_right_adj</span> <span class="o">=</span> <span class="n">remove_edges</span><span class="p">(</span>
             <span class="n">right_adj</span><span class="p">,</span> <span class="n">effect_size</span><span class="o">=</span><span class="n">n_remove</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">rng</span>
@@ -770,1170 +792,6 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 </div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left_nodes</span><span class="p">))</span>
-<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right_nodes</span><span class="p">))</span>
-<span class="n">left_kc_inds</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;simple_group == &#39;KCs&#39;&quot;</span><span class="p">)[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span>
-<span class="n">right_kc_inds</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;simple_group == &#39;KCs&#39;&quot;</span><span class="p">)[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span>
-<span class="n">left_cn_inds</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;simple_group == &#39;CNs&#39;&quot;</span><span class="p">)[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span>
-<span class="n">right_cn_inds</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;simple_group == &#39;CNs&#39;&quot;</span><span class="p">)[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span>
-
-<span class="n">left_kc_cn_adj</span> <span class="o">=</span> <span class="n">left_adj</span><span class="p">[</span><span class="n">left_kc_inds</span><span class="p">][:,</span> <span class="n">left_cn_inds</span><span class="p">]</span>
-<span class="n">right_kc_cn_adj</span> <span class="o">=</span> <span class="n">right_adj</span><span class="p">[</span><span class="n">right_kc_inds</span><span class="p">][:,</span> <span class="n">right_cn_inds</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">graspologic.plot</span> <span class="kn">import</span> <span class="n">heatmap</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">heatmap_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">xticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu_r&quot;</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Left&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">left_kc_cn_adj</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">heatmap_kws</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Right&quot;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">right_kc_cn_adj</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">heatmap_kws</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span> 
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;CNs&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;KCs&#39;</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/adjusted_sbm_unmatched_test_8_0.png" src="_images/adjusted_sbm_unmatched_test_8_0.png" />
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">right_has_kc</span> <span class="o">=</span> <span class="n">right_kc_cn_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
-
-<span class="n">cn_right_nodes</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;simple_group == &#39;CNs&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">cn_right_nodes</span><span class="p">[</span><span class="s2">&quot;has_kc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_has_kc</span>
-<span class="n">cn_right_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;has_kc&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>neurons</th>
-      <th>paper_clustered_neurons</th>
-      <th>left</th>
-      <th>right</th>
-      <th>center</th>
-      <th>sink</th>
-      <th>partially_differentiated</th>
-      <th>unsplittable</th>
-      <th>ipsilateral_axon</th>
-      <th>...</th>
-      <th>pair</th>
-      <th>pair_id</th>
-      <th>lineage</th>
-      <th>axon_output</th>
-      <th>axon_input</th>
-      <th>dendrite_output</th>
-      <th>dendrite_input</th>
-      <th>_inds</th>
-      <th>inds</th>
-      <th>has_kc</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>17019327</th>
-      <td>CF ; pDM_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>11409587</td>
-      <td>508</td>
-      <td>DPMpm1_r</td>
-      <td>327.0</td>
-      <td>77.0</td>
-      <td>6.0</td>
-      <td>181.0</td>
-      <td>1555</td>
-      <td>51</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>16339645</th>
-      <td>JI_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>16444552</td>
-      <td>790</td>
-      <td>DPLc5_r</td>
-      <td>232.0</td>
-      <td>82.0</td>
-      <td>0.0</td>
-      <td>149.0</td>
-      <td>1778</td>
-      <td>274</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>16405545</th>
-      <td>Tomato Vine_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>12789813</td>
-      <td>589</td>
-      <td>DPMpm1_r</td>
-      <td>324.0</td>
-      <td>28.0</td>
-      <td>2.0</td>
-      <td>326.0</td>
-      <td>1802</td>
-      <td>298</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>17438424</th>
-      <td>SLP1_right; CM13 lat 9</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>17639784</td>
-      <td>975</td>
-      <td>CM13_lat_r</td>
-      <td>552.0</td>
-      <td>70.0</td>
-      <td>0.0</td>
-      <td>274.0</td>
-      <td>1813</td>
-      <td>309</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5791548</th>
-      <td>DALcm d 5; DALcm12 v e 26 right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>15519213</td>
-      <td>696</td>
-      <td>DALcm12-v_r</td>
-      <td>337.0</td>
-      <td>24.0</td>
-      <td>0.0</td>
-      <td>119.0</td>
-      <td>1974</td>
-      <td>470</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5669107</th>
-      <td>L ; DALcm12 m lat 4_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>14073503</td>
-      <td>628</td>
-      <td>DALcm12-m_r</td>
-      <td>185.0</td>
-      <td>41.0</td>
-      <td>70.0</td>
-      <td>316.0</td>
-      <td>1984</td>
-      <td>480</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4575178</th>
-      <td>CH ; BAmd1 lineage_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>17176911</td>
-      <td>912</td>
-      <td>BAmd1_r</td>
-      <td>195.0</td>
-      <td>66.0</td>
-      <td>0.0</td>
-      <td>126.0</td>
-      <td>2046</td>
-      <td>542</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>6611100</th>
-      <td>H ; DALcm r v ant med_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>17276867</td>
-      <td>920</td>
-      <td>DALcm12-m_r</td>
-      <td>291.0</td>
-      <td>67.0</td>
-      <td>12.0</td>
-      <td>418.0</td>
-      <td>2168</td>
-      <td>663</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4411542</th>
-      <td>T1 ; DALcl12 d 4_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>14071613</td>
-      <td>627</td>
-      <td>DALcl12-d_r</td>
-      <td>336.0</td>
-      <td>43.0</td>
-      <td>2.0</td>
-      <td>190.0</td>
-      <td>2189</td>
-      <td>684</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>2667061</th>
-      <td>ASB TODO B1 right 8 Fragment with soma</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>11011058</td>
-      <td>475</td>
-      <td>DPMpl12_r</td>
-      <td>135.0</td>
-      <td>29.0</td>
-      <td>0.0</td>
-      <td>160.0</td>
-      <td>2289</td>
-      <td>784</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4214582</th>
-      <td>Y ; DALcm12 L m ant lat 2_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>7053966</td>
-      <td>204</td>
-      <td>DALcm12-m_r</td>
-      <td>256.0</td>
-      <td>39.0</td>
-      <td>71.0</td>
-      <td>208.0</td>
-      <td>2414</td>
-      <td>909</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>13806524</th>
-      <td>NQ: BAla12_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>4433960</td>
-      <td>104</td>
-      <td>BAla12_r</td>
-      <td>298.0</td>
-      <td>40.0</td>
-      <td>0.0</td>
-      <td>108.0</td>
-      <td>2520</td>
-      <td>1015</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>11464638</th>
-      <td>DPMpl lat 7_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>10543751</td>
-      <td>422</td>
-      <td>DPMpl12_r</td>
-      <td>258.0</td>
-      <td>52.0</td>
-      <td>0.0</td>
-      <td>218.0</td>
-      <td>2562</td>
-      <td>1057</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>8717042</th>
-      <td>AU : Right BLAv2 post early dor neuron 8717043</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>19088042</td>
-      <td>1061</td>
-      <td>BLAv12_lat_r</td>
-      <td>247.0</td>
-      <td>19.0</td>
-      <td>7.0</td>
-      <td>245.0</td>
-      <td>2809</td>
-      <td>1304</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>8318813</th>
-      <td>DALcl12 v d 5 right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>11908619</td>
-      <td>532</td>
-      <td>DALcl12-v_r</td>
-      <td>112.0</td>
-      <td>43.0</td>
-      <td>0.0</td>
-      <td>40.0</td>
-      <td>2819</td>
-      <td>1314</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9641919</th>
-      <td>S_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>16089738</td>
-      <td>753</td>
-      <td>DPLm2_r</td>
-      <td>199.0</td>
-      <td>60.0</td>
-      <td>9.0</td>
-      <td>150.0</td>
-      <td>2975</td>
-      <td>1470</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9753530</th>
-      <td>BH ; Descending 2; CP1 v 2_right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>17140424</td>
-      <td>902</td>
-      <td>CPf_r</td>
-      <td>257.0</td>
-      <td>43.0</td>
-      <td>4.0</td>
-      <td>276.0</td>
-      <td>2996</td>
-      <td>1491</td>
-      <td>True</td>
-    </tr>
-  </tbody>
-</table>
-<p>17 rows × 60 columns</p>
-</div></div></div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">right_has_cn</span> <span class="o">=</span> <span class="n">right_kc_cn_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
-<span class="n">kc_right_nodes</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;simple_group == &#39;KCs&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">kc_right_nodes</span><span class="p">[</span><span class="s2">&quot;has_cn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_has_cn</span>
-<span class="n">kc_right_nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;has_cn&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>neurons</th>
-      <th>paper_clustered_neurons</th>
-      <th>left</th>
-      <th>right</th>
-      <th>center</th>
-      <th>sink</th>
-      <th>partially_differentiated</th>
-      <th>unsplittable</th>
-      <th>ipsilateral_axon</th>
-      <th>...</th>
-      <th>pair</th>
-      <th>pair_id</th>
-      <th>lineage</th>
-      <th>axon_output</th>
-      <th>axon_input</th>
-      <th>dendrite_output</th>
-      <th>dendrite_input</th>
-      <th>_inds</th>
-      <th>inds</th>
-      <th>has_cn</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>5836206</th>
-      <td>KC28</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB A</td>
-      <td>480.0</td>
-      <td>206.0</td>
-      <td>14.0</td>
-      <td>30.0</td>
-      <td>1964</td>
-      <td>460</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5836197</th>
-      <td>KC27</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB C</td>
-      <td>371.0</td>
-      <td>209.0</td>
-      <td>42.0</td>
-      <td>38.0</td>
-      <td>1965</td>
-      <td>461</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5836163</th>
-      <td>KC25</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>16630264</td>
-      <td>827</td>
-      <td>MBNB A</td>
-      <td>442.0</td>
-      <td>185.0</td>
-      <td>23.0</td>
-      <td>37.0</td>
-      <td>1967</td>
-      <td>463</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5835815</th>
-      <td>KC23</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB D</td>
-      <td>168.0</td>
-      <td>118.0</td>
-      <td>34.0</td>
-      <td>50.0</td>
-      <td>1969</td>
-      <td>465</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5836387</th>
-      <td>KC29</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB D</td>
-      <td>221.0</td>
-      <td>110.0</td>
-      <td>24.0</td>
-      <td>46.0</td>
-      <td>1977</td>
-      <td>473</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4444354</th>
-      <td>KC17</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>11691603</td>
-      <td>515</td>
-      <td>MBNB A</td>
-      <td>370.0</td>
-      <td>169.0</td>
-      <td>27.0</td>
-      <td>35.0</td>
-      <td>2052</td>
-      <td>548</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4415241</th>
-      <td>KC16</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>12726582</td>
-      <td>97</td>
-      <td>MBNB A</td>
-      <td>563.0</td>
-      <td>293.0</td>
-      <td>0.0</td>
-      <td>76.0</td>
-      <td>2053</td>
-      <td>549</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5051342</th>
-      <td>KC21</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>8262302</td>
-      <td>272</td>
-      <td>MBNB A</td>
-      <td>438.0</td>
-      <td>160.0</td>
-      <td>28.0</td>
-      <td>54.0</td>
-      <td>2086</td>
-      <td>582</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5019924</th>
-      <td>KC20</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB A</td>
-      <td>421.0</td>
-      <td>185.0</td>
-      <td>25.0</td>
-      <td>32.0</td>
-      <td>2089</td>
-      <td>585</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>7828725</th>
-      <td>KC35</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB A</td>
-      <td>218.0</td>
-      <td>106.0</td>
-      <td>22.0</td>
-      <td>56.0</td>
-      <td>2115</td>
-      <td>611</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>7786053</th>
-      <td>KC34</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>16629788</td>
-      <td>826</td>
-      <td>MBNB A</td>
-      <td>525.0</td>
-      <td>183.0</td>
-      <td>39.0</td>
-      <td>42.0</td>
-      <td>2117</td>
-      <td>613</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>8068173</th>
-      <td>LON KC right</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>8262372</td>
-      <td>274</td>
-      <td>MBNB C</td>
-      <td>454.0</td>
-      <td>272.0</td>
-      <td>9.0</td>
-      <td>51.0</td>
-      <td>2124</td>
-      <td>620</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>3347708</th>
-      <td>KC2</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>4412315</td>
-      <td>100</td>
-      <td>MBNB A</td>
-      <td>452.0</td>
-      <td>204.0</td>
-      <td>29.0</td>
-      <td>38.0</td>
-      <td>2266</td>
-      <td>761</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4241192</th>
-      <td>KC14</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>16039470</td>
-      <td>673</td>
-      <td>MBNB D</td>
-      <td>369.0</td>
-      <td>225.0</td>
-      <td>0.0</td>
-      <td>49.0</td>
-      <td>2398</td>
-      <td>893</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4230739</th>
-      <td>KC13</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>14898816</td>
-      <td>672</td>
-      <td>MBNB A</td>
-      <td>429.0</td>
-      <td>173.0</td>
-      <td>21.0</td>
-      <td>39.0</td>
-      <td>2404</td>
-      <td>899</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4227544</th>
-      <td>KC11</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB D</td>
-      <td>356.0</td>
-      <td>158.0</td>
-      <td>0.0</td>
-      <td>66.0</td>
-      <td>2411</td>
-      <td>906</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4227304</th>
-      <td>KC10</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB B</td>
-      <td>485.0</td>
-      <td>165.0</td>
-      <td>15.0</td>
-      <td>33.0</td>
-      <td>2412</td>
-      <td>907</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>3664102</th>
-      <td>Thermo KC B_right - mbi2 - unknown</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>7187384</td>
-      <td>215</td>
-      <td>MBNB C</td>
-      <td>460.0</td>
-      <td>226.0</td>
-      <td>3.0</td>
-      <td>74.0</td>
-      <td>2444</td>
-      <td>939</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>11813287</th>
-      <td>KC100</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>16058860</td>
-      <td>879</td>
-      <td>MBNB B</td>
-      <td>458.0</td>
-      <td>189.0</td>
-      <td>30.0</td>
-      <td>50.0</td>
-      <td>2583</td>
-      <td>1078</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>8413663</th>
-      <td>KC49</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>16627838</td>
-      <td>524</td>
-      <td>MBNB A</td>
-      <td>355.0</td>
-      <td>162.0</td>
-      <td>45.0</td>
-      <td>58.0</td>
-      <td>2813</td>
-      <td>1308</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>10056280</th>
-      <td>KC96</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB A</td>
-      <td>521.0</td>
-      <td>191.0</td>
-      <td>37.0</td>
-      <td>59.0</td>
-      <td>2941</td>
-      <td>1436</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9609048</th>
-      <td>KC82</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>15722867</td>
-      <td>732</td>
-      <td>MBNB D</td>
-      <td>330.0</td>
-      <td>143.0</td>
-      <td>12.0</td>
-      <td>28.0</td>
-      <td>2946</td>
-      <td>1441</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9556700</th>
-      <td>KC78</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>16631114</td>
-      <td>75</td>
-      <td>MBNB A</td>
-      <td>457.0</td>
-      <td>196.0</td>
-      <td>40.0</td>
-      <td>55.0</td>
-      <td>2954</td>
-      <td>1449</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9809626</th>
-      <td>KC91</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>True</td>
-      <td>...</td>
-      <td>-1</td>
-      <td>-1</td>
-      <td>MBNB C</td>
-      <td>238.0</td>
-      <td>103.0</td>
-      <td>43.0</td>
-      <td>46.0</td>
-      <td>2987</td>
-      <td>1482</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9796812</th>
-      <td>KC90</td>
-      <td>True</td>
-      <td>True</td>
-      <td>False</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>False</td>
-      <td>...</td>
-      <td>16977881</td>
-      <td>878</td>
-      <td>MBNB A</td>
-      <td>547.0</td>
-      <td>186.0</td>
-      <td>24.0</td>
-      <td>42.0</td>
-      <td>2992</td>
-      <td>1487</td>
-      <td>True</td>
-    </tr>
-  </tbody>
-</table>
-<p>25 rows × 60 columns</p>
-</div></div></div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -2042,7 +900,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/adjusted_sbm_unmatched_test_13_0.svg" src="_images/adjusted_sbm_unmatched_test_13_0.svg" /></div>
+<img alt="_images/adjusted_sbm_unmatched_test_9_0.svg" src="_images/adjusted_sbm_unmatched_test_9_0.svg" /></div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -2087,8 +945,10 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/adjusted_sbm_unmatched_test_14_0.svg" src="_images/adjusted_sbm_unmatched_test_14_0.svg" /></div>
+<img alt="_images/adjusted_sbm_unmatched_test_10_0.svg" src="_images/adjusted_sbm_unmatched_test_10_0.svg" /></div>
 </div>
+<section id="end">
+<h2>End<a class="headerlink" href="#end" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
@@ -2099,12 +959,13 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:12.619928
-Completed at 2022-09-14 09:44:56.674820
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:11.857012
+Completed at 2022-09-16 14:50:23.796642
 </pre></div>
 </div>
 </div>
 </div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
