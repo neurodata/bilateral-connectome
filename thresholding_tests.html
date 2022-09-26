@@ -339,35 +339,6 @@ title="Toggle navigation"
         
     </div>
     <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/neurodata/bilateral-connectome/main?urlpath=tree/bilateral-connectome/thresholding_tests.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
 <button onclick="toggleFullScreen()"
   class="headerbtn"
   data-toggle="tooltip"
@@ -549,8 +520,8 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: False
-   RERUN_SIMS: False
+   RESAVE_DATA: true
+   RERUN_SIMS: true
    DISPLAY_FIGS: False
 </pre></div>
 </div>
@@ -565,7 +536,7 @@ title="Print to PDF"
 
 <span class="n">neutral_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;simple_group&quot;</span>
+<span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;celltype_discrete&quot;</span>
 
 <span class="n">left_labels</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">right_labels</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
@@ -1020,7 +991,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 9/9 [00:24&lt;00:00,  2.72s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████████████████| 9/9 [00:24&lt;00:00,  2.69s/it]
 </pre></div>
 </div>
 </div>
@@ -1229,7 +1200,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 31/31 [02:23&lt;00:00,  4.63s/it]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████| 31/31 [02:18&lt;00:00,  4.46s/it]
 </pre></div>
 </div>
 </div>
@@ -1409,8 +1380,8 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:03:01.723021
-Completed at 2022-09-16 15:19:11.951519
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:02:56.661383
+Completed at 2022-09-26 09:54:36.673426
 </pre></div>
 </div>
 </div>

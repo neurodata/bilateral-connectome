@@ -670,9 +670,9 @@ alternative hypotheses above.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: False
-   RERUN_SIMS: False
-   DISPLAY_FIGS: True
+   RESAVE_DATA: true
+   RERUN_SIMS: true
+   DISPLAY_FIGS: False
 </pre></div>
 </div>
 </div>
@@ -726,7 +726,6 @@ alternative hypotheses above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/er_unmatched_test_5_1.png" src="_images/er_unmatched_test_5_1.png" />
 </div>
 </div>
 </section>
@@ -798,7 +797,6 @@ alternative hypotheses above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/er_unmatched_test_7_1.png" src="_images/er_unmatched_test_7_1.png" />
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -815,13 +813,16 @@ alternative hypotheses above.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_possible_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;possible1&quot;</span><span class="p">]</span>
 <span class="n">n_possible_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;possible2&quot;</span><span class="p">]</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_possible_left&quot;</span><span class="p">,</span> <span class="n">n_possible_left</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_possible_right&quot;</span><span class="p">,</span> <span class="n">n_possible_right</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_possible_left&quot;</span><span class="p">,</span> <span class="n">n_possible_left</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;long&#39;</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_possible_right&quot;</span><span class="p">,</span> <span class="n">n_possible_right</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;long&#39;</span><span class="p">)</span>
 
 <span class="n">density_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probability1&quot;</span><span class="p">]</span>
 <span class="n">density_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probability2&quot;</span><span class="p">]</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_left&quot;</span><span class="p">,</span> <span class="n">density_left</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;0.2g&quot;</span><span class="p">)</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_right&quot;</span><span class="p">,</span> <span class="n">density_right</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;0.2g&quot;</span><span class="p">)</span>
+
+<span class="n">density_ratio</span> <span class="o">=</span> <span class="n">density_left</span> <span class="o">/</span> <span class="n">density_right</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_ratio&quot;</span><span class="p">,</span> <span class="n">density_ratio</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;0.2f&quot;</span><span class="p">)</span>
 
 <span class="n">n_edges_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;observed1&quot;</span><span class="p">]</span>
 <span class="n">n_edges_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;observed2&quot;</span><span class="p">]</span>
@@ -842,7 +843,6 @@ alternative hypotheses above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/er_unmatched_test_10_3.png" src="_images/er_unmatched_test_10_3.png" />
 </div>
 </div>
 </section>
@@ -862,7 +862,7 @@ it is
 <strong>%</strong>
 confidence intervals for this estimated parameter <span class="math notranslate nohighlight">\(\hat{p}\)</span>. The p-value for testing
 the null hypothesis that these densities are the same is
-<span class="pasted-text">4e-24</span> (two
+<span class="pasted-text">3.86e-24</span> (two
 sided Fisher’s exact test).</span><a class="headerlink" href="#fig-er-unmatched-test-er-density" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
@@ -873,7 +873,7 @@ on the right it is ~<span class="pasted-text">0.017</span>. To determine
 whether this is a difference likely to be observed by chance under the ER model,
 we ran a two-sided Fisher’s exact test, which tests whether the success probabilities
 between two independent binomials are significantly different. This test yields a
-p-value of <span class="pasted-text">4e-24</span>, suggesting that we have strong
+p-value of <span class="pasted-text">3.86e-24</span>, suggesting that we have strong
 evidence to reject this version of our hypotheis of bilateral symmetry. We note that
 while the difference between estimated densities is not massive, this low p-value
 results from the large sample size for this comparison. We note that there are
@@ -945,8 +945,8 @@ explained by this difference in density alone.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:08.088362
-Completed at 2022-09-16 14:44:21.547665
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:04.401128
+Completed at 2022-09-26 09:26:05.634744
 </pre></div>
 </div>
 </div>

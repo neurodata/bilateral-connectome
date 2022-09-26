@@ -477,7 +477,7 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">adjplot</span><span class="p">,</span> <span class="n">scattermap</span><span class="p">,</span> <span class="n">soft_axis_off</span>
+<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">adjplot</span><span class="p">,</span> <span class="n">scattermap</span>
 <span class="kn">from</span> <span class="nn">graspologic.embed</span> <span class="kn">import</span> <span class="n">AdjacencySpectralEmbed</span>
 <span class="kn">from</span> <span class="nn">graspologic.plot</span> <span class="kn">import</span> <span class="n">networkplot</span>
 <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="kn">import</span> <span class="n">Normal</span><span class="p">,</span> <span class="n">Stroke</span>
@@ -487,13 +487,12 @@ title="Print to PDF"
     <span class="n">load_node_palette</span><span class="p">,</span>
     <span class="n">load_unmatched</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
 <span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
 <span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>
 <span class="kn">from</span> <span class="nn">umap</span> <span class="kn">import</span> <span class="n">UMAP</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
-
 
 <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
 
@@ -530,8 +529,8 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: True
-   RERUN_SIMS: True
+   RESAVE_DATA: true
+   RERUN_SIMS: true
    DISPLAY_FIGS: False
 </pre></div>
 </div>
@@ -573,7 +572,6 @@ title="Print to PDF"
 
 
 <span class="k">def</span> <span class="nf">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="c1"># ax.set(xlabel=&quot;&quot;, ylabel=&quot;&quot;, xticks=[], yticks=[])</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">top</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">bottom</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
@@ -625,10 +623,6 @@ title="Print to PDF"
     <span class="n">Z_ordered</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">optimal_leaf_ordering</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
     <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">leaves_list</span><span class="p">(</span><span class="n">Z_ordered</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sorted_indices</span>
-
-
-<span class="c1"># left_adj_sorted = left_adj.copy()[np.ix_(sorted_indices, sorted_indices)]</span>
-<span class="c1"># adjplot(left_adj_sorted, plot_type=&quot;scattermap&quot;)</span>
 </pre></div>
 </div>
 </div>
@@ -660,9 +654,7 @@ title="Print to PDF"
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from giskard.plot import adjplot</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
 <span class="n">adjplot</span><span class="p">(</span>
     <span class="n">adj</span><span class="p">,</span>
     <span class="n">meta</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span>
@@ -676,7 +668,7 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;AxesSubplot:&gt;,
- &lt;mpl_toolkits.axes_grid1.axes_divider.AxesDivider at 0x147567f70&gt;,
+ &lt;mpl_toolkits.axes_grid1.axes_divider.AxesDivider at 0x137970100&gt;,
  &lt;AxesSubplot:&gt;,
  &lt;AxesSubplot:&gt;)
 </pre></div>
@@ -879,8 +871,8 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:53.124204
-Completed at 2022-09-16 14:04:30.858154
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:46.460993
+Completed at 2022-09-26 09:25:48.950608
 </pre></div>
 </div>
 </div>

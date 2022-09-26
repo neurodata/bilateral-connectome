@@ -540,7 +540,8 @@ title="Print to PDF"
 <h1>Comparing methods for SBM testing<a class="headerlink" href="#comparing-methods-for-sbm-testing" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -552,7 +553,7 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">subuniformity_plot</span>
 <span class="kn">from</span> <span class="nn">matplotlib.transforms</span> <span class="kn">import</span> <span class="n">Bbox</span>
 <span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_network_palette</span><span class="p">,</span> <span class="n">load_node_palette</span><span class="p">,</span> <span class="n">load_unmatched</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span><span class="p">,</span> <span class="n">get_environment_variables</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
 <span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">SmartSVG</span><span class="p">,</span> <span class="n">set_theme</span>
@@ -561,9 +562,10 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">combine_pvalues</span> <span class="k">as</span> <span class="n">scipy_combine_pvalues</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">ks_1samp</span><span class="p">,</span> <span class="n">uniform</span>
 <span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">_</span><span class="p">,</span> <span class="n">RERUN_SIMS</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
+
 
 <span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;revamp_sbm_methods_sim&quot;</span>
 
@@ -606,7 +608,7 @@ title="Print to PDF"
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
     <span class="n">left_adj</span><span class="p">,</span>
     <span class="n">right_adj</span><span class="p">,</span>
     <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
@@ -662,9 +664,6 @@ model/test above.</p></li>
 <section id="p-values-under-the-null">
 <h2>P-values under the null<a class="headerlink" href="#p-values-under-the-null" title="Permalink to this headline">#</a></h2>
 <figure class="align-default" id="id1">
-<div class="cell_output docutils container">
-<img alt="_images/revamp_sbm_methods_sim_9_0.png" src="_images/revamp_sbm_methods_sim_9_0.png" />
-</div>
 <figcaption>
 <p><span class="caption-number">Fig. 8 </span><span class="caption-text">Distributions of p-values under the null for each method. Dotted line indicates
 the CDF of a <span class="math notranslate nohighlight">\(Uniform(0,1)\)</span> random variable. The
@@ -679,7 +678,9 @@ Note that all methods appear empirically valid, some appear highly conservative.
 <h2>P-values under the alternative<a class="headerlink" href="#p-values-under-the-alternative" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">random_shift_pvalues</span><span class="p">(</span><span class="n">pvalues</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+<span class="k">def</span> <span class="nf">random_shift_pvalues</span><span class="p">(</span><span class="n">pvalues</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">pvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">pvalues</span><span class="p">)</span>  <span class="c1"># already makes a copy</span>
     <span class="n">diffs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">pvalues</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">rng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -779,44 +780,6 @@ Note that all methods appear empirically valid, some appear highly conservative.
     <span class="k">return</span> <span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span>
 
 
-<span class="c1"># bootstrap_test([10], [100], [30], [100], n_bootstraps=1000)</span>
-
-
-<span class="c1"># def multi_binom_2samp(</span>
-<span class="c1">#     counts1,</span>
-<span class="c1">#     n_possible1,</span>
-<span class="c1">#     counts2,</span>
-<span class="c1">#     n_possible2,</span>
-<span class="c1">#     test_method=&quot;fisher&quot;,</span>
-<span class="c1">#     methods=[&quot;fisher&quot;],</span>
-<span class="c1">#     discrete_correct=False,</span>
-<span class="c1"># ):</span>
-<span class="c1">#     pvalue_collection = []</span>
-<span class="c1">#     for i in range(len(counts1)):</span>
-<span class="c1">#         sub_stat, sub_pvalue = binom_2samp(</span>
-<span class="c1">#             counts1[i],</span>
-<span class="c1">#             n_possible1[i],</span>
-<span class="c1">#             counts2[i],</span>
-<span class="c1">#             n_possible2[i],</span>
-<span class="c1">#             null_odds=1,</span>
-<span class="c1">#             method=&quot;fisher&quot;,</span>
-<span class="c1">#         )</span>
-<span class="c1">#         pvalue_collection.append(sub_pvalue)</span>
-
-<span class="c1">#     pvalue_collection = np.array(pvalue_collection)</span>
-<span class="c1">#     n_overall = len(pvalue_collection)</span>
-<span class="c1">#     pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]</span>
-<span class="c1">#     n_tests = len(pvalue_collection)</span>
-<span class="c1">#     n_skipped = n_overall - n_tests</span>
-
-<span class="c1">#     rows = []</span>
-<span class="c1">#     for method in methods:</span>
-<span class="c1">#         stat, pvalue = my_combine_pvalues(pvalue_collection, method=method)</span>
-<span class="c1">#         rows.append({&quot;stat&quot;: stat, &quot;pvalue&quot;: pvalue, &quot;method&quot;: method})</span>
-
-<span class="c1">#     return pvalue_collection, rows</span>
-
-
 <span class="k">def</span> <span class="nf">compare_individual_probabilities</span><span class="p">(</span><span class="n">counts1</span><span class="p">,</span> <span class="n">n_possible1</span><span class="p">,</span> <span class="n">counts2</span><span class="p">,</span> <span class="n">n_possible2</span><span class="p">):</span>
     <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">counts1</span><span class="p">)):</span>
@@ -831,36 +794,15 @@ Note that all methods appear empirically valid, some appear highly conservative.
         <span class="n">pvalue_collection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_pvalue</span><span class="p">)</span>
 
     <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)</span>
-    <span class="c1"># n_overall = len(pvalue_collection)</span>
     <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="n">pvalue_collection</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)]</span>
-    <span class="c1"># n_tests = len(pvalue_collection)</span>
-    <span class="c1"># n_skipped = n_overall - n_tests</span>
     <span class="k">return</span> <span class="n">pvalue_collection</span>
-
-
-<span class="c1"># def run_test(</span>
-<span class="c1">#     counts1, n_possible1, counts2, n_possible2, method=&quot;fisher&quot;, n_bootstraps=1000</span>
-<span class="c1"># ):</span>
-<span class="c1">#     counts1 = counts1.copy()</span>
-<span class="c1">#     n_possible1 = n_possible1.copy()</span>
-<span class="c1">#     counts2 = counts2.copy()</span>
-<span class="c1">#     n_possible2 = n_possible2.copy()</span>
-<span class="c1">#     if method == &quot;bootstrap&quot;:</span>
-<span class="c1">#         stat, pvalue, misc = bootstrap_test(</span>
-<span class="c1">#             counts1, n_possible1, counts2, n_possible2, n_bootstraps=n_bootstraps</span>
-<span class="c1">#         )</span>
-<span class="c1">#     elif method in [&quot;fisher&quot;, &quot;min&quot;]:</span>
-<span class="c1">#         stat, pvalue, misc = multi_binom_2samp(</span>
-<span class="c1">#             counts1, n_possible1, counts2, n_possible2, method=method</span>
-<span class="c1">#         )</span>
-<span class="c1">#     return stat, pvalue, misc</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RERUN_SIM</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
 <span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
     <span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/&quot;</span>
     <span class="sa">f</span><span class="s2">&quot;outputs/</span><span class="si">{</span><span class="n">FILENAME</span><span class="si">}</span><span class="s2">/results.csv&quot;</span>
@@ -905,7 +847,7 @@ Note that all methods appear empirically valid, some appear highly conservative.
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of runs: </span><span class="si">{</span><span class="n">n_runs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
-<span class="k">if</span> <span class="n">RERUN_SIM</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">RERUN_SIMS</span><span class="p">:</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">mean_itertimes</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">n_time_first</span> <span class="o">=</span> <span class="mi">5</span>
@@ -1018,17 +960,11 @@ Note that all methods appear empirically valid, some appear highly conservative.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Perturb sizes: [0.  0.1 0.2 0.3 0.4 0.5]
-Perturb number range: [  0  25  50  75 100 125]
-Number of runs: 1800
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">method_palette</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">methods</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">method_palette</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">methods</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()))</span>
 
 <span class="n">null_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;n_perturb&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span>
 
@@ -1052,12 +988,10 @@ Number of runs: 1800
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">RERUN_SIM</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">RERUN_SIMS</span><span class="p">:</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
         <span class="nb">len</span><span class="p">(</span><span class="n">perturb_size_range</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_perturb_range</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
@@ -1095,7 +1029,7 @@ Number of runs: 1800
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
 <span class="n">lower</span> <span class="o">=</span> <span class="mf">1e-20</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">perturb_size</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">perturb_size_range</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
@@ -1153,13 +1087,8 @@ Number of runs: 1800
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <figure class="align-default" id="id2">
-<div class="cell_output docutils container">
-<img alt="_images/revamp_sbm_methods_sim_11_0.png" src="_images/revamp_sbm_methods_sim_11_0.png" />
-</div>
 <figcaption>
 <p><span class="caption-number">Fig. 9 </span><span class="caption-text">p-values under the alternative for two different methods for combining p-values:
 <a class="reference external" href="https://en.wikipedia.org/wiki/Fisher%27s_method"><strong>Fisher’s method</strong></a> (performed on the
@@ -1179,7 +1108,7 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 <h2>Power under the alternative<a class="headerlink" href="#power-under-the-alternative" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="n">results</span><span class="p">[</span><span class="s2">&quot;detected&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">results</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">results</span><span class="p">[(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;detected&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
@@ -1188,7 +1117,7 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fisher_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;fisher&quot;</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fisher_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;fisher&quot;</span><span class="p">]</span>
 <span class="n">min_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;tippett&quot;</span><span class="p">]</span>
 
 <span class="n">fisher_means</span> <span class="o">=</span> <span class="n">fisher_results</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="s2">&quot;n_perturb&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1210,8 +1139,6 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 <span class="p">)</span>
 
 <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mean_diffs</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-
-<span class="c1"># fig, axs = plt.subplots(1, 3, figsize=(12, 4), sharex=True, sharey=True)</span>
 
 <span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="c1"># set up plot</span>
@@ -1288,11 +1215,6 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">ratio_col</span><span class="p">]</span>
 <span class="n">im</span> <span class="o">=</span> <span class="n">power_heatmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ratios_square</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pal</span><span class="p">)</span>
-<span class="c1"># ax.set_title(r&#39;$log_10(\frac{\text{Power}_{Fisher}}{\text{Power}_{Min}})$&#39;)</span>
-<span class="c1"># ax.set_title(</span>
-<span class="c1">#     r&quot;$log_{10}($Fisher power$)$&quot; + &quot;\n&quot; + r&quot; - $log_{10}($Min power$)$&quot;,</span>
-<span class="c1">#     fontsize=&quot;large&quot;,</span>
-<span class="c1"># )</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1329,12 +1251,11 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
 
 
 <span class="n">min_null_results</span> <span class="o">=</span> <span class="n">min_results</span><span class="p">[</span>
@@ -1349,12 +1270,11 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">power_heatmap</span><span class="p">(</span><span class="n">min_power_square</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">xlabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;# perturbed blocks $(t)$ $\rightarrow$&quot;</span>
 <span class="n">ylabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;Perturbation size $(\delta)$ $\rightarrow$&quot;</span>
@@ -1363,12 +1283,11 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
 
 <span class="n">null</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;tippett_null_cdf.svg&quot;</span><span class="p">)</span>
 <span class="n">null</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
@@ -1387,13 +1306,8 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/revamp_sbm_methods_sim_18_0.svg" src="_images/revamp_sbm_methods_sim_18_0.svg" /></div>
 </div>
 <figure class="align-default" id="id3">
-<div class="cell_output docutils container">
-<img alt="_images/revamp_sbm_methods_sim_15_0.png" src="_images/revamp_sbm_methods_sim_15_0.png" />
-</div>
 <figcaption>
 <p><span class="caption-number">Fig. 10 </span><span class="caption-text">Comparison of power for Fisher’s and Tippett’s method. <strong>A)</strong> The power under the
 alternative described in the text for both Fisher’s method and Tippett’s method. In both

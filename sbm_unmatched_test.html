@@ -341,6 +341,35 @@ title="Toggle navigation"
         
     </div>
     <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/neurodata/bilateral-connectome/main?urlpath=tree/bilateral-connectome/sbm_unmatched_test.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
 <button onclick="toggleFullScreen()"
   class="headerbtn"
   data-toggle="tooltip"
@@ -610,7 +639,7 @@ groups for each neuron, which we do not explore here.</p>
 <span class="n">node_palette</span><span class="p">,</span> <span class="n">NODE_KEY</span> <span class="o">=</span> <span class="n">load_node_palette</span><span class="p">()</span>
 <span class="n">neutral_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;simple_group&quot;</span>
+<span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;celltype_discrete&quot;</span>
 
 <span class="n">left_adj</span><span class="p">,</span> <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
 <span class="n">right_adj</span><span class="p">,</span> <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
@@ -622,8 +651,8 @@ groups for each neuron, which we do not explore here.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: True
-   RERUN_SIMS: True
+   RESAVE_DATA: true
+   RERUN_SIMS: true
    DISPLAY_FIGS: False
 </pre></div>
 </div>
@@ -1621,7 +1650,7 @@ apparent here, as there are more negative than positive values.</span><a class="
     <span class="n">mean_ps</span> <span class="o">=</span> <span class="n">sig_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;pair&quot;</span><span class="p">)[</span><span class="s2">&quot;p&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">pair_orders</span> <span class="o">=</span> <span class="n">mean_ps</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
 
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span>
         <span class="n">data</span><span class="o">=</span><span class="n">sig_data</span><span class="p">,</span>
         <span class="n">y</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span>
@@ -1710,8 +1739,8 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 <span class="n">pvalues_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">probs</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
 
 <span class="n">comparison</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;significant_p_comparison.svg&quot;</span><span class="p">)</span>
-<span class="n">comparison</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
-<span class="n">comparison</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">comparison</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">175</span><span class="p">)</span>
+<span class="n">comparison</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 <span class="n">comparison_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
     <span class="n">comparison</span><span class="p">,</span>
     <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;D) Probabilities for&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
@@ -1749,8 +1778,8 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:35.178669
-Completed at 2022-09-16 14:15:11.462060
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:31.961405
+Completed at 2022-09-26 09:26:48.581032
 </pre></div>
 </div>
 </div>
