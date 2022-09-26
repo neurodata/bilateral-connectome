@@ -243,7 +243,7 @@ def compare_individual_probabilities(counts1, n_possible1, counts2, n_possible2)
             n_possible1[i],
             counts2[i],
             n_possible2[i],
-            null_odds=1,
+            null_ratio=1.0,
             method="fisher",
         )
         pvalue_collection.append(sub_pvalue)

@@ -58,7 +58,7 @@ right_adj, right_nodes = load_unmatched("right", weights=True)
 
 neutral_color = sns.color_palette("Set2")[2]
 
-GROUP_KEY = "simple_group"
+GROUP_KEY = "celltype_discrete"
 
 left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values

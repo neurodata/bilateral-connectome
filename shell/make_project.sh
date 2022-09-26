@@ -17,4 +17,4 @@ shift $((OPTIND -1))
 echo "[make_project.sh] Running notebooks via make_notebook.sh"
 cat $BASE_DIR/scripts/manifest.txt | xargs -I % sh $SCRIPT_DIR/make_notebook.sh %
 
-# $SCRIPT_DIR/copy_results.sh
+$SCRIPT_DIR/copy_results.sh

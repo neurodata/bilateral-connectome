@@ -105,6 +105,10 @@ def glue(name, var, filename, figure=False, display=False, form=None):
         var = f"{var:0.2f}"
     elif form == "0.2g":
         var = f"{var:0.2g}"
+    elif form == 'intword':
+        import inflect 
+        p = inflect.engine()
+        var = p.number_to_words(var)
 
     if form is not None:
         glue(

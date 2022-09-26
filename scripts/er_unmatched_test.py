@@ -235,13 +235,16 @@ glue("pvalue", pvalue, form="pvalue")
 #%%
 n_possible_left = misc["possible1"]
 n_possible_right = misc["possible2"]
-glue("n_possible_left", n_possible_left)
-glue("n_possible_right", n_possible_right)
+glue("n_possible_left", n_possible_left, form='long')
+glue("n_possible_right", n_possible_right, form='long')
 
 density_left = misc["probability1"]
 density_right = misc["probability2"]
 glue("density_left", density_left, form="0.2g")
 glue("density_right", density_right, form="0.2g")
+
+density_ratio = density_left / density_right
+glue("density_ratio", density_ratio, form="0.2f")
 
 n_edges_left = misc["observed1"]
 n_edges_right = misc["observed2"]

@@ -73,7 +73,7 @@ network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
 neutral_color = sns.color_palette("Set2")[2]
 
-GROUP_KEY = "simple_group"
+GROUP_KEY = "celltype_discrete"
 
 left_adj, left_nodes = load_unmatched(side="left")
 right_adj, right_nodes = load_unmatched(side="right")
@@ -621,14 +621,28 @@ stat, pvalue, misc = stochastic_block_test(
     right_adj,
     labels1=left_labels,
     labels2=right_labels,
-    method="fisher",
-    combine_method="tippett",
-    correct_method="bonferroni",
 )
 glue("pvalue", pvalue, form="pvalue")
 n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
 print(pvalue)
+
+#%%
+
+
+def get_significant_pairs(df):
+    row_indices, col_indices = np.nonzero(df.values)
+    row_indices = df.index[row_indices]
+    col_indices = df.columns[col_indices]
+    return list(zip(row_indices, col_indices))
+
+
+significant_pairs = get_significant_pairs(misc["rejections"])
+
+n_significant_pairs = len(significant_pairs)
+glue("n_significant_pairs", n_significant_pairs, form='intword')
+
+print('Significant pairs:\n', significant_pairs)
 
 #%%
 

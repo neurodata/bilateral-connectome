@@ -73,7 +73,7 @@ RESAVE_DATA, _, _ = get_environment_variables()
 
 print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
-output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-v3")
+output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-v4")
 output_dir = Path(output_dir)
 
 #%%

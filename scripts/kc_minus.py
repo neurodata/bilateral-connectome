@@ -58,7 +58,7 @@ network_palette, NETWORK_KEY = load_network_palette()
 node_palette, NODE_KEY = load_node_palette()
 neutral_color = sns.color_palette("Set2")[2]
 
-GROUP_KEY = "simple_group"
+GROUP_KEY = "celltype_discrete"
 
 left_adj, left_nodes = load_unmatched(side="left")
 right_adj, right_nodes = load_unmatched(side="right")

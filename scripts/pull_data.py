@@ -1,10 +1,6 @@
 #%%
-from pkg.pymaid import start_instance
-import glob
 import json
-import os
 import pprint
-import shutil
 import sys
 import time
 from collections import defaultdict
@@ -18,15 +14,15 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import pymaid
+from pkg.pymaid import start_instance
 from requests.exceptions import ChunkedEncodingError
-
 
 t0 = time.time()
 
 start_instance()
 
-OUTPUT_PATH = Path("bilateral-connectome/data/2022-09-13")
-pair_path = Path("bilateral-connectome/data/2022-09-13/pairs-2022-02-14.csv")
+OUTPUT_PATH = Path("bilateral-connectome/data/2022-09-25")
+pair_path = Path("bilateral-connectome/data/2022-09-25/pairs-2022-02-14.csv")
 
 
 class Logger(object):
@@ -48,6 +44,8 @@ class Logger(object):
     def close(self):
         self.log.close()
 
+
+sys.stdout = Logger()
 
 #%%
 
@@ -179,6 +177,9 @@ for annotation in single_annotations:
 meta.fillna(False, inplace=True)
 
 #%%
+# pymaid.get_skids_by_annotation('mw brain celltypes discrete')
+
+#%%
 print("Adding axon laterality category...")
 
 n_axon_lat = meta[["ipsilateral_axon", "contralateral_axon", "bilateral_axon"]].sum(
@@ -244,6 +245,20 @@ for meta_annotation in meta_annotations:
         meta_annotation, meta, new_key=filt(meta_annotation), filt=filt
     )
     print("\n")
+
+
+#%%
+
+df = df_from_meta_annotation("mw brain celltypes discrete", filt).fillna(False)
+row_inds, column_inds = np.nonzero(df.values)
+column_names = df.columns.values
+column_names = np.array([s[4:] for s in column_names])
+celltype_discrete = column_names[column_inds]
+celltype_discrete = pd.Series(
+    index=df.index.values, data=celltype_discrete, name="celltype_discrete"
+)
+celltype_discrete = celltype_discrete.reindex(meta.index).fillna("other")
+meta = pd.concat((meta, celltype_discrete), axis=1)
 
 #%%
 print("Condensing simple labels...")
@@ -462,6 +477,11 @@ print()
 print("These skeletons have missing values in the metadata:")
 print(missing_na)
 print("\n")
+
+#%%
+print("Saving metadata as csv...")
+meta.to_csv(OUTPUT_PATH / "meta_data.csv")
+meta.to_csv(OUTPUT_PATH / "meta_data_unmodified.csv")
 
 #%%
 print("Pulling neurons...\n")
