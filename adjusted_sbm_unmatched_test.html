@@ -742,7 +742,8 @@ title="Print to PDF"
 <span class="n">n_resamples</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_resamples&quot;</span><span class="p">,</span> <span class="n">n_resamples</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">RERUN_SIMS</span><span class="p">:</span>
+<span class="c1"># NOTE: not running this right now as this figure is no longer in the final paper</span>
+<span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_resamples</span><span class="p">)):</span>
         <span class="n">subsampled_right_adj</span> <span class="o">=</span> <span class="n">remove_edges</span><span class="p">(</span>
             <span class="n">right_adj</span><span class="p">,</span> <span class="n">effect_size</span><span class="o">=</span><span class="n">n_remove</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">rng</span>
@@ -769,9 +770,6 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████| 500/500 [23:23&lt;00:00,  2.81s/it]
-</pre></div>
-</div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
@@ -786,7 +784,6 @@ title="Print to PDF"
     <span class="n">right_adj</span><span class="p">,</span>
     <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
     <span class="n">labels2</span><span class="o">=</span><span class="n">right_labels</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
     <span class="n">density_adjustment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
@@ -962,8 +959,8 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:24:00.813386
-Completed at 2022-09-26 09:51:00.061431
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:12.352533
+Completed at 2022-09-26 11:38:02.435626
 </pre></div>
 </div>
 </div>

@@ -341,35 +341,6 @@ title="Toggle navigation"
         
     </div>
     <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/neurodata/bilateral-connectome/main?urlpath=tree/bilateral-connectome/sbm_unmatched_test.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
-  
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
-  </div>
-</div>
-
 <button onclick="toggleFullScreen()"
   class="headerbtn"
   data-toggle="tooltip"
@@ -1199,9 +1170,6 @@ the two hemispheres.</p>
     <span class="n">right_adj</span><span class="p">,</span>
     <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
     <span class="n">labels2</span><span class="o">=</span><span class="n">right_labels</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
-    <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;tippett&quot;</span><span class="p">,</span>
-    <span class="n">correct_method</span><span class="o">=</span><span class="s2">&quot;bonferroni&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">glue</span><span class="p">(</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 <span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
@@ -1212,6 +1180,31 @@ the two hemispheres.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.573813232327992e-08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_significant_pairs</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">row_indices</span><span class="p">,</span> <span class="n">col_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">row_indices</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">row_indices</span><span class="p">]</span>
+    <span class="n">col_indices</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col_indices</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">row_indices</span><span class="p">,</span> <span class="n">col_indices</span><span class="p">))</span>
+
+
+<span class="n">significant_pairs</span> <span class="o">=</span> <span class="n">get_significant_pairs</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="s2">&quot;rejections&quot;</span><span class="p">])</span>
+
+<span class="n">n_significant_pairs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">significant_pairs</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_significant_pairs&quot;</span><span class="p">,</span> <span class="n">n_significant_pairs</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;intword&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Significant pairs:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">significant_pairs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Significant pairs:
+ [(&#39;KCs&#39;, &#39;KCs&#39;), (&#39;LHNs&#39;, &#39;other&#39;), (&#39;PNs&#39;, &#39;LHNs&#39;), (&#39;PNs-somato&#39;, &#39;PNs-somato&#39;), (&#39;other&#39;, &#39;LHNs&#39;), (&#39;other&#39;, &#39;other&#39;)]
 </pre></div>
 </div>
 </div>
@@ -1373,7 +1366,7 @@ the two hemispheres.</p>
 </div>
 <figure class="align-default" id="fig-sbm-unmatched-test-group-counts">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_10_0.png" src="_images/sbm_unmatched_test_10_0.png" />
+<img alt="_images/sbm_unmatched_test_11_0.png" src="_images/sbm_unmatched_test_11_0.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 4 </span><span class="caption-text">The number of neurons in each group in each hemisphere. Note the similarity between
@@ -1438,7 +1431,7 @@ Equation <a class="reference internal" href="#equation-sbm-unmatched-null">(1)</
 .</p>
 <figure class="align-default" id="fig-sbm-unmatched-test-sbm-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_12_0.png" src="_images/sbm_unmatched_test_12_0.png" />
+<img alt="_images/sbm_unmatched_test_13_0.png" src="_images/sbm_unmatched_test_13_0.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 5 </span><span class="caption-text">Comparison of stochastic block model fits for the left and right hemispheres.
@@ -1590,7 +1583,7 @@ right.</p>
 </div>
 <figure class="align-default" id="fig-sbm-unmatched-test-probs-uncorrected">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_16_0.png" src="_images/sbm_unmatched_test_16_0.png" />
+<img alt="_images/sbm_unmatched_test_17_0.png" src="_images/sbm_unmatched_test_17_0.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 6 </span><span class="caption-text">Comparison of estimated connection probabilities for the left and right hemispheres.
@@ -1694,7 +1687,7 @@ apparent here, as there are more negative than positive values.</span><a class="
 </div>
 <figure class="align-default" id="fig-sbm-unmatched-test-significant-p-comparison">
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_18_1.png" src="_images/sbm_unmatched_test_18_1.png" />
+<img alt="_images/sbm_unmatched_test_19_1.png" src="_images/sbm_unmatched_test_19_1.png" />
 </div>
 <figcaption>
 <p><span class="caption-number">Fig. 7 </span><span class="caption-text">Comparison of estimated group-to-group connection probabilities for the group-pairs
@@ -1763,7 +1756,7 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/sbm_unmatched_test_20_0.svg" src="_images/sbm_unmatched_test_20_0.svg" /></div>
+<img alt="_images/sbm_unmatched_test_21_0.svg" src="_images/sbm_unmatched_test_21_0.svg" /></div>
 </div>
 </section>
 <section id="end">
@@ -1778,8 +1771,8 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:31.961405
-Completed at 2022-09-26 09:26:48.581032
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:33.156568
+Completed at 2022-09-26 11:37:35.131552
 </pre></div>
 </div>
 </div>
