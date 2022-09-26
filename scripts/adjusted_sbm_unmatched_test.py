@@ -212,7 +212,8 @@ rows = []
 n_resamples = 500
 glue("n_resamples", n_resamples)
 
-if RERUN_SIMS:
+# NOTE: not running this right now as this figure is no longer in the final paper
+if False:
     for i in tqdm(range(n_resamples)):
         subsampled_right_adj = remove_edges(
             right_adj, effect_size=n_remove, random_seed=rng

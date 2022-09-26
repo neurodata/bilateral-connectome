@@ -168,12 +168,12 @@ def my_combine_pvalues(pvalues, method="fisher", pad_high=0, n_resamples=100):
             )
             stat += curr_stat / n_resamples
             pvalue += curr_pvalue / n_resamples
-    elif method == "pearson":  # HACK: https://github.com/scipy/scipy/pull/15452
-        stat = 2 * np.sum(np.log1p(-pvalues))
-        pvalue = chi2.cdf(-stat, 2 * len(pvalues))
-    elif method == "tippett":
-        stat = np.min(pvalues)
-        pvalue = beta.cdf(stat, 1, len(pvalues))
+    # elif method == "pearson":  # HACK: https://github.com/scipy/scipy/pull/15452
+    #     stat = 2 * np.sum(np.log1p(-pvalues))
+    #     pvalue = chi2.cdf(-stat, 2 * len(pvalues))
+    # elif method == "tippett":
+    #     stat = np.min(pvalues)
+    #     pvalue = beta.cdf(stat, 1, len(pvalues))
     elif method in scipy_methods:
         stat, pvalue = scipy_combine_pvalues(pvalues, method=method)
     elif method == "eric":

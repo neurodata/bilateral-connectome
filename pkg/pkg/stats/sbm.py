@@ -3,11 +3,14 @@ from collections import namedtuple
 import numpy as np
 import pandas as pd
 from graspologic.utils import remove_loops
+from scipy.stats import combine_pvalues
 from statsmodels.stats.multitest import multipletests
 
 from .binomial import binom_2samp, binom_2samp_paired
-from .combine import combine_pvalues
 from .utils import compute_density_adjustment
+
+# from .combine import combine_pvalues # old, was bug before scipy 1.9.0
+
 
 SBMResult = namedtuple(
     "sbm_result", ["probabilities", "observed", "possible", "group_counts"]
