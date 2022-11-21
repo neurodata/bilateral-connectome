@@ -2,7 +2,7 @@
 marp: true
 theme: poster
 paginate: false
-size: 44:33
+size: tv
 ---
 
 
@@ -32,7 +32,7 @@ size: 44:33
 <!-- [github.com/microsoft/graspologic](https://github.com/microsoft/graspologic) -->
 
 ## github.com/microsoft/graspologic   
-## [![h:90](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:90](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:90](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors) [![h:90](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![h:90](./../../images/graspologic-qr.svg)
+## [![h:50](https://pepy.tech/badge/graspologic)](https://pepy.tech/project/graspologic)  [![h:50](https://img.shields.io/github/stars/microsoft/graspologic?style=social)](https://github.com/microsoft/graspologic)  [![h:50](https://img.shields.io/github/contributors/microsoft/graspologic)](https://github.com/microsoft/graspologic/graphs/contributors) [![h:50](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![h:50](./../../images/graspologic-qr.svg)
 
 </div>
 <div>
@@ -58,15 +58,17 @@ size: 44:33
 
 ### Network dimensionality reduction
 
+![center h:400](./../../images/embedding_mb.png)
+
 ### Visualization
 
-![center](../../images/background.png)
+![center h:600](../../images/background.png)
 
 </div>
 
 <div>
 
-### Model estimation and sampling
+### Model estimation, sampling
 
 ![center](./../../images/graspologic-models.png)
 
@@ -80,9 +82,16 @@ size: 44:33
 
 <div>
 
+### Graph matching
+
+![center](./../../images/network-matching-explanation.svg)
+
+![center](./../../images/example_matched_morphologies_good.svg)
+
+
 ### Statistical testing
 
-![](./../../../results/figs/show_data/adj_and_layout.png)
+![w:500](./../../../results/figs/show_data/adj_and_layout.png)
 
 
 <style scoped>
@@ -92,25 +101,25 @@ h2 {
 }
 </style>
 
-## Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> *different*?
+#### Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome *different*?
 
 - <span style='color: var(--left)'> $A^{(L)} \sim F^{(L)}$</span>, <span style='color: var(--right)'> $A^{(R)} \sim F^{(R)}$ </span>
-- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$  
-  $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
+- $H_0: \color{#66c2a5} F^{(L)} \color{black} = \color{#fc8d62}F^{(R)}$; $H_A: \color{#66c2a5} F^{(L)} \color{black} \neq  \color{#fc8d62} F^{(R)}$
 
 <!-- ![](./show) -->
 
-### Graph matching
 
-![center](./../../images/network-matching-explanation.svg)
+</div>
 
-![center](./../../images/example_matched_morphologies_good.svg)
+<div>
+
 
 ### Citation
 
-## jmlr.org/papers/volume20/19-490/19-490.pdf
+#### jmlr.org/papers/volume20/19-490/19-490.pdf
 
 Chung, J.,* Pedigo, B. D.,* Bridgeford, E. W., Varjavand, B. K., Helm, H. S., & Vogelstein, J. T. (2019). GraSPy: Graph Statistics in Python. J. Mach. Learn. Res., 20(158), 1-7.
+
 
 </div>
 
