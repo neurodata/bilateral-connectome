@@ -547,76 +547,76 @@ group. Alternatively, there are many methods for <em>estimating</em> these assig
 groups for each neuron, which we do not explore here.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import datetime
+import time
 
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.transforms</span> <span class="k">as</span> <span class="nn">mtrans</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">merge_axes</span><span class="p">,</span> <span class="n">rotate_labels</span><span class="p">,</span> <span class="n">soft_axis_off</span>
-<span class="kn">from</span> <span class="nn">graspologic.simulations</span> <span class="kn">import</span> <span class="n">sbm</span>
-<span class="kn">from</span> <span class="nn">matplotlib.font_manager</span> <span class="kn">import</span> <span class="n">FontProperties</span>
-<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">PathPatch</span>
-<span class="kn">from</span> <span class="nn">matplotlib.text</span> <span class="kn">import</span> <span class="n">TextPath</span>
-<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_network_palette</span><span class="p">,</span> <span class="n">load_node_palette</span><span class="p">,</span> <span class="n">load_unmatched</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span><span class="p">,</span> <span class="n">get_environment_variables</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
-<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">SmartSVG</span><span class="p">,</span>
-    <span class="n">draw_hypothesis_box</span><span class="p">,</span>
-    <span class="n">heatmap_grouped</span><span class="p">,</span>
-    <span class="n">make_sequential_colormap</span><span class="p">,</span>
-    <span class="n">networkplot_simple</span><span class="p">,</span>
-    <span class="n">plot_pvalues</span><span class="p">,</span>
-    <span class="n">plot_stochastic_block_probabilities</span><span class="p">,</span>
-    <span class="n">rainbowarrow</span><span class="p">,</span>
-    <span class="n">set_theme</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">stochastic_block_test</span>
-<span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">get_toy_palette</span><span class="p">,</span> <span class="n">sample_toy_networks</span>
-<span class="kn">from</span> <span class="nn">seaborn.utils</span> <span class="kn">import</span> <span class="n">relative_luminance</span>
-<span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
-
-
-<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
-
-<span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;sbm_unmatched_test&quot;</span>
-
-<span class="n">FIG_PATH</span> <span class="o">=</span> <span class="n">FIG_PATH</span> <span class="o">/</span> <span class="n">FILENAME</span>
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.transforms as mtrans
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from giskard.plot import merge_axes, rotate_labels, soft_axis_off
+from graspologic.simulations import sbm
+from matplotlib.font_manager import FontProperties
+from matplotlib.patches import PathPatch
+from matplotlib.text import TextPath
+from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.io import FIG_PATH, get_environment_variables
+from pkg.io import glue as default_glue
+from pkg.io import savefig
+from pkg.plot import (
+    SmartSVG,
+    draw_hypothesis_box,
+    heatmap_grouped,
+    make_sequential_colormap,
+    networkplot_simple,
+    plot_pvalues,
+    plot_stochastic_block_probabilities,
+    rainbowarrow,
+    set_theme,
+)
+from pkg.stats import stochastic_block_test
+from pkg.utils import get_toy_palette, sample_toy_networks
+from seaborn.utils import relative_luminance
+from svgutils.compose import Figure, Panel, Text
 
 
-<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">default_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+_, _, DISPLAY_FIGS = get_environment_variables()
+
+FILENAME = &quot;sbm_unmatched_test&quot;
+
+FIG_PATH = FIG_PATH / FILENAME
 
 
-<span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, **kwargs)
 
 
-<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">set_theme</span><span class="p">()</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
+def gluefig(name, fig, **kwargs):
+    savefig(name, foldername=FILENAME, **kwargs)
 
-<span class="n">network_palette</span><span class="p">,</span> <span class="n">NETWORK_KEY</span> <span class="o">=</span> <span class="n">load_network_palette</span><span class="p">()</span>
-<span class="n">node_palette</span><span class="p">,</span> <span class="n">NODE_KEY</span> <span class="o">=</span> <span class="n">load_node_palette</span><span class="p">()</span>
-<span class="n">neutral_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+    glue(name, fig, figure=True)
 
-<span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;celltype_discrete&quot;</span>
+    if not DISPLAY_FIGS:
+        plt.close()
 
-<span class="n">left_adj</span><span class="p">,</span> <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
-<span class="n">right_adj</span><span class="p">,</span> <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
 
-<span class="n">left_labels</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">right_labels</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+t0 = time.time()
+set_theme()
+rng = np.random.default_rng(8888)
+
+network_palette, NETWORK_KEY = load_network_palette()
+node_palette, NODE_KEY = load_node_palette()
+neutral_color = sns.color_palette(&quot;Set2&quot;)[2]
+
+GROUP_KEY = &quot;celltype_discrete&quot;
+
+left_adj, left_nodes = load_unmatched(side=&quot;left&quot;)
+right_adj, right_nodes = load_unmatched(side=&quot;right&quot;)
+
+left_labels = left_nodes[GROUP_KEY].values
+right_labels = right_nodes[GROUP_KEY].values
 </pre></div>
 </div>
 </div>
@@ -709,120 +709,122 @@ the right hemispheres. The number of neurons in each group is quite similar betw
 the two hemispheres.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
-<span class="n">ps</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]</span>
-<span class="n">n_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ps</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
-    <span class="mi">3</span><span class="p">,</span>
-    <span class="n">n_steps</span><span class="p">,</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
-    <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-    <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+
+np.random.seed(8888)
+ps = [0.2, 0.4, 0.6]
+n_steps = len(ps)
+fig, axs = plt.subplots(
+    3,
+    n_steps,
+    figsize=(6, 4),
+    gridspec_kw=dict(height_ratios=[2, 2, 1], wspace=0),
+    constrained_layout=True,
+)
 
 
-<span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]])</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="n">get_toy_palette</span><span class="p">()</span>
+ns = [5, 6, 7]
+B = np.array([[0.8, 0.2, 0.05], [0.05, 0.9, 0.2], [0.05, 0.05, 0.7]])
+palette = get_toy_palette()
 
 
-<span class="k">def</span> <span class="nf">label_matrix_element</span><span class="p">(</span>
-    <span class="n">matrix</span><span class="p">,</span>
-    <span class="n">row_ind</span><span class="p">,</span>
-    <span class="n">col_ind</span><span class="p">,</span>
-    <span class="n">label</span><span class="p">,</span>
-    <span class="n">ax</span><span class="p">,</span>
-    <span class="n">pad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
-    <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="p">):</span>
-    <span class="n">xlow</span> <span class="o">=</span> <span class="n">col_ind</span> <span class="o">+</span> <span class="n">pad</span>
-    <span class="n">xhigh</span> <span class="o">=</span> <span class="n">col_ind</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span>
-    <span class="n">ylow</span> <span class="o">=</span> <span class="n">row_ind</span> <span class="o">+</span> <span class="n">pad</span>
-    <span class="n">yhigh</span> <span class="o">=</span> <span class="n">row_ind</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">xlow</span><span class="p">,</span> <span class="n">xhigh</span><span class="p">,</span> <span class="n">xhigh</span><span class="p">,</span> <span class="n">xlow</span><span class="p">,</span> <span class="n">xlow</span><span class="p">],</span>
-        <span class="p">[</span><span class="n">yhigh</span><span class="p">,</span> <span class="n">yhigh</span><span class="p">,</span> <span class="n">ylow</span><span class="p">,</span> <span class="n">ylow</span><span class="p">,</span> <span class="n">yhigh</span><span class="p">],</span>
-        <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
-        <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span>
-    <span class="p">)</span>
+def label_matrix_element(
+    matrix,
+    row_ind,
+    col_ind,
+    label,
+    ax,
+    pad=0.02,
+    fontsize=&quot;small&quot;,
+    cmap=None,
+    color=None,
+    linewidth=2,
+):
+    xlow = col_ind + pad
+    xhigh = col_ind + 1 - pad
+    ylow = row_ind + pad
+    yhigh = row_ind + 1 - pad
+    ax.plot(
+        [xlow, xhigh, xhigh, xlow, xlow],
+        [yhigh, yhigh, ylow, ylow, yhigh],
+        zorder=100,
+        color=&quot;red&quot;,
+        clip_on=False,
+        linewidth=linewidth,
+    )
 
-    <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">cmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cmap</span> <span class="o">=</span> <span class="n">make_sequential_colormap</span><span class="p">(</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    if color is None:
+        if cmap is None:
+            cmap = make_sequential_colormap(&quot;Blues&quot;, 0, 1)
 
-        <span class="n">color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">])</span>
-        <span class="n">lum</span> <span class="o">=</span> <span class="n">relative_luminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-        <span class="n">text_color</span> <span class="o">=</span> <span class="s2">&quot;.15&quot;</span> <span class="k">if</span> <span class="n">lum</span> <span class="o">&gt;</span> <span class="mf">0.408</span> <span class="k">else</span> <span class="s2">&quot;w&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">text_color</span> <span class="o">=</span> <span class="n">color</span>
+        color = cmap(matrix[row_ind, col_ind])
+        lum = relative_luminance(color)
+        text_color = &quot;.15&quot; if lum &gt; 0.408 else &quot;w&quot;
+    else:
+        text_color = color
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-        <span class="n">col_ind</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">row_ind</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">label</span><span class="p">,</span>
-        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-        <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-        <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">text_color</span><span class="p">,</span>
-    <span class="p">)</span>
-
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ps</span><span class="p">):</span>
-    <span class="n">B_mod</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">B_mod</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
-    <span class="n">seed</span> <span class="o">=</span> <span class="mi">8</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">sbm</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">B_mod</span><span class="p">,</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loops</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">node_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
-    <span class="n">networkplot_simple</span><span class="p">(</span>
-        <span class="n">A</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">compute_layout</span><span class="o">=</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;square&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-
-    <span class="n">label_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">label_text</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$B_</span><span class="si">{12}</span><span class="s2"> = $&quot;</span> <span class="o">+</span> <span class="n">label_text</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label_text</span><span class="p">)</span>
-
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
-    <span class="n">heatmap_grouped</span><span class="p">(</span><span class="n">B_mod</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-    <span class="n">label_matrix_element</span><span class="p">(</span><span class="n">B_mod</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$B_</span><span class="si">{12}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    ax.text(
+        col_ind + 0.5,
+        row_ind + 0.5,
+        label,
+        ha=&quot;center&quot;,
+        va=&quot;center&quot;,
+        fontsize=fontsize,
+        color=text_color,
+    )
 
 
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Network&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
-    <span class="s2">&quot;Connection</span><span class="se">\n</span><span class="s2">probabilities</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;($B$)&quot;</span><span class="p">,</span>
-    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
-    <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-    <span class="n">labelpad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-<span class="p">)</span>
+for i, p in enumerate(ps):
+    B_mod = B.copy()
+    B_mod[0, 1] = p
+    seed = 8
+    np.random.seed(seed)
+    A, labels = sbm(ns, B_mod, directed=True, loops=False, return_labels=True)
+    if i == 0:
+        node_data = pd.DataFrame(index=np.arange(A.shape[0]))
+        node_data[&quot;labels&quot;] = labels + 1
+
+    ax = axs[0, i]
+    networkplot_simple(
+        A, node_data, ax=ax, compute_layout=i == 0, palette=palette, group=True
+    )
+    ax.axis(&quot;square&quot;)
+    ax.set(xticks=[], yticks=[], ylabel=&quot;&quot;, xlabel=&quot;&quot;)
+
+    label_text = f&quot;{p}&quot;
+    if i == 0:
+        label_text = r&quot;$B_{12} = $&quot; + label_text
+    ax.set_title(label_text)
+
+    ax = axs[1, i]
+    heatmap_grouped(B_mod, [1, 2, 3], palette=palette, ax=ax)
+    label_matrix_element(B_mod, 0, 1, r&quot;$B_{12}$&quot;, ax)
 
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+axs[0, 0].set_ylabel(&quot;Network&quot;, rotation=0, ha=&quot;right&quot;, labelpad=5)
+axs[1, 0].set_ylabel(
+    &quot;Connection\nprobabilities\n&quot; + r&quot;($B$)&quot;,
+    rotation=0,
+    ha=&quot;right&quot;,
+    va=&quot;center&quot;,
+    labelpad=10,
+)
 
 
-<span class="n">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+ax = merge_axes(fig, axs, rows=2)
 
-<span class="n">rainbowarrow</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.89</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Increasing $1 \rightarrow 2$ connection probability&quot;</span><span class="p">)</span>
 
-<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+soft_axis_off(ax)
+ax.set(xticks=[], yticks=[])
 
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_explain&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+rainbowarrow(ax, (0.1, 0.5), (0.89, 0.5), cmap=&quot;Blues&quot;, lw=12)
+ax.set_xlim((0, 1))
+ax.set_ylim((0, 1))
+ax.set_xlabel(r&quot;Increasing $1 \rightarrow 2$ connection probability&quot;)
+
+fig.set_facecolor(&quot;w&quot;)
+
+gluefig(&quot;sbm_explain&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -831,271 +833,273 @@ the two hemispheres.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
-    <span class="mi">4</span><span class="p">,</span>
-    <span class="mi">7</span><span class="p">,</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
-    <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-        <span class="n">width_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-    <span class="p">),</span>
-    <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Group neurons&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Estimate group</span><span class="se">\n</span><span class="s2">connection probabilities&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Compare probabilities,</span><span class="se">\n</span><span class="s2">compute p-values&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
-<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Combine p-values</span><span class="se">\n</span><span class="s2">for overall test&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+fig, axs = plt.subplots(
+    4,
+    7,
+    figsize=(14, 6),
+    gridspec_kw=dict(
+        wspace=0,
+        hspace=0,
+        height_ratios=[1.5, 5, 2.5, 5],
+        width_ratios=[5, 2, 5, 2, 5, 1.5, 5],
+    ),
+    constrained_layout=False,
+)
 
-
-<span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span> <span class="o">=</span> <span class="n">sample_toy_networks</span><span class="p">()</span>
-<span class="n">palette</span> <span class="o">=</span> <span class="n">get_toy_palette</span><span class="p">()</span>
+axs[0, 0].set_title(&quot;Group neurons&quot;, fontsize=&quot;medium&quot;)
+axs[0, 2].set_title(&quot;Estimate group\nconnection probabilities&quot;, x=0.45, ha=&quot;center&quot;)
+axs[0, 4].set_title(&quot;Compare probabilities,\ncompute p-values&quot;, fontsize=&quot;medium&quot;)
+axs[0, 6].set_title(&quot;Combine p-values\nfor overall test&quot;, fontsize=&quot;medium&quot;)
 
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
-    <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
-    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">,</span>
-    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
-    <span class="n">labelpad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
-    <span class="s2">&quot;Right&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
-    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">,</span>
-    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
-    <span class="n">labelpad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">A1</span><span class="p">,</span> <span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">])</span>
-<span class="n">Bhat1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">top_ax</span><span class="p">,</span> <span class="n">left_ax</span> <span class="o">=</span> <span class="n">heatmap_grouped</span><span class="p">(</span>
-    <span class="n">Bhat1</span><span class="p">,</span>
-    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-    <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">top_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">^{(L)}$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
-<span class="n">left_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Source group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Target group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
-
-<span class="n">label_matrix_element</span><span class="p">(</span><span class="n">Bhat1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">_</span><span class="si">{12}</span><span class="s2">^{(L)}$&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+A1, A2, node_data = sample_toy_networks()
+palette = get_toy_palette()
 
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">],</span> <span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">])</span>
-<span class="n">Bhat2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">top_ax</span><span class="p">,</span> <span class="n">left_ax</span> <span class="o">=</span> <span class="n">heatmap_grouped</span><span class="p">(</span><span class="n">Bhat2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">top_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">^{(R)}$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
-<span class="n">left_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Source group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Target group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
-<span class="n">label_matrix_element</span><span class="p">(</span><span class="n">Bhat2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">_</span><span class="si">{12}</span><span class="s2">^{(R)}$&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+ax = axs[1, 0]
+networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
+ax.set_ylabel(
+    &quot;Left&quot;,
+    color=network_palette[&quot;Left&quot;],
+    size=&quot;large&quot;,
+    rotation=0,
+    ha=&quot;right&quot;,
+    labelpad=10,
+)
 
-<span class="c1"># divider</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+ax = axs[3, 0]
+networkplot_simple(A2, node_data, palette=palette, ax=ax, group=True)
+ax.set_ylabel(
+    &quot;Right&quot;,
+    color=network_palette[&quot;Right&quot;],
+    size=&quot;large&quot;,
+    rotation=0,
+    ha=&quot;right&quot;,
+    labelpad=10,
+)
 
-<span class="c1"># 3rd column</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+ax = merge_axes(fig, axs, rows=None, cols=1)
+ax.axis(&quot;off&quot;)
+ax.plot([0.5, 0.5], [0, 1], color=&quot;lightgrey&quot;, linewidth=1.5)
+ax.set_xlim((0, 1))
 
+ax = axs[1, 2]
+_, _, misc = stochastic_block_test(A1, A1, node_data[&quot;labels&quot;], node_data[&quot;labels&quot;])
+Bhat1 = misc[&quot;probabilities1&quot;].values
+top_ax, left_ax = heatmap_grouped(
+    Bhat1,
+    [1, 2, 3],
+    palette=palette,
+    ax=ax,
+)
+top_ax.set_title(r&quot;$\hat{B}^{(L)}$&quot;, color=network_palette[&quot;Left&quot;])
+left_ax.set_ylabel(&quot;Source group&quot;, fontsize=&quot;small&quot;)
+ax.set_xlabel(&quot;Target group&quot;, fontsize=&quot;small&quot;)
 
-<span class="n">linestyle_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;dimgrey&quot;</span><span class="p">)</span>
-<span class="n">xmin</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">xmax</span> <span class="o">=</span> <span class="mf">0.99</span>
-<span class="n">ymax</span> <span class="o">=</span> <span class="mf">0.95</span>
-<span class="n">ymin</span> <span class="o">=</span> <span class="mf">0.65</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmin</span><span class="p">],</span> <span class="p">[</span><span class="n">ymax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">],</span> <span class="o">**</span><span class="n">linestyle_kws</span><span class="p">)</span>
-
-<span class="n">xstart</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.05</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-    <span class="n">xstart</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span>
-    <span class="mf">0.9</span><span class="p">,</span>
-    <span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">^{(L)}_</span><span class="si">{ij}</span><span class="s2">$&quot;</span><span class="p">,</span>
-    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-    <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
-<span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-    <span class="n">xstart</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">,</span>
-    <span class="mf">0.7</span><span class="p">,</span>
-    <span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">^{(R)}_</span><span class="si">{ij}</span><span class="s2">$&quot;</span><span class="p">,</span>
-    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-    <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
-<span class="p">)</span>
+label_matrix_element(Bhat1, 0, 1, r&quot;$\hat{B}_{12}^{(L)}$&quot;, ax)
 
 
-<span class="k">def</span> <span class="nf">compare_probability_column</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">Bhat1</span><span class="p">,</span> <span class="n">Bhat2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">cmap</span> <span class="o">=</span> <span class="n">make_sequential_colormap</span><span class="p">(</span><span class="s2">&quot;Blues&quot;</span><span class="p">)</span>
+ax = axs[3, 2]
+_, _, misc = stochastic_block_test(A2, A2, node_data[&quot;labels&quot;], node_data[&quot;labels&quot;])
+Bhat2 = misc[&quot;probabilities1&quot;].values
+top_ax, left_ax = heatmap_grouped(Bhat2, [1, 2, 3], palette=palette, ax=ax)
+top_ax.set_title(r&quot;$\hat{B}^{(R)}$&quot;, color=network_palette[&quot;Right&quot;])
+left_ax.set_ylabel(&quot;Source group&quot;, fontsize=&quot;small&quot;)
+ax.set_xlabel(&quot;Target group&quot;, fontsize=&quot;small&quot;)
+label_matrix_element(Bhat2, 0, 1, r&quot;$\hat{B}_{12}^{(R)}$&quot;, ax)
 
-    <span class="n">prob1</span> <span class="o">=</span> <span class="n">Bhat1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-    <span class="n">prob2</span> <span class="o">=</span> <span class="n">Bhat2</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+# divider
+ax = merge_axes(fig, axs, rows=None, cols=3)
+ax.axis(&quot;off&quot;)
+ax.plot([0.3, 0.3], [0, 1], color=&quot;lightgrey&quot;, linewidth=1.5, clip_on=False)
+ax.set_xlim((0, 1))
 
-    <span class="n">ystart</span> <span class="o">=</span> <span class="mf">1.07</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">x</span><span class="p">],</span>
-        <span class="p">[</span><span class="n">ystart</span><span class="p">],</span>
-        <span class="s2">&quot;o&quot;</span><span class="p">,</span>
-        <span class="n">markersize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-        <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-        <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-        <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">x</span><span class="p">],</span>
-        <span class="p">[</span><span class="n">ystart</span> <span class="o">-</span> <span class="mf">0.08</span><span class="p">],</span>
-        <span class="s2">&quot;o&quot;</span><span class="p">,</span>
-        <span class="n">markersize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-        <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-        <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-        <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-        <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ystart</span> <span class="o">-</span> <span class="mf">0.08</span><span class="p">),</span>
-        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ystart</span><span class="p">),</span>
-        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-            <span class="n">shrinkA</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-            <span class="n">shrinkB</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">],</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">prob1</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">],</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">prob2</span><span class="p">))</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.78</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\overset{?}{=}$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-        <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.53</span><span class="p">),</span>
-        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.63</span><span class="p">),</span>
-        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-|&gt;&quot;</span><span class="p">,</span>
-            <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
-
-    <span class="n">p_text</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$p_{&quot;</span>
-    <span class="n">p_text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">p_text</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">p_text</span> <span class="o">+=</span> <span class="sa">r</span><span class="s2">&quot;}$&quot;</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.47</span><span class="p">,</span> <span class="n">p_text</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
+# 3rd column
+ax = merge_axes(fig, axs, rows=(1, 4), cols=4)
 
 
-<span class="n">compare_probability_column</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">xstart</span> <span class="o">+</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">Bhat1</span><span class="p">,</span> <span class="n">Bhat2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">)</span>
-<span class="n">compare_probability_column</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xstart</span> <span class="o">+</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">Bhat1</span><span class="p">,</span> <span class="n">Bhat2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">)</span>
+linestyle_kws = dict(linewidth=1, color=&quot;dimgrey&quot;)
+xmin = 0.01
+xmax = 0.99
+ymax = 0.95
+ymin = 0.65
+ax.plot([xmin, xmax, xmax, xmin, xmin], [ymax, ymax, ymin, ymin, ymax], **linestyle_kws)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="p">[</span><span class="mf">0.44</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.78</span><span class="p">],</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.78</span><span class="p">],</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="p">[</span><span class="mf">0.56</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.78</span><span class="p">],</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
-<span class="p">)</span>
+xstart = -0.05
 
-<span class="n">compare_probability_column</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xstart</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">Bhat1</span><span class="p">,</span> <span class="n">Bhat2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">)</span>
-<span class="n">compare_probability_column</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">xstart</span> <span class="o">+</span> <span class="mf">0.95</span><span class="p">,</span> <span class="n">Bhat1</span><span class="p">,</span> <span class="n">Bhat2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">)</span>
+ax.text(
+    xstart - 0.05,
+    0.9,
+    r&quot;$\hat{B}^{(L)}_{ij}$&quot;,
+    ha=&quot;center&quot;,
+    va=&quot;center&quot;,
+    color=network_palette[&quot;Left&quot;],
+)
 
-<span class="n">xmin</span> <span class="o">=</span> <span class="mf">0.21</span>
-<span class="n">xmax</span> <span class="o">=</span> <span class="mf">0.39</span>
-<span class="n">ymax</span> <span class="o">=</span> <span class="mf">1.1</span>
-<span class="n">ymin</span> <span class="o">=</span> <span class="mf">0.4</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmin</span><span class="p">],</span>
-    <span class="p">[</span><span class="n">ymax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">],</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
-    <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+ax.text(
+    xstart - 0.05,
+    0.7,
+    r&quot;$\hat{B}^{(R)}_{ij}$&quot;,
+    ha=&quot;center&quot;,
+    va=&quot;center&quot;,
+    color=network_palette[&quot;Right&quot;],
+)
 
 
-<span class="n">draw_hypothesis_box</span><span class="p">(</span>
-    <span class="s2">&quot;sbm&quot;</span><span class="p">,</span> <span class="n">xstart</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">yskip</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">subscript</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xpad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ypad</span><span class="o">=</span><span class="mf">0.0075</span>
-<span class="p">)</span>
+def compare_probability_column(i, j, x, Bhat1, Bhat2, ax=None, palette=None):
+    cmap = make_sequential_colormap(&quot;Blues&quot;)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    prob1 = Bhat1[i, j]
+    prob2 = Bhat2[i, j]
 
-<span class="c1"># divider</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.65</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    ystart = 1.07
+    ax.plot(
+        [x],
+        [ystart],
+        &quot;o&quot;,
+        markersize=9,
+        markeredgecolor=&quot;black&quot;,
+        markeredgewidth=1,
+        markerfacecolor=palette[i + 1],
+        clip_on=False,
+    )
+    ax.plot(
+        [x],
+        [ystart - 0.08],
+        &quot;o&quot;,
+        markersize=9,
+        markeredgecolor=&quot;black&quot;,
+        markeredgewidth=1,
+        markerfacecolor=palette[j + 1],
+        clip_on=False,
+    )
+    ax.annotate(
+        &quot;&quot;,
+        xy=(x, ystart - 0.08),
+        xytext=(x, ystart),
+        arrowprops=dict(
+            arrowstyle=&quot;-|&gt;&quot;,
+            facecolor=&quot;black&quot;,
+            shrinkA=5,
+            shrinkB=4,
+        ),
+        clip_on=False,
+        zorder=-1,
+        fontsize=10,
+    )
 
-<span class="c1"># last column</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
-<span class="n">uncorrected_pvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.43</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]])</span>
-<span class="n">top_ax</span><span class="p">,</span> <span class="n">left_ax</span> <span class="o">=</span> <span class="n">heatmap_grouped</span><span class="p">(</span>
-    <span class="n">uncorrected_pvalues</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-    <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span>
-    <span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">left_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Source group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Target group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">)</span>
-<span class="n">top_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;p-values&quot;</span><span class="p">)</span>
+    ax.plot([x], [0.9], &quot;s&quot;, markersize=15, color=cmap(prob1))
+    ax.plot([x], [0.7], &quot;s&quot;, markersize=15, color=cmap(prob2))
+    ax.text(x, 0.78, r&quot;$\overset{?}{=}$&quot;, fontsize=&quot;large&quot;, va=&quot;center&quot;, ha=&quot;center&quot;)
 
-<span class="n">label_matrix_element</span><span class="p">(</span><span class="n">uncorrected_pvalues</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$p_</span><span class="si">{12}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    ax.annotate(
+        &quot;&quot;,
+        xy=(x, 0.53),
+        xytext=(x, 0.63),
+        arrowprops=dict(
+            arrowstyle=&quot;-|&gt;&quot;,
+            facecolor=&quot;black&quot;,
+        ),
+    )
 
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">cols</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-
-<span class="c1"># REF: https://stackoverflow.com/questions/50039667/matplotlib-scale-text-curly-brackets</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="mf">0.35</span>
-<span class="n">y</span> <span class="o">=</span> <span class="mf">0.9</span>
-
-<span class="n">trans</span> <span class="o">=</span> <span class="n">mtrans</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">rotate_deg_around</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">)</span> <span class="o">+</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span>
-<span class="n">fp</span> <span class="o">=</span> <span class="n">FontProperties</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="s2">&quot;ultralight&quot;</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="s2">&quot;ultra-condensed&quot;</span><span class="p">)</span>
-<span class="n">tp</span> <span class="o">=</span> <span class="n">TextPath</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="s2">&quot;$\}$&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="n">fp</span><span class="p">,</span> <span class="n">usetex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">pp</span> <span class="o">=</span> <span class="n">PathPatch</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">trans</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">pp</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    p_text = r&quot;$p_{&quot;
+    p_text += str(i + 1)
+    p_text += str(j + 1)
+    p_text += r&quot;}$&quot;
+    ax.text(x, 0.47, p_text, fontsize=&quot;small&quot;, va=&quot;center&quot;, ha=&quot;center&quot;)
+    ax.set(xticks=[], yticks=[])
 
 
-<span class="n">draw_hypothesis_box</span><span class="p">(</span><span class="s2">&quot;sbm&quot;</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">yskip</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">ypad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+compare_probability_column(0, 0, xstart + 0.15, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_column(0, 1, xstart + 0.35, Bhat1, Bhat2, ax=ax, palette=palette)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+ax.plot(
+    [0.44], [0.78], &quot;.&quot;, markersize=4, markeredgecolor=&quot;black&quot;, markerfacecolor=&quot;black&quot;
+)
+ax.plot(
+    [0.5], [0.78], &quot;.&quot;, markersize=4, markeredgecolor=&quot;black&quot;, markerfacecolor=&quot;black&quot;
+)
+ax.plot(
+    [0.56], [0.78], &quot;.&quot;, markersize=4, markeredgecolor=&quot;black&quot;, markerfacecolor=&quot;black&quot;
+)
 
-<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="o">.</span><span class="n">has_data</span><span class="p">():</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+compare_probability_column(2, 1, xstart + 0.75, Bhat1, Bhat2, ax=ax, palette=palette)
+compare_probability_column(2, 2, xstart + 0.95, Bhat1, Bhat2, ax=ax, palette=palette)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_methods_explain&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+xmin = 0.21
+xmax = 0.39
+ymax = 1.1
+ymin = 0.4
+ax.plot(
+    [xmin, xmax, xmax, xmin, xmin],
+    [ymax, ymax, ymin, ymin, ymax],
+    color=&quot;red&quot;,
+    clip_on=False,
+    lw=1.5,
+)
+
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
+
+draw_hypothesis_box(
+    &quot;sbm&quot;, xstart + 0.1, 0.2, yskip=0.12, ax=ax, subscript=True, xpad=0.05, ypad=0.0075
+)
+
+ax.axis(&quot;off&quot;)
+
+# divider
+ax = merge_axes(fig, axs, rows=None, cols=5)
+ax.axis(&quot;off&quot;)
+ax.plot([0.65, 0.65], [0, 1], color=&quot;lightgrey&quot;, linewidth=1.5, clip_on=False)
+ax.set_xlim((0, 1))
+
+# last column
+ax = axs[1, 6]
+uncorrected_pvalues = np.array([[0.5, 0.1, 0.22], [0.2, 0.01, 0.86], [0.43, 0.2, 0.6]])
+top_ax, left_ax = heatmap_grouped(
+    uncorrected_pvalues,
+    labels=[1, 2, 3],
+    vmin=None,
+    vmax=None,
+    ax=ax,
+    palette=palette,
+    cmap=&quot;RdBu&quot;,
+    center=1,
+)
+left_ax.set_ylabel(&quot;Source group&quot;, fontsize=&quot;small&quot;)
+ax.set_xlabel(&quot;Target group&quot;, fontsize=&quot;small&quot;)
+top_ax.set_title(&quot;p-values&quot;)
+
+label_matrix_element(uncorrected_pvalues, 0, 1, r&quot;$p_{12}$&quot;, ax, color=&quot;w&quot;)
+
+
+ax = merge_axes(fig, axs, rows=(2, 4), cols=6)
+
+# REF: https://stackoverflow.com/questions/50039667/matplotlib-scale-text-curly-brackets
+
+x = 0.35
+y = 0.9
+
+trans = mtrans.Affine2D().rotate_deg_around(x, y, -90) + ax.transData
+fp = FontProperties(weight=&quot;ultralight&quot;, stretch=&quot;ultra-condensed&quot;)
+tp = TextPath((x, y), &quot;$\}$&quot;, size=0.7, prop=fp, usetex=True)
+pp = PathPatch(tp, lw=0, fc=&quot;k&quot;, transform=trans)
+ax.add_artist(pp)
+ax.set(xlim=(0, 1), ylim=(0, 1))
+
+
+draw_hypothesis_box(&quot;sbm&quot;, 0.05, 0.4, yskip=0.15, ypad=0.02, ax=ax)
+
+ax.axis(&quot;off&quot;)
+
+for ax in axs.flat:
+    if not ax.has_data():
+        ax.axis(&quot;off&quot;)
+
+fig.set_facecolor(&quot;w&quot;)
+gluefig(&quot;sbm_methods_explain&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1104,59 +1108,60 @@ the two hemispheres.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+set_theme(font_scale=1)
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
-    <span class="mi">1</span><span class="p">,</span>
-    <span class="mi">2</span><span class="p">,</span>
-    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-    <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-        <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
+fig, axs = plt.subplots(
+    1,
+    2,
+    figsize=(6, 3),
+    gridspec_kw=dict(
+        wspace=0.3,
+    ),
+    constrained_layout=True,
+)
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">node_data</span> <span class="o">=</span> <span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">centroids</span> <span class="o">=</span> <span class="n">node_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-    <span class="s2">&quot;&quot;</span><span class="p">,</span>
-    <span class="n">xy</span><span class="o">=</span><span class="n">centroids</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">xytext</span><span class="o">=</span><span class="n">centroids</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-|&gt;&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Group neurons&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">autoscale</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1.15</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+ax = axs[0]
+node_data = networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
+centroids = node_data.groupby(&quot;labels&quot;).mean()
+ax.annotate(
+    &quot;&quot;,
+    xy=centroids.loc[2],
+    xytext=centroids.loc[1],
+    arrowprops=dict(arrowstyle=&quot;-|&gt;&quot;, linewidth=4, color=&quot;red&quot;),
+)
+ax.set_title(&quot;Group neurons&quot;, pad=10)
+ax.autoscale(False)
+ax.plot([1.15, 1.15], [-1, 1], color=&quot;lightgrey&quot;, linewidth=1.5, clip_on=False)
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">top_ax</span><span class="p">,</span> <span class="n">left_ax</span> <span class="o">=</span> <span class="n">heatmap_grouped</span><span class="p">(</span>
-    <span class="n">Bhat1</span><span class="p">,</span>
-    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-    <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">xlabel_loc</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">top_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
-    <span class="s2">&quot;Estimate group-to-group</span><span class="se">\n</span><span class="s2">connection probabilities &quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;($\hat</span><span class="si">{B}</span><span class="s2">$)&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span>
-<span class="p">)</span>
-<span class="n">left_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Source group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Target group&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+ax = axs[1]
+top_ax, left_ax = heatmap_grouped(
+    Bhat1,
+    [1, 2, 3],
+    palette=palette,
+    ax=ax,
+    xlabel_loc=&quot;top&quot;,
+)
+top_ax.set_title(
+    &quot;Estimate group-to-group\nconnection probabilities &quot; + r&quot;($\hat{B}$)&quot;, pad=10
+)
+left_ax.set_ylabel(&quot;Source group&quot;, fontsize=&quot;medium&quot;)
+ax.set_xlabel(&quot;Target group&quot;, fontsize=&quot;medium&quot;)
 
-<span class="n">label_matrix_element</span><span class="p">(</span>
-    <span class="n">Bhat1</span><span class="p">,</span>
-    <span class="mi">0</span><span class="p">,</span>
-    <span class="mi">1</span><span class="p">,</span>
-    <span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{B}</span><span class="s2">_</span><span class="si">{12}</span><span class="s2">$&quot;</span><span class="p">,</span>
-    <span class="n">ax</span><span class="p">,</span>
-    <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
-    <span class="n">pad</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
-    <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="p">)</span>
+label_matrix_element(
+    Bhat1,
+    0,
+    1,
+    r&quot;$\hat{B}_{12}$&quot;,
+    ax,
+    fontsize=&quot;medium&quot;,
+    pad=0.03,
+    linewidth=3,
+)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+fig.set_facecolor(&quot;w&quot;)
 
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_simple_methods&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+gluefig(&quot;sbm_simple_methods&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1165,16 +1170,17 @@ the two hemispheres.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
-    <span class="n">left_adj</span><span class="p">,</span>
-    <span class="n">right_adj</span><span class="p">,</span>
-    <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
-    <span class="n">labels2</span><span class="o">=</span><span class="n">right_labels</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
-<span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_tests&quot;</span><span class="p">,</span> <span class="n">n_tests</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+stat, pvalue, misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+)
+glue(&quot;pvalue&quot;, pvalue, form=&quot;pvalue&quot;)
+n_tests = misc[&quot;n_tests&quot;]
+glue(&quot;n_tests&quot;, n_tests)
+print(pvalue)
 </pre></div>
 </div>
 </div>
@@ -1186,19 +1192,21 @@ the two hemispheres.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_significant_pairs</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">row_indices</span><span class="p">,</span> <span class="n">col_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">row_indices</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">row_indices</span><span class="p">]</span>
-    <span class="n">col_indices</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col_indices</span><span class="p">]</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">row_indices</span><span class="p">,</span> <span class="n">col_indices</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+
+def get_significant_pairs(df):
+    row_indices, col_indices = np.nonzero(df.values)
+    row_indices = df.index[row_indices]
+    col_indices = df.columns[col_indices]
+    return list(zip(row_indices, col_indices))
 
 
-<span class="n">significant_pairs</span> <span class="o">=</span> <span class="n">get_significant_pairs</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="s2">&quot;rejections&quot;</span><span class="p">])</span>
+significant_pairs = get_significant_pairs(misc[&quot;rejections&quot;])
 
-<span class="n">n_significant_pairs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">significant_pairs</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_significant_pairs&quot;</span><span class="p">,</span> <span class="n">n_significant_pairs</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;intword&#39;</span><span class="p">)</span>
+n_significant_pairs = len(significant_pairs)
+glue(&quot;n_significant_pairs&quot;, n_significant_pairs, form=&#39;intword&#39;)
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Significant pairs:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">significant_pairs</span><span class="p">)</span>
+print(&#39;Significant pairs:\n&#39;, significant_pairs)
 </pre></div>
 </div>
 </div>
@@ -1211,128 +1219,129 @@ the two hemispheres.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+set_theme(font_scale=1)
 
 
-<span class="k">def</span> <span class="nf">melt</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
-    <span class="c1"># TODO should be a better way with melt?</span>
+def melt(misc, names):
+    # TODO should be a better way with melt?
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">names</span><span class="p">]</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-    <span class="n">row_inds</span><span class="p">,</span> <span class="n">col_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">row_inds</span> <span class="o">=</span> <span class="n">row_inds</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">col_inds</span> <span class="o">=</span> <span class="n">col_inds</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">row_index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">row_inds</span><span class="p">]</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">col_index</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">col_inds</span><span class="p">]</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">col_index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;target&quot;</span>
-    <span class="n">series_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">series_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">melted_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">series_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">melted_df</span>
-
-
-<span class="n">melted_df</span> <span class="o">=</span> <span class="n">melt</span><span class="p">(</span>
-    <span class="n">misc</span><span class="p">,</span>
-    <span class="p">[</span>
-        <span class="s2">&quot;probabilities1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;probabilities2&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;possible1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;possible2&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
-<span class="p">)</span>
-<span class="n">melted_df</span><span class="p">[</span><span class="s2">&quot;Sample size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">melted_df</span><span class="p">[</span><span class="s2">&quot;possible1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">melted_df</span><span class="p">[</span><span class="s2">&quot;possible2&quot;</span><span class="p">]</span>
-<span class="n">melted_df</span><span class="p">[</span><span class="s2">&quot;log10(p-value)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">melted_df</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">])</span>
-
-<span class="n">melted_df</span> <span class="o">=</span> <span class="n">melted_df</span><span class="p">[</span><span class="o">~</span><span class="n">melted_df</span><span class="p">[</span><span class="s2">&quot;log10(p-value)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span>
+    if isinstance(names, str):
+        names = [names]
+    df = misc[names[0]]
+    row_inds, col_inds = np.indices(df.shape)
+    row_inds = row_inds.ravel()
+    col_inds = col_inds.ravel()
+    row_index = df.index[row_inds].to_series().reset_index(drop=True)
+    col_index = df.index[col_inds].to_series().reset_index(drop=True)
+    col_index.name = &quot;target&quot;
+    series_list = [row_index, col_index]
+    for name in names:
+        df = misc[name]
+        values = pd.Series(df.values.ravel(), name=name)
+        series_list.append(values)
+    melted_df = pd.concat(series_list, axis=1)
+    return melted_df
 
 
-<span class="n">vmax</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">vmin</span> <span class="o">=</span> <span class="n">melted_df</span><span class="p">[</span><span class="s2">&quot;log10(p-value)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-<span class="n">center</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">cmap</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;RdBu&quot;</span><span class="p">)</span>
-<span class="n">vrange</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">vmax</span> <span class="o">-</span> <span class="n">center</span><span class="p">,</span> <span class="n">center</span> <span class="o">-</span> <span class="n">vmin</span><span class="p">)</span>
-<span class="n">normlize</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">center</span> <span class="o">-</span> <span class="n">vrange</span><span class="p">,</span> <span class="n">center</span> <span class="o">+</span> <span class="n">vrange</span><span class="p">)</span>
-<span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span> <span class="o">=</span> <span class="n">normlize</span><span class="p">([</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">])</span>
-<span class="n">cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
-<span class="n">cmap</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">cmap</span><span class="p">(</span><span class="n">cc</span><span class="p">))</span>
+melted_df = melt(
+    misc,
+    [
+        &quot;probabilities1&quot;,
+        &quot;probabilities2&quot;,
+        &quot;possible1&quot;,
+        &quot;possible2&quot;,
+        &quot;uncorrected_pvalues&quot;,
+    ],
+)
+melted_df[&quot;Sample size&quot;] = melted_df[&quot;possible1&quot;] + melted_df[&quot;possible2&quot;]
+melted_df[&quot;log10(p-value)&quot;] = np.log10(melted_df[&quot;uncorrected_pvalues&quot;])
 
-<span class="n">hb_thresh</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">/</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
-<span class="n">significant</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">hb_thresh</span>
-<span class="n">row_inds</span><span class="p">,</span> <span class="n">col_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">significant</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">row_index</span> <span class="o">=</span> <span class="n">significant</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">row_inds</span><span class="p">]</span>
-<span class="n">col_index</span> <span class="o">=</span> <span class="n">significant</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col_inds</span><span class="p">]</span>
-<span class="n">sig_df</span> <span class="o">=</span> <span class="n">melted_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">zip</span><span class="p">(</span><span class="n">row_index</span><span class="p">,</span> <span class="n">col_index</span><span class="p">)]</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">melted_df</span><span class="p">,</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">,</span>
-    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;Sample size&quot;</span><span class="p">,</span>
-    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;log10(p-value)&quot;</span><span class="p">,</span>
-    <span class="n">palette</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
-    <span class="n">sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Right probability&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Left probability&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">sig_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-        <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]),</span>
-        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">),</span>
-        <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
-        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-|&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span>
-        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-        <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="p">)</span>
+melted_df = melted_df[~melted_df[&quot;log10(p-value)&quot;].isna()]
 
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">melted_df</span><span class="p">,</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">,</span>
-    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;Sample size&quot;</span><span class="p">,</span>
-    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;log10(p-value)&quot;</span><span class="p">,</span>
-    <span class="n">palette</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
-    <span class="n">sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Right probability&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+vmax = 0
+vmin = melted_df[&quot;log10(p-value)&quot;].min()
+center = 0
+cmap = mpl.cm.get_cmap(&quot;RdBu&quot;)
+vrange = max(vmax - center, center - vmin)
+normlize = mpl.colors.Normalize(center - vrange, center + vrange)
+cmin, cmax = normlize([vmin, vmax])
+cc = np.linspace(cmin, cmax, 256)
+cmap = mpl.colors.ListedColormap(cmap(cc))
 
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">sig_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-        <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]),</span>
-        <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">),</span>
-        <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
-        <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-|&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span>
-        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-        <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
+hb_thresh = 0.05 / misc[&quot;n_tests&quot;]
+significant = misc[&quot;uncorrected_pvalues&quot;] &lt; hb_thresh
+row_inds, col_inds = np.nonzero(significant.values)
+row_index = significant.index[row_inds]
+col_index = significant.columns[col_inds]
+sig_df = melted_df.set_index([&quot;source&quot;, &quot;target&quot;]).loc[zip(row_index, col_index)]
 
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;probs_scatter&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+fig, axs = plt.subplots(1, 2, figsize=(16, 8))
+
+ax = axs[0]
+sns.scatterplot(
+    data=melted_df,
+    x=&quot;probabilities2&quot;,
+    y=&quot;probabilities1&quot;,
+    size=&quot;Sample size&quot;,
+    hue=&quot;log10(p-value)&quot;,
+    palette=cmap,
+    sizes=(10, 100),
+    ax=ax,
+)
+ax.set_yscale(&quot;log&quot;)
+ax.set_xscale(&quot;log&quot;)
+ax.set(xlabel=&quot;Right probability&quot;, ylabel=&quot;Left probability&quot;)
+ax.plot([0.00001, 1], [0.00001, 1], color=&quot;grey&quot;, zorder=-2)
+
+for i, row in sig_df.iterrows():
+    ax.annotate(
+        &quot;&quot;,
+        (row[&quot;probabilities2&quot;], row[&quot;probabilities1&quot;]),
+        xytext=(25, -25),
+        textcoords=&quot;offset points&quot;,
+        arrowprops=dict(arrowstyle=&quot;-|&gt;&quot;, color=&quot;black&quot;),
+        ha=&quot;center&quot;,
+        va=&quot;center&quot;,
+        zorder=-1,
+    )
+
+
+ax = axs[1]
+sns.scatterplot(
+    data=melted_df,
+    x=&quot;probabilities2&quot;,
+    y=&quot;probabilities1&quot;,
+    size=&quot;Sample size&quot;,
+    hue=&quot;log10(p-value)&quot;,
+    palette=cmap,
+    sizes=(10, 100),
+    ax=ax,
+    legend=False,
+)
+ax.set_yscale(&quot;log&quot;)
+ax.set_xscale(&quot;log&quot;)
+ax.set(xlabel=&quot;Right probability&quot;, ylabel=&quot;&quot;)
+ax.plot([0.00001, 1], [0.00001, 1], color=&quot;grey&quot;, zorder=-2)
+
+for i, row in sig_df.iterrows():
+    ax.annotate(
+        &quot;&quot;,
+        (row[&quot;probabilities2&quot;], row[&quot;probabilities1&quot;]),
+        xytext=(25, -25),
+        textcoords=&quot;offset points&quot;,
+        arrowprops=dict(arrowstyle=&quot;-|&gt;&quot;, color=&quot;black&quot;),
+        ha=&quot;center&quot;,
+        va=&quot;center&quot;,
+        zorder=-1,
+    )
+ax.set(
+    xlim=(1e-2, 1),
+    ylim=(1e-2, 1),
+)
+
+gluefig(&quot;probs_scatter&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1341,23 +1350,24 @@ the two hemispheres.</p>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+fig, ax = plt.subplots(1, 1, figsize=(10, 5))
 
-<span class="n">group_counts_left</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts1&quot;</span><span class="p">]</span>
-<span class="n">group_counts_right</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;group_counts2&quot;</span><span class="p">]</span>
+group_counts_left = misc[&quot;group_counts1&quot;]
+group_counts_right = misc[&quot;group_counts2&quot;]
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group_counts_left</span><span class="p">)):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mf">0.17</span><span class="p">,</span> <span class="n">group_counts_left</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.17</span><span class="p">,</span> <span class="n">group_counts_right</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
+for i in range(len(group_counts_left)):
+    ax.bar(i - 0.17, group_counts_left[i], width=0.3, color=network_palette[&quot;Left&quot;])
+    ax.bar(i + 0.17, group_counts_right[i], width=0.3, color=network_palette[&quot;Right&quot;])
 
-<span class="n">rotate_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group&quot;</span><span class="p">,</span>
-    <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group_counts_left</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span>
-    <span class="n">xticklabels</span><span class="o">=</span><span class="n">group_counts_left</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;group_counts&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+rotate_labels(ax)
+ax.set(
+    ylabel=&quot;Count&quot;,
+    xlabel=&quot;Group&quot;,
+    xticks=np.arange(len(group_counts_left)) + 0.2,
+    xticklabels=group_counts_left.index,
+)
+gluefig(&quot;group_counts&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1375,9 +1385,10 @@ the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group
 </figure>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_stochastic_block_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">network_palette</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+fig, axs = plot_stochastic_block_probabilities(misc, network_palette)
 
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_uncorrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+gluefig(&quot;sbm_uncorrected&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1386,23 +1397,24 @@ the hemispheres.</span><a class="headerlink" href="#fig-sbm-unmatched-test-group
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># need to save this for later for setting colorbar the same on other plot</span>
-<span class="n">pvalue_vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">misc</span><span class="p">[</span><span class="s2">&quot;corrected_pvalues&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;pvalue_vmin&quot;</span><span class="p">,</span> <span class="n">pvalue_vmin</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+# need to save this for later for setting colorbar the same on other plot
+pvalue_vmin = np.log10(np.nanmin(misc[&quot;corrected_pvalues&quot;].values))
+glue(&quot;pvalue_vmin&quot;, pvalue_vmin)
 
-<span class="n">plot_pvalues</span><span class="p">(</span>
-    <span class="n">misc</span><span class="p">,</span>
-    <span class="n">pvalue_vmin</span><span class="p">,</span>
-    <span class="n">annot_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_uncorrected_pvalues&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+plot_pvalues(
+    misc,
+    pvalue_vmin,
+    annot_missing=True,
+)
+gluefig(&quot;sbm_uncorrected_pvalues&quot;, fig)
 
-<span class="n">plot_pvalues</span><span class="p">(</span>
-    <span class="n">misc</span><span class="p">,</span>
-    <span class="n">pvalue_vmin</span><span class="p">,</span>
-    <span class="n">annot_missing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_uncorrected_pvalues_unlabeled&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+plot_pvalues(
+    misc,
+    pvalue_vmin,
+    annot_missing=False,
+)
+gluefig(&quot;sbm_uncorrected_pvalues_unlabeled&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1478,103 +1490,105 @@ that in every case, the estimated probability on the right is higher with that o
 right.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_estimated_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
-    <span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
-    <span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
-    <span class="n">null_odds</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;null_ratio&quot;</span><span class="p">]</span>
-    <span class="n">B2</span> <span class="o">=</span> <span class="n">B2</span> <span class="o">*</span> <span class="n">null_odds</span>
-    <span class="n">B1_ravel</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">B2_ravel</span> <span class="o">=</span> <span class="n">B2</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">arange</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">B1_ravel</span><span class="p">))</span>
-    <span class="n">sum_ravel</span> <span class="o">=</span> <span class="n">B1_ravel</span> <span class="o">+</span> <span class="n">B2_ravel</span>
-    <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">sum_ravel</span><span class="p">)</span>
-    <span class="n">B1_ravel</span> <span class="o">=</span> <span class="n">B1_ravel</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
-    <span class="n">B2_ravel</span> <span class="o">=</span> <span class="n">B2_ravel</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="n">arange</span><span class="p">,</span>
-        <span class="n">y</span><span class="o">=</span><span class="n">B1_ravel</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
-        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="n">arange</span><span class="p">,</span>
-        <span class="n">y</span><span class="o">=</span><span class="n">B2_ravel</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
-        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">s</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
-        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-        <span class="mf">0.7</span><span class="p">,</span>
-        <span class="mf">0.8</span><span class="p">,</span>
-        <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-        <span class="mf">0.7</span><span class="p">,</span>
-        <span class="mf">0.7</span><span class="p">,</span>
-        <span class="s2">&quot;Right&quot;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-        <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Estimated probability &quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;($\hat</span><span class="si">{p}</span><span class="s2">$)&quot;</span><span class="p">,</span>
-        <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Sorted group pairs&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+def plot_estimated_probabilities(misc):
+    B1 = misc[&quot;probabilities1&quot;]
+    B2 = misc[&quot;probabilities2&quot;]
+    null_odds = misc[&quot;null_ratio&quot;]
+    B2 = B2 * null_odds
+    B1_ravel = B1.values.ravel()
+    B2_ravel = B2.values.ravel()
+    arange = np.arange(len(B1_ravel))
+    sum_ravel = B1_ravel + B2_ravel
+    sort_inds = np.argsort(-sum_ravel)
+    B1_ravel = B1_ravel[sort_inds]
+    B2_ravel = B2_ravel[sort_inds]
 
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">diff</span> <span class="o">=</span> <span class="n">B1_ravel</span> <span class="o">-</span> <span class="n">B2_ravel</span>
-    <span class="n">yscale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span>
-    <span class="n">yscale</span> <span class="o">*=</span> <span class="mf">1.05</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="n">arange</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">diff</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">neutral_color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-        <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\hat</span><span class="si">{p}</span><span class="s2">_</span><span class="si">{left}</span><span class="s2"> - \hat</span><span class="si">{p}</span><span class="s2">_</span><span class="si">{right}</span><span class="s2">$&quot;</span><span class="p">,</span>
-        <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Sorted group pairs&quot;</span><span class="p">,</span>
-        <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">yscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">),</span>
-    <span class="p">)</span>
-    <span class="n">n_greater</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">n_total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-        <span class="mf">0.3</span><span class="p">,</span>
-        <span class="mf">0.8</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;Left connection stronger (</span><span class="si">{</span><span class="n">n_greater</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_total</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">n_lesser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">diff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-        <span class="mf">0.3</span><span class="p">,</span>
-        <span class="mf">0.15</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">&quot;Right connection stronger (</span><span class="si">{</span><span class="n">n_lesser</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_total</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
-        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-    <span class="p">)</span>
+    fig, axs = plt.subplots(2, 1, figsize=(10, 10), sharex=True)
+    ax = axs[0]
+    sns.scatterplot(
+        x=arange,
+        y=B1_ravel,
+        color=network_palette[&quot;Left&quot;],
+        ax=ax,
+        linewidth=0,
+        s=15,
+        alpha=0.5,
+    )
+    sns.scatterplot(
+        x=arange,
+        y=B2_ravel,
+        color=network_palette[&quot;Right&quot;],
+        ax=ax,
+        linewidth=0,
+        s=15,
+        alpha=0.5,
+        zorder=-1,
+    )
+    ax.text(
+        0.7,
+        0.8,
+        &quot;Left&quot;,
+        color=network_palette[&quot;Left&quot;],
+        transform=ax.transAxes,
+    )
+    ax.text(
+        0.7,
+        0.7,
+        &quot;Right&quot;,
+        color=network_palette[&quot;Right&quot;],
+        transform=ax.transAxes,
+    )
+    ax.set_yscale(&quot;log&quot;)
+    ax.set(
+        ylabel=&quot;Estimated probability &quot; + r&quot;($\hat{p}$)&quot;,
+        xticks=[],
+        xlabel=&quot;Sorted group pairs&quot;,
+    )
+    ax.spines[&quot;bottom&quot;].set_visible(False)
 
-    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.905</span><span class="p">,</span> <span class="s2">&quot;A)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.49</span><span class="p">,</span> <span class="s2">&quot;B)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    ax = axs[1]
+    diff = B1_ravel - B2_ravel
+    yscale = np.max(np.abs(diff))
+    yscale *= 1.05
+    sns.scatterplot(
+        x=arange, y=diff, ax=ax, linewidth=0, s=25, color=neutral_color, alpha=1
+    )
+    ax.axhline(0, color=&quot;black&quot;, zorder=-1)
+    ax.spines[&quot;bottom&quot;].set_visible(False)
+    ax.set(
+        xticks=[],
+        ylabel=r&quot;$\hat{p}_{left} - \hat{p}_{right}$&quot;,
+        xlabel=&quot;Sorted group pairs&quot;,
+        ylim=(-yscale, yscale),
+    )
+    n_greater = np.count_nonzero(diff &gt; 0)
+    n_total = len(diff)
+    ax.text(
+        0.3,
+        0.8,
+        f&quot;Left connection stronger ({n_greater}/{n_total})&quot;,
+        color=network_palette[&quot;Left&quot;],
+        transform=ax.transAxes,
+    )
+    n_lesser = np.count_nonzero(diff &lt; 0)
+    ax.text(
+        0.3,
+        0.15,
+        f&quot;Right connection stronger ({n_lesser}/{n_total})&quot;,
+        color=network_palette[&quot;Right&quot;],
+        transform=ax.transAxes,
+    )
 
-    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+    fig.text(0.02, 0.905, &quot;A)&quot;, fontweight=&quot;bold&quot;, fontsize=30)
+    fig.text(0.02, 0.49, &quot;B)&quot;, fontweight=&quot;bold&quot;, fontsize=30)
+
+    return fig, ax
 
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_estimated_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;probs_uncorrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+fig, ax = plot_estimated_probabilities(misc)
+gluefig(&quot;probs_uncorrected&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1598,81 +1612,83 @@ apparent here, as there are more negative than positive values.</span><a class="
 </figure>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_significant_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">):</span>
-    <span class="n">B1</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span>
-    <span class="n">B2</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities2&quot;</span><span class="p">]</span>
-    <span class="n">null_odds</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;null_ratio&quot;</span><span class="p">]</span>
-    <span class="n">B2</span> <span class="o">=</span> <span class="n">B2</span> <span class="o">*</span> <span class="n">null_odds</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">index</span>
-    <span class="n">uncorrected_pvalues</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">]</span>
-    <span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
-    <span class="n">hb_thresh</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">n_tests</span>
-    <span class="n">significant</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span> <span class="o">&lt;</span> <span class="n">hb_thresh</span>
+def plot_significant_probabilities(misc):
+    B1 = misc[&quot;probabilities1&quot;]
+    B2 = misc[&quot;probabilities2&quot;]
+    null_odds = misc[&quot;null_ratio&quot;]
+    B2 = B2 * null_odds
+    index = B1.index
+    uncorrected_pvalues = misc[&quot;uncorrected_pvalues&quot;]
+    n_tests = misc[&quot;n_tests&quot;]
 
-    <span class="n">row_inds</span><span class="p">,</span> <span class="n">col_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">significant</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    alpha = 0.05
+    hb_thresh = alpha / n_tests
+    significant = uncorrected_pvalues &lt; hb_thresh
 
-    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row_inds</span><span class="p">,</span> <span class="n">col_inds</span><span class="p">):</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="n">row_ind</span><span class="p">]</span>
-        <span class="n">target</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="n">col_ind</span><span class="p">]</span>
-        <span class="n">left_p</span> <span class="o">=</span> <span class="n">B1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">]</span>
-        <span class="n">right_p</span> <span class="o">=</span> <span class="n">B2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">]</span>
-        <span class="n">pair</span> <span class="o">=</span> <span class="n">source</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;$\rightarrow$&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">target</span>
-        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
-                <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">,</span>
-                <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">left_p</span><span class="p">,</span>
-                <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;pair&quot;</span><span class="p">:</span> <span class="n">pair</span><span class="p">,</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
-        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
-                <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">,</span>
-                <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">right_p</span><span class="p">,</span>
-                <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="s2">&quot;Right&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;pair&quot;</span><span class="p">:</span> <span class="n">pair</span><span class="p">,</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
-    <span class="n">sig_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    row_inds, col_inds = np.nonzero(significant.values)
 
-    <span class="n">mean_ps</span> <span class="o">=</span> <span class="n">sig_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;pair&quot;</span><span class="p">)[</span><span class="s2">&quot;p&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">pair_orders</span> <span class="o">=</span> <span class="n">mean_ps</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+    rows = []
+    for row_ind, col_ind in zip(row_inds, col_inds):
+        source = index[row_ind]
+        target = index[col_ind]
+        left_p = B1.loc[source, target]
+        right_p = B2.loc[source, target]
+        pair = source + r&quot;$\rightarrow$&quot; + &quot;\n&quot; + target
+        rows.append(
+            {
+                &quot;source&quot;: source,
+                &quot;target&quot;: target,
+                &quot;p&quot;: left_p,
+                &quot;side&quot;: &quot;Left&quot;,
+                &quot;pair&quot;: pair,
+            }
+        )
+        rows.append(
+            {
+                &quot;source&quot;: source,
+                &quot;target&quot;: target,
+                &quot;p&quot;: right_p,
+                &quot;side&quot;: &quot;Right&quot;,
+                &quot;pair&quot;: pair,
+            }
+        )
+    sig_data = pd.DataFrame(rows)
 
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span>
-        <span class="n">data</span><span class="o">=</span><span class="n">sig_data</span><span class="p">,</span>
-        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span>
-        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;pair&quot;</span><span class="p">,</span>
-        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-        <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;side&quot;</span><span class="p">,</span>
-        <span class="n">hue_order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">,</span> <span class="s2">&quot;Left&quot;</span><span class="p">],</span>
-        <span class="n">order</span><span class="o">=</span><span class="n">pair_orders</span><span class="p">,</span>
-        <span class="n">dodge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">join</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">,</span>
-        <span class="n">markers</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
-        <span class="n">scale</span><span class="o">=</span><span class="mf">1.75</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+    mean_ps = sig_data.groupby(&quot;pair&quot;)[&quot;p&quot;].mean()
+    pair_orders = mean_ps.sort_values(ascending=False).index
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    fig, ax = plt.subplots(1, 1, figsize=(9, 6))
+    sns.pointplot(
+        data=sig_data,
+        y=&quot;p&quot;,
+        x=&quot;pair&quot;,
+        ax=ax,
+        hue=&quot;side&quot;,
+        hue_order=[&quot;Right&quot;, &quot;Left&quot;],
+        order=pair_orders,
+        dodge=False,
+        join=False,
+        palette=network_palette,
+        markers=&quot;_&quot;,
+        scale=1.75,
+    )
+    ax.tick_params(axis=&quot;x&quot;, length=7)
 
-    <span class="n">leg</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend</span><span class="p">()</span>
-    <span class="n">leg</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Hemisphere&quot;</span><span class="p">)</span>
-    <span class="n">leg</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">rotate_labels</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Group pair&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Connection probability&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+    ax.set_yscale(&quot;log&quot;)
+    ax.set_ylim((0.01, 1))
+
+    leg = ax.get_legend()
+    leg.set_title(&quot;Hemisphere&quot;)
+    leg.set_frame_on(True)
+    rotate_labels(ax)
+    ax.set(xlabel=&quot;Group pair&quot;, ylabel=&quot;Connection probability&quot;)
+    return fig, ax
 
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_significant_probabilities</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;significant_p_comparison&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+fig, ax = plot_significant_probabilities(misc)
+gluefig(&quot;significant_p_comparison&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -1698,60 +1714,61 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 </figure>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">8</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+fontsize = 8
 
-<span class="n">methods</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;sbm_methods_explain.svg&quot;</span><span class="p">)</span>
-<span class="n">methods</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
-<span class="n">methods</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-<span class="n">methods_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-    <span class="n">methods</span><span class="p">,</span>
-    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;A) Group connection test methods&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
-<span class="p">)</span>
+methods = SmartSVG(FIG_PATH / &quot;sbm_methods_explain.svg&quot;)
+methods.set_width(400)
+methods.move(0, 15)
+methods_panel = Panel(
+    methods,
+    Text(&quot;A) Group connection test methods&quot;, 5, 10, size=fontsize, weight=&quot;bold&quot;),
+)
 
-<span class="n">probs</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;sbm_uncorrected.svg&quot;</span><span class="p">)</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
-<span class="n">probs</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-<span class="n">probs_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-    <span class="n">probs</span><span class="p">,</span>
-    <span class="n">Text</span><span class="p">(</span>
-        <span class="s2">&quot;B) Group connection probabilities&quot;</span><span class="p">,</span>
-        <span class="mi">5</span><span class="p">,</span>
-        <span class="mi">10</span><span class="p">,</span>
-        <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span>
-        <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="n">probs_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
+probs = SmartSVG(FIG_PATH / &quot;sbm_uncorrected.svg&quot;)
+probs.set_width(400)
+probs.move(0, 15)
+probs_panel = Panel(
+    probs,
+    Text(
+        &quot;B) Group connection probabilities&quot;,
+        5,
+        10,
+        size=fontsize,
+        weight=&quot;bold&quot;,
+    ),
+)
+probs_panel.move(0, methods.height * 0.9)
 
-<span class="n">pvalues</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;sbm_uncorrected_pvalues.svg&quot;</span><span class="p">)</span>
-<span class="n">pvalues</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-<span class="n">pvalues</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-<span class="n">pvalues_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-    <span class="n">pvalues</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;C) Connection p-values&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">pvalues_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">probs</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
+pvalues = SmartSVG(FIG_PATH / &quot;sbm_uncorrected_pvalues.svg&quot;)
+pvalues.set_width(200)
+pvalues.move(10, 15)
+pvalues_panel = Panel(
+    pvalues, Text(&quot;C) Connection p-values&quot;, 5, 10, size=fontsize, weight=&quot;bold&quot;)
+)
+pvalues_panel.move(0, (methods.height + probs.height) * 0.9)
 
-<span class="n">comparison</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;significant_p_comparison.svg&quot;</span><span class="p">)</span>
-<span class="n">comparison</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">175</span><span class="p">)</span>
-<span class="n">comparison</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
-<span class="n">comparison_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
-    <span class="n">comparison</span><span class="p">,</span>
-    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;D) Probabilities for&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
-    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;significant connections&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">comparison_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">pvalues</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">probs</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
+comparison = SmartSVG(FIG_PATH / &quot;significant_p_comparison.svg&quot;)
+comparison.set_width(175)
+comparison.move(2, 25)
+comparison_panel = Panel(
+    comparison,
+    Text(&quot;D) Probabilities for&quot;, 5, 10, size=fontsize, weight=&quot;bold&quot;),
+    Text(&quot;significant connections&quot;, 20, 20, size=fontsize, weight=&quot;bold&quot;),
+)
+comparison_panel.move(pvalues.width * 0.9, (methods.height + probs.height) * 0.9)
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span>
-    <span class="n">methods</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">,</span>
-    <span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">probs</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">pvalues</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span>
-    <span class="n">methods_panel</span><span class="p">,</span>
-    <span class="n">probs_panel</span><span class="p">,</span>
-    <span class="n">pvalues_panel</span><span class="p">,</span>
-    <span class="n">comparison_panel</span><span class="p">,</span>
-<span class="p">)</span>
+fig = Figure(
+    methods.width * 0.8,
+    (methods.height + probs.height + pvalues.height) * 0.9,
+    methods_panel,
+    probs_panel,
+    pvalues_panel,
+    comparison_panel,
+)
 
-<span class="n">fig</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;sbm_uncorrected_composite.svg&quot;</span><span class="p">)</span>
-<span class="n">fig</span>
+fig.save(FIG_PATH / &quot;sbm_uncorrected_composite.svg&quot;)
+fig
 </pre></div>
 </div>
 </div>
@@ -1763,10 +1780,10 @@ In each case, the connection probability on the right hemisphere is higher.</spa
 <h2>End<a class="headerlink" href="#end" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f&quot;Script took {delta}&quot;)
+print(f&quot;Completed at {datetime.datetime.now()}&quot;)
 </pre></div>
 </div>
 </div>

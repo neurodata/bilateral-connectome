@@ -498,12 +498,12 @@ title="Print to PDF"
 <h1>this is a test<a class="headerlink" href="#this-is-a-test" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from pkg.io import get_environment_variables
 
-<span class="n">_</span><span class="p">,</span> <span class="n">RERUN_SIMS</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
+_, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 
-<span class="nb">print</span><span class="p">(</span><span class="n">RERUN_SIMS</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">DISPLAY_FIGS</span><span class="p">)</span>
+print(RERUN_SIMS)
+print(DISPLAY_FIGS)
 </pre></div>
 </div>
 </div>

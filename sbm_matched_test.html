@@ -577,55 +577,56 @@ title="Print to PDF"
 <h1>A group-based test<a class="headerlink" href="#a-group-based-test" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+from pkg.utils import set_warnings
 
-<span class="n">set_warnings</span><span class="p">()</span>
+set_warnings()
 
-<span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">time</span>
+import datetime
+import time
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
-<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_matched</span><span class="p">,</span> <span class="n">load_network_palette</span><span class="p">,</span> <span class="n">load_node_palette</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
-<span class="kn">from</span> <span class="nn">pkg.perturb</span> <span class="kn">import</span> <span class="n">remove_edges</span>
-<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
-<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">stochastic_block_test_paired</span>
-<span class="kn">from</span> <span class="nn">seaborn.utils</span> <span class="kn">import</span> <span class="n">relative_luminance</span>
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from myst_nb import glue as default_glue
+from pkg.data import load_matched, load_network_palette, load_node_palette
+from pkg.io import savefig
+from pkg.perturb import remove_edges
+from pkg.plot import set_theme
+from pkg.stats import stochastic_block_test_paired
+from seaborn.utils import relative_luminance
 
-<span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;sbm_matched_test&quot;</span>
+DISPLAY_FIGS = False
+FILENAME = &quot;sbm_matched_test&quot;
 
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;fig&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+rng = np.random.default_rng(8888)
 
 
-<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">savename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FILENAME</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">savename</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">savename</span>
-    <span class="n">default_glue</span><span class="p">(</span><span class="n">savename</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+def gluefig(name, fig, **kwargs):
+    savefig(name, foldername=FILENAME, **kwargs)
+
+    glue(name, fig, prefix=&quot;fig&quot;)
+
+    if not DISPLAY_FIGS:
+        plt.close()
 
 
-<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
+def glue(name, var, prefix=None):
+    savename = f&quot;{FILENAME}-{name}&quot;
+    if prefix is not None:
+        savename = prefix + &quot;:&quot; + savename
+    default_glue(savename, var, display=False)
 
-<span class="n">network_palette</span><span class="p">,</span> <span class="n">NETWORK_KEY</span> <span class="o">=</span> <span class="n">load_network_palette</span><span class="p">()</span>
-<span class="n">node_palette</span><span class="p">,</span> <span class="n">NODE_KEY</span> <span class="o">=</span> <span class="n">load_node_palette</span><span class="p">()</span>
 
-<span class="n">left_adj</span><span class="p">,</span> <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">load_matched</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
-<span class="n">right_adj</span><span class="p">,</span> <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">load_matched</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+t0 = time.time()
+set_theme(font_scale=1.25)
+
+network_palette, NETWORK_KEY = load_network_palette()
+node_palette, NODE_KEY = load_node_palette()
+
+left_adj, left_nodes = load_matched(&quot;left&quot;)
+right_adj, right_nodes = load_matched(&quot;right&quot;)
 </pre></div>
 </div>
 </div>
@@ -636,11 +637,11 @@ title="Print to PDF"
 <h3>Run the test<a class="headerlink" href="#run-the-test" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO double check that all simple groups are the same</span>
-<span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test_paired</span><span class="p">(</span>
-    <span class="n">left_adj</span><span class="p">,</span> <span class="n">right_adj</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;simple_group&quot;</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;uncorrected_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># TODO double check that all simple groups are the same
+stat, pvalue, misc = stochastic_block_test_paired(
+    left_adj, right_adj, labels=left_nodes[&quot;simple_group&quot;]
+)
+glue(&quot;uncorrected_pvalue&quot;, pvalue)
 </pre></div>
 </div>
 </div>
@@ -652,60 +653,60 @@ title="Print to PDF"
 <h3>Plot the p-values for the individual comparisons<a class="headerlink" href="#plot-the-p-values-for-the-individual-comparisons" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncorrected_pvalues</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">]</span>
-<span class="n">n_tests</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;n_tests&quot;</span><span class="p">]</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="n">hb_thresh</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">n_tests</span>
-<span class="n">index</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span><span class="o">.</span><span class="n">index</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>uncorrected_pvalues = misc[&quot;uncorrected_pvalues&quot;]
+n_tests = misc[&quot;n_tests&quot;]
+K = uncorrected_pvalues.shape[0]
+alpha = 0.05
+hb_thresh = alpha / n_tests
+index = uncorrected_pvalues.index
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="c1"># colors = im.get_children()[0].get_facecolors()</span>
-<span class="n">significant</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span> <span class="o">&lt;</span> <span class="n">hb_thresh</span>
-<span class="n">pvalue_vmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">uncorrected_pvalues</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-<span class="c1"># annot = np.full((K, K), &quot;&quot;)</span>
-<span class="c1"># annot[(B1.values == 0) &amp; (B2.values == 0)] = &quot;B&quot;</span>
-<span class="c1"># annot[(B1.values == 0) &amp; (B2.values != 0)] = &quot;L&quot;</span>
-<span class="c1"># annot[(B1.values != 0) &amp; (B2.values == 0)] = &quot;R&quot;</span>
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+# colors = im.get_children()[0].get_facecolors()
+significant = uncorrected_pvalues &lt; hb_thresh
+pvalue_vmin = np.nanmin(np.log10(uncorrected_pvalues.values))
+# annot = np.full((K, K), &quot;&quot;)
+# annot[(B1.values == 0) &amp; (B2.values == 0)] = &quot;B&quot;
+# annot[(B1.values == 0) &amp; (B2.values != 0)] = &quot;L&quot;
+# annot[(B1.values != 0) &amp; (B2.values == 0)] = &quot;R&quot;
 
-<span class="n">plot_pvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">uncorrected_pvalues</span><span class="p">)</span>
-<span class="n">plot_pvalues</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">plot_pvalues</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">im</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
-    <span class="n">plot_pvalues</span><span class="p">,</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="c1"># annot=annot,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span>
-    <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">cbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">vmin</span><span class="o">=</span><span class="n">pvalue_vmin</span><span class="p">,</span>
-    <span class="n">cbar_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">shrink</span><span class="o">=</span><span class="mf">0.6</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Target group&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$log_</span><span class="si">{10}</span><span class="s2">($p-value$)$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
+plot_pvalues = np.log10(uncorrected_pvalues)
+plot_pvalues[np.isnan(plot_pvalues)] = 0
+im = sns.heatmap(
+    plot_pvalues,
+    ax=ax,
+    # annot=annot,
+    cmap=&quot;RdBu&quot;,
+    center=0,
+    square=True,
+    cbar=True,
+    vmin=pvalue_vmin,
+    cbar_kws=dict(shrink=0.6),
+)
+ax.set(ylabel=&quot;&quot;, xlabel=&quot;Target group&quot;)
+ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
+ax.set(yticks=np.arange(K) + 0.5, yticklabels=index)
+ax.set_title(r&quot;$log_{10}($p-value$)$&quot;, fontsize=&quot;xx-large&quot;)
 
-<span class="n">colors</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_facecolors</span><span class="p">()</span>
-<span class="n">significant</span> <span class="o">=</span> <span class="n">uncorrected_pvalues</span> <span class="o">&lt;</span> <span class="n">hb_thresh</span>
+colors = im.get_children()[0].get_facecolors()
+significant = uncorrected_pvalues &lt; hb_thresh
 
-<span class="c1"># NOTE: the x&#39;s looked bad so I did this super hacky thing...</span>
-<span class="n">pad</span> <span class="o">=</span> <span class="mf">0.2</span>
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">is_significant</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">significant</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">colors</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="n">is_significant</span><span class="p">:</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-        <span class="c1"># REF: seaborn heatmap</span>
-        <span class="n">lum</span> <span class="o">=</span> <span class="n">relative_luminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-        <span class="n">text_color</span> <span class="o">=</span> <span class="s2">&quot;.15&quot;</span> <span class="k">if</span> <span class="n">lum</span> <span class="o">&gt;</span> <span class="mf">0.408</span> <span class="k">else</span> <span class="s2">&quot;w&quot;</span>
+# NOTE: the x&#39;s looked bad so I did this super hacky thing...
+pad = 0.2
+for idx, (is_significant, color) in enumerate(zip(significant.values.ravel(), colors)):
+    if is_significant:
+        i, j = np.unravel_index(idx, (K, K))
+        # REF: seaborn heatmap
+        lum = relative_luminance(color)
+        text_color = &quot;.15&quot; if lum &gt; 0.408 else &quot;w&quot;
 
-        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">text_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-        <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">pad</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pad</span><span class="p">]</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">text_color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        xs = [j + pad, j + 1 - pad]
+        ys = [i + pad, i + 1 - pad]
+        ax.plot(xs, ys, color=text_color, linewidth=4)
+        xs = [j + 1 - pad, j + pad]
+        ys = [i + pad, i + 1 - pad]
+        ax.plot(xs, ys, color=text_color, linewidth=4)
 
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;uncorrected_pvalues&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+gluefig(&quot;uncorrected_pvalues&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -735,18 +736,18 @@ p-values were combined using Fisher’s method, resulting in an overall p-value 
 <h3>Compute the density correction<a class="headerlink" href="#compute-the-density-correction" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_edges_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
-<span class="n">n_edges_right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
-<span class="n">n_left</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">n_right</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">density_left</span> <span class="o">=</span> <span class="n">n_edges_left</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_left</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">density_right</span> <span class="o">=</span> <span class="n">n_edges_right</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_right</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>n_edges_left = np.count_nonzero(left_adj)
+n_edges_right = np.count_nonzero(right_adj)
+n_left = left_adj.shape[0]
+n_right = right_adj.shape[0]
+density_left = n_edges_left / (n_left ** 2)
+density_right = n_edges_right / (n_right ** 2)
 
-<span class="n">n_remove</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">density_right</span> <span class="o">-</span> <span class="n">density_left</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_right</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+n_remove = int((density_right - density_left) * (n_right ** 2))
 
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_left&quot;</span><span class="p">,</span> <span class="n">density_left</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;density_right&quot;</span><span class="p">,</span> <span class="n">density_right</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_remove&quot;</span><span class="p">,</span> <span class="n">n_remove</span><span class="p">)</span>
+glue(&quot;density_left&quot;, density_left)
+glue(&quot;density_right&quot;, density_right)
+glue(&quot;n_remove&quot;, n_remove)
 </pre></div>
 </div>
 </div>
@@ -758,19 +759,19 @@ p-values were combined using Fisher’s method, resulting in an overall p-value 
 <h3>Subsample edges on the right hemisphere to set the densities the same<a class="headerlink" href="#subsample-edges-on-the-right-hemisphere-to-set-the-densities-the-same" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">n_resamples</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_resamples&quot;</span><span class="p">,</span> <span class="n">n_resamples</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_resamples</span><span class="p">):</span>
-    <span class="n">subsampled_right_adj</span> <span class="o">=</span> <span class="n">remove_edges</span><span class="p">(</span>
-        <span class="n">right_adj</span><span class="p">,</span> <span class="n">effect_size</span><span class="o">=</span><span class="n">n_remove</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="n">rng</span>
-    <span class="p">)</span>
-    <span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test_paired</span><span class="p">(</span>
-        <span class="n">left_adj</span><span class="p">,</span> <span class="n">subsampled_right_adj</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;simple_group&quot;</span><span class="p">]</span>
-    <span class="p">)</span>
-    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;stat&quot;</span><span class="p">:</span> <span class="n">stat</span><span class="p">,</span> <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">pvalue</span><span class="p">,</span> <span class="s2">&quot;misc&quot;</span><span class="p">:</span> <span class="n">misc</span><span class="p">,</span> <span class="s2">&quot;resample&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>rows = []
+n_resamples = 25
+glue(&quot;n_resamples&quot;, n_resamples)
+for i in range(n_resamples):
+    subsampled_right_adj = remove_edges(
+        right_adj, effect_size=n_remove, random_seed=rng
+    )
+    stat, pvalue, misc = stochastic_block_test_paired(
+        left_adj, subsampled_right_adj, labels=left_nodes[&quot;simple_group&quot;]
+    )
+    rows.append({&quot;stat&quot;: stat, &quot;pvalue&quot;: pvalue, &quot;misc&quot;: misc, &quot;resample&quot;: i})
 
-<span class="n">resample_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+resample_results = pd.DataFrame(rows)
 </pre></div>
 </div>
 </div>
@@ -782,15 +783,15 @@ p-values were combined using Fisher’s method, resulting in an overall p-value 
 <h3>Plot the p-values for the corrected tests<a class="headerlink" href="#plot-the-p-values-for-the-corrected-tests" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">resample_results</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(data=resample_results, x=&quot;pvalue&quot;, ax=ax)
+ax.set(xlabel=&quot;p-value&quot;, ylabel=&quot;&quot;, yticks=[])
+ax.spines[&quot;left&quot;].set_visible(False)
 
-<span class="n">mean_resample_pvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">resample_results</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">])</span>
-<span class="n">median_resample_pvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">resample_results</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">])</span>
+mean_resample_pvalue = np.mean(resample_results[&quot;pvalue&quot;])
+median_resample_pvalue = np.median(resample_results[&quot;pvalue&quot;])
 
-<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;pvalues_corrected&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+gluefig(&quot;pvalues_corrected&quot;, fig)
 </pre></div>
 </div>
 </div>
@@ -819,10 +820,10 @@ bilateral symmetry (after density correction) under the stochastic block model.<
 </figure>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f&quot;Script took {delta}&quot;)
+print(f&quot;Completed at {datetime.datetime.now()}&quot;)
 </pre></div>
 </div>
 </div>

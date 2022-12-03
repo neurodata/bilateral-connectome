@@ -559,38 +559,38 @@ neuron <span class="math notranslate nohighlight">\(j\)</span> as opposed to fro
 </ul>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from pkg.utils import set_warnings
 
-<span class="n">set_warnings</span><span class="p">()</span>
+set_warnings()
 
-<span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+import datetime
+import os
+import time
+from pathlib import Path
 
-<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">graspologic.utils</span> <span class="kn">import</span> <span class="n">remove_loops</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
-<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
-<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">DATA_VERSION</span><span class="p">,</span> <span class="n">load_maggot_graph</span><span class="p">,</span> <span class="n">select_nice_nodes</span>
+import networkx as nx
+import numpy as np
+import pandas as pd
+from graspologic.utils import remove_loops
+from pkg.io import glue as default_glue
+from pkg.io import get_environment_variables
+from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
 
-<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+t0 = time.time()
 
-<span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;define_data&quot;</span>
-
-
-<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">default_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">FILENAME</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+FILENAME = &quot;define_data&quot;
 
 
-<span class="n">RESAVE_DATA</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
+def glue(name, var, **kwargs):
+    default_glue(name, var, FILENAME, display=False, **kwargs)
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using data from </span><span class="si">{</span><span class="n">DATA_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral&quot;</span><span class="p">)</span>  <span class="c1"># TODO fix, make this less fragile</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;bilateral-connectome/data/processed-v4&quot;</span><span class="p">)</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+
+RESAVE_DATA, _, _ = get_environment_variables()
+
+print(f&quot;Using data from {DATA_VERSION}&quot;)
+os.chdir(&quot;/Users/bpedigo/JHU_code/bilateral&quot;)  # TODO fix, make this less fragile
+output_dir = os.path.join(os.getcwd(), &quot;bilateral-connectome/data/processed-v4&quot;)
+output_dir = Path(output_dir)
 </pre></div>
 </div>
 </div>
@@ -607,13 +607,13 @@ Using data from 2022-09-25
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mg</span> <span class="o">=</span> <span class="n">load_maggot_graph</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mg = load_maggot_graph()
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before anything: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">mg</span> <span class="o">=</span> <span class="n">mg</span><span class="p">[</span><span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;paper_clustered_neurons&quot;</span><span class="p">]</span> <span class="o">|</span> <span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;accessory_neurons&quot;</span><span class="p">]]</span>
-<span class="n">total_paper_neurons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;total_paper_neurons&quot;</span><span class="p">,</span> <span class="n">total_paper_neurons</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;long&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After filter by groups to consider for paper: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+print(f&quot;Before anything: {len(mg)}&quot;)
+mg = mg[mg.nodes[&quot;paper_clustered_neurons&quot;] | mg.nodes[&quot;accessory_neurons&quot;]]
+total_paper_neurons = len(mg)
+glue(&quot;total_paper_neurons&quot;, total_paper_neurons, form=&#39;long&#39;)
+print(f&quot;After filter by groups to consider for paper: {len(mg)}&quot;)
 </pre></div>
 </div>
 </div>
@@ -628,23 +628,23 @@ Using data from 2022-09-25
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mg</span> <span class="o">=</span> <span class="n">mg</span><span class="p">[</span><span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;hemisphere&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">])]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After removing non left/right: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">mg</span><span class="o">.</span><span class="n">to_largest_connected_component</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After largest connected component: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mg = mg[mg.nodes[&quot;hemisphere&quot;].isin([&quot;L&quot;, &quot;R&quot;])]
+print(f&quot;After removing non left/right: {len(mg)}&quot;)
+mg.to_largest_connected_component(verbose=False)
+print(f&quot;After largest connected component: {len(mg)}&quot;)
 
-<span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;hemisphere&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;_inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="o">.</span><span class="n">nodes</span><span class="p">))</span>
+mg.nodes.sort_values(&quot;hemisphere&quot;, inplace=True)
+mg.nodes[&quot;_inds&quot;] = range(len(mg.nodes))
 
-<span class="n">left_mg</span><span class="p">,</span> <span class="n">right_mg</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">bisect</span><span class="p">(</span><span class="n">lcc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">left_nodes</span> <span class="o">=</span> <span class="n">left_mg</span><span class="o">.</span><span class="n">nodes</span>
-<span class="n">right_nodes</span> <span class="o">=</span> <span class="n">right_mg</span><span class="o">.</span><span class="n">nodes</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;After taking largest connected component of each side </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">left_nodes</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="p">)</span>
+left_mg, right_mg = mg.bisect(lcc=True)
+left_nodes = left_mg.nodes
+right_nodes = right_mg.nodes
+print(
+    f&quot;After taking largest connected component of each side {len(left_nodes) + len(right_nodes)}&quot;
+)
 
-<span class="n">left_adj</span> <span class="o">=</span> <span class="n">left_mg</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">adj</span>
-<span class="n">right_adj</span> <span class="o">=</span> <span class="n">right_mg</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">adj</span>
+left_adj = left_mg.sum.adj
+right_adj = right_mg.sum.adj
 </pre></div>
 </div>
 </div>
@@ -658,14 +658,14 @@ After taking largest connected component of each side 3007
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_n_loops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">left_adj</span><span class="p">))</span>
-<span class="n">right_n_loops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">right_adj</span><span class="p">))</span>
-<span class="n">left_n_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
-<span class="n">right_n_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
-<span class="n">p_loops</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_n_loops</span> <span class="o">+</span> <span class="n">right_n_loops</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_adj</span><span class="p">))</span>
-<span class="n">p_loop_edges</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_n_loops</span> <span class="o">+</span> <span class="n">right_n_loops</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">left_n_edges</span> <span class="o">+</span> <span class="n">right_n_edges</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops&quot;</span><span class="p">,</span> <span class="n">p_loops</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;2.0f%&quot;</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;p_loops_edges&quot;</span><span class="p">,</span> <span class="n">p_loop_edges</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;.1f%&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>left_n_loops = np.count_nonzero(np.diag(left_adj))
+right_n_loops = np.count_nonzero(np.diag(right_adj))
+left_n_edges = np.count_nonzero(left_adj)
+right_n_edges = np.count_nonzero(right_adj)
+p_loops = (left_n_loops + right_n_loops) / (len(left_adj) + len(right_adj))
+p_loop_edges = (left_n_loops + right_n_loops) / (left_n_edges + right_n_edges)
+glue(&quot;p_loops&quot;, p_loops, form=&quot;2.0f%&quot;)
+glue(&quot;p_loops_edges&quot;, p_loop_edges, form=&quot;.1f%&quot;)
 </pre></div>
 </div>
 </div>
@@ -674,13 +674,13 @@ After taking largest connected component of each side 3007
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">remove_loops</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
-<span class="n">right_adj</span> <span class="o">=</span> <span class="n">remove_loops</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>left_adj = remove_loops(left_adj)
+right_adj = remove_loops(right_adj)
 
-<span class="n">n_left_unmatched</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">n_right_unmatched</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_left_unmatched&quot;</span><span class="p">,</span> <span class="n">n_left_unmatched</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;long&quot;</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_right_unmatched&quot;</span><span class="p">,</span> <span class="n">n_right_unmatched</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;long&quot;</span><span class="p">)</span>
+n_left_unmatched = left_adj.shape[0]
+n_right_unmatched = right_adj.shape[0]
+glue(&quot;n_left_unmatched&quot;, n_left_unmatched, form=&quot;long&quot;)
+glue(&quot;n_right_unmatched&quot;, n_right_unmatched, form=&quot;long&quot;)
 </pre></div>
 </div>
 </div>
@@ -692,34 +692,34 @@ the left
 hemisphere, and  neurons in the right hemisphere.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">left_adj</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span>
-<span class="p">)</span>
-<span class="n">left_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>left_adj = pd.DataFrame(
+    data=left_adj.astype(int), index=left_nodes.index, columns=left_nodes.index
+)
+left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
 
-<span class="k">if</span> <span class="n">RESAVE_DATA</span><span class="p">:</span>
-    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-        <span class="n">left_g</span><span class="p">,</span>
-        <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_left_edgelist.csv&quot;</span><span class="p">,</span>
-        <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">left_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_left_nodes.csv&quot;</span><span class="p">)</span>
+if RESAVE_DATA:
+    nx.write_edgelist(
+        left_g,
+        output_dir / &quot;unmatched_left_edgelist.csv&quot;,
+        delimiter=&quot;,&quot;,
+        data=[&quot;weight&quot;],
+    )
+    left_nodes.to_csv(output_dir / &quot;unmatched_left_nodes.csv&quot;)
 
 
-<span class="n">right_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">right_adj</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span>
-<span class="p">)</span>
-<span class="n">right_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
+right_adj = pd.DataFrame(
+    data=right_adj.astype(int), index=right_nodes.index, columns=right_nodes.index
+)
+right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
 
-<span class="k">if</span> <span class="n">RESAVE_DATA</span><span class="p">:</span>
-    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-        <span class="n">right_g</span><span class="p">,</span>
-        <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_right_edgelist.csv&quot;</span><span class="p">,</span>
-        <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">right_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;unmatched_right_nodes.csv&quot;</span><span class="p">)</span>
+if RESAVE_DATA:
+    nx.write_edgelist(
+        right_g,
+        output_dir / &quot;unmatched_right_edgelist.csv&quot;,
+        delimiter=&quot;,&quot;,
+        data=[&quot;weight&quot;],
+    )
+    right_nodes.to_csv(output_dir / &quot;unmatched_right_nodes.csv&quot;)
 </pre></div>
 </div>
 </div>
@@ -737,24 +737,24 @@ networks will necessarily be of the same size.</p>
 described above for the unmatched networks.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mg</span> <span class="o">=</span> <span class="n">load_maggot_graph</span><span class="p">()</span>
-<span class="n">mg</span> <span class="o">=</span> <span class="n">select_nice_nodes</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span>
-<span class="n">left_mg</span><span class="p">,</span> <span class="n">right_mg</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">bisect</span><span class="p">(</span><span class="n">lcc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">paired</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">left_nodes</span> <span class="o">=</span> <span class="n">left_mg</span><span class="o">.</span><span class="n">nodes</span>
-<span class="n">right_nodes</span> <span class="o">=</span> <span class="n">right_mg</span><span class="o">.</span><span class="n">nodes</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mg = load_maggot_graph()
+mg = select_nice_nodes(mg)
+left_mg, right_mg = mg.bisect(lcc=True, paired=True)
+left_nodes = left_mg.nodes
+right_nodes = right_mg.nodes
 
-<span class="n">left_adj</span> <span class="o">=</span> <span class="n">left_mg</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">adj</span>
-<span class="n">right_adj</span> <span class="o">=</span> <span class="n">right_mg</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">adj</span>
+left_adj = left_mg.sum.adj
+right_adj = right_mg.sum.adj
 
 
-<span class="n">left_adj</span> <span class="o">=</span> <span class="n">remove_loops</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
-<span class="n">right_adj</span> <span class="o">=</span> <span class="n">remove_loops</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
+left_adj = remove_loops(left_adj)
+right_adj = remove_loops(right_adj)
 
-<span class="n">n_left_matched</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">n_right_matched</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+n_left_matched = left_adj.shape[0]
+n_right_matched = right_adj.shape[0]
 
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_left_matched&quot;</span><span class="p">,</span> <span class="n">n_left_matched</span><span class="p">)</span>
-<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;n_right_matched&quot;</span><span class="p">,</span> <span class="n">n_right_matched</span><span class="p">)</span>
+glue(&quot;n_left_matched&quot;, n_left_matched)
+glue(&quot;n_right_matched&quot;, n_right_matched)
 </pre></div>
 </div>
 </div>
@@ -766,44 +766,44 @@ left
 hemisphere, and  neurons in the right hemisphere.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">left_adj</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span>
-<span class="p">)</span>
-<span class="n">left_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">RESAVE_DATA</span><span class="p">:</span>
-    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-        <span class="n">left_g</span><span class="p">,</span>
-        <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_left_edgelist.csv&quot;</span><span class="p">,</span>
-        <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>left_adj = pd.DataFrame(
+    data=left_adj.astype(int), index=left_nodes.index, columns=left_nodes.index
+)
+left_g = nx.from_pandas_adjacency(left_adj, create_using=nx.DiGraph)
+if RESAVE_DATA:
+    nx.write_edgelist(
+        left_g,
+        output_dir / &quot;matched_left_edgelist.csv&quot;,
+        delimiter=&quot;,&quot;,
+        data=[&quot;weight&quot;],
+    )
 
-    <span class="n">left_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_left_nodes.csv&quot;</span><span class="p">)</span>
+    left_nodes.to_csv(output_dir / &quot;matched_left_nodes.csv&quot;)
 
 
-<span class="n">right_adj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">right_adj</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span>
-<span class="p">)</span>
-<span class="n">right_g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_adjacency</span><span class="p">(</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">create_using</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">)</span>
+right_adj = pd.DataFrame(
+    data=right_adj.astype(int), index=right_nodes.index, columns=right_nodes.index
+)
+right_g = nx.from_pandas_adjacency(right_adj, create_using=nx.DiGraph)
 
-<span class="k">if</span> <span class="n">RESAVE_DATA</span><span class="p">:</span>
-    <span class="n">nx</span><span class="o">.</span><span class="n">write_edgelist</span><span class="p">(</span>
-        <span class="n">right_g</span><span class="p">,</span>
-        <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_right_edgelist.csv&quot;</span><span class="p">,</span>
-        <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">right_nodes</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;matched_right_nodes.csv&quot;</span><span class="p">)</span>
+if RESAVE_DATA:
+    nx.write_edgelist(
+        right_g,
+        output_dir / &quot;matched_right_edgelist.csv&quot;,
+        delimiter=&quot;,&quot;,
+        data=[&quot;weight&quot;],
+    )
+    right_nodes.to_csv(output_dir / &quot;matched_right_nodes.csv&quot;)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f&quot;Script took {delta}&quot;)
+print(f&quot;Completed at {datetime.datetime.now()}&quot;)
 </pre></div>
 </div>
 </div>
