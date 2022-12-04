@@ -15,7 +15,7 @@ p {
 }
 </style>
 
-# The connectome of a larval *Drosophila* brain
+# Investigating the connectome of a larval *Drosophila* brain
 
 <br>
 
@@ -56,6 +56,15 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 # Many goals of connectomics involve linking connectome to other properties
 
 ![center h:500](./../../images/link_connectome.svg)
+
+---
+# What do we do with these datasets once we have them?
+
+- Hypothesis *generation*
+  - How could signals travel on this network, from sensory inputs to motor outputs?
+  - What cells have similar patterns of connectivity?
+- Hypothesis *testing*
+  - Connectome (network) as an object that we want to "do inference" on 
 
 ---
 
@@ -147,6 +156,8 @@ Both hemispheres
 
 ![](./../../images/Figure1-cell-classes.png)
 
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
 --- 
 
 # Axons/dendrites can be split
@@ -163,6 +174,8 @@ Both hemispheres
 
 </div>
 </div>
+
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
 ---
 
@@ -181,6 +194,8 @@ Both hemispheres
 </div>
 </div>
 
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
 --- 
 
 # What are these different "channels" doing?
@@ -194,10 +209,10 @@ Both hemispheres
 <div>
 
 
-
 </div>
 </div>
 
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
 ---
 
@@ -216,6 +231,7 @@ Both hemispheres
 </div>
 </div>
 
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
 ---
 
@@ -223,12 +239,18 @@ Both hemispheres
 
 ![bg right:68% h:650](./../../images/figs6.png)
 
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
+
 --- 
 # Edge reciprocity
 
 ![h:400 center](./../../images/fig2h-reciprocity.png)
 
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
 --- 
+
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
 
@@ -271,6 +293,8 @@ Both hemispheres
 - mention embedding
 - cluster - when to stop
 
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
 ---
 
 # Neurons clustered by connectivity using recursive spectral clustering
@@ -283,9 +307,8 @@ Where to stop splitting?
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
-
 ---
-# Using *pairs* and *models* to evaluate cell type groupings
+# Using models to evaluate cell type groupings
 <!-- TODO: (2) diagram/describe SBM cross validation -->
 
 <!-- ![center h:550](../../images/lik-by-n_params-blind.png) -->
@@ -293,7 +316,7 @@ Where to stop splitting?
 <div class="columns">
 <div>
 
-- Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)...
+- Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)
 - How well do these models generalize to the other side of the brain (let alone the next maggot)?
 
 </div>
@@ -311,8 +334,6 @@ Where to stop splitting?
 
 ![bg h:750 center](../../images/all-morpho-plot-clustering=dc_level_7_n_components=10_min_split=32-discrim=True-wide.png)
 
----
-# (maybe) describe morphological quantification
 
 ---
 
@@ -364,7 +385,6 @@ h2 {
 - $H_0: \color{#66c2a5} F^{(1)} \color{black} = \color{#fc8d62} F^{(2)}$  
   $H_A: \color{#66c2a5} F^{(1)} \color{black} \neq \color{#fc8d62} F^{(2)}$
 
-
 </div>
 </div>
 
@@ -387,6 +407,8 @@ h2 {
 
 </div>
 </div>
+
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 ---
 # Assumptions
@@ -433,6 +455,7 @@ p-value < $10^{-22}$
 </div>
 </div>
 
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 ---
 # Connection probabilities between groups
@@ -457,15 +480,17 @@ p-value < $10^{-22}$
 
 ![center w:700](../../../results/figs/sbm_unmatched_test/sbm_uncorrected.svg)
 
+</div>
+</div>
 
-</div>
-</div>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022), Pedigo et al. bioRxiv (2022) -->
 
 --- 
 # Group connection test
 
 ![center](./../../../results/figs/sbm_unmatched_test/sbm_methods_explain.svg)
 
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 --- 
 # Detect differences in group connection probabilities
@@ -483,6 +508,8 @@ p-value < $10^{-22}$
 
 </div>
 </div>
+
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 ---
 # Should we be surprised?
@@ -503,6 +530,7 @@ p-value < $10^{-22}$
 </div>
 </div>
 
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 ---
 # After adjusting for density, differences are in KCs
@@ -529,6 +557,7 @@ Overall p-value: $<10^{-2}$
 </div>
 </div>
 
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 ---
 # To sum up...
@@ -562,6 +591,7 @@ Depends on what you mean...
 </div>
 </div>
 
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 ---
 # Examining the effect of edge weights
@@ -732,25 +762,22 @@ h1, h2 {
 - ### Connectome comparison via network hypothesis testing
 - ### Pairing neurons across connectomes via graph matching
 - ### **Ongoing extensions/applications**
-  
+
+---
+
+# A hypothetical difference we want to detect
+
+![center h:300](./../../images/perturbation-diagram.png)
+
+- Start from some subgraph in the connectome, $A$
+- Perturb a copy of it, $B$ (add edges)
+- Test for differences between $A$ and $B$
+
 ---
 # Pairs facilitate more powerful tests
 
-<div class="columns-br">
-<div>
+![center](./../../../results/figs/matched_vs_unmatched_sims_pn_lhn/er_power_comparison.svg)
 
-- Generate an Erdos-Renyi network ($A$)
-- Perturb a copy of it ($B$) (add edges)
-- Test for differences between $A$ and $B$
-
-</div>
-<div>
-
-![](./../../../results/figs/matched_vs_unmatched_sims/er_power_comparison.svg)
-
-
-</div>
-</div>
 
 <!-- ---
 # Testing for "stereotypy" in edge structure

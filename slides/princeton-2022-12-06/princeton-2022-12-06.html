@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>The connectome of a larval Drosophila brain &#8212; Bilateral Connectome</title>
+    <title>Investigating the connectome of a larval Drosophila brain &#8212; Bilateral Connectome</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -241,7 +241,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/princeton.pdf">
-   Princeton
+   Princeton July 2022
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/princeton-2022-12-06.pdf">
+   Princeton December 2022
   </a>
  </li>
 </ul>
@@ -467,7 +472,7 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   The connectome of a larval
+   Investigating the connectome of a larval
    <em>
     Drosophila
    </em>
@@ -491,6 +496,11 @@ title="Print to PDF"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#many-goals-of-connectomics-involve-linking-connectome-to-other-properties">
    Many goals of connectomics involve linking connectome to other properties
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-do-we-do-with-these-datasets-once-we-have-them">
+   What do we do with these datasets once we have them?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -638,21 +648,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-pairs-and-models-to-evaluate-cell-type-groupings">
-   Using
-   <em>
-    pairs
-   </em>
-   and
-   <em>
-    models
-   </em>
-   to evaluate cell type groupings
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#maybe-describe-morphological-quantification">
-   (maybe) describe morphological quantification
+  <a class="reference internal nav-link" href="#using-models-to-evaluate-cell-type-groupings">
+   Using models to evaluate cell type groupings
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -914,6 +911,11 @@ title="Print to PDF"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-hypothetical-difference-we-want-to-detect">
+   A hypothetical difference we want to detect
+  </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pairs-facilitate-more-powerful-tests">
@@ -985,7 +987,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>The connectome of a larval Drosophila brain</h1>
+                <h1>Investigating the connectome of a larval Drosophila brain</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -997,7 +999,7 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   The connectome of a larval
+   Investigating the connectome of a larval
    <em>
     Drosophila
    </em>
@@ -1021,6 +1023,11 @@ title="Print to PDF"
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#many-goals-of-connectomics-involve-linking-connectome-to-other-properties">
    Many goals of connectomics involve linking connectome to other properties
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-do-we-do-with-these-datasets-once-we-have-them">
+   What do we do with these datasets once we have them?
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -1168,21 +1175,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-pairs-and-models-to-evaluate-cell-type-groupings">
-   Using
-   <em>
-    pairs
-   </em>
-   and
-   <em>
-    models
-   </em>
-   to evaluate cell type groupings
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#maybe-describe-morphological-quantification">
-   (maybe) describe morphological quantification
+  <a class="reference internal nav-link" href="#using-models-to-evaluate-cell-type-groupings">
+   Using models to evaluate cell type groupings
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
@@ -1444,6 +1438,11 @@ title="Print to PDF"
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-hypothetical-difference-we-want-to-detect">
+   A hypothetical difference we want to detect
+  </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pairs-facilitate-more-powerful-tests">
@@ -1523,8 +1522,8 @@ p {
     font-size: 24px;
 }
 </style>
-<section class="tex2jax_ignore mathjax_ignore" id="the-connectome-of-a-larval-drosophila-brain">
-<h1>The connectome of a larval <em>Drosophila</em> brain<a class="headerlink" href="#the-connectome-of-a-larval-drosophila-brain" title="Permalink to this headline">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="investigating-the-connectome-of-a-larval-drosophila-brain">
+<h1>Investigating the connectome of a larval <em>Drosophila</em> brain<a class="headerlink" href="#investigating-the-connectome-of-a-larval-drosophila-brain" title="Permalink to this headline">#</a></h1>
 <br>
 <div class="columns">
 <div>
@@ -1558,6 +1557,23 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 <section class="tex2jax_ignore mathjax_ignore" id="many-goals-of-connectomics-involve-linking-connectome-to-other-properties">
 <h1>Many goals of connectomics involve linking connectome to other properties<a class="headerlink" href="#many-goals-of-connectomics-involve-linking-connectome-to-other-properties" title="Permalink to this headline">#</a></h1>
 <p><img alt="center h:500" src="../../_images/link_connectome.svg" /></p>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="what-do-we-do-with-these-datasets-once-we-have-them">
+<h1>What do we do with these datasets once we have them?<a class="headerlink" href="#what-do-we-do-with-these-datasets-once-we-have-them" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p>Hypothesis <em>generation</em></p>
+<ul>
+<li><p>How could signals travel on this network, from sensory inputs to motor outputs?</p></li>
+<li><p>What cells have similar patterns of connectivity?</p></li>
+</ul>
+</li>
+<li><p>Hypothesis <em>testing</em></p>
+<ul>
+<li><p>Connectome (network) as an object that we want to “do inference” on</p></li>
+</ul>
+</li>
+</ul>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="comparative-connectomics-as-a-potential-solution">
@@ -1663,6 +1679,7 @@ Both hemispheres</p>
 <section class="tex2jax_ignore mathjax_ignore" id="high-level-mostly-anatomical-cell-types">
 <h1>High level (mostly anatomical) cell types<a class="headerlink" href="#high-level-mostly-anatomical-cell-types" title="Permalink to this headline">#</a></h1>
 <p><img alt="" src="../../_images/Figure1-cell-classes.png" /></p>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="axons-dendrites-can-be-split">
@@ -1675,6 +1692,7 @@ Both hemispheres</p>
 <p><img alt="h:500 center" src="images/fig2c-full.png" /></p>
 </div>
 </div>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="this-split-induces-4-graphs-or-layers">
@@ -1687,6 +1705,7 @@ Both hemispheres</p>
 <p><img alt="h:200" src="images/fig2e.png" /></p>
 </div>
 </div>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="what-are-these-different-channels-doing">
@@ -1698,6 +1717,7 @@ Both hemispheres</p>
 <div>
 </div>
 </div>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="quantifying-high-level-feedforward-feedback">
@@ -1710,16 +1730,19 @@ Both hemispheres</p>
 <p><img alt="h:300 center" src="images/fig2f.png" /></p>
 </div>
 </div>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="comparing-independently-sorted-channels">
 <h1>Comparing independently sorted channels<a class="headerlink" href="#comparing-independently-sorted-channels" title="Permalink to this headline">#</a></h1>
 <p><img alt="bg right:68% h:650" src="images/figs6.png" /></p>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="edge-reciprocity">
 <h1>Edge reciprocity<a class="headerlink" href="#edge-reciprocity" title="Permalink to this headline">#</a></h1>
 <p><img alt="h:400 center" src="images/fig2h-reciprocity.png" /></p>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 <hr class="docutils" />
 <p><img alt="bg center blur:3px opacity:20%" src="../results/figs/background/background.svg" /></p>
 </section>
@@ -1778,6 +1801,7 @@ Both hemispheres</p>
 <li><p>mention embedding</p></li>
 <li><p>cluster - when to stop</p></li>
 </ul>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="neurons-clustered-by-connectivity-using-recursive-spectral-clustering">
@@ -1788,14 +1812,14 @@ Both hemispheres</p>
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="using-pairs-and-models-to-evaluate-cell-type-groupings">
-<h1>Using <em>pairs</em> and <em>models</em> to evaluate cell type groupings<a class="headerlink" href="#using-pairs-and-models-to-evaluate-cell-type-groupings" title="Permalink to this headline">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="using-models-to-evaluate-cell-type-groupings">
+<h1>Using models to evaluate cell type groupings<a class="headerlink" href="#using-models-to-evaluate-cell-type-groupings" title="Permalink to this headline">#</a></h1>
 <!-- TODO: (2) diagram/describe SBM cross validation -->
 <!-- ![center h:550](../../images/lik-by-n_params-blind.png) -->
 <div class="columns">
 <div>
 <ul class="simple">
-<li><p>Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)…</p></li>
+<li><p>Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)</p></li>
 <li><p>How well do these models generalize to the other side of the brain (let alone the next maggot)?</p></li>
 </ul>
 </div>
@@ -1806,10 +1830,6 @@ Both hemispheres</p>
 <hr class="docutils" />
 <!-- ### Cluster morphology  -->
 <p><img alt="bg h:750 center" src="images/all-morpho-plot-clustering=dc_level_7_n_components=10_min_split=32-discrim=True-wide.png" /></p>
-</section>
-<hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="maybe-describe-morphological-quantification">
-<h1>(maybe) describe morphological quantification<a class="headerlink" href="#maybe-describe-morphological-quantification" title="Permalink to this headline">#</a></h1>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="bilateral-symmetry">
@@ -1890,6 +1910,7 @@ h2 {
 </ul>
 </div>
 </div>
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="assumptions">
@@ -1930,6 +1951,7 @@ p {
 <p>p-value &lt; <span class="math notranslate nohighlight">\(10^{-22}\)</span></p>
 </div>
 </div>
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="connection-probabilities-between-groups">
@@ -1949,11 +1971,13 @@ p {
 <p><img alt="center w:700" src="../results/figs/sbm_unmatched_test/sbm_uncorrected.svg" /></p>
 </div>
 </div>
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022), Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="group-connection-test">
 <h1>Group connection test<a class="headerlink" href="#group-connection-test" title="Permalink to this headline">#</a></h1>
 <p><img alt="center" src="../results/figs/sbm_unmatched_test/sbm_methods_explain.svg" /></p>
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="detect-differences-in-group-connection-probabilities">
@@ -1969,6 +1993,7 @@ p {
 </ul>
 </div>
 </div>
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="should-we-be-surprised">
@@ -1990,6 +2015,7 @@ where <span class="math notranslate nohighlight">\(c\)</span> is a density-adjus
 <p><img alt="center h:500" src="../results/figs/sbm_unmatched_test/significant_p_comparison.svg" /></p>
 </div>
 </div>
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="after-adjusting-for-density-differences-are-in-kcs">
@@ -2009,6 +2035,7 @@ p {
 <p>Overall p-value: <span class="math notranslate nohighlight">\(&lt;10^{-2}\)</span></p>
 </div>
 </div>
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="to-sum-up">
@@ -2073,6 +2100,7 @@ p {
 </table>
 </div>
 </div>
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 </section>
 </section>
 <hr class="docutils" />
@@ -2253,20 +2281,19 @@ h1, h2 {
 </section>
 </section>
 <hr class="docutils" />
-<section class="tex2jax_ignore mathjax_ignore" id="pairs-facilitate-more-powerful-tests">
-<h1>Pairs facilitate more powerful tests<a class="headerlink" href="#pairs-facilitate-more-powerful-tests" title="Permalink to this headline">#</a></h1>
-<div class="columns-br">
-<div>
+<section class="tex2jax_ignore mathjax_ignore" id="a-hypothetical-difference-we-want-to-detect">
+<h1>A hypothetical difference we want to detect<a class="headerlink" href="#a-hypothetical-difference-we-want-to-detect" title="Permalink to this headline">#</a></h1>
+<p><img alt="center h:300" src="images/perturbation-diagram.png" /></p>
 <ul class="simple">
-<li><p>Generate an Erdos-Renyi network (<span class="math notranslate nohighlight">\(A\)</span>)</p></li>
-<li><p>Perturb a copy of it (<span class="math notranslate nohighlight">\(B\)</span>) (add edges)</p></li>
+<li><p>Start from some subgraph in the connectome, <span class="math notranslate nohighlight">\(A\)</span></p></li>
+<li><p>Perturb a copy of it, <span class="math notranslate nohighlight">\(B\)</span> (add edges)</p></li>
 <li><p>Test for differences between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span></p></li>
 </ul>
-</div>
-<div>
-<p><img alt="" src="../results/figs/matched_vs_unmatched_sims/er_power_comparison.svg" /></p>
-</div>
-</div>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="pairs-facilitate-more-powerful-tests">
+<h1>Pairs facilitate more powerful tests<a class="headerlink" href="#pairs-facilitate-more-powerful-tests" title="Permalink to this headline">#</a></h1>
+<p><img alt="center" src="../results/figs/matched_vs_unmatched_sims_pn_lhn/er_power_comparison.svg" /></p>
 <!-- ---
 # Testing for "stereotypy" in edge structure
 
