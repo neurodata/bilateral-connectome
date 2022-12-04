@@ -69,35 +69,6 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 - Compare connectomes
 - Understand how $X$ {affects, is affected by, is associated with} connectome structure
 
----
-
-# Connectome $\leftrightarrow$ memory
-
-![center h:200](../../images/mind-of-a-mouse.png)
-
-> ...the acquisition of wiring diagrams across multiple individuals will yield insights into how experiences shape neural connections.
-
-<!-- *Emphasis added* -->
-
-
-<!-- _footer: Abbott et al. Cell (2020) -->
-
----
-
-# Connectome $\leftrightarrow$ disease
-
-![center h:200](../../images/mind-of-a-mouse.png)
-
-> The first step would be to learn what the normal wiring diagram is [...] it should be feasible to do many additional connectomes [...] of animal models of brain disorders
-
-<!-- *Emphasis added* -->
-
-
-<!-- _footer: Abbott et al. Cell (2020) -->
-
-
-<!-- TODO: (3) diagram of linking connectome and memory -->
-
 
 <!-- --- 
 # Connectome $\leftrightarrow$ {development, genetics}
@@ -106,11 +77,6 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 *Emphasis added* -->
 
----
-# Connectome $\leftrightarrow$ development
-![center h:475](./../../images/witvliet-fig1.png)
-
-<!-- _footer: Witvliet et al. Nature (2021) -->
 
 ---
 
@@ -133,6 +99,8 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 # Outline
 
 - ### **Larval connectome dataset**
+  - Flow
+  - Connectivity based cell types
 - ### Connectome comparison via network hypothesis testing
 - ### Pairing neurons across connectomes via graph matching
 - ### Ongoing extensions/applications
@@ -143,7 +111,7 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 # Larval _Drosophila_ brain connectome 
 
 
-<div class="columns">
+<div class="columns-bl">
 <div>
 
 <style scoped>
@@ -155,14 +123,16 @@ p {
 }
 </style>
 
-![center h:400](./../../images/Figure1-brain-render.png)
-~3k neurons, ~550K synapses
-**Both hemispheres**
+![](./../../images/FigureS1-reconstruction.png)
 
 </div>
 <div>
 
-Include  the numbers of sites, etc. 
+![center](./../../images/Figure1-brain-render.png)
+~3k neurons, ~550K synapses
+Both hemispheres
+
+<!-- Include  the numbers of sites, etc.  -->
 <!-- ![center h:500](./../../../results/figs/plot_layouts/whole-network-layout.png) -->
 <!-- ![h:450](./../../../results/figs/show_data/adjacencies.png) -->
 
@@ -249,26 +219,52 @@ Include  the numbers of sites, etc.
 
 ---
 
-# what if we let them all sort independently 
-maybe show S6F?
+# Comparing independently sorted channels
 
----
-
-# comparing sort directions ranks 
-
-show some examples from S7B
+![bg right:68% h:650](./../../images/figs6.png)
 
 --- 
-# show the edge reciprocity by type
+# Edge reciprocity
+
+![h:400 center](./../../images/fig2h-reciprocity.png)
 
 --- 
 
-# CLustering (blank slide)
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+
+# Outline
+
+- ### **Larval connectome dataset**
+  - Flow
+  - Connectivity based cell types
+- ### Connectome comparison via network hypothesis testing
+- ### Pairing neurons across connectomes via graph matching
+- ### Ongoing extensions/applications
 
 ---
 # Spectral embedding
-- very old idea 
-- more recently, shown to be a consistent estimator of block model
+- Spectral decomposition of the adjacency matrix (or Laplacian)
+- Spectral decomp. + clustering how to be a consistent estimator of block model
+
+---
+
+
+# Stochastic block model
+
+<div class="columns">
+<div>
+
+![h:400 center](./../../../results/figs/sbm_unmatched_test/sbm_explain.png)
+
+</div>
+<div>
+
+- Each node is assigned to a group
+- $B$ is a matrix of connection probabilities between groups
+
+</div>
+</div>
+
 
 ---
 # Diagram of procedure 
@@ -276,14 +272,44 @@ show some examples from S7B
 - cluster - when to stop
 
 ---
-# "Pseudo-cross validation"
-- show curve of number of clusters 
+
+# Neurons clustered by connectivity using recursive spectral clustering
+
+Where to stop splitting?
+
+![center](../../images/bar-dendrogram-wide.svg)
+
+![center w:700](../../images/cell-type-labels-legend.png)
+
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
+
+---
+# Using *pairs* and *models* to evaluate cell type groupings
+<!-- TODO: (2) diagram/describe SBM cross validation -->
+
+<!-- ![center h:550](../../images/lik-by-n_params-blind.png) -->
+
+<div class="columns">
+<div>
+
+- Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)...
+- How well do these models generalize to the other side of the brain (let alone the next maggot)?
+
+</div>
+<div>
+
+![center h:550](../../images/dcsbm-swap-arrows.png)
+
+</div>
+</div>
+
 
 --- 
-# Resulting barplot
 
---- 
-# Show morphology of the resulting clustering 
+<!-- ### Cluster morphology  -->
+
+![bg h:750 center](../../images/all-morpho-plot-clustering=dc_level_7_n_components=10_min_split=32-discrim=True-wide.png)
 
 ---
 # (maybe) describe morphological quantification
@@ -293,10 +319,10 @@ show some examples from S7B
 # Bilateral symmetry
 
 > "This brain is bilaterally symmetric."
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists
+<!-- > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists -->
 
 > "What does that even mean? And how would we know if it wasn't?"
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Us
+<!-- > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Us -->
 
 <!-- ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg) -->
 <!-- ![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png) -->
@@ -407,12 +433,6 @@ p-value < $10^{-22}$
 </div>
 </div>
 
---- 
-# Stochastic block model
-
-Edge probabilities are a function of a neuron's group
-
-![center h:450](./../../../results/figs/sbm_unmatched_test/sbm_explain.svg)
 
 ---
 # Connection probabilities between groups
@@ -509,33 +529,12 @@ Overall p-value: $<10^{-2}$
 </div>
 </div>
 
----
-# When we remove KCs...
-
-<div class="columns">
-<div>
-
-![center h:450](./../../../results/figs/kc_minus/kc_minus_methods.svg)
-
-
-</div>
-<div>
-
-- Density test: 
-  $p <10^{-26}$
-- Group connection test:
-  $p <10^{-2}$
-- **Density-adjusted group connection test: 
-  $p \approx 0.51$**
-
-</div>
-</div>
 
 ---
 # To sum up...
 
 > "This brain is bilaterally symmetric."
->   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists
+<!-- >   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  -Neuroscientists -->
 
 Depends on what you mean...
 
@@ -618,28 +617,6 @@ We believe a matching exists!
 
 <!-- _footer: Eschbach et al. eLife (2021) -->
 
----
-
-# Can we use network structure to predict this pairing?
-
-<div class="columns">
-<div>
-
-![](../../images/the-wire.png)
-
-
-</div>
-<div>
-
-- Week 1: observe a network ($A$) of phone #s and the calls they make to each other
-- Week 2: all of the #s change! But a (noisy) version of that network still exists, with different labels... ($B$)
-- How to map nodes of network $A$ to those of network $B$?
-
-</div>
-</div>
-
-
-<!-- _footer: The Wire Season 3 Episode 7, HBO -->
 
 --- 
 # What is graph matching?
@@ -660,7 +637,7 @@ h2 {
 <div class="columns">
 <div>
 
-## $\min_{P \in \mathcal{P}} \underbrace{\|A - \overbrace{PBP^T}^{\text{reordered } B}\|_F^2}_{\text{distance between adj. mats.}}$
+## $\min_{P \in \mathcal{P}} \underbrace{\|A_1 - \overbrace{PA_2P^T}^{\text{reordered } A_2}\|_F^2}_{\text{distance between adj. mats.}}$
 
 where $\mathcal{P}$ is the set of permutation matrices
 
@@ -703,38 +680,24 @@ With "vanilla" graph matching: ~80% correct (according to expert annotator)
 ---
 # Many ways to try to improve on this...
 
-<div class="columns">
-<div>
-
 - Edge types allow for "multilayer" graph matching
 - Partial knowledge of the matching (seeds)
 - Morphology (e.g. NBLAST)
 
-</div>
-<div>
-
-![h:400](./../../images/fig2-connection-types.png)
-
-*Summary of "edge types" based on neuron compartments*
-
-</div>
-</div>
-
-<!-- _footer: Pantazis et al. Applied Network Science (2022), Fishkind et al. Pattern Recognition (2019), Winding, Pedigo et al. Submitted (2022) -->
-
----
-
-<style scoped>
+<!-- <style scoped>
 h1, h2 {
     padding-top: 140px;
     justify-content: center;
     text-align: center;
 }
-</style>
+</style> -->
 
 # Thus far, we've not used the contralateral connections
 
 ## These are about 1/3 of the edges in the brain!
+
+<!-- _footer: Pantazis et al. Applied Network Science (2022), Fishkind et al. Pattern Recognition (2019) -->
+
 
 ---
 # From graph matching to bisected graph matching
@@ -753,8 +716,11 @@ h1, h2 {
 
 ---
 <!-- Timing: 31:00 -->
+
 # Performance improvement on the full brain
 ![center](./../../images/matching_accuracy_upset.svg)
+
+
 
 --- 
 
@@ -786,7 +752,7 @@ h1, h2 {
 </div>
 </div>
 
----
+<!-- ---
 # Testing for "stereotypy" in edge structure
 
 Is matching stronger than expected under some model of independent networks?
@@ -804,39 +770,8 @@ Is matching stronger than expected under some model of independent networks?
 </div>
 </div>
 
-<!-- _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (2021) -->
+_footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (2021) -->
 
----
-
-# Neurons clustered by connectivity using recursive spectral clustering
-
-Where to stop splitting?
-
-![center](../../images/bar-dendrogram-wide.svg)
-
-![center w:700](../../images/cell-type-labels-legend.png)
-
-<!-- _footer: Winding, Pedigo et al. Submitted (2022) -->
-
----
-# Using *pairs* and *models* to evaluate cell type groupings
-<!-- TODO: (2) diagram/describe SBM cross validation -->
-
-<!-- ![center h:550](../../images/lik-by-n_params-blind.png) -->
-
-<div class="columns">
-<div>
-
-- Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)...
-- How well do these models generalize to the other side of the brain (let alone the next maggot)?
-
-</div>
-<div>
-
-![center h:550](../../images/dcsbm-swap-arrows.png)
-
-</div>
-</div>
 
 
 --- 
