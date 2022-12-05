@@ -37,6 +37,9 @@ Johns Hopkins University - Biomedical Engineering
 <div>
 
 ### These slides at: 
+
+![](./../../images/princeton-slides-qr.png)
+
 <!-- ### [tinyurl.com/princeton-bilarva](https://tinyurl.com/princeton-bilarva) -->
 
 
@@ -53,30 +56,101 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 ---
 
-# Many goals of connectomics involve linking connectome to other properties
+# Many goals of connectomics involve linking the connectome to other properties
 
-![center h:500](./../../images/link_connectome.svg)
+![center h:480](./../../images/connect-diagram.png)
+
+---
+
+# Larval *Drosophila* allows access to many properties, e.g.,
+
+<div class="columns">
+<div>
+
+## Genetics
+
+![](../../images/eschbach-lines.png)
+
+
+</div>
+<div>
+
+## Activity
+
+![](./../../images/activity.png)
+
+
+</div>
+<div>
+
+## Behavior
+
+<div class="columns">
+<div>
+
+![](./../../images/behavior-quant.png)
+
+
+</div>
+<div>
+
+![](./../../images/behavior-traces.png)
+
+
+
+</div>
+</div>
+
+
+</div>
+</div>
+
+<style scoped>
+p {
+  font-size: 20px
+}
+</style>
+
+<div class="columns">
+<div>
+
+Eschbach et al. Nat. Neuro (2020)
+
+</div>
+<div>
+
+
+Eschbach & Zlatic Curr. Op. Neurobio. (2020)
+
+</div>
+<div>
+
+Klein et al. bioRxiv (2021)
+
+Almeida-Carvalho et al. J. Experimental Bio. (2017)
+
+</div>
+</div>
+
+---
+
+# Mapping a larval _Drosophila_ brain connectome 
+
+![h:500 center](./../../images/FigureS1-reconstruction.png)
+
+
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022), Ohyama et al. Nature (2015)-->
+
 
 ---
 # What do we do with these datasets once we have them?
 
-- Hypothesis *generation*
+- Characterizing network structure, e.g.,
   - How could signals travel on this network, from sensory inputs to motor outputs?
   - What cells have similar patterns of connectivity?
-- Hypothesis *testing*
+- Hypothesis testing
   - Connectome (network) as an object that we want to "do inference" on 
 
----
-
-# Comparative connectomics as a potential solution? 
-
-- Map connectomes from related individuals/organisms which may differ in feature $X$: 
-  - Genome
-  - Behavioral patterns/habits
-  - Life experience
-  - Developmental stage
-- Compare connectomes
-- Understand how $X$ {affects, is affected by, is associated with} connectome structure
 
 
 <!-- --- 
@@ -87,20 +161,6 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 *Emphasis added* -->
 
 
----
-
-# Why is comparative connectomics hard?
-
-## Collecting the data is still a large effort...
-
-## But how do we even compare connectomes once we have them?
-- ~~Data are networks~~
-  - Data are networks with rich attributes
-- Data will always have noise
-  - "Experimental noise"
-  - "Biological noise"
-- Data are big (and getting bigger)
- 
 --- 
 
 ![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
@@ -119,10 +179,6 @@ TODO: (5) highlight one example fly result (? maybe central complex) -->
 
 # Larval _Drosophila_ brain connectome 
 
-
-<div class="columns-bl">
-<div>
-
 <style scoped>
 p {
   justify-content: center;
@@ -130,20 +186,20 @@ p {
   padding-top: 0px;
   margin-top: 0px;
 }
-</style>
+</style> 
 
-![](./../../images/FigureS1-reconstruction.png)
+<div class="columns">
+<div>
+
+![h:400 center](./../../images/Figure1-brain-render.png)
+
+~3k neurons, ~550K synaptic sites
+Both hemispheres
 
 </div>
 <div>
 
-![center](./../../images/Figure1-brain-render.png)
-~3k neurons, ~550K synapses
-Both hemispheres
-
-<!-- Include  the numbers of sites, etc.  -->
-<!-- ![center h:500](./../../../results/figs/plot_layouts/whole-network-layout.png) -->
-<!-- ![h:450](./../../../results/figs/show_data/adjacencies.png) -->
+![h:450](./../../../results/figs/show_data/adjacencies.png)
 
 </div>
 </div>
@@ -160,7 +216,7 @@ Both hemispheres
 
 --- 
 
-# Axons/dendrites can be split
+# Morphology enables splitting axons/dendrites 
 
 <div class="columns-br">
 <div>
@@ -221,7 +277,7 @@ Both hemispheres
 <div class="columns">
 <div>
 
-![](./../../images/ranking-football.png)
+![](./../../images/ffwd-fdbk.png)
 
 </div>
 <div>
@@ -264,12 +320,6 @@ Both hemispheres
 - ### Ongoing extensions/applications
 
 ---
-# Spectral embedding
-- Spectral decomposition of the adjacency matrix (or Laplacian)
-- Spectral decomp. + clustering how to be a consistent estimator of block model
-
----
-
 
 # Stochastic block model
 
@@ -283,6 +333,24 @@ Both hemispheres
 
 - Each node is assigned to a group
 - $B$ is a matrix of connection probabilities between groups
+- Edges generated independently according to these probabilities
+
+</div>
+</div>
+
+---
+# Spectral embedding
+
+<div class="columns">
+<div>
+
+- Spectral decomposition of the adjacency matrix (or Laplacian)
+- Clustering on this representation is a consistent estimator of block model labels
+
+</div>
+<div>
+
+![h:400 center](../../images/spec-clust.png)
 
 </div>
 </div>
@@ -299,13 +367,19 @@ Both hemispheres
 
 # Neurons clustered by connectivity using recursive spectral clustering
 
-Where to stop splitting?
+<!-- Where to stop splitting? -->
 
 ![center](../../images/bar-dendrogram-wide.svg)
 
 ![center w:700](../../images/cell-type-labels-legend.png)
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
+--- 
+
+<!-- ### Cluster morphology  -->
+
+![bg h:750 center](../../images/all-morpho-plot-clustering=dc_level_7_n_components=10_min_split=32-discrim=True-wide.png)
 
 ---
 # Using models to evaluate cell type groupings
@@ -328,11 +402,6 @@ Where to stop splitting?
 </div>
 
 
---- 
-
-<!-- ### Cluster morphology  -->
-
-![bg h:750 center](../../images/all-morpho-plot-clustering=dc_level_7_n_components=10_min_split=32-discrim=True-wide.png)
 
 
 ---
@@ -503,7 +572,7 @@ p-value < $10^{-22}$
 </div>
 <div>
 
-- 5 group-to-group connections are significantly different (after multiple comparisons correction)
+- 6 group-to-group connections are significantly different (after multiple comparisons correction)
 - Overall test (comparing all blocks):<br> p-value $<10^{-7}$
 
 </div>
@@ -596,16 +665,47 @@ Depends on what you mean...
 ---
 # Examining the effect of edge weights
 
-![center h:500](./../../../results/figs/thresholding_tests/thresholding_methods.png)
+<div class="columns">
+<div>
 
-<!-- ---
-# What is an edge weight anyway?
+![center](./../../../results/figs/thresholding_tests/weight_notions.svg)
 
-![center](./../../../results/figs/thresholding_tests/weight_notions.svg) -->
+</div>
+<div>
+
+![center](./../../../results/figs/thresholding_tests/thresholding_methods.png)
+
+</div>
+</div>
+
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 ---
 
-# Highest edge weight networks show no asymmetry
+# Even high synapse count networks show asymmetry
+
+<div class="columns">
+<div>
+
+<span> </span>
+<span> </span>
+<span> </span>
+
+![](./../../images/synapse-count.png)
+
+</div>
+<div>
+
+![h:500](./../../../results/figs/thresholding_tests/synapse_threshold_pvalues_legend.svg)
+
+</div>
+</div>
+
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
+
+---
+
+# High input percentage networks show no asymmetry
 
 <!-- <div class='columns'>
 <div>
@@ -622,8 +722,25 @@ Depends on what you mean...
 </div>
 </div> -->
 
+<div class="columns">
+<div>
+
+
+<span> </span>
+<span> </span>
+<span> </span>
+
+![](./../../images/input-prop.png)
+
+</div>
+<div>
+
 ![center h:500](./../../../results/figs/thresholding_tests/input_threshold_pvalues_legend.svg)
 
+</div>
+</div>
+
+<!-- _footer: Pedigo et al. bioRxiv (2022) -->
 
 --- 
 
@@ -646,7 +763,6 @@ We believe a matching exists!
 ![center](./../../images/mbon-expression.jpg)
 
 <!-- _footer: Eschbach et al. eLife (2021) -->
-
 
 --- 
 # What is graph matching?
@@ -763,21 +879,6 @@ h1, h2 {
 - ### Pairing neurons across connectomes via graph matching
 - ### **Ongoing extensions/applications**
 
----
-
-# A hypothetical difference we want to detect
-
-![center h:300](./../../images/perturbation-diagram.png)
-
-- Start from some subgraph in the connectome, $A$
-- Perturb a copy of it, $B$ (add edges)
-- Test for differences between $A$ and $B$
-
----
-# Pairs facilitate more powerful tests
-
-![center](./../../../results/figs/matched_vs_unmatched_sims_pn_lhn/er_power_comparison.svg)
-
 
 <!-- ---
 # Testing for "stereotypy" in edge structure
@@ -798,8 +899,78 @@ Is matching stronger than expected under some model of independent networks?
 </div>
 
 _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (2021) -->
+---
+
+# Comparative connectomics
+
+![center h:350](./../../images/connect-diagram.png)
+
+- Map connectomes from related individuals/organisms which may differ in feature $X$
+- Compare connectomes
+- Understand how $X$ {affects, is affected by, is associated with} connectome structure
+
+---
+
+<div class="columns">
+<div>
+
+![](../../images/behavior-cc.png)
+
+> Comparative connectomics across experience, sex and species is a key next step.
+
+</div>
+<div>
+
+![](../../images/evo-cc.png)
+
+> With comparative connectomics, the search for neural circuit architectures common across species or independently converged into an optimal layout is now possible.
+
+</div>
+</div>
 
 
+---
+
+# Why is comparative connectomics hard?
+
+## Collecting the data is still a large effort...
+
+## But how do we even compare connectomes once we have them?
+
+## How do we know whether a proposed experiment could even *hope* to answer our questions?
+
+<!-- - ~~Data are networks~~
+  - Data are networks with rich attributes
+- Data will always have noise
+  - "Experimental noise"
+  - "Biological noise"
+- Data are big (and getting bigger) -->
+ 
+
+---
+
+# How powerful is comparative connectomics?
+
+
+---
+
+# A hypothetical difference we want to detect...
+
+![center h:300](./../../images/perturbation-diagram.png)
+
+- Start from some subgraph in the connectome, $A$
+- Perturb a copy of it, $B$ (add edges)
+- Test for differences between $A$ and $B$
+
+---
+# Pairs facilitate more powerful tests
+
+![center](./../../../results/figs/matched_vs_unmatched_sims_pn_lhn/er_power_comparison.svg)
+
+---
+# Ensuring robustness to different alternatives
+
+![h:400 center](./../../../results/figs/revamp_sbm_methods_sim/tippett_power_matrix.svg)
 
 --- 
 
@@ -994,26 +1165,30 @@ NSF Graduate Research Fellowship (B.D.P.), NSF CAREER Award (J.T.V.), NSF NeuroN
 ---
 # Questions?
 
-![bg opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
+![bg right:70% opacity:.6 95%](./../../../results/figs/plot_side_layouts/2_network_layout.png)
 
 #### Slides: 
-#### [tinyurl.com/princeton-bilarva](https://tinyurl.com/princeton-bilarva)
+![h:150](../../images/princeton-slides-qr.png)
 
 
-<span> </span>
-<span> </span>
-<span> </span>
-<span> </span>
-
+<!-- <span> </span> -->
+<!-- <span> </span> -->
+<!-- <span> </span> -->
+<!-- <span> </span> -->
+<!-- 
 <style scoped>
 section {
     justify-content: center;
     text-align: center;
 }
-</style>
+h1 {
+  justify-content: left;
+  text-align: left;
+}
+</style> -->
 
 ### Benjamin D. Pedigo
 ![icon](../../images/email.png) [bpedigo@jhu.edu](mailto:bpedigo@jhu.edu)
-![icon](../../images/github.png) [@bdpedigo (Github)](https://github.com/bdpedigo)
-![icon](../../images/twitter.png) [@bpedigod (Twitter)](https://twitter.com/bpedigod)
+![icon](../../images/github.png) [@bdpedigo](https://github.com/bdpedigo)
+![icon](../../images/twitter.png) [@bpedigod](https://twitter.com/bpedigod)
 ![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)
