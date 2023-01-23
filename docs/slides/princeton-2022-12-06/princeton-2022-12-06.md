@@ -221,14 +221,14 @@ Both hemispheres
 
 # Sorting the network
 
-![h:300 center](./../../images/flow-ordering-simple.png)
+![h:400 center](./../../images/ffwd-fdback-improved-explain.png)
 
 <!-- _footer: Carmel et al. IEEE Vis. and Comp. Graphics (2004), Burkard et al. Assignment Problems (2009)  -->
 
 ---
 # Quantifying high-level "feedforward/feedback"
 
-<div class="columns">
+<div class="columns-br">
 <div>
 
 ![](./../../images/ffwd-fdbk.png)
@@ -238,12 +238,23 @@ Both hemispheres
 
 <!-- ![h:300 center](./../../images/fig2f.png) -->
 
-<span> </span>
-<span> </span>
 
 
-![h:300 ](./../../images/ffwd-fdback-cropped.png) 
-![h:50](./../../images/ffwd-legend.png)
+<div class="columns">
+<div>
+
+
+![h:300 center](./../../images/ffwd-fdback-cropped.png) 
+![h:50 center](./../../images/ffwd-legend.png)
+
+</div>
+<div>
+
+![](./../../images/rank-hist.svg)
+
+</div>
+</div>
+
 
 </div>
 </div>
@@ -316,11 +327,11 @@ Both hemispheres
 ![h:400 center](./../../images/flow-method-explain.png)
 -->
 
----
+<!-- ---
 
 # Comparing independently sorted "channels"
 
-![bg right:68% h:650](./../../images/figs6.png)
+![bg right:68% h:650](./../../images/figs6.png) -->
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
@@ -384,12 +395,12 @@ _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
 <!-- _footer: Sussman et al. JASA (2012), Chung et al. Annual Review of Statistics (2021) -->
 
----
+<!-- ---
 # Spectral clustering proceedure
 - mention embedding
 - cluster - when to stop
 
-<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+_footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
 ---
 
@@ -419,7 +430,7 @@ _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 ![h:300 center](./../../images/intra-cluster-morpho.png)
 
 ## Discriminability:
-$P[$ within cluster NBLAST sim. $>$ between cluster NBLAST sim. $] = 0.82$ 
+$P[$ within cluster NBLAST sim. $>$ between cluster NBLAST sim. $] \approx 0.81$ 
 
 <!-- _footer: Costa et al. Neuron (2016), Bridgeford et al. PLOS Comp. Bio. (2021)-->
 
@@ -975,11 +986,12 @@ _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (
 
 # Why is comparative connectomics hard?
 
-## Collecting the data is still a large effort...
+- Collecting the data is still a large effort...
 
-## But how do we even compare connectomes once we have them?
+- But how do we even compare connectomes once we have them?
 
-## How do we know whether a proposed experiment could even *hope* to answer our questions?
+## How do we know whether a proposed experiment could even *hope* to answer our questions? How **powerful** is comparative connectomics?
+
 
 <!-- - ~~Data are networks~~
   - Data are networks with rich attributes
@@ -989,9 +1001,6 @@ _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (
 - Data are big (and getting bigger) -->
  
 
----
-
-# How powerful is comparative connectomics?
 
 
 ---
@@ -1009,15 +1018,19 @@ _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (
 
 ![center](./../../../results/figs/matched_vs_unmatched_sims_pn_lhn/er_power_comparison.svg)
 
----
+<!-- ---
 # Ensuring robustness to different alternatives
 
-![h:400 center](./../../../results/figs/revamp_sbm_methods_sim/tippett_power_matrix.svg)
+![h:400 center](./../../../results/figs/revamp_sbm_methods_sim/tippett_power_matrix.svg) -->
 
 --- 
 
 # Summary 
 <!-- 41 min -->
+
+- Characterized "feedforwardness" of this connectome
+- Estimated cell types by connectivity
+
 <div class="columns-br">
 <div>
 
@@ -1027,7 +1040,6 @@ _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (
 <div>
 
 - Model-based network comparison enables testing (and refining) hypotheses about connectomes
-  - We proposed a few tests, but just the beginning! 
 
 </div>
 </div>
@@ -1041,12 +1053,14 @@ _footer: Eichler et al. Nature (2017), Fishkind et al. Applied Network Science (
 <div>
 
 - Graph matching can pair neurons across datasets
-  - Helpful to adapt off-the-shelf algos. to use biological info (e.g contralaterals, edge types)
+
 </div>
 </div>
 
 
-**Aim to apply these (and other) tools to make inferences from connectome comparisons!**
+**Aim to apply these (and other) tools to:**
+  **- Inform the design of future comparative experiments,**
+  **- Make inferences from connectome comparisons!**
 
 ---
 
