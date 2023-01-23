@@ -476,60 +476,59 @@ title="Print to PDF"
 <h1>Visualize the connectome<a class="headerlink" href="#visualize-the-connectome" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-import datetime
-import time
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-from giskard.plot import adjplot, scattermap
-from graspologic.embed import AdjacencySpectralEmbed
-from graspologic.plot import networkplot
-from matplotlib.patheffects import Normal, Stroke
-from pkg.data import (
-    load_maggot_graph,
-    load_network_palette,
-    load_node_palette,
-    load_unmatched,
-)
-from pkg.io import get_environment_variables
-from pkg.io import glue as default_glue
-from pkg.io import savefig
-from pkg.plot import set_theme
-from scipy.cluster import hierarchy
-from umap import UMAP
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">adjplot</span><span class="p">,</span> <span class="n">scattermap</span>
+<span class="kn">from</span> <span class="nn">graspologic.embed</span> <span class="kn">import</span> <span class="n">AdjacencySpectralEmbed</span>
+<span class="kn">from</span> <span class="nn">graspologic.plot</span> <span class="kn">import</span> <span class="n">networkplot</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="kn">import</span> <span class="n">Normal</span><span class="p">,</span> <span class="n">Stroke</span>
+<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_maggot_graph</span><span class="p">,</span>
+    <span class="n">load_network_palette</span><span class="p">,</span>
+    <span class="n">load_node_palette</span><span class="p">,</span>
+    <span class="n">load_unmatched</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
+<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
+<span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>
+<span class="kn">from</span> <span class="nn">umap</span> <span class="kn">import</span> <span class="n">UMAP</span>
 
-_, _, DISPLAY_FIGS = get_environment_variables()
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
 
-FILENAME = &quot;show_data&quot;
+<span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;show_data&quot;</span>
 
-rng = np.random.default_rng(8888)
-
-
-def gluefig(name, fig, **kwargs):
-    savefig(name, foldername=FILENAME, **kwargs)
-
-    glue(name, fig, figure=True)
-
-    if not DISPLAY_FIGS:
-        plt.close()
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
 
 
-def glue(name, var, **kwargs):
-    default_glue(name, var, FILENAME, **kwargs)
+<span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
-t0 = time.time()
-set_theme(font_scale=1.25)
+<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">default_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-network_palette, NETWORK_KEY = load_network_palette()
-network_palette[&quot;L&quot;] = network_palette[&quot;Left&quot;]
-network_palette[&quot;R&quot;] = network_palette[&quot;Right&quot;]
-node_palette, NODE_KEY = load_node_palette()
 
-left_adj, left_nodes = load_unmatched(&quot;left&quot;)
-right_adj, right_nodes = load_unmatched(&quot;right&quot;)
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
+
+<span class="n">network_palette</span><span class="p">,</span> <span class="n">NETWORK_KEY</span> <span class="o">=</span> <span class="n">load_network_palette</span><span class="p">()</span>
+<span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">]</span>
+<span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">]</span>
+<span class="n">node_palette</span><span class="p">,</span> <span class="n">NODE_KEY</span> <span class="o">=</span> <span class="n">load_node_palette</span><span class="p">()</span>
+
+<span class="n">left_adj</span><span class="p">,</span> <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="n">right_adj</span><span class="p">,</span> <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -544,78 +543,75 @@ right_adj, right_nodes = load_unmatched(&quot;right&quot;)
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-
-ase = AdjacencySpectralEmbed(n_components=24, check_lcc=False, concat=True)
-left_ase_embedding = ase.fit_transform(left_adj)
-right_ase_embedding = ase.fit_transform(right_adj)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ase</span> <span class="o">=</span> <span class="n">AdjacencySpectralEmbed</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">check_lcc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">concat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">left_ase_embedding</span> <span class="o">=</span> <span class="n">ase</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
+<span class="n">right_ase_embedding</span> <span class="o">=</span> <span class="n">ase</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
 
 
-umapper = UMAP(
-    n_components=2,
-    n_neighbors=64,
-    min_dist=0.8,
-    metric=&quot;cosine&quot;,
-    random_state=rng.integers(np.iinfo(np.int32).max),
-)
-left_umap_embedding = umapper.fit_transform(left_ase_embedding)
-right_umap_embedding = umapper.fit_transform(right_ase_embedding)
+<span class="n">umapper</span> <span class="o">=</span> <span class="n">UMAP</span><span class="p">(</span>
+    <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+    <span class="n">min_dist</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">left_umap_embedding</span> <span class="o">=</span> <span class="n">umapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">left_ase_embedding</span><span class="p">)</span>
+<span class="n">right_umap_embedding</span> <span class="o">=</span> <span class="n">umapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">right_ase_embedding</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-networkplot_kws = dict(
-    x=&quot;x&quot;,
-    y=&quot;y&quot;,
-    edge_linewidth=0.15,
-    edge_alpha=0.2,
-    node_hue=&quot;hemisphere&quot;,
-    palette=network_palette,
-    edge_hue=&quot;source&quot;,
-    node_size=&quot;degree&quot;,
-    node_sizes=(15, 100),
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">networkplot_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">edge_linewidth</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+    <span class="n">edge_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">node_hue</span><span class="o">=</span><span class="s2">&quot;hemisphere&quot;</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">,</span>
+    <span class="n">edge_hue</span><span class="o">=</span><span class="s2">&quot;source&quot;</span><span class="p">,</span>
+    <span class="n">node_size</span><span class="o">=</span><span class="s2">&quot;degree&quot;</span><span class="p">,</span>
+    <span class="n">node_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="p">)</span>
 
 
-def soft_axis_off(ax, top=False, bottom=False, left=False, right=False):
-    ax.spines[&quot;top&quot;].set_visible(top)
-    ax.spines[&quot;bottom&quot;].set_visible(bottom)
-    ax.spines[&quot;left&quot;].set_visible(left)
-    ax.spines[&quot;right&quot;].set_visible(right)
+<span class="k">def</span> <span class="nf">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">top</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">bottom</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
 
 
-fig, axs = plt.subplots(1, 2, figsize=(20, 10), gridspec_kw=dict(wspace=0))
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 
-ax = axs[0]
-soft_axis_off(ax)
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
-left_nodes[&quot;degree&quot;] = left_adj.sum(axis=0) + left_adj.sum(axis=1)
-left_nodes[&quot;x&quot;] = left_umap_embedding[:, 0]
-left_nodes[&quot;y&quot;] = left_umap_embedding[:, 1]
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 
-networkplot(left_adj, node_data=left_nodes.reset_index(), ax=ax, **networkplot_kws)
+<span class="n">networkplot</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">node_data</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">)</span>
 
-ax.set_xlabel(&quot;Left&quot;, color=network_palette[&quot;Left&quot;], fontsize=60)
-ax.set_ylabel(&quot;&quot;)
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-ax = axs[1]
-soft_axis_off(ax)
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
-right_nodes[&quot;x&quot;] = right_umap_embedding[:, 0]
-right_nodes[&quot;y&quot;] = right_umap_embedding[:, 1]
-right_nodes[&quot;degree&quot;] = right_adj.sum(axis=0) + right_adj.sum(axis=1)
+<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_umap_embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-networkplot(right_adj, node_data=right_nodes.reset_index(), ax=ax, **networkplot_kws)
+<span class="n">networkplot</span><span class="p">(</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">node_data</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">)</span>
 
-ax.set_xlabel(&quot;Right&quot;, color=network_palette[&quot;Right&quot;], fontsize=60)
-ax.set_ylabel(&quot;&quot;)
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Right&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-fig.set_facecolor(&quot;white&quot;)
+<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
 
-gluefig(&quot;2_network_layout&quot;, fig)
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;2_network_layout&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -624,59 +620,54 @@ gluefig(&quot;2_network_layout&quot;, fig)
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-
-X = left_ase_embedding
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">left_ase_embedding</span>
 
 
-def specsort(X, metric=&quot;cosine&quot;):
-    Z = hierarchy.linkage(X, method=&quot;average&quot;, metric=metric)
-    Z_ordered = hierarchy.optimal_leaf_ordering(Z, X, metric=metric)
-    sorted_indices = hierarchy.leaves_list(Z_ordered)
-    return sorted_indices
+<span class="k">def</span> <span class="nf">specsort</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">):</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
+    <span class="n">Z_ordered</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">optimal_leaf_ordering</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
+    <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">leaves_list</span><span class="p">(</span><span class="n">Z_ordered</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sorted_indices</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-left_sort_inds = specsort(left_ase_embedding)
-right_sort_inds = specsort(right_ase_embedding)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_sort_inds</span> <span class="o">=</span> <span class="n">specsort</span><span class="p">(</span><span class="n">left_ase_embedding</span><span class="p">)</span>
+<span class="n">right_sort_inds</span> <span class="o">=</span> <span class="n">specsort</span><span class="p">(</span><span class="n">right_ase_embedding</span><span class="p">)</span>
 
-left_sorted_index = np.array(left_nodes.index[left_sort_inds])
-right_sorted_index = np.array(right_nodes.index[right_sort_inds])
+<span class="n">left_sorted_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">left_sort_inds</span><span class="p">])</span>
+<span class="n">right_sorted_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">right_sort_inds</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-sorted_index = np.concatenate((left_sorted_index, right_sorted_index))
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sorted_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">left_sorted_index</span><span class="p">,</span> <span class="n">right_sorted_index</span><span class="p">))</span>
 
-mg = load_maggot_graph()
+<span class="n">mg</span> <span class="o">=</span> <span class="n">load_maggot_graph</span><span class="p">()</span>
 
-mg = mg.node_subgraph(sorted_index)
+<span class="n">mg</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">node_subgraph</span><span class="p">(</span><span class="n">sorted_index</span><span class="p">)</span>
 
-nodes = mg.nodes
-adj = mg.sum.adj
+<span class="n">nodes</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">nodes</span>
+<span class="n">adj</span> <span class="o">=</span> <span class="n">mg</span><span class="o">.</span><span class="n">sum</span><span class="o">.</span><span class="n">adj</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-fig, ax = plt.subplots(1, 1, figsize=(15, 15))
-adjplot(
-    adj,
-    meta=nodes,
-    sort_class=&quot;hemisphere&quot;,
-    plot_type=&quot;scattermap&quot;,
-    sizes=(0.5, 0.5),
-    ax=ax,
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">adjplot</span><span class="p">(</span>
+    <span class="n">adj</span><span class="p">,</span>
+    <span class="n">meta</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span>
+    <span class="n">sort_class</span><span class="o">=</span><span class="s2">&quot;hemisphere&quot;</span><span class="p">,</span>
+    <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;scattermap&quot;</span><span class="p">,</span>
+    <span class="n">sizes</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -698,187 +689,71 @@ adjplot(
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-left_inds = np.arange(len(left_adj))
-right_inds = np.arange(len(right_adj)) + len(left_adj)
-row_inds, col_inds = np.nonzero(adj)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left_adj</span><span class="p">))</span>
+<span class="n">right_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right_adj</span><span class="p">))</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
+<span class="n">row_inds</span><span class="p">,</span> <span class="n">col_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">adj</span><span class="p">)</span>
 
-source_is_left = np.isin(row_inds, left_inds)
-target_is_left = np.isin(col_inds, left_inds)
+<span class="n">source_is_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">row_inds</span><span class="p">,</span> <span class="n">left_inds</span><span class="p">)</span>
+<span class="n">target_is_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">col_inds</span><span class="p">,</span> <span class="n">left_inds</span><span class="p">)</span>
 
-colors = np.full(len(row_inds), &quot;Contra&quot;)
-colors[source_is_left &amp; target_is_left] = &quot;Left&quot;
-colors[~source_is_left &amp; ~target_is_left] = &quot;Right&quot;
+<span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row_inds</span><span class="p">),</span> <span class="s2">&quot;Contra&quot;</span><span class="p">)</span>
+<span class="n">colors</span><span class="p">[</span><span class="n">source_is_left</span> <span class="o">&amp;</span> <span class="n">target_is_left</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Left&quot;</span>
+<span class="n">colors</span><span class="p">[</span><span class="o">~</span><span class="n">source_is_left</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">target_is_left</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Right&quot;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-fig, ax = plt.subplots(1, 1, figsize=(15, 15))
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
 
 
-network_palette[&quot;Contra&quot;] = sns.color_palette(&quot;Set2&quot;)[2]
-scattermap(adj, hue=colors, palette=network_palette, ax=ax)
-ax.spines.top.set_visible(True)
-ax.spines.right.set_visible(True)
-fig.set_facecolor(&quot;w&quot;)
+<span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Contra&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">scattermap</span><span class="p">(</span><span class="n">adj</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
 
-n_left = len(left_adj)
-div_kws = dict(color=&quot;grey&quot;, linewidth=3, linestyle=&quot;:&quot;)
-ax.axvline(n_left - 0.5, **div_kws)
-ax.axhline(n_left - 0.5, **div_kws)
+<span class="n">n_left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
+<span class="n">div_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">n_left</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">div_kws</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">n_left</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">div_kws</span><span class="p">)</span>
 
-ticks = [n_left / 2, n_left + len(right_adj) / 2]
-ax.set(xticks=ticks, yticks=ticks)
-ax.xaxis.tick_top()
-texts = ax.set_xticklabels([&quot;Left&quot;, &quot;Right&quot;], fontsize=&quot;xx-large&quot;)
-texts[0].set_color(network_palette[&quot;Left&quot;])
-texts[1].set_color(network_palette[&quot;Right&quot;])
-texts = ax.set_yticklabels([&quot;Left&quot;, &quot;Right&quot;], fontsize=&quot;xx-large&quot;)
-texts[0].set_color(network_palette[&quot;Left&quot;])
-texts[1].set_color(network_palette[&quot;Right&quot;])
-ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, pad=10)
-
-
-def nice_text(x, y, s, color=&quot;black&quot;):
-    text = ax.text(
-        x,
-        y,
-        s,
-        color=color,
-        fontsize=&quot;x-large&quot;,
-        transform=ax.transData,
-        ha=&quot;center&quot;,
-        va=&quot;center&quot;,
-    )
-    text.set_path_effects([Stroke(linewidth=8, foreground=&quot;white&quot;), Normal()])
+<span class="n">ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">ticks</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="n">ticks</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">tick_top</span><span class="p">()</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="s2">&quot;Right&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="s2">&quot;Right&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 
-nice_text(n_left / 2, n_left / 2, r&quot;L $\rightarrow$ L&quot;)
-nice_text(n_left / 2, n_left / 2 + n_left, r&quot;R $\rightarrow$ L&quot;)
-nice_text(n_left / 2 + n_left, n_left / 2, r&quot;L $\rightarrow$ R&quot;)
-nice_text(1.5 * n_left, 1.5 * n_left, r&quot;R $\rightarrow$ R&quot;)
+<span class="k">def</span> <span class="nf">nice_text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">s</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">Stroke</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">),</span> <span class="n">Normal</span><span class="p">()])</span>
 
 
-ax.spines[:].set_color(&quot;grey&quot;)
-
-gluefig(&quot;adjacencies&quot;, fig, formats=[&quot;png&quot;])
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-</div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-
-fig, axs = plt.subplots(
-    1, 4, figsize=(30, 10), gridspec_kw=dict(wspace=0, width_ratios=[1, 0.3, 1, 1])
-)
-
-ax = axs[0]
-
-scattermap(adj, hue=colors, palette=network_palette, ax=ax, sizes=(1, 1))
-ax.spines.top.set_visible(True)
-ax.spines.right.set_visible(True)
-
-n_left = len(left_adj)
-div_kws = dict(color=&quot;grey&quot;, linewidth=3, linestyle=&quot;:&quot;)
-ax.axvline(n_left - 0.5, **div_kws)
-ax.axhline(n_left - 0.5, **div_kws)
-
-ticks = [n_left / 2, n_left + len(right_adj) / 2]
-ax.set(xticks=ticks, yticks=ticks)
-ax.xaxis.tick_top()
-texts = ax.set_xticklabels([&quot;Left&quot;, &quot;Right&quot;], fontsize=&quot;xx-large&quot;)
-texts[0].set_color(network_palette[&quot;Left&quot;])
-texts[1].set_color(network_palette[&quot;Right&quot;])
-texts = ax.set_yticklabels([&quot;Left&quot;, &quot;Right&quot;], fontsize=&quot;xx-large&quot;)
-texts[0].set_color(network_palette[&quot;Left&quot;])
-texts[1].set_color(network_palette[&quot;Right&quot;])
-ax.tick_params(axis=&quot;both&quot;, which=&quot;major&quot;, pad=10)
+<span class="n">nice_text</span><span class="p">(</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;L $\rightarrow$ L&quot;</span><span class="p">)</span>
+<span class="n">nice_text</span><span class="p">(</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">n_left</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;R $\rightarrow$ L&quot;</span><span class="p">)</span>
+<span class="n">nice_text</span><span class="p">(</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">n_left</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;L $\rightarrow$ R&quot;</span><span class="p">)</span>
+<span class="n">nice_text</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">n_left</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">n_left</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;R $\rightarrow$ R&quot;</span><span class="p">)</span>
 
 
-def nice_text(x, y, s, color=&quot;black&quot;):
-    text = ax.text(
-        x,
-        y,
-        s,
-        color=color,
-        fontsize=&quot;x-large&quot;,
-        transform=ax.transData,
-        ha=&quot;center&quot;,
-        va=&quot;center&quot;,
-    )
-    text.set_path_effects([Stroke(linewidth=8, foreground=&quot;white&quot;), Normal()])
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[:]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
 
-
-nice_text(n_left / 2, n_left / 2, r&quot;L $\rightarrow$ L&quot;)
-nice_text(n_left / 2, n_left / 2 + n_left, r&quot;R $\rightarrow$ L&quot;)
-nice_text(n_left / 2 + n_left, n_left / 2, r&quot;L $\rightarrow$ R&quot;)
-nice_text(1.5 * n_left, 1.5 * n_left, r&quot;R $\rightarrow$ R&quot;)
-
-
-ax.spines[:].set_color(&quot;grey&quot;)
-
-ax = axs[1]
-ax.axis(&quot;off&quot;)
-
-ax = axs[2]
-soft_axis_off(ax)
-
-left_nodes[&quot;degree&quot;] = left_adj.sum(axis=0) + left_adj.sum(axis=1)
-left_nodes[&quot;x&quot;] = left_umap_embedding[:, 0]
-left_nodes[&quot;y&quot;] = left_umap_embedding[:, 1]
-
-
-networkplot_kws = dict(
-    x=&quot;x&quot;,
-    y=&quot;y&quot;,
-    edge_linewidth=0.15,
-    edge_alpha=0.15,
-    node_hue=&quot;hemisphere&quot;,
-    palette=network_palette,
-    edge_hue=&quot;source&quot;,
-    node_size=&quot;degree&quot;,
-    node_sizes=(10, 100),
-)
-
-networkplot(left_adj, node_data=left_nodes.reset_index(), ax=ax, **networkplot_kws)
-
-ax.set_xlabel(
-    r&quot;Left $\rightarrow$ left&quot;, color=network_palette[&quot;Left&quot;], fontsize=&quot;xx-large&quot;
-)
-ax.set_ylabel(&quot;&quot;)
-ax.axis(&quot;square&quot;)
-
-ax = axs[3]
-soft_axis_off(ax)
-
-right_nodes[&quot;x&quot;] = right_umap_embedding[:, 0]
-right_nodes[&quot;y&quot;] = right_umap_embedding[:, 1]
-right_nodes[&quot;degree&quot;] = right_adj.sum(axis=0) + right_adj.sum(axis=1)
-
-networkplot(right_adj, node_data=right_nodes.reset_index(), ax=ax, **networkplot_kws)
-
-ax.set_xlabel(
-    r&quot;Right $\rightarrow$ right&quot;, color=network_palette[&quot;Right&quot;], fontsize=&quot;xx-large&quot;
-)
-ax.set_ylabel(&quot;&quot;)
-ax.axis(&quot;square&quot;)
-
-fig.set_facecolor(&quot;white&quot;)
-
-fig.text(0.07, 0.97, &quot;A) Adjacency matrix&quot;, fontweight=&quot;bold&quot;, fontsize=40)
-fig.text(
-    0.4, 0.97, &quot;B) Diagrams for ipsilateral networks&quot;, fontweight=&quot;bold&quot;, fontsize=40
-)
-
-
-gluefig(&quot;adj_and_layout&quot;, fig)
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;adjacencies&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;png&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -887,10 +762,122 @@ gluefig(&quot;adj_and_layout&quot;, fig)
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>elapsed = time.time() - t0
-delta = datetime.timedelta(seconds=elapsed)
-print(f&quot;Script took {delta}&quot;)
-print(f&quot;Completed at {datetime.datetime.now()}&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">scattermap</span><span class="p">(</span><span class="n">adj</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">n_left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
+<span class="n">div_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">n_left</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">div_kws</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">n_left</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">div_kws</span><span class="p">)</span>
+
+<span class="n">ticks</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="n">ticks</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="n">ticks</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">tick_top</span><span class="p">()</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="s2">&quot;Right&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="s2">&quot;Right&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span><span class="p">)</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">])</span>
+<span class="n">texts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">nice_text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">s</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">Stroke</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">),</span> <span class="n">Normal</span><span class="p">()])</span>
+
+
+<span class="n">nice_text</span><span class="p">(</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;L $\rightarrow$ L&quot;</span><span class="p">)</span>
+<span class="n">nice_text</span><span class="p">(</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">n_left</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;R $\rightarrow$ L&quot;</span><span class="p">)</span>
+<span class="n">nice_text</span><span class="p">(</span><span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">n_left</span><span class="p">,</span> <span class="n">n_left</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;L $\rightarrow$ R&quot;</span><span class="p">)</span>
+<span class="n">nice_text</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">n_left</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">n_left</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;R $\rightarrow$ R&quot;</span><span class="p">)</span>
+
+
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[:]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">networkplot_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">edge_linewidth</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+    <span class="n">edge_alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+    <span class="n">node_hue</span><span class="o">=</span><span class="s2">&quot;hemisphere&quot;</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">,</span>
+    <span class="n">edge_hue</span><span class="o">=</span><span class="s2">&quot;source&quot;</span><span class="p">,</span>
+    <span class="n">node_size</span><span class="o">=</span><span class="s2">&quot;degree&quot;</span><span class="p">,</span>
+    <span class="n">node_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">networkplot</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">node_data</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;Left $\rightarrow$ left&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;square&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">soft_axis_off</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_umap_embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">networkplot</span><span class="p">(</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">node_data</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;Right $\rightarrow$ right&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;xx-large&quot;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;square&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">,</span> <span class="s2">&quot;A) Adjacency matrix&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">,</span> <span class="s2">&quot;B) Diagrams for ipsilateral networks&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span>
+<span class="p">)</span>
+
+
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;adj_and_layout&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

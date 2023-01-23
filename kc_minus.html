@@ -543,55 +543,55 @@ title="Print to PDF"
 <h1>Removing the Kenyon cells<a class="headerlink" href="#removing-the-kenyon-cells" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import datetime
-import time
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-from giskard.plot import merge_axes
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import FIG_PATH, get_environment_variables
-from pkg.io import glue as default_glue
-from pkg.io import savefig
-from pkg.plot import (
-    SmartSVG,
-    draw_hypothesis_box,
-    networkplot_simple,
-    plot_density,
-    plot_pvalues,
-    set_theme,
-)
-from pkg.stats import erdos_renyi_test, stochastic_block_test
-from pkg.utils import get_toy_palette, sample_toy_networks
-from svgutils.compose import Figure, Panel, Text
-
-
-_, _, DISPLAY_FIGS = get_environment_variables()
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">merge_axes</span>
+<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_network_palette</span><span class="p">,</span> <span class="n">load_node_palette</span><span class="p">,</span> <span class="n">load_unmatched</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">FIG_PATH</span><span class="p">,</span> <span class="n">get_environment_variables</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
+<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SmartSVG</span><span class="p">,</span>
+    <span class="n">draw_hypothesis_box</span><span class="p">,</span>
+    <span class="n">networkplot_simple</span><span class="p">,</span>
+    <span class="n">plot_density</span><span class="p">,</span>
+    <span class="n">plot_pvalues</span><span class="p">,</span>
+    <span class="n">set_theme</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">erdos_renyi_test</span><span class="p">,</span> <span class="n">stochastic_block_test</span>
+<span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">get_toy_palette</span><span class="p">,</span> <span class="n">sample_toy_networks</span>
+<span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
 
 
-FILENAME = &quot;kc_minus&quot;
-
-FIG_PATH = FIG_PATH / FILENAME
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
 
 
-def gluefig(name, fig, **kwargs):
-    savefig(name, foldername=FILENAME, **kwargs)
+<span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;kc_minus&quot;</span>
 
-    glue(name, fig, figure=True)
-
-    if not DISPLAY_FIGS:
-        plt.close()
+<span class="n">FIG_PATH</span> <span class="o">=</span> <span class="n">FIG_PATH</span> <span class="o">/</span> <span class="n">FILENAME</span>
 
 
-def glue(name, var, **kwargs):
-    default_glue(name, var, FILENAME, **kwargs)
+<span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
-t0 = time.time()
-set_theme()
-rng = np.random.default_rng(8888)
+<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">default_glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">set_theme</span><span class="p">()</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -606,28 +606,27 @@ rng = np.random.default_rng(8888)
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
-neutral_color = sns.color_palette(&quot;Set2&quot;)[2]
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">network_palette</span><span class="p">,</span> <span class="n">NETWORK_KEY</span> <span class="o">=</span> <span class="n">load_network_palette</span><span class="p">()</span>
+<span class="n">node_palette</span><span class="p">,</span> <span class="n">NODE_KEY</span> <span class="o">=</span> <span class="n">load_node_palette</span><span class="p">()</span>
+<span class="n">neutral_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
 
-GROUP_KEY = &quot;celltype_discrete&quot;
+<span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;celltype_discrete&quot;</span>
 
-left_adj, left_nodes = load_unmatched(side=&quot;left&quot;)
-right_adj, right_nodes = load_unmatched(side=&quot;right&quot;)
+<span class="n">left_adj</span><span class="p">,</span> <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="n">right_adj</span><span class="p">,</span> <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
 
-# Remove kenyon cells
-left_nodes[&quot;inds&quot;] = range(len(left_nodes))
-sub_left_nodes = left_nodes[left_nodes[GROUP_KEY] != &quot;KCs&quot;]
-sub_left_inds = sub_left_nodes[&quot;inds&quot;].values
-right_nodes[&quot;inds&quot;] = range(len(right_nodes))
-sub_right_nodes = right_nodes[right_nodes[GROUP_KEY] != &quot;KCs&quot;]
-sub_right_inds = sub_right_nodes[&quot;inds&quot;].values
+<span class="c1"># Remove kenyon cells</span>
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left_nodes</span><span class="p">))</span>
+<span class="n">sub_left_nodes</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="p">[</span><span class="n">left_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;KCs&quot;</span><span class="p">]</span>
+<span class="n">sub_left_inds</span> <span class="o">=</span> <span class="n">sub_left_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right_nodes</span><span class="p">))</span>
+<span class="n">sub_right_nodes</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="p">[</span><span class="n">right_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;KCs&quot;</span><span class="p">]</span>
+<span class="n">sub_right_inds</span> <span class="o">=</span> <span class="n">sub_right_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-sub_left_adj = left_adj[np.ix_(sub_left_inds, sub_left_inds)]
-sub_right_adj = right_adj[np.ix_(sub_right_inds, sub_right_inds)]
-sub_left_labels = sub_left_nodes[GROUP_KEY]
-sub_right_labels = sub_right_nodes[GROUP_KEY]
+<span class="n">sub_left_adj</span> <span class="o">=</span> <span class="n">left_adj</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">sub_left_inds</span><span class="p">,</span> <span class="n">sub_left_inds</span><span class="p">)]</span>
+<span class="n">sub_right_adj</span> <span class="o">=</span> <span class="n">right_adj</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">sub_right_inds</span><span class="p">,</span> <span class="n">sub_right_inds</span><span class="p">)]</span>
+<span class="n">sub_left_labels</span> <span class="o">=</span> <span class="n">sub_left_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span>
+<span class="n">sub_right_labels</span> <span class="o">=</span> <span class="n">sub_right_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -636,64 +635,64 @@ sub_right_labels = sub_right_nodes[GROUP_KEY]
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>A1, A2, node_data = sample_toy_networks()
-palette = get_toy_palette()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span> <span class="o">=</span> <span class="n">sample_toy_networks</span><span class="p">()</span>
+<span class="n">palette</span> <span class="o">=</span> <span class="n">get_toy_palette</span><span class="p">()</span>
 
-fig, axs = plt.subplots(2, 2, figsize=(7, 6), gridspec_kw=dict(width_ratios=[1, 1.5]))
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]))</span>
 
-ax = axs[0, 0]
-networkplot_simple(A1, node_data, palette=palette, ax=ax, group=True)
-x, y = node_data[node_data[&quot;labels&quot;] == 1][[&quot;x&quot;, &quot;y&quot;]].mean()
-ax.text(x, y, &quot;X&quot;, color=&quot;darkred&quot;, fontsize=80, va=&quot;center&quot;, ha=&quot;center&quot;)
-ax.set(title=&quot;Remove Kenyon cells&quot;)
-ax.set_ylabel(
-    &quot;Left&quot;,
-    color=network_palette[&quot;Left&quot;],
-    size=&quot;large&quot;,
-    rotation=0,
-    ha=&quot;right&quot;,
-    labelpad=10,
-)
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">node_data</span><span class="p">[</span><span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkred&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Remove Kenyon cells&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
+    <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span>
+    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">,</span>
+    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="n">labelpad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
 
-ax = axs[1, 0]
-networkplot_simple(A2, node_data, palette=palette, ax=ax, group=True)
-x, y = node_data[node_data[&quot;labels&quot;] == 1][[&quot;x&quot;, &quot;y&quot;]].mean()
-ax.text(x, y, &quot;X&quot;, color=&quot;darkred&quot;, fontsize=80, va=&quot;center&quot;, ha=&quot;center&quot;)
-ax.set_ylabel(
-    &quot;Right&quot;,
-    color=network_palette[&quot;Right&quot;],
-    size=&quot;large&quot;,
-    rotation=0,
-    ha=&quot;right&quot;,
-    labelpad=10,
-)
-
-
-ax = merge_axes(fig, axs, rows=None, cols=1)
-ax.axis(&quot;off&quot;)
-ax.set(xlim=(0, 1), ylim=(0, 1))
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">networkplot_simple</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">node_data</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">palette</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">node_data</span><span class="p">[</span><span class="n">node_data</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkred&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span>
+    <span class="s2">&quot;Right&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span>
+    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">,</span>
+    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="n">labelpad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span>
 
 
-kwargs = dict(yskip=0.07, ax=ax, title=True)
-draw_hypothesis_box(&quot;er&quot;, 0.15, 0.8, **kwargs)
-draw_hypothesis_box(&quot;sbm&quot;, 0.15, 0.5, **kwargs)
-draw_hypothesis_box(&quot;dasbm&quot;, 0.15, 0.15, **kwargs)
-
-line1 = mpl.lines.Line2D(
-    (0.51, 0.51),
-    (0.05, 0.9),
-    transform=fig.transFigure,
-    color=&quot;lightgrey&quot;,
-    linewidth=1.5,
-)
-
-fig.lines = (line1,)
+<span class="n">ax</span> <span class="o">=</span> <span class="n">merge_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
 
-ax.set_title(&quot;Re-run all tests&quot;)
-plt.tight_layout()
+<span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">yskip</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">draw_hypothesis_box</span><span class="p">(</span><span class="s2">&quot;er&quot;</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">draw_hypothesis_box</span><span class="p">(</span><span class="s2">&quot;sbm&quot;</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">draw_hypothesis_box</span><span class="p">(</span><span class="s2">&quot;dasbm&quot;</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-gluefig(&quot;kc_minus_methods&quot;, fig)
+<span class="n">line1</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">lines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">(</span>
+    <span class="p">(</span><span class="mf">0.51</span><span class="p">,</span> <span class="mf">0.51</span><span class="p">),</span>
+    <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="p">(</span><span class="n">line1</span><span class="p">,)</span>
+
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Re-run all tests&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;kc_minus_methods&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -705,13 +704,12 @@ gluefig(&quot;kc_minus_methods&quot;, fig)
 <h2>ER test<a class="headerlink" href="#er-test" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-stat, pvalue, misc = erdos_renyi_test(sub_left_adj, sub_right_adj)
-print(pvalue)
-glue(&quot;er_pvalue&quot;, pvalue, form=&quot;pvalue&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">erdos_renyi_test</span><span class="p">(</span><span class="n">sub_left_adj</span><span class="p">,</span> <span class="n">sub_right_adj</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;er_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 
-fig, ax = plot_density(misc, palette=network_palette)
-gluefig(&quot;densities&quot;, fig)
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_density</span><span class="p">(</span><span class="n">misc</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">network_palette</span><span class="p">)</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;densities&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -726,22 +724,21 @@ gluefig(&quot;densities&quot;, fig)
 <h2>SBM test<a class="headerlink" href="#sbm-test" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-stat, pvalue, misc = stochastic_block_test(
-    sub_left_adj,
-    sub_right_adj,
-    labels1=sub_left_labels,
-    labels2=sub_right_labels,
-    method=&quot;fisher&quot;,
-    combine_method=&quot;tippett&quot;,
-)
-print(pvalue)
-glue(&quot;sbm_pvalue&quot;, pvalue, form=&quot;pvalue&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
+    <span class="n">sub_left_adj</span><span class="p">,</span>
+    <span class="n">sub_right_adj</span><span class="p">,</span>
+    <span class="n">labels1</span><span class="o">=</span><span class="n">sub_left_labels</span><span class="p">,</span>
+    <span class="n">labels2</span><span class="o">=</span><span class="n">sub_right_labels</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
+    <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;tippett&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;sbm_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 
-set_theme(font_scale=1.25)
+<span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.25</span><span class="p">)</span>
 
-fig, ax = plot_pvalues(misc)
-gluefig(&quot;sbm_pvalues&quot;, fig)
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_pvalues</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;sbm_pvalues&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -756,21 +753,20 @@ gluefig(&quot;sbm_pvalues&quot;, fig)
 <h2>aSBM test<a class="headerlink" href="#asbm-test" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-stat, pvalue, misc = stochastic_block_test(
-    sub_left_adj,
-    sub_right_adj,
-    labels1=sub_left_labels,
-    labels2=sub_right_labels,
-    method=&quot;fisher&quot;,
-    density_adjustment=True,
-    combine_method=&quot;tippett&quot;,
-)
-print(pvalue)
-glue(&quot;asbm_pvalue&quot;, pvalue, form=&quot;pvalue&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
+    <span class="n">sub_left_adj</span><span class="p">,</span>
+    <span class="n">sub_right_adj</span><span class="p">,</span>
+    <span class="n">labels1</span><span class="o">=</span><span class="n">sub_left_labels</span><span class="p">,</span>
+    <span class="n">labels2</span><span class="o">=</span><span class="n">sub_right_labels</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
+    <span class="n">density_adjustment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;tippett&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;asbm_pvalue&quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">)</span>
 
-fig, ax = plot_pvalues(misc)
-gluefig(&quot;dasbm_pvalues&quot;, fig)
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_pvalues</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;dasbm_pvalues&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -782,51 +778,50 @@ gluefig(&quot;dasbm_pvalues&quot;, fig)
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-fontsize = 10
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span>
 
-methods = SmartSVG(FIG_PATH / &quot;kc_minus_methods.svg&quot;)
-methods.set_width(200)
-methods.move(10, 15)
-methods_panel = Panel(
-    methods, Text(&quot;A) Kenyon cell removal&quot;, 0, 10, size=fontsize, weight=&quot;bold&quot;)
-)
+<span class="n">methods</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;kc_minus_methods.svg&quot;</span><span class="p">)</span>
+<span class="n">methods</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">methods</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">methods_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+    <span class="n">methods</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;A) Kenyon cell removal&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
-er = SmartSVG(FIG_PATH / &quot;densities.svg&quot;)
-er.set_width(130)
-er.move(30, 20)
-er_panel = Panel(er, Text(&quot;B) Density test&quot;, 0, 10, size=fontsize, weight=&quot;bold&quot;))
-er_panel.move(methods.width * 0.87, 0)
+<span class="n">er</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;densities.svg&quot;</span><span class="p">)</span>
+<span class="n">er</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">130</span><span class="p">)</span>
+<span class="n">er</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">er_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span><span class="n">er</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;B) Density test&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">))</span>
+<span class="n">er_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.87</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-sbm = SmartSVG(FIG_PATH / &quot;sbm_pvalues.svg&quot;)
-sbm.set_width(200)
-sbm.move(0, 25)
-sbm_panel = Panel(
-    sbm, Text(&quot;C) Group connection test&quot;, 0, 10, size=fontsize, weight=&quot;bold&quot;)
-)
-sbm_panel.move(0, methods.height * 0.9)
+<span class="n">sbm</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;sbm_pvalues.svg&quot;</span><span class="p">)</span>
+<span class="n">sbm</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">sbm</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">sbm_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+    <span class="n">sbm</span><span class="p">,</span> <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;C) Group connection test&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">sbm_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
 
-asbm = SmartSVG(FIG_PATH / &quot;dasbm_pvalues.svg&quot;)
-asbm.set_width(200)
-asbm.move(0, 25)
-asbm_panel = Panel(
-    asbm,
-    Text(&quot;D) Density-adjusted&quot;, 0, 10, size=fontsize, weight=&quot;bold&quot;),
-    Text(&quot;group connection test&quot;, 14, 20, size=fontsize, weight=&quot;bold&quot;),
-)
-asbm_panel.move(methods.width * 0.87, methods.height * 0.9)
+<span class="n">asbm</span> <span class="o">=</span> <span class="n">SmartSVG</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;dasbm_pvalues.svg&quot;</span><span class="p">)</span>
+<span class="n">asbm</span><span class="o">.</span><span class="n">set_width</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">asbm</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">asbm_panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+    <span class="n">asbm</span><span class="p">,</span>
+    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;D) Density-adjusted&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
+    <span class="n">Text</span><span class="p">(</span><span class="s2">&quot;group connection test&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">asbm_panel</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.87</span><span class="p">,</span> <span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
 
 
-fig = Figure(
-    (methods.width + er.width) * 1.02,
-    (methods.height + sbm.height) * 0.95,
-    methods_panel,
-    er_panel,
-    sbm_panel,
-    asbm_panel,
-)
-fig.save(FIG_PATH / &quot;kc_minus_composite.svg&quot;)
-fig
+<span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="n">er</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.02</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">methods</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="n">sbm</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="n">methods_panel</span><span class="p">,</span>
+    <span class="n">er_panel</span><span class="p">,</span>
+    <span class="n">sbm_panel</span><span class="p">,</span>
+    <span class="n">asbm_panel</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">FIG_PATH</span> <span class="o">/</span> <span class="s2">&quot;kc_minus_composite.svg&quot;</span><span class="p">)</span>
+<span class="n">fig</span>
 </pre></div>
 </div>
 </div>
@@ -836,10 +831,10 @@ fig
 <p>End</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>elapsed = time.time() - t0
-delta = datetime.timedelta(seconds=elapsed)
-print(f&quot;Script took {delta}&quot;)
-print(f&quot;Completed at {datetime.datetime.now()}&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">elapsed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Script took </span><span class="si">{</span><span class="n">delta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -543,83 +543,83 @@ title="Print to PDF"
 <h1>Fisher’s method vs. min (after multiple comparison’s correction)<a class="headerlink" href="#fisher-s-method-vs-min-after-multiple-comparison-s-correction" title="Permalink to this headline">#</a></h1>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from pkg.utils import set_warnings
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">set_warnings</span>
 
-set_warnings()
+<span class="n">set_warnings</span><span class="p">()</span>
 
-import datetime
-import time
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import seaborn as sns
-from myst_nb import glue as default_glue
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import savefig
-from pkg.plot import set_theme
-from pkg.stats import stochastic_block_test
-from graspologic.simulations import sbm
-from tqdm import tqdm
-import matplotlib.colors as colors
-from scipy.stats import binom, combine_pvalues
-from pkg.stats import binom_2samp
-import matplotlib.colors as colors
-from pathlib import Path
-
-
-DISPLAY_FIGS = False
-
-FILENAME = &quot;compare_sbm_methods_sim&quot;
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
+<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_network_palette</span><span class="p">,</span> <span class="n">load_node_palette</span><span class="p">,</span> <span class="n">load_unmatched</span>
+<span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
+<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
+<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">stochastic_block_test</span>
+<span class="kn">from</span> <span class="nn">graspologic.simulations</span> <span class="kn">import</span> <span class="n">sbm</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span><span class="p">,</span> <span class="n">combine_pvalues</span>
+<span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">binom_2samp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 
-def gluefig(name, fig, **kwargs):
-    savefig(name, foldername=FILENAME, **kwargs)
+<span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="kc">False</span>
 
-    glue(name, fig, prefix=&quot;fig&quot;)
-
-    if not DISPLAY_FIGS:
-        plt.close()
+<span class="n">FILENAME</span> <span class="o">=</span> <span class="s2">&quot;compare_sbm_methods_sim&quot;</span>
 
 
-def glue(name, var, prefix=None):
-    savename = f&quot;{FILENAME}-{name}&quot;
-    if prefix is not None:
-        savename = prefix + &quot;:&quot; + savename
-    default_glue(savename, var, display=False)
+<span class="k">def</span> <span class="nf">gluefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">savefig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">foldername</span><span class="o">=</span><span class="n">FILENAME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;fig&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">DISPLAY_FIGS</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 
-t0 = time.time()
-set_theme()
-rng = np.random.default_rng(8888)
+<span class="k">def</span> <span class="nf">glue</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">savename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">FILENAME</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">savename</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">savename</span>
+    <span class="n">default_glue</span><span class="p">(</span><span class="n">savename</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
-fisher_color = sns.color_palette(&quot;Set2&quot;)[2]
-min_color = sns.color_palette(&quot;Set2&quot;)[3]
-method_palette = {&quot;fisher&quot;: fisher_color, &quot;min&quot;: min_color}
 
-GROUP_KEY = &quot;simple_group&quot;
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">set_theme</span><span class="p">()</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
 
-left_adj, left_nodes = load_unmatched(side=&quot;left&quot;)
-right_adj, right_nodes = load_unmatched(side=&quot;right&quot;)
+<span class="n">network_palette</span><span class="p">,</span> <span class="n">NETWORK_KEY</span> <span class="o">=</span> <span class="n">load_network_palette</span><span class="p">()</span>
+<span class="n">node_palette</span><span class="p">,</span> <span class="n">NODE_KEY</span> <span class="o">=</span> <span class="n">load_node_palette</span><span class="p">()</span>
+<span class="n">fisher_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">min_color</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">method_palette</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fisher&quot;</span><span class="p">:</span> <span class="n">fisher_color</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">min_color</span><span class="p">}</span>
 
-left_labels = left_nodes[GROUP_KEY].values
-right_labels = right_nodes[GROUP_KEY].values
+<span class="n">GROUP_KEY</span> <span class="o">=</span> <span class="s2">&quot;simple_group&quot;</span>
+
+<span class="n">left_adj</span><span class="p">,</span> <span class="n">left_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="n">right_adj</span><span class="p">,</span> <span class="n">right_nodes</span> <span class="o">=</span> <span class="n">load_unmatched</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+
+<span class="n">left_labels</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">right_labels</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>stat, pvalue, misc = stochastic_block_test(
-    left_adj,
-    right_adj,
-    labels1=left_labels,
-    labels2=right_labels,
-    method=&quot;fisher&quot;,
-    combine_method=&quot;fisher&quot;,
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="n">stochastic_block_test</span><span class="p">(</span>
+    <span class="n">left_adj</span><span class="p">,</span>
+    <span class="n">right_adj</span><span class="p">,</span>
+    <span class="n">labels1</span><span class="o">=</span><span class="n">left_labels</span><span class="p">,</span>
+    <span class="n">labels2</span><span class="o">=</span><span class="n">right_labels</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
+    <span class="n">combine_method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -672,89 +672,88 @@ model/test above.</p></li>
 <h2>P-values under the null<a class="headerlink" href="#p-values-under-the-null" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-B_base = misc[&quot;probabilities1&quot;].values
-inds = np.nonzero(B_base)
-base_probs = B_base[inds]
-n_possible_matrix = misc[&quot;possible1&quot;].values
-ns = n_possible_matrix[inds]
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_base</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;probabilities1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">B_base</span><span class="p">)</span>
+<span class="n">base_probs</span> <span class="o">=</span> <span class="n">B_base</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
+<span class="n">n_possible_matrix</span> <span class="o">=</span> <span class="n">misc</span><span class="p">[</span><span class="s2">&quot;possible1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">ns</span> <span class="o">=</span> <span class="n">n_possible_matrix</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
 
-n_null_sims = 100
+<span class="n">n_null_sims</span> <span class="o">=</span> <span class="mi">100</span>
 
-RERUN_NULL = False
-save_path = Path(
-    &quot;/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/&quot;
-    &quot;outputs/compare_sbm_methods_sim/null_results.csv&quot;
-)
+<span class="n">RERUN_NULL</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+    <span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/&quot;</span>
+    <span class="s2">&quot;outputs/compare_sbm_methods_sim/null_results.csv&quot;</span>
+<span class="p">)</span>
 
-if RERUN_NULL:
-    null_rows = []
-    for sim in tqdm(range(n_null_sims)):
-        base_samples = binom.rvs(ns, base_probs)
-        perturb_samples = binom.rvs(ns, base_probs)
+<span class="k">if</span> <span class="n">RERUN_NULL</span><span class="p">:</span>
+    <span class="n">null_rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_null_sims</span><span class="p">)):</span>
+        <span class="n">base_samples</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">base_probs</span><span class="p">)</span>
+        <span class="n">perturb_samples</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">base_probs</span><span class="p">)</span>
 
-        # test on the new data
-        def tester(cell):
-            stat, pvalue = binom_2samp(
-                base_samples[cell],
-                ns[cell],
-                perturb_samples[cell],
-                ns[cell],
-                null_odds=1,
-                method=&quot;fisher&quot;,
-            )
-            return pvalue
+        <span class="c1"># test on the new data</span>
+        <span class="k">def</span> <span class="nf">tester</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+            <span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span> <span class="o">=</span> <span class="n">binom_2samp</span><span class="p">(</span>
+                <span class="n">base_samples</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                <span class="n">ns</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                <span class="n">perturb_samples</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                <span class="n">ns</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                <span class="n">null_odds</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">pvalue</span>
 
-        pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
-        n_overall = len(pvalue_collection)
-        pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
-        n_tests = len(pvalue_collection)
-        n_skipped = n_overall - n_tests
+        <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">tester</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">base_samples</span><span class="p">)))</span>
+        <span class="n">n_overall</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)</span>
+        <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="n">pvalue_collection</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)]</span>
+        <span class="n">n_tests</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)</span>
+        <span class="n">n_skipped</span> <span class="o">=</span> <span class="n">n_overall</span> <span class="o">-</span> <span class="n">n_tests</span>
 
-        row = {
-            &quot;sim&quot;: sim,
-            &quot;n_tests&quot;: n_tests,
-            &quot;n_skipped&quot;: n_skipped,
-        }
-        for method in [&quot;fisher&quot;, &quot;min&quot;]:
-            row = row.copy()
-            if method == &quot;min&quot;:
-                overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
-                row[&quot;pvalue&quot;] = overall_pvalue
-            elif method == &quot;fisher&quot;:
-                stat, overall_pvalue = combine_pvalues(
-                    pvalue_collection, method=&quot;fisher&quot;
-                )
-                row[&quot;pvalue&quot;] = overall_pvalue
+        <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;sim&quot;</span><span class="p">:</span> <span class="n">sim</span><span class="p">,</span>
+            <span class="s2">&quot;n_tests&quot;</span><span class="p">:</span> <span class="n">n_tests</span><span class="p">,</span>
+            <span class="s2">&quot;n_skipped&quot;</span><span class="p">:</span> <span class="n">n_skipped</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">]:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span>
+                <span class="n">overall_pvalue</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="n">n_tests</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">overall_pvalue</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;fisher&quot;</span><span class="p">:</span>
+                <span class="n">stat</span><span class="p">,</span> <span class="n">overall_pvalue</span> <span class="o">=</span> <span class="n">combine_pvalues</span><span class="p">(</span>
+                    <span class="n">pvalue_collection</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span>
+                <span class="p">)</span>
+                <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">overall_pvalue</span>
 
-            row[&quot;method&quot;] = method
-            null_rows.append(row)
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span>
+            <span class="n">null_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
-    null_results = pd.DataFrame(null_rows)
-    null_results.to_csv(save_path)
-else:
-    null_results = pd.read_csv(save_path, index_col=0)
+    <span class="n">null_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">null_rows</span><span class="p">)</span>
+    <span class="n">null_results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">null_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from giskard.plot import subuniformity_plot
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">subuniformity_plot</span>
 
-fig, axs = plt.subplots(1, 2, figsize=(10, 5))
-for i, method in enumerate([&quot;fisher&quot;, &quot;min&quot;]):
-    ax = axs[i]
-    method_null_results = null_results[null_results[&quot;method&quot;] == method]
-    subuniformity_plot(
-        method_null_results[&quot;pvalue&quot;],
-        ax=ax,
-        color=method_palette[method],
-        element=&quot;step&quot;,
-    )
-    ax.set_title(method.capitalize())
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">]):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">method_null_results</span> <span class="o">=</span> <span class="n">null_results</span><span class="p">[</span><span class="n">null_results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">method</span><span class="p">]</span>
+    <span class="n">subuniformity_plot</span><span class="p">(</span>
+        <span class="n">method_null_results</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">method_palette</span><span class="p">[</span><span class="n">method</span><span class="p">],</span>
+        <span class="n">element</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
 
-gluefig(&quot;null_distributions&quot;, fig)
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;null_distributions&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -780,14 +779,13 @@ Note that both methods appear empirically valid, but Fisher’s appears highly c
 <h2>P-values under the alternative<a class="headerlink" href="#p-values-under-the-alternative" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-n_sims = 100
-n_perturb_range = np.linspace(0, 125, 6, dtype=int)[1:]
-perturb_size_range = np.round(np.linspace(0, 0.5, 6), decimals=3)[1:]
-print(f&quot;Perturb sizes: {perturb_size_range}&quot;)
-print(f&quot;Perturb number range: {n_perturb_range}&quot;)
-n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
-print(f&quot;Number of runs: {n_runs}&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_sims</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">n_perturb_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">perturb_size_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">3</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Perturb sizes: </span><span class="si">{</span><span class="n">perturb_size_range</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Perturb number range: </span><span class="si">{</span><span class="n">n_perturb_range</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">n_runs</span> <span class="o">=</span> <span class="n">n_sims</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_perturb_range</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">perturb_size_range</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of runs: </span><span class="si">{</span><span class="n">n_runs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -801,277 +799,274 @@ Number of runs: 2500
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-RERUN_SIM = False
-save_path = Path(
-    &quot;/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/&quot;
-    &quot;outputs/compare_sbm_methods_sim/results.csv&quot;
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RERUN_SIM</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+    <span class="s2">&quot;/Users/bpedigo/JHU_code/bilateral/bilateral-connectome/results/&quot;</span>
+    <span class="s2">&quot;outputs/compare_sbm_methods_sim/results.csv&quot;</span>
+<span class="p">)</span>
 
-if RERUN_SIM:
-    t0 = time.time()
-    mean_itertimes = 0
-    n_time_first = 5
-    progress_steps = 0.05
-    progress_counter = 0
-    last_progress = -0.05
-    simple_rows = []
-    example_perturb_probs = {}
-    for perturb_size in perturb_size_range:
-        for n_perturb in n_perturb_range:
-            for sim in range(n_sims):
-                itertime = time.time()
+<span class="k">if</span> <span class="n">RERUN_SIM</span><span class="p">:</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">mean_itertimes</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n_time_first</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">progress_steps</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">progress_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">last_progress</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.05</span>
+    <span class="n">simple_rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">example_perturb_probs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">perturb_size</span> <span class="ow">in</span> <span class="n">perturb_size_range</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">n_perturb</span> <span class="ow">in</span> <span class="n">n_perturb_range</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_sims</span><span class="p">):</span>
+                <span class="n">itertime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-                # just a way to track progress
-                progress_counter += 1
-                progress_prop = progress_counter / n_runs
-                if progress_prop - progress_steps &gt; last_progress:
-                    print(f&quot;{progress_prop:.2f}&quot;)
-                    last_progress = progress_prop
+                <span class="c1"># just a way to track progress</span>
+                <span class="n">progress_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">progress_prop</span> <span class="o">=</span> <span class="n">progress_counter</span> <span class="o">/</span> <span class="n">n_runs</span>
+                <span class="k">if</span> <span class="n">progress_prop</span> <span class="o">-</span> <span class="n">progress_steps</span> <span class="o">&gt;</span> <span class="n">last_progress</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">progress_prop</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">last_progress</span> <span class="o">=</span> <span class="n">progress_prop</span>
 
-                # choose some elements to perturb
-                currtime = time.time()
-                perturb_probs = base_probs.copy()
-                choice_indices = rng.choice(
-                    len(perturb_probs), size=n_perturb, replace=False
-                )
+                <span class="c1"># choose some elements to perturb</span>
+                <span class="n">currtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">perturb_probs</span> <span class="o">=</span> <span class="n">base_probs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">choice_indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">perturb_probs</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="n">n_perturb</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">)</span>
 
-                # pertub em
-                for index in choice_indices:
-                    prob = base_probs[index]
+                <span class="c1"># pertub em</span>
+                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">choice_indices</span><span class="p">:</span>
+                    <span class="n">prob</span> <span class="o">=</span> <span class="n">base_probs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
-                    new_prob = -1
-                    while new_prob &lt;= 0 or new_prob &gt;= 1:
-                        new_prob = rng.normal(prob, scale=prob * perturb_size)
+                    <span class="n">new_prob</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="k">while</span> <span class="n">new_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">new_prob</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">new_prob</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">prob</span> <span class="o">*</span> <span class="n">perturb_size</span><span class="p">)</span>
 
-                    perturb_probs[index] = new_prob
+                    <span class="n">perturb_probs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_prob</span>
 
-                if sim == 0:
-                    example_perturb_probs[(perturb_size, n_perturb)] = perturb_probs
+                <span class="k">if</span> <span class="n">sim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">example_perturb_probs</span><span class="p">[(</span><span class="n">perturb_size</span><span class="p">,</span> <span class="n">n_perturb</span><span class="p">)]</span> <span class="o">=</span> <span class="n">perturb_probs</span>
 
-                perturb_elapsed = time.time() - currtime
+                <span class="n">perturb_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">currtime</span>
 
-                # sample some new binomial data
-                currtime = time.time()
+                <span class="c1"># sample some new binomial data</span>
+                <span class="n">currtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-                base_samples = binom.rvs(ns, base_probs)
-                perturb_samples = binom.rvs(ns, perturb_probs)
-                sample_elapsed = time.time() - currtime
+                <span class="n">base_samples</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">base_probs</span><span class="p">)</span>
+                <span class="n">perturb_samples</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">perturb_probs</span><span class="p">)</span>
+                <span class="n">sample_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">currtime</span>
 
-                currtime = time.time()
+                <span class="n">currtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-                # test on the new data
-                def tester(cell):
-                    stat, pvalue = binom_2samp(
-                        base_samples[cell],
-                        ns[cell],
-                        perturb_samples[cell],
-                        ns[cell],
-                        null_odds=1,
-                        method=&quot;fisher&quot;,
-                    )
-                    return pvalue
+                <span class="c1"># test on the new data</span>
+                <span class="k">def</span> <span class="nf">tester</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+                    <span class="n">stat</span><span class="p">,</span> <span class="n">pvalue</span> <span class="o">=</span> <span class="n">binom_2samp</span><span class="p">(</span>
+                        <span class="n">base_samples</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                        <span class="n">ns</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                        <span class="n">perturb_samples</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                        <span class="n">ns</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span>
+                        <span class="n">null_odds</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">pvalue</span>
 
-                pvalue_collection = np.vectorize(tester)(np.arange(len(base_samples)))
-                pvalue_collection = np.array(pvalue_collection)
-                n_overall = len(pvalue_collection)
-                pvalue_collection = pvalue_collection[~np.isnan(pvalue_collection)]
-                n_tests = len(pvalue_collection)
-                n_skipped = n_overall - n_tests
-                test_elapsed = time.time() - currtime
+                <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">tester</span><span class="p">)(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">base_samples</span><span class="p">)))</span>
+                <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)</span>
+                <span class="n">n_overall</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)</span>
+                <span class="n">pvalue_collection</span> <span class="o">=</span> <span class="n">pvalue_collection</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)]</span>
+                <span class="n">n_tests</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="p">)</span>
+                <span class="n">n_skipped</span> <span class="o">=</span> <span class="n">n_overall</span> <span class="o">-</span> <span class="n">n_tests</span>
+                <span class="n">test_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">currtime</span>
 
-                # combine pvalues
-                currtime = time.time()
-                row = {
-                    &quot;perturb_size&quot;: perturb_size,
-                    &quot;n_perturb&quot;: n_perturb,
-                    &quot;sim&quot;: sim,
-                    &quot;n_tests&quot;: n_tests,
-                    &quot;n_skipped&quot;: n_skipped,
-                }
-                for method in [&quot;fisher&quot;, &quot;min&quot;]:
-                    row = row.copy()
-                    if method == &quot;min&quot;:
-                        overall_pvalue = min(pvalue_collection.min() * n_tests, 1)
-                        row[&quot;pvalue&quot;] = overall_pvalue
-                    elif method == &quot;fisher&quot;:
-                        stat, overall_pvalue = combine_pvalues(
-                            pvalue_collection, method=&quot;fisher&quot;
-                        )
-                        row[&quot;pvalue&quot;] = overall_pvalue
+                <span class="c1"># combine pvalues</span>
+                <span class="n">currtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;perturb_size&quot;</span><span class="p">:</span> <span class="n">perturb_size</span><span class="p">,</span>
+                    <span class="s2">&quot;n_perturb&quot;</span><span class="p">:</span> <span class="n">n_perturb</span><span class="p">,</span>
+                    <span class="s2">&quot;sim&quot;</span><span class="p">:</span> <span class="n">sim</span><span class="p">,</span>
+                    <span class="s2">&quot;n_tests&quot;</span><span class="p">:</span> <span class="n">n_tests</span><span class="p">,</span>
+                    <span class="s2">&quot;n_skipped&quot;</span><span class="p">:</span> <span class="n">n_skipped</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fisher&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">]:</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span>
+                        <span class="n">overall_pvalue</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pvalue_collection</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="n">n_tests</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">overall_pvalue</span>
+                    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;fisher&quot;</span><span class="p">:</span>
+                        <span class="n">stat</span><span class="p">,</span> <span class="n">overall_pvalue</span> <span class="o">=</span> <span class="n">combine_pvalues</span><span class="p">(</span>
+                            <span class="n">pvalue_collection</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;fisher&quot;</span>
+                        <span class="p">)</span>
+                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">overall_pvalue</span>
 
-                    row[&quot;method&quot;] = method
-                    simple_rows.append(row)
+                    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span>
+                    <span class="n">simple_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
-                combine_elapsed = time.time() - currtime
+                <span class="n">combine_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">currtime</span>
 
-                if progress_counter &lt; n_time_first:
-                    print(&quot;-----&quot;)
-                    print(f&quot;Perturb took {perturb_elapsed:0.3f}s&quot;)
-                    print(f&quot;Sample took {sample_elapsed:0.3f}s&quot;)
-                    print(f&quot;Test took {test_elapsed:0.3f}s&quot;)
-                    print(f&quot;Combine took {combine_elapsed:0.3f}s&quot;)
-                    print(&quot;-----&quot;)
-                    iter_elapsed = time.time() - itertime
-                    mean_itertimes += iter_elapsed / n_time_first
-                elif progress_counter == n_time_first:
-                    projected_time = mean_itertimes * n_runs
-                    projected_time = datetime.timedelta(seconds=projected_time)
-                    print(&quot;---&quot;)
-                    print(f&quot;Projected time: {projected_time}&quot;)
-                    print(&quot;---&quot;)
+                <span class="k">if</span> <span class="n">progress_counter</span> <span class="o">&lt;</span> <span class="n">n_time_first</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Perturb took </span><span class="si">{</span><span class="n">perturb_elapsed</span><span class="si">:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample took </span><span class="si">{</span><span class="n">sample_elapsed</span><span class="si">:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test took </span><span class="si">{</span><span class="n">test_elapsed</span><span class="si">:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Combine took </span><span class="si">{</span><span class="n">combine_elapsed</span><span class="si">:</span><span class="s2">0.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----&quot;</span><span class="p">)</span>
+                    <span class="n">iter_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">itertime</span>
+                    <span class="n">mean_itertimes</span> <span class="o">+=</span> <span class="n">iter_elapsed</span> <span class="o">/</span> <span class="n">n_time_first</span>
+                <span class="k">elif</span> <span class="n">progress_counter</span> <span class="o">==</span> <span class="n">n_time_first</span><span class="p">:</span>
+                    <span class="n">projected_time</span> <span class="o">=</span> <span class="n">mean_itertimes</span> <span class="o">*</span> <span class="n">n_runs</span>
+                    <span class="n">projected_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">projected_time</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Projected time: </span><span class="si">{</span><span class="n">projected_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
 
-    total_elapsed = time.time() - t0
+    <span class="n">total_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 
-    print(&quot;Done!&quot;)
-    print(f&quot;Total experiment took: {datetime.timedelta(seconds=total_elapsed)}&quot;)
-    results = pd.DataFrame(simple_rows)
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total experiment took: </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">total_elapsed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">simple_rows</span><span class="p">)</span>
 
-    results.to_csv(save_path)
-else:
-    results = pd.read_csv(save_path, index_col=0)
+    <span class="n">results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>if RERUN_SIM:
-    fig, axs = plt.subplots(
-        len(perturb_size_range), len(n_perturb_range), figsize=(20, 20), sharey=True
-    )
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">RERUN_SIM</span><span class="p">:</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">perturb_size_range</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_perturb_range</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
-    for i, perturb_size in enumerate(perturb_size_range):
-        for j, n_perturb in enumerate(n_perturb_range):
-            ax = axs[i, j]
-            perturb_probs = example_perturb_probs[(perturb_size, n_perturb)]
-            mask = base_probs != perturb_probs
-            show_base_probs = base_probs[mask]
-            show_perturb_probs = perturb_probs[mask]
-            sort_inds = np.argsort(-show_base_probs)
-            show_base_probs = show_base_probs[sort_inds]
-            show_perturb_probs = show_perturb_probs[sort_inds]
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">perturb_size</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">perturb_size_range</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">n_perturb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">n_perturb_range</span><span class="p">):</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+            <span class="n">perturb_probs</span> <span class="o">=</span> <span class="n">example_perturb_probs</span><span class="p">[(</span><span class="n">perturb_size</span><span class="p">,</span> <span class="n">n_perturb</span><span class="p">)]</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">base_probs</span> <span class="o">!=</span> <span class="n">perturb_probs</span>
+            <span class="n">show_base_probs</span> <span class="o">=</span> <span class="n">base_probs</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+            <span class="n">show_perturb_probs</span> <span class="o">=</span> <span class="n">perturb_probs</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+            <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">show_base_probs</span><span class="p">)</span>
+            <span class="n">show_base_probs</span> <span class="o">=</span> <span class="n">show_base_probs</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+            <span class="n">show_perturb_probs</span> <span class="o">=</span> <span class="n">show_perturb_probs</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
 
-            sns.scatterplot(
-                x=np.arange(len(show_base_probs)), y=show_perturb_probs, ax=ax, s=10
-            )
-            sns.lineplot(
-                x=np.arange(len(show_base_probs)),
-                y=show_base_probs,
-                ax=ax,
-                linewidth=1,
-                zorder=-1,
-                color=&quot;orange&quot;,
-            )
-            ax.set(xticks=[])
+            <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">show_base_probs</span><span class="p">)),</span> <span class="n">y</span><span class="o">=</span><span class="n">show_perturb_probs</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span>
+            <span class="p">)</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">show_base_probs</span><span class="p">)),</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">show_base_probs</span><span class="p">,</span>
+                <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[])</span>
 
-    ax.set(yscale=&quot;log&quot;)
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
 
-    gluefig(&quot;example-perturbations&quot;, fig)
+    <span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;example-perturbations&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fisher_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;fisher&quot;</span><span class="p">]</span>
+<span class="n">min_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">]</span>
 
-fisher_results = results[results[&quot;method&quot;] == &quot;fisher&quot;]
-min_results = results[results[&quot;method&quot;] == &quot;min&quot;]
+<span class="n">fisher_means</span> <span class="o">=</span> <span class="n">fisher_results</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="s2">&quot;n_perturb&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">min_means</span> <span class="o">=</span> <span class="n">min_results</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="s2">&quot;n_perturb&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
-fisher_means = fisher_results.groupby([&quot;perturb_size&quot;, &quot;n_perturb&quot;]).mean()
-min_means = min_results.groupby([&quot;perturb_size&quot;, &quot;n_perturb&quot;]).mean()
+<span class="n">mean_diffs</span> <span class="o">=</span> <span class="n">fisher_means</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">min_means</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span>
+<span class="n">mean_diffs</span> <span class="o">=</span> <span class="n">mean_diffs</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
-mean_diffs = fisher_means[&quot;pvalue&quot;] - min_means[&quot;pvalue&quot;]
-mean_diffs = mean_diffs.to_frame().reset_index()
+<span class="n">mean_diffs_square</span> <span class="o">=</span> <span class="n">mean_diffs</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;n_perturb&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span>
+<span class="p">)</span>
 
-mean_diffs_square = mean_diffs.pivot(
-    index=&quot;perturb_size&quot;, columns=&quot;n_perturb&quot;, values=&quot;pvalue&quot;
-)
+<span class="c1"># v = np.max(np.abs(mean_diffs_square.values))</span>
 
-# v = np.max(np.abs(mean_diffs_square.values))
+<span class="c1"># fig, ax = plt.subplots(1, 1, figsize=(8, 8))</span>
+<span class="c1"># sns.heatmap(</span>
+<span class="c1">#     mean_diffs_square,</span>
+<span class="c1">#     cmap=&quot;RdBu&quot;,</span>
+<span class="c1">#     ax=ax,</span>
+<span class="c1">#     yticklabels=perturb_size_range,</span>
+<span class="c1">#     xticklabels=n_perturb_range,</span>
+<span class="c1">#     square=True,</span>
+<span class="c1">#     center=0,</span>
+<span class="c1">#     vmin=-v,</span>
+<span class="c1">#     vmax=v,</span>
+<span class="c1">#     cbar_kws=dict(shrink=0.7),</span>
+<span class="c1"># )</span>
+<span class="c1"># ax.set(xlabel=&quot;Number of perturbed blocks&quot;, ylabel=&quot;Size of perturbation&quot;)</span>
+<span class="c1"># cax = fig.axes[1]</span>
+<span class="c1"># cax.text(4, 1, &quot;Min more\nsensitive&quot;, transform=cax.transAxes, va=&quot;top&quot;)</span>
+<span class="c1"># cax.text(4, 0, &quot;Fisher more\nsensitive&quot;, transform=cax.transAxes, va=&quot;bottom&quot;)</span>
+<span class="c1"># ax.set_title(&quot;(Fisher - Min) pvalues&quot;, fontsize=&quot;x-large&quot;)</span>
 
-# fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-# sns.heatmap(
-#     mean_diffs_square,
-#     cmap=&quot;RdBu&quot;,
-#     ax=ax,
-#     yticklabels=perturb_size_range,
-#     xticklabels=n_perturb_range,
-#     square=True,
-#     center=0,
-#     vmin=-v,
-#     vmax=v,
-#     cbar_kws=dict(shrink=0.7),
-# )
-# ax.set(xlabel=&quot;Number of perturbed blocks&quot;, ylabel=&quot;Size of perturbation&quot;)
-# cax = fig.axes[1]
-# cax.text(4, 1, &quot;Min more\nsensitive&quot;, transform=cax.transAxes, va=&quot;top&quot;)
-# cax.text(4, 0, &quot;Fisher more\nsensitive&quot;, transform=cax.transAxes, va=&quot;bottom&quot;)
-# ax.set_title(&quot;(Fisher - Min) pvalues&quot;, fontsize=&quot;x-large&quot;)
-
-# DISPLAY_FIGS = True
-# gluefig(&quot;pvalue_diff_matrix&quot;, fig)
+<span class="c1"># DISPLAY_FIGS = True</span>
+<span class="c1"># gluefig(&quot;pvalue_diff_matrix&quot;, fig)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig, axs = plt.subplots(2, 3, figsize=(15, 10))
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
 
-for i, perturb_size in enumerate(perturb_size_range):
-    ax = axs.flat[i]
-    plot_results = results[results[&quot;perturb_size&quot;] == perturb_size]
-    sns.lineplot(
-        data=plot_results,
-        x=&quot;n_perturb&quot;,
-        y=&quot;pvalue&quot;,
-        hue=&quot;method&quot;,
-        style=&quot;method&quot;,
-        palette=method_palette,
-        ax=ax,
-    )
-    ax.set(yscale=&quot;log&quot;)
-    ax.get_legend().remove()
-    ax.axhline(0.05, color=&quot;dimgrey&quot;, linestyle=&quot;:&quot;)
-    ax.axhline(0.005, color=&quot;dimgrey&quot;, linestyle=&quot;--&quot;)
-    ax.set(ylabel=&quot;&quot;, xlabel=&quot;&quot;, title=f&quot;{perturb_size}&quot;)
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">perturb_size</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">perturb_size_range</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">plot_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">perturb_size</span><span class="p">]</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">plot_results</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;n_perturb&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pvalue&quot;</span><span class="p">,</span>
+        <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span>
+        <span class="n">style</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span>
+        <span class="n">palette</span><span class="o">=</span><span class="n">method_palette</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">get_legend</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;dimgrey&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;dimgrey&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">perturb_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    ylim = ax.get_ylim()
-    if ylim[0] &lt; 1e-25:
-        ax.set_ylim((1e-25, ylim[1]))
+    <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1e-25</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="mf">1e-25</span><span class="p">,</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
-handles, labels = ax.get_legend_handles_labels()
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
 
-ax.annotate(
-    0.05,
-    xy=(ax.get_xlim()[1], 0.05),
-    xytext=(30, 10),
-    textcoords=&quot;offset points&quot;,
-    arrowprops=dict(arrowstyle=&quot;-&quot;),
-)
-ax.annotate(
-    0.005,
-    xy=(ax.get_xlim()[1], 0.005),
-    xytext=(30, -40),
-    textcoords=&quot;offset points&quot;,
-    arrowprops=dict(arrowstyle=&quot;-&quot;),
-)
-axs.flat[-1].axis(&quot;off&quot;)
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.05</span><span class="p">),</span>
+    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+    <span class="mf">0.005</span><span class="p">,</span>
+    <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.005</span><span class="p">),</span>
+    <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">),</span>
+    <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
+    <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
 
-[ax.set(ylabel=&quot;p-value&quot;) for ax in axs[:, 0]]
-[ax.set(xlabel=&quot;Number perturbed&quot;) for ax in axs[1, :]]
-axs[0, -1].set(xlabel=&quot;Number perturbed&quot;)
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;p-value&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Number perturbed&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]]</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Number perturbed&quot;</span><span class="p">)</span>
 
-axs[0, 0].set_title(f&quot;Perturbation size = {perturb_size_range[0]}&quot;)
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Perturbation size = </span><span class="si">{</span><span class="n">perturb_size_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-for i, label in enumerate(labels):
-    labels[i] = label.capitalize()
-axs.flat[-1].legend(handles=handles, labels=labels, title=&quot;Method&quot;)
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+    <span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+<span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Method&quot;</span><span class="p">)</span>
 
-gluefig(&quot;perturbation_pvalues_lineplots&quot;, fig)
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;perturbation_pvalues_lineplots&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1102,154 +1097,154 @@ methods yield extremely small p-values.</span><a class="headerlink" href="#id2" 
 <h2>Power under the alternative<a class="headerlink" href="#power-under-the-alternative" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>alpha = 0.05
-results[&quot;detected&quot;] = 0
-results.loc[results[(results[&quot;pvalue&quot;] &lt; alpha)].index, &quot;detected&quot;] = 1
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">results</span><span class="p">[</span><span class="s2">&quot;detected&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">results</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">results</span><span class="p">[(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;detected&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fisher_results = results[results[&quot;method&quot;] == &quot;fisher&quot;]
-min_results = results[results[&quot;method&quot;] == &quot;min&quot;]
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fisher_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;fisher&quot;</span><span class="p">]</span>
+<span class="n">min_results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span><span class="p">]</span>
 
-fisher_means = fisher_results.groupby([&quot;perturb_size&quot;, &quot;n_perturb&quot;]).mean()
-min_means = min_results.groupby([&quot;perturb_size&quot;, &quot;n_perturb&quot;]).mean()
+<span class="n">fisher_means</span> <span class="o">=</span> <span class="n">fisher_results</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="s2">&quot;n_perturb&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">min_means</span> <span class="o">=</span> <span class="n">min_results</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="s2">&quot;n_perturb&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
-fisher_power_square = fisher_means.reset_index().pivot(
-    index=&quot;perturb_size&quot;, columns=&quot;n_perturb&quot;, values=&quot;detected&quot;
-)
-min_power_square = min_means.reset_index().pivot(
-    index=&quot;perturb_size&quot;, columns=&quot;n_perturb&quot;, values=&quot;detected&quot;
-)
+<span class="n">fisher_power_square</span> <span class="o">=</span> <span class="n">fisher_means</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;n_perturb&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;detected&quot;</span>
+<span class="p">)</span>
+<span class="n">min_power_square</span> <span class="o">=</span> <span class="n">min_means</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;n_perturb&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;detected&quot;</span>
+<span class="p">)</span>
 
-mean_diffs = fisher_means[&quot;detected&quot;] / min_means[&quot;detected&quot;]
+<span class="n">mean_diffs</span> <span class="o">=</span> <span class="n">fisher_means</span><span class="p">[</span><span class="s2">&quot;detected&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">min_means</span><span class="p">[</span><span class="s2">&quot;detected&quot;</span><span class="p">]</span>
 
-mean_diffs = mean_diffs.to_frame().reset_index()
+<span class="n">mean_diffs</span> <span class="o">=</span> <span class="n">mean_diffs</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
-ratios_square = mean_diffs.pivot(
-    index=&quot;perturb_size&quot;, columns=&quot;n_perturb&quot;, values=&quot;detected&quot;
-)
+<span class="n">ratios_square</span> <span class="o">=</span> <span class="n">mean_diffs</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="s2">&quot;perturb_size&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;n_perturb&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;detected&quot;</span>
+<span class="p">)</span>
 
-v = np.max(np.abs(mean_diffs_square.values))
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mean_diffs_square</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
 
-# fig, axs = plt.subplots(1, 3, figsize=(12, 4), sharex=True, sharey=True)
-from matplotlib.transforms import Bbox
+<span class="c1"># fig, axs = plt.subplots(1, 3, figsize=(12, 4), sharex=True, sharey=True)</span>
+<span class="kn">from</span> <span class="nn">matplotlib.transforms</span> <span class="kn">import</span> <span class="n">Bbox</span>
 
-set_theme(font_scale=1.5)
-# set up plot
-pad = 0.5
-width_ratios = [1, pad * 1.2, 10, pad, 10, 1.3 * pad, 10, 1]
-fig, axs = plt.subplots(
-    1,
-    len(width_ratios),
-    figsize=(30, 10),
-    gridspec_kw=dict(
-        width_ratios=width_ratios,
-    ),
-)
-fisher_col = 2
-min_col = 4
-ratio_col = 6
-
-
-def shrink_axis(ax, scale=0.7):
-    pos = ax.get_position()
-    mid = (pos.ymax + pos.ymin) / 2
-    height = pos.ymax - pos.ymin
-    new_pos = Bbox(
-        [
-            [pos.xmin, mid - scale * 0.5 * height],
-            [pos.xmax, mid + scale * 0.5 * height],
-        ]
-    )
-    ax.set_position(new_pos)
+<span class="n">set_theme</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="c1"># set up plot</span>
+<span class="n">pad</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">width_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">1.3</span> <span class="o">*</span> <span class="n">pad</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">width_ratios</span><span class="p">),</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">width_ratios</span><span class="o">=</span><span class="n">width_ratios</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">fisher_col</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">min_col</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">ratio_col</span> <span class="o">=</span> <span class="mi">6</span>
 
 
-def power_heatmap(
-    data, ax=None, center=0, vmin=0, vmax=1, cmap=&quot;RdBu_r&quot;, cbar=False, **kwargs
-):
-    out = sns.heatmap(
-        data,
-        ax=ax,
-        yticklabels=perturb_size_range,
-        xticklabels=n_perturb_range,
-        square=True,
-        center=center,
-        vmin=vmin,
-        vmax=vmax,
-        cbar_kws=dict(shrink=0.7),
-        cbar=cbar,
-        cmap=cmap,
-        **kwargs,
-    )
-    ax.invert_yaxis()
-    return out
+<span class="k">def</span> <span class="nf">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">ymax</span> <span class="o">+</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymin</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymax</span> <span class="o">-</span> <span class="n">pos</span><span class="o">.</span><span class="n">ymin</span>
+    <span class="n">new_pos</span> <span class="o">=</span> <span class="n">Bbox</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">pos</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">height</span><span class="p">],</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">new_pos</span><span class="p">)</span>
 
 
-ax = axs[fisher_col]
-im = power_heatmap(fisher_power_square, ax=ax)
-ax.set_title(&quot;Fisher&#39;s method&quot;, fontsize=&quot;large&quot;)
+<span class="k">def</span> <span class="nf">power_heatmap</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu_r&quot;</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">yticklabels</span><span class="o">=</span><span class="n">perturb_size_range</span><span class="p">,</span>
+        <span class="n">xticklabels</span><span class="o">=</span><span class="n">n_perturb_range</span><span class="p">,</span>
+        <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
+        <span class="n">cbar_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">),</span>
+        <span class="n">cbar</span><span class="o">=</span><span class="n">cbar</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">out</span>
 
-ax = axs[0]
-shrink_axis(ax, scale=0.5)
-_ = fig.colorbar(
-    im.get_children()[0],
-    cax=ax,
-    fraction=1,
-    shrink=1,
-    ticklocation=&quot;left&quot;,
-)
-ax.set_title(&quot;Power\n&quot; + r&quot;($\alpha=0.05$)&quot;, pad=25)
 
-ax = axs[min_col]
-power_heatmap(min_power_square, ax=ax)
-ax.set_title(&quot;Min method&quot;, fontsize=&quot;large&quot;)
-ax.set(yticks=[])
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">fisher_col</span><span class="p">]</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">power_heatmap</span><span class="p">(</span><span class="n">fisher_power_square</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Fisher&#39;s method&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">)</span>
 
-pal = sns.diverging_palette(145, 300, s=60, as_cmap=True)
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">cax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">shrink</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ticklocation</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Power</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;($\alpha=0.05$)&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
 
-ax = axs[ratio_col]
-im = power_heatmap(np.log10(ratios_square), ax=ax, vmin=-2, vmax=2, center=0, cmap=pal)
-# ax.set_title(r&#39;$log_10(\frac{\text{Power}_{Fisher}}{\text{Power}_{Min}})$&#39;)
-# ax.set_title(
-#     r&quot;$log_{10}($Fisher power$)$&quot; + &quot;\n&quot; + r&quot; - $log_{10}($Min power$)$&quot;,
-#     fontsize=&quot;large&quot;,
-# )
-ax.set(yticks=[])
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">min_col</span><span class="p">]</span>
+<span class="n">power_heatmap</span><span class="p">(</span><span class="n">min_power_square</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Min method&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;large&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 
-ax = axs[-1]
-shrink_axis(ax, scale=0.5)
-_ = fig.colorbar(
-    im.get_children()[0],
-    cax=ax,
-    fraction=1,
-    shrink=1,
-    ticklocation=&quot;right&quot;,
-)
-ax.text(2, 1, &quot;Fisher more\nsensitive&quot;, transform=ax.transAxes, va=&quot;top&quot;)
-ax.text(2, 0.5, &quot;Equal power&quot;, transform=ax.transAxes, va=&quot;center&quot;)
-ax.text(2, 0, &quot;Min more\nsensitive&quot;, transform=ax.transAxes, va=&quot;bottom&quot;)
-ax.set_title(&quot;Log10\npower\nratio&quot;, pad=20)
+<span class="n">pal</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">145</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-# remove dummy axes
-for i in range(len(width_ratios)):
-    if not axs[i].has_data():
-        axs[i].set_visible(False)
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">ratio_col</span><span class="p">]</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">power_heatmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ratios_square</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">pal</span><span class="p">)</span>
+<span class="c1"># ax.set_title(r&#39;$log_10(\frac{\text{Power}_{Fisher}}{\text{Power}_{Min}})$&#39;)</span>
+<span class="c1"># ax.set_title(</span>
+<span class="c1">#     r&quot;$log_{10}($Fisher power$)$&quot; + &quot;\n&quot; + r&quot; - $log_{10}($Min power$)$&quot;,</span>
+<span class="c1">#     fontsize=&quot;large&quot;,</span>
+<span class="c1"># )</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
 
-xlabel = r&quot;# perturbed blocks $\rightarrow$&quot;
-ylabel = r&quot;Perturbation size $\rightarrow$&quot;
-axs[fisher_col].set(
-    xlabel=xlabel,
-    ylabel=ylabel,
-)
-axs[min_col].set(xlabel=xlabel, ylabel=&quot;&quot;)
-axs[ratio_col].set(xlabel=xlabel, ylabel=&quot;&quot;)
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">shrink_axis</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">cax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">shrink</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ticklocation</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Fisher more</span><span class="se">\n</span><span class="s2">sensitive&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;Equal power&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Min more</span><span class="se">\n</span><span class="s2">sensitive&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Log10</span><span class="se">\n</span><span class="s2">power</span><span class="se">\n</span><span class="s2">ratio&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
-fig.text(0.09, 0.86, &quot;A)&quot;, fontweight=&quot;bold&quot;, fontsize=50)
-fig.text(0.64, 0.86, &quot;B)&quot;, fontweight=&quot;bold&quot;, fontsize=50)
-gluefig(&quot;relative_power&quot;, fig)
+<span class="c1"># remove dummy axes</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">width_ratios</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">has_data</span><span class="p">():</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">xlabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;# perturbed blocks $\rightarrow$&quot;</span>
+<span class="n">ylabel</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;Perturbation size $\rightarrow$&quot;</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">fisher_col</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">min_col</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">ratio_col</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.09</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="s2">&quot;A)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.64</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="s2">&quot;B)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">gluefig</span><span class="p">(</span><span class="s2">&quot;relative_power&quot;</span><span class="p">,</span> <span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
