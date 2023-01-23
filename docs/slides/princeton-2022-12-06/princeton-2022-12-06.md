@@ -141,39 +141,6 @@ Almeida-Carvalho et al. J. Experimental Bio. (2017)
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022), Ohyama et al. Nature (2015)-->
 
-
----
-# What do we do with these datasets once we have them?
-
-- Characterizing network structure, e.g.,
-  - How could signals travel on this network, from sensory inputs to motor outputs?
-  - What cells have similar patterns of connectivity?
-- Hypothesis testing
-  - Connectome (network) as an object that we want to "do inference" on 
-
-
-
-<!-- --- 
-# Connectome $\leftrightarrow$ {development, genetics}
-
-> ... we selectively altered the location or activity of [...] neurons and generated new EM volumes of the manipulated samples **to investigate the effects on connectivity**.
-
-*Emphasis added* -->
-
-
---- 
-
-![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
-
-# Outline
-
-- ### **Larval connectome dataset**
-  - Flow
-  - Connectivity based cell types
-- ### Connectome comparison via network hypothesis testing
-- ### Pairing neurons across connectomes via graph matching
-- ### Ongoing extensions/applications
-
 ---
 <!-- Timing: ~6 min -->
 
@@ -206,11 +173,80 @@ Both hemispheres
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
+
+<!-- ---
+# What do we do with these datasets once we have them?
+
+- Characterizing network structure, e.g.,
+  - How could signals travel on this network, from sensory inputs to motor outputs?
+  - What cells have similar patterns of connectivity?
+- Hypothesis testing
+  - Connectome (network) as an object that we want to "do inference" on  -->
+
+
+
+<!-- --- 
+# Connectome $\leftrightarrow$ {development, genetics}
+
+> ... we selectively altered the location or activity of [...] neurons and generated new EM volumes of the manipulated samples **to investigate the effects on connectivity**.
+
+*Emphasis added* -->
+
+
+--- 
+
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
+
+# Outline
+
+- ### **Larval connectome dataset**
+  - Flow and edge types
+  - Connectivity-based cell types
+- ### Connectome comparison via network hypothesis testing
+- ### Pairing neurons across connectomes via graph matching
+- ### Ongoing extensions/applications
+
+
 ---
 
 # High level (mostly anatomical) cell types
 
 ![](./../../images/Figure1-cell-classes.png)
+
+![h:200 center](./../../images/io.png)
+
+<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+
+---
+
+# Sorting the network
+
+![h:300 center](./../../images/flow-ordering-simple.png)
+
+<!-- _footer: Carmel et al. IEEE Vis. and Comp. Graphics (2004), Burkard et al. Assignment Problems (2009)  -->
+
+---
+# Quantifying high-level "feedforward/feedback"
+
+<div class="columns">
+<div>
+
+![](./../../images/ffwd-fdbk.png)
+
+</div>
+<div>
+
+<!-- ![h:300 center](./../../images/fig2f.png) -->
+
+<span> </span>
+<span> </span>
+
+
+![h:300 ](./../../images/ffwd-fdback-cropped.png) 
+![h:50](./../../images/ffwd-legend.png)
+
+</div>
+</div>
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
@@ -218,22 +254,25 @@ Both hemispheres
 
 # Morphology enables splitting axons/dendrites 
 
-<div class="columns-br">
+<div class="columns">
 <div>
 
-![h:500 center](../../images/fig2a.png)
+![h:500 center](./../../images/fig2c-half.png)
+
+<!-- ![h:500 center](../../images/fig2a.png) -->
 
 </div>
 <div>
 
-![h:500 center](./../../images/fig2c-full.png)
+![](./../../images/ffwd-fdback.svg)
+![h:50](./../../images/ffwd-legend.png)
 
 </div>
 </div>
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
----
+<!-- ---
 
 # This split induces 4 graphs (or layers)
 
@@ -248,13 +287,12 @@ Both hemispheres
 ![h:200](./../../images/fig2e.png)
 
 </div>
-</div>
+</div> -->
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
---- 
 
-# What are these different "channels" doing?
+<!-- # What are these different "channels" doing?
 
 <div class="columns">
 <div>
@@ -266,44 +304,33 @@ Both hemispheres
 
 
 </div>
-</div>
+</div> -->
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
+<!--
 ---
 
-# Quantifying high-level "feedforward/feedback"
+# Sorting the network
 
-<div class="columns">
-<div>
-
-![](./../../images/ffwd-fdbk.png)
-
-</div>
-<div>
-
-![h:300 center](./../../images/fig2f.png)
-
-</div>
-</div>
-
-<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+![h:400 center](./../../images/flow-method-explain.png)
+-->
 
 ---
 
-# Comparing independently sorted channels
+# Comparing independently sorted "channels"
 
 ![bg right:68% h:650](./../../images/figs6.png)
 
 <!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
 
---- 
+<!-- --- 
 # Edge reciprocity
 
 ![h:400 center](./../../images/fig2h-reciprocity.png)
 
-<!-- _footer: Winding, Pedigo et al. bioRxiv (2022) -->
+_footer: Winding, Pedigo et al. bioRxiv (2022) -->
 
 --- 
 
@@ -313,8 +340,8 @@ Both hemispheres
 # Outline
 
 - ### **Larval connectome dataset**
-  - Flow
-  - Connectivity based cell types
+  - Flow and edge types
+  - Connectivity-based cell types
 - ### Connectome comparison via network hypothesis testing
 - ### Pairing neurons across connectomes via graph matching
 - ### Ongoing extensions/applications
@@ -355,9 +382,10 @@ Both hemispheres
 </div>
 </div>
 
+<!-- _footer: Sussman et al. JASA (2012), Chung et al. Annual Review of Statistics (2021) -->
 
 ---
-# Diagram of procedure 
+# Spectral clustering proceedure
 - mention embedding
 - cluster - when to stop
 
@@ -381,6 +409,20 @@ Both hemispheres
 
 ![bg h:750 center](../../images/all-morpho-plot-clustering=dc_level_7_n_components=10_min_split=32-discrim=True-wide.png)
 
+
+--- 
+
+# Cluster morphology 
+
+![bg opacity:25% h:750 center](../../images/all-morpho-plot-clustering=dc_level_7_n_components=10_min_split=32-discrim=True-wide.png)
+
+![h:300 center](./../../images/intra-cluster-morpho.png)
+
+## Discriminability:
+$P[$ within cluster NBLAST sim. $>$ between cluster NBLAST sim. $] = 0.82$ 
+
+<!-- _footer: Costa et al. Neuron (2016), Bridgeford et al. PLOS Comp. Bio. (2021)-->
+
 ---
 # Using models to evaluate cell type groupings
 <!-- TODO: (2) diagram/describe SBM cross validation -->
@@ -390,7 +432,7 @@ Both hemispheres
 <div class="columns">
 <div>
 
-- Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM)
+<!-- - Clustering nodes corresponds with inferring groups in a stochastic block model (DCSBM) -->
 - How well do these models generalize to the other side of the brain (let alone the next maggot)?
 
 </div>
