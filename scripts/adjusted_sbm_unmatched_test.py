@@ -11,9 +11,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from graspologic.simulations import sbm
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
-from pkg.io import FIG_PATH, OUT_PATH
+from pkg.io import FIG_PATH, OUT_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.perturb import remove_edges
@@ -24,13 +23,14 @@ from pkg.plot import (
     networkplot_simple,
     plot_pvalues,
     set_theme,
+    svg_to_pdf,
 )
 from pkg.stats import compute_density, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
-from pkg.io import get_environment_variables
-from giskard.plot import merge_axes
 
+from giskard.plot import merge_axes
+from graspologic.simulations import sbm
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 
@@ -316,7 +316,7 @@ gluefig("sbm_pvalues_unlabeled", fig)
 #%%
 
 
-fontsize = 10
+fontsize = 8
 
 methods = SmartSVG(FIG_PATH / "adjusted_methods_explain.svg")
 methods.set_width(200)
@@ -324,7 +324,7 @@ methods.move(10, 15)
 methods_panel = Panel(
     methods,
     Text(
-        "A) Density-adjusted group connection test methods",
+        "A) Density-adjusted group connection test",
         0,
         10,
         size=fontsize,
@@ -338,7 +338,7 @@ pvalues.set_width(200)
 pvalues.move(0, 20)
 pvalues_panel = Panel(
     pvalues,
-    Text("C) Connection p-values", 5, 10, size=fontsize, weight="bold"),
+    Text("B) Connection p-values", 5, 10, size=fontsize, weight="bold"),
 )
 pvalues_panel.move(methods.width * 0.95, 0)
 
@@ -349,6 +349,12 @@ fig = Figure(
     pvalues_panel,
 )
 fig.save(FIG_PATH / "adjusted_sbm_composite.svg")
+
+svg_to_pdf(
+    FIG_PATH / "adjusted_sbm_composite.svg",
+    FIG_PATH / "adjusted_sbm_composite.pdf",
+)
+
 fig
 
 #%%
@@ -388,6 +394,12 @@ fig = Figure(
     distribution_panel,
 )
 fig.save(FIG_PATH / "adjusted_sbm_random_composite.svg")
+
+svg_to_pdf(
+    FIG_PATH / "adjusted_sbm_random_composite.svg",
+    FIG_PATH / "adjusted_sbm_random_composite.pdf",
+)
+
 fig
 
 #%% [markdown]

@@ -19,8 +19,6 @@ import matplotlib.transforms as mtrans
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import merge_axes, rotate_labels, soft_axis_off
-from graspologic.simulations import sbm
 from matplotlib.font_manager import FontProperties
 from matplotlib.patches import PathPatch
 from matplotlib.text import TextPath
@@ -38,12 +36,15 @@ from pkg.plot import (
     plot_stochastic_block_probabilities,
     rainbowarrow,
     set_theme,
+    svg_to_pdf,
 )
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from seaborn.utils import relative_luminance
 from svgutils.compose import Figure, Panel, Text
 
+from giskard.plot import merge_axes, rotate_labels, soft_axis_off
+from graspologic.simulations import sbm
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -640,9 +641,9 @@ def get_significant_pairs(df):
 significant_pairs = get_significant_pairs(misc["rejections"])
 
 n_significant_pairs = len(significant_pairs)
-glue("n_significant_pairs", n_significant_pairs, form='intword')
+glue("n_significant_pairs", n_significant_pairs, form="intword")
 
-print('Significant pairs:\n', significant_pairs)
+print("Significant pairs:\n", significant_pairs)
 
 #%%
 
@@ -1160,6 +1161,12 @@ fig = Figure(
 )
 
 fig.save(FIG_PATH / "sbm_uncorrected_composite.svg")
+
+svg_to_pdf(
+    FIG_PATH / "sbm_uncorrected_composite.svg",
+    FIG_PATH / "sbm_uncorrected_composite.pdf",
+)
+
 fig
 
 #%% [markdown]

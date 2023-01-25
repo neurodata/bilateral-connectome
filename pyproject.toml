@@ -19,6 +19,7 @@ navis = "^1.2.1"
 python-catmaid = "^2.0.6"
 scikit-image = "^0.19.3"
 inflect = "^6.0.0"
+svglib = "^1.5.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

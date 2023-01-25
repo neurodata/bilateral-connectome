@@ -8,7 +8,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from giskard.plot import merge_axes
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
@@ -20,11 +19,13 @@ from pkg.plot import (
     plot_density,
     plot_pvalues,
     set_theme,
+    svg_to_pdf,
 )
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
 
+from giskard.plot import merge_axes
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -194,7 +195,7 @@ gluefig("dasbm_pvalues", fig)
 
 #%%
 
-fontsize = 10
+fontsize = 9
 
 methods = SmartSVG(FIG_PATH / "kc_minus_methods.svg")
 methods.set_width(200)
@@ -237,6 +238,9 @@ fig = Figure(
     asbm_panel,
 )
 fig.save(FIG_PATH / "kc_minus_composite.svg")
+
+svg_to_pdf(FIG_PATH / "kc_minus_composite.svg", FIG_PATH / "kc_minus_composite.pdf")
+
 fig
 
 #%% [markdown]

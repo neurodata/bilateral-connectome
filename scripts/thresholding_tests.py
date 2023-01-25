@@ -16,7 +16,7 @@ from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import SmartSVG, rainbowarrow, set_theme
+from pkg.plot import SmartSVG, rainbowarrow, set_theme, svg_to_pdf
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from pkg.utils import remove_group, sample_toy_networks
 from scipy.interpolate import interp1d
@@ -47,6 +47,7 @@ def gluefig(name, fig, **kwargs):
 t0 = time.time()
 set_theme()
 
+#%%
 
 #%%
 
@@ -293,6 +294,7 @@ def layoutplot(
         edge_vmin=-3,
         edge_vmax=9,
         edge_color=weights,
+        edge_cmap=mpl.colormaps['binary'],
         alpha=edge_alpha,
         ax=ax,
         node_size=node_size,
@@ -755,7 +757,7 @@ gluefig("input_proportion_histogram", fig)
 
 
 #%%
-fontsize = 10
+fontsize = 9
 
 weight_notions = SmartSVG(FIG_PATH / "weight_notions.svg")
 weight_notions.set_width(200)
@@ -822,6 +824,11 @@ fig = Figure(
     input_pvalues_panel,
 )
 fig.save(FIG_PATH / "thresholding_composite.svg")
+
+svg_to_pdf(
+    FIG_PATH / "thresholding_composite.svg", FIG_PATH / "thresholding_composite.pdf"
+)
+
 fig
 
 #%%

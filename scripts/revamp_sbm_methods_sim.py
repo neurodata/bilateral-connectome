@@ -18,7 +18,7 @@ from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import SmartSVG, set_theme
+from pkg.plot import SmartSVG, set_theme, svg_to_pdf
 from pkg.stats import binom_2samp, stochastic_block_test
 from scipy.stats import beta, binom, chi2
 from scipy.stats import combine_pvalues as scipy_combine_pvalues
@@ -725,6 +725,11 @@ power_panel.move(null.width * 0.9, 0)
 
 fig = Figure(null.width * 2 * 0.9, null.width * 0.9, null_panel, power_panel)
 fig.save(FIG_PATH / "tippett_sim_composite.svg")
+
+svg_to_pdf(
+    FIG_PATH / "tippett_sim_composite.svg", FIG_PATH / "tippett_sim_composite.pdf"
+)
+
 fig
 
 

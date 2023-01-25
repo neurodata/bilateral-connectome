@@ -72,8 +72,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import merge_axes, soft_axis_off
-from graspologic.simulations import er_np
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
@@ -82,13 +80,17 @@ from pkg.plot import (
     SmartSVG,
     draw_hypothesis_box,
     networkplot_simple,
+    plot_density,
     rainbowarrow,
     set_theme,
+    svg_to_pdf,
 )
-from pkg.plot.er import plot_density
 from pkg.stats import erdos_renyi_test
 from pkg.utils import sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
+
+from giskard.plot import merge_axes, soft_axis_off
+from graspologic.simulations import er_np
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -235,8 +237,8 @@ glue("pvalue", pvalue, form="pvalue")
 #%%
 n_possible_left = misc["possible1"]
 n_possible_right = misc["possible2"]
-glue("n_possible_left", n_possible_left, form='long')
-glue("n_possible_right", n_possible_right, form='long')
+glue("n_possible_left", n_possible_left, form="long")
+glue("n_possible_right", n_possible_right, form="long")
 
 density_left = misc["probability1"]
 density_right = misc["probability2"]
@@ -317,7 +319,7 @@ gluefig("er_density", fig)
 
 FIG_PATH = FIG_PATH / FILENAME
 
-fontsize = 12
+fontsize = 9
 
 methods = SmartSVG(FIG_PATH / "er_methods.svg")
 methods.set_width(200)
@@ -341,6 +343,9 @@ fig = Figure(
     density_panel,
 )
 fig.save(FIG_PATH / "composite.svg")
+
+svg_to_pdf(FIG_PATH / "composite.svg", FIG_PATH / "composite.pdf")
+
 fig
 
 #%% [markdown]

@@ -30,3 +30,4 @@ from .utils import (
     remove_shared_ax,
     shrink_axis,
 )
+from .pdf import svg_to_pdf
