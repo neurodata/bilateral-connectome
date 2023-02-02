@@ -108,10 +108,14 @@ def stochastic_block_test(
     stats = np.empty((K, K), dtype=float)
     stats = _make_adjacency_dataframe(stats, index)
 
-    if density_adjustment:
+    if isinstance(density_adjustment, bool) and density_adjustment:
         adjustment_factor = compute_density_adjustment(A1, A2)
-    else:
+    elif isinstance(density_adjustment, bool) and not density_adjustment:
         adjustment_factor = 1.0
+    elif isinstance(density_adjustment, (float, int)):
+        adjustment_factor = density_adjustment
+    else:
+        raise ValueError('wrong type for "density_adjustment"')
 
     for i in index:
         for j in index:

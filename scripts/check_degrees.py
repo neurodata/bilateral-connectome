@@ -119,7 +119,9 @@ palette["Null"] = colors[0]
 palette["Observed"] = colors[1]
 
 #%%
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+set_theme(tick_size=3)
+fig, axs = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
+ax = axs[0]
 key = "label"
 sns.histplot(
     data=degree_df,
@@ -130,19 +132,69 @@ sns.histplot(
     stat="density",
     bins=30,
     common_norm=False,
+    legend="brief",
+    multiple="layer",
+    element="bars",
 )
-sns.kdeplot(
+sns.move_legend(ax, "upper right", title="Network type", frameon=True)
+ax.set_xlabel("Out degree")
+
+ax = axs[1]
+sns.histplot(
     data=degree_df,
-    x="out_degree",
+    x="in_degree",
     hue=key,
     ax=ax,
     palette=palette,
-    clip=(0, 1000),
+    stat="density",
+    bins=30,
     common_norm=False,
+    legend="brief",
+    multiple="layer",
+    element="bars",
 )
 ax.get_legend().remove()
-ax.set_xlabel("Out degree")
-gluefig("out_degree", fig)
+# sns.move_legend(ax, "upper right", title='Network type')
+ax.set_xlabel("In degree")
+
+gluefig("degree_hists", fig)
+
+# %%
+
+from graspologic.models import DCEREstimator, EREstimator
+
+dcer = DCEREstimator(directed=True, loops=False, degree_directed=True)
+er = EREstimator(directed=True, loops=False)
+
+dcer.fit(left_adj)
+er.fit(left_adj)
+
+#%%
+n_samples = 1000
+
+from pkg.stats import compute_density
+from tqdm.autonotebook import tqdm
+
+rows = []
+for model, model_name in zip([dcer, er], ["DCER", "ER"]):
+    samples = model.sample(n_samples)
+    for sample in tqdm(samples):
+        density = compute_density(sample)
+        rows.append({"model": model_name, "sample": sample, "density": density})
+
+results = pd.DataFrame(rows)
+
+#%%
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+
+sns.histplot(data=results, x="density", hue="model", ax=ax)
+
+sns.move_legend(ax, "upper right", title="Model", frameon=True)
+
+gluefig("density_hists_by_model", fig)
+
+# %%
+
 # %%
 fig, ax = plt.subplots(1, 1, figsize=(8, 6))
 key = "sample"

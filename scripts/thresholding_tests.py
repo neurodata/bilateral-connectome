@@ -294,7 +294,7 @@ def layoutplot(
         edge_vmin=-3,
         edge_vmax=9,
         edge_color=weights,
-        edge_cmap=mpl.colormaps['binary'],
+        edge_cmap=mpl.colormaps["binary"],
         alpha=edge_alpha,
         ax=ax,
         node_size=node_size,
