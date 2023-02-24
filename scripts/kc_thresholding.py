@@ -510,7 +510,7 @@ def add_alpha_line(ax, threshold, label=True):
         ax.annotate(
             r"$\alpha^*$",
             (ax.get_xlim()[0], threshold),
-            xytext=(-45, 15),
+            xytext=(-65, 15),
             textcoords="offset points",
             arrowprops=dict(arrowstyle="-", color="black"),
             clip_on=False,
@@ -556,8 +556,9 @@ for i, subgraph_pair in enumerate(interesting_subgraph_pairs):
             ax, "lower right", frameon=True, title="Test", fontsize="x-small"
         )
     ax.set_title(subgraph_pair[0] + r"$\rightarrow$" + subgraph_pair[1])
-    ax.axhline(bonferonni_threshold, color="black", linestyle="--", zorder=0)
+    # ax.axhline(bonferonni_threshold, color="black", linestyle="--", zorder=0)
     add_alpha_line(ax, bonferonni_threshold, label=i == 0)
+    ax.tick_params(axis="both", length=5)
 
 
 for i, subgraph_pair in enumerate(interesting_subgraph_pairs):
@@ -588,7 +589,7 @@ for i, subgraph_pair in enumerate(interesting_subgraph_pairs):
     )
     ax.get_legend().remove()
     ax.set_title(subgraph_pair[0] + r"$\rightarrow$" + subgraph_pair[1])
-    ax.axhline(bonferonni_threshold, color="black", linestyle="--", zorder=0)
+    # ax.axhline(bonferonni_threshold, color="black", linestyle="--", zorder=0)
     add_alpha_line(ax, bonferonni_threshold, label=i == 0)
 
     ax.set(

@@ -778,8 +778,20 @@ group_counts_left = misc["group_counts1"]
 group_counts_right = misc["group_counts2"]
 
 for i in range(len(group_counts_left)):
-    ax.bar(i - 0.17, group_counts_left[i], width=0.3, color=network_palette["Left"])
-    ax.bar(i + 0.17, group_counts_right[i], width=0.3, color=network_palette["Right"])
+    ax.bar(
+        i - 0.17,
+        group_counts_left[i],
+        width=0.3,
+        color=network_palette["Left"],
+        label="Left" if i == 0 else None,
+    )
+    ax.bar(
+        i + 0.17,
+        group_counts_right[i],
+        width=0.3,
+        color=network_palette["Right"],
+        label="Right" if i == 0 else None,
+    )
 
 rotate_labels(ax)
 ax.set(
@@ -788,6 +800,7 @@ ax.set(
     xticks=np.arange(len(group_counts_left)) + 0.2,
     xticklabels=group_counts_left.index,
 )
+ax.legend(title="Hemisphere", loc="upper left", frameon=True)
 gluefig("group_counts", fig)
 
 
