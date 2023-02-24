@@ -66,122 +66,42 @@ GROUP_KEY = "celltype_discrete"
 left_labels = left_nodes[GROUP_KEY].values
 right_labels = right_nodes[GROUP_KEY].values
 
-#%%
 og_sbm_stat, og_sbm_pval, og_sbm_misc = stochastic_block_test(
     left_adj, right_adj, left_labels, right_labels
 )
 
 #%%
-og_asbm_stat, og_asbm_pval, og_asbm_misc = stochastic_block_test(
-    left_adj, right_adj, left_labels, right_labels, density_adjustment=True
-)
-density_adjustment_factor = og_asbm_misc["null_ratio"]
-
-# #%%
-
-# from pkg.stats import compute_density_adjustment, compute_density
-
-# density_adjustment_factor = compute_density_adjustment(left_adj, right_adj)
-
-# #%%
-# d_left = compute_density(left_adj)
-# d_right = compute_density(right_adj)
-# d_ratio = d_left / d_right
-# d_ratio
-
-# (d_left / (1 - d_left)) / (d_right / (1 - d_right))
-
-#%%
-# Zero out non-kenyon cell edges
 left_nodes["inds"] = range(len(left_nodes))
-non_kc_left_inds = left_nodes[left_nodes[GROUP_KEY] != "KCs"]["inds"].values
 kc_left_inds = left_nodes[left_nodes[GROUP_KEY] == "KCs"]["inds"].values
 
 right_nodes["inds"] = range(len(right_nodes))
-non_kc_right_inds = right_nodes[right_nodes[GROUP_KEY] != "KCs"]["inds"].values
 kc_right_inds = right_nodes[right_nodes[GROUP_KEY] == "KCs"]["inds"].values
 
-left_adj[np.ix_(non_kc_left_inds, non_kc_left_inds)] = 0
-right_adj[np.ix_(non_kc_right_inds, non_kc_right_inds)] = 0
+#%%
+left_adj = left_adj[kc_left_inds][:, kc_left_inds]
+right_adj = right_adj[kc_right_inds][:, kc_right_inds]
 
-from graspologic.plot import adjplot
-
-adjplot(
-    left_adj, group=left_nodes[GROUP_KEY], palette=node_palette, plot_type="scattermap"
-)
-
-adjplot(
-    right_adj,
-    group=right_nodes[GROUP_KEY],
-    palette=node_palette,
-    plot_type="scattermap",
-)
+left_nodes = left_nodes.iloc[kc_left_inds]
+right_nodes = right_nodes.iloc[kc_right_inds]
 
 #%%
 
 
-def get_subgraph_parameters(A, inds):
-    range_inds = np.arange(A.shape[0])
-    not_inds = np.setdiff1d(range_inds, inds)
+def binarize(A, threshold=0):
+    # threshold is the smallest that is kept
 
-    n_edges = 0
-    n_possible = 0
-    group_to_non = A[inds][:, not_inds]
-    n_edges += np.count_nonzero(group_to_non)
-    n_possible += group_to_non.size
+    B = A.copy()
 
-    non_to_group = A[not_inds][:, inds]
-    n_edges += np.count_nonzero(non_to_group)
-    n_possible += non_to_group.size
+    B[B < threshold] = 0
 
-    group_to_group = A[inds][:, inds]
-    n_edges += np.count_nonzero(group_to_group)
-    # don't count loops
-    n_possible += group_to_group.size - group_to_group.shape[0]
+    return B
 
-    return n_edges, n_possible
-
-
-from pkg.stats import binom_2samp
-
-
-def subset_erdos_renyi_test(A, B, inds_A, inds_B):
-    n_edges_A, n_possible_A = get_subgraph_parameters(A, inds_A)
-    n_edges_B, n_possible_B = get_subgraph_parameters(B, inds_B)
-
-    stat, pvalue = binom_2samp(n_edges_A, n_possible_A, n_edges_B, n_possible_B)
-    return stat, pvalue, {}
-
-
-#%%
-# dummy test just to get the subgraphs of interest
-stat, pvalue, misc = stochastic_block_test(
-    left_adj,
-    right_adj,
-    left_labels,
-    right_labels,
-)
-#%%
-pvals = misc["uncorrected_pvalues"]
-row_ilocs, col_ilocs = np.nonzero(pvals.notna().values)
-subgraph_pairs = list(zip(pvals.index[row_ilocs], pvals.columns[col_ilocs]))
 
 #%%
 
 d_key = "Density"
 gc_key = "Group connection"
 dagc_key = "Density-adjusted\ngroup connection"
-
-
-def binarize(A, threshold=None):
-    # threshold is the smallest that is kept
-
-    B = A.copy()
-
-    if threshold is not None:
-        B[B < threshold] = 0
-
-    return B
 
 
 rows = []
@@ -196,9 +116,7 @@ for threshold in tqdm(thresholds):
         np.count_nonzero(left_adj_thresh) + np.count_nonzero(right_adj_thresh)
     ) / (np.count_nonzero(left_adj) + np.count_nonzero(right_adj))
 
-    stat, pvalue, misc = subset_erdos_renyi_test(
-        left_adj_thresh, right_adj_thresh, kc_left_inds, kc_right_inds
-    )
+    stat, pvalue, _ = erdos_renyi_test(left_adj_thresh, right_adj_thresh)
 
     row = {
         "threshold": threshold,
@@ -209,44 +127,8 @@ for threshold in tqdm(thresholds):
     }
     rows.append(row)
 
-    for adjusted in [False, density_adjustment_factor]:
-        if adjusted:
-            method = dagc_key
-        else:
-            method = gc_key
-        stat, pvalue, misc = stochastic_block_test(
-            left_adj_thresh,
-            right_adj_thresh,
-            left_labels,
-            right_labels,
-            density_adjustment=adjusted,
-        )
-        row = {
-            "threshold": threshold,
-            "adjusted": adjusted,
-            "stat": stat,
-            "pvalue": pvalue,
-            "method": method,
-            "p_edges_removed": p_edges_removed,
-        }
-        rows.append(row)
-
-        uncorrected_pvalues = misc["uncorrected_pvalues"]
-        for subgraph_pair in subgraph_pairs:
-            pvalue = uncorrected_pvalues.loc[subgraph_pair[0], subgraph_pair[1]]
-            row = {
-                "threshold": threshold,
-                "adjusted": adjusted,
-                "pvalue": pvalue,
-                "source": subgraph_pair[0],
-                "target": subgraph_pair[1],
-                "method": method,
-                "p_edges_removed": p_edges_removed,
-            }
-            subgraph_rows.append(row)
 
 integer_results = pd.DataFrame(rows)
-integer_subgraph_results = pd.DataFrame(subgraph_rows)
 
 #%%
 
@@ -262,6 +144,23 @@ def add_alpha_line(ax):
         clip_on=False,
         ha="right",
     )
+
+
+bonferonni_threshold = 0.05 / og_sbm_misc["n_tests"]
+
+
+def add_alpha_line(ax, threshold=bonferonni_threshold, label=True):
+    ax.axhline(threshold, color="black", linestyle=":", zorder=-1)
+    if label:
+        ax.annotate(
+            r"$\alpha^*$",
+            (ax.get_xlim()[0], threshold),
+            xytext=(-65, 15),
+            textcoords="offset points",
+            arrowprops=dict(arrowstyle="-", color="black"),
+            clip_on=False,
+            ha="right",
+        )
 
 
 #%%
@@ -284,6 +183,8 @@ def plot_thresholding_pvalues(
         palette=palette,
         ax=ax,
         legend=True,
+        clip_on=False,
+        zorder=10,
     )
     sns.lineplot(
         data=results,
@@ -309,8 +210,8 @@ def plot_thresholding_pvalues(
 
     ax.set_xlim((x.min(), x.max()))
     ax.tick_params(axis="both", length=5)
-    ax.set_xticks([0, 0.25, 0.5, 0.75])
-    ax.set_xticklabels(["0%", "25%", "50%", "75%"])
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 0.95])
+    ax.set_xticklabels(["0%", "25%", "50%", "75%", "95%"])
 
     # basically fitting splines to interpolate linearly between points we checked
     prop_to_thresh = interp1d(
@@ -405,9 +306,7 @@ for threshold in tqdm(thresholds):
         np.count_nonzero(left_adj_thresh) + np.count_nonzero(right_adj_thresh)
     ) / (np.count_nonzero(left_adj) + np.count_nonzero(right_adj))
 
-    stat, pvalue, misc = subset_erdos_renyi_test(
-        left_adj_thresh, right_adj_thresh, kc_left_inds, kc_right_inds
-    )
+    stat, pvalue, misc = erdos_renyi_test(left_adj_thresh, right_adj_thresh)
 
     row = {
         "threshold": threshold,
@@ -418,41 +317,6 @@ for threshold in tqdm(thresholds):
     }
     rows.append(row)
 
-    for adjusted in [False, True]:
-        if adjusted:
-            method = dagc_key
-        else:
-            method = gc_key
-        stat, pvalue, misc = stochastic_block_test(
-            left_adj_thresh,
-            right_adj_thresh,
-            left_labels,
-            right_labels,
-            density_adjustment=adjusted,
-        )
-        row = {
-            "threshold": threshold,
-            "adjusted": adjusted,
-            "stat": stat,
-            "pvalue": pvalue,
-            "method": method,
-            "p_edges_removed": p_edges_removed,
-        }
-        rows.append(row)
-
-        uncorrected_pvalues = misc["uncorrected_pvalues"]
-        for subgraph_pair in subgraph_pairs:
-            pvalue = uncorrected_pvalues.loc[subgraph_pair[0], subgraph_pair[1]]
-            row = {
-                "threshold": threshold,
-                "adjusted": adjusted,
-                "pvalue": pvalue,
-                "source": subgraph_pair[0],
-                "target": subgraph_pair[1],
-                "method": method,
-                "p_edges_removed": p_edges_removed,
-            }
-            subgraph_rows.append(row)
 
 input_results = pd.DataFrame(rows)
 input_subgraph_results = pd.DataFrame(subgraph_rows)
@@ -487,143 +351,6 @@ gluefig("input_threshold_pvalues_legend", fig)
 ax.get_legend().remove()
 gluefig("input_threshold_pvalues", fig)
 
-#%%
-
-#%%
-
-
-fig, axs = plt.subplots(2, 4, figsize=(16, 8), sharex=True, sharey=True)
-
-interesting_subgraph_pairs = [
-    ("KCs", "CNs"),
-    ("KCs", "KCs"),
-    ("KCs", "MB-FBNs"),
-    ("MBONs", "KCs"),
-]
-
-bonferonni_threshold = 0.05 / og_sbm_misc["n_tests"]
-
-
-def add_alpha_line(ax, threshold, label=True):
-    ax.axhline(threshold, color="black", linestyle=":", zorder=-1)
-    if label:
-        ax.annotate(
-            r"$\alpha^*$",
-            (ax.get_xlim()[0], threshold),
-            xytext=(-65, 15),
-            textcoords="offset points",
-            arrowprops=dict(arrowstyle="-", color="black"),
-            clip_on=False,
-            ha="right",
-        )
-
-
-colors = sns.color_palette("tab20")
-palette = dict(zip([gc_key, dagc_key, d_key], [colors[0], colors[1], colors[12]]))
-
-for i, subgraph_pair in enumerate(interesting_subgraph_pairs):
-    # thresholding_results = integer_subgraph_results.query(
-    #     "('source' == @subgraph_pair[0]) & ('target' == @subgraph_pair[1])"
-    # )
-    thresholding_results = integer_subgraph_results[
-        (integer_subgraph_results["source"] == subgraph_pair[0])
-        & (integer_subgraph_results["target"] == subgraph_pair[1])
-    ]
-
-    ax = axs[0, i]
-    sns.lineplot(
-        data=thresholding_results,
-        x="p_edges_removed",
-        y="pvalue",
-        hue="method",
-        ax=ax,
-        palette=palette,
-        legend=False,
-    )
-    sns.scatterplot(
-        data=thresholding_results,
-        x="p_edges_removed",
-        y="pvalue",
-        hue="method",
-        ax=ax,
-        palette=palette,
-        legend=True,
-    )
-    if i:
-        ax.get_legend().remove()
-    else:
-        sns.move_legend(
-            ax, "lower right", frameon=True, title="Test", fontsize="x-small"
-        )
-    ax.set_title(subgraph_pair[0] + r"$\rightarrow$" + subgraph_pair[1])
-    # ax.axhline(bonferonni_threshold, color="black", linestyle="--", zorder=0)
-    add_alpha_line(ax, bonferonni_threshold, label=i == 0)
-    ax.tick_params(axis="both", length=5)
-
-
-for i, subgraph_pair in enumerate(interesting_subgraph_pairs):
-    # thresholding_results = integer_subgraph_results.query(
-    #     "('source' == @subgraph_pair[0]) & ('target' == @subgraph_pair[1])"
-    # )
-    thresholding_results = input_subgraph_results[
-        (input_subgraph_results["source"] == subgraph_pair[0])
-        & (input_subgraph_results["target"] == subgraph_pair[1])
-    ]
-
-    ax = axs[1, i]
-    sns.lineplot(
-        data=thresholding_results,
-        x="p_edges_removed",
-        y="pvalue",
-        hue="method",
-        ax=ax,
-        palette=palette,
-    )
-    sns.scatterplot(
-        data=thresholding_results,
-        x="p_edges_removed",
-        y="pvalue",
-        hue="method",
-        ax=ax,
-        palette=palette,
-    )
-    ax.get_legend().remove()
-    ax.set_title(subgraph_pair[0] + r"$\rightarrow$" + subgraph_pair[1])
-    # ax.axhline(bonferonni_threshold, color="black", linestyle="--", zorder=0)
-    add_alpha_line(ax, bonferonni_threshold, label=i == 0)
-
-    ax.set(
-        ylabel="p-value",
-        xlabel="Edges removed",
-    )
-
-    ax.tick_params(axis="both", length=5)
-    ax.set_xticks([0, 0.25, 0.5, 0.75])
-    ax.set_xticklabels(["0%", "25%", "50%", "75%"])
-
-ax.set_yscale("log")
-
-
-fig.text(
-    -0.02,
-    0.72,
-    "Synapse\nthresholding",
-    va="center",
-    ha="center",
-    fontsize="large",
-)
-fig.text(
-    -0.02,
-    0.32,
-    "Input\nthresholding",
-    va="center",
-    ha="center",
-    fontsize="large",
-)
-
-gluefig("kc_thresholding_subgraphs", fig)
-
-# %%
 
 #%%
 fontsize = 9
@@ -636,7 +363,7 @@ synapse_pvalues_panel = Panel(
     Text("A) Synapse thresholding p-values", 5, 10, size=fontsize, weight="bold"),
 )
 
-input_pvalues = SmartSVG(FIG_PATH / "input_threshold_pvalues_legend.svg")
+input_pvalues = SmartSVG(FIG_PATH / "input_threshold_pvalues.svg")
 input_pvalues.set_width(200)
 input_pvalues.move(10, 15)
 input_pvalues_panel = Panel(
@@ -659,3 +386,5 @@ svg_to_pdf(
 )
 
 fig
+
+# %%
