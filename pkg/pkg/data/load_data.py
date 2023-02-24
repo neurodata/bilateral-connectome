@@ -21,7 +21,6 @@ DATA_VERSION = version
 DATA_PATH = Path(__file__).parent.parent.parent.parent  # don't judge me judge judy
 DATA_PATH = DATA_PATH / "data"
 
-
 def _get_folder(path, version):
     if path is None:
         path = DATA_PATH
