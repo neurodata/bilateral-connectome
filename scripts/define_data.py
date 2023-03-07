@@ -73,7 +73,7 @@ RESAVE_DATA, _, _ = get_environment_variables()
 
 print(f"Using data from {DATA_VERSION}")
 os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
-output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-v4")
+output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-2022-11-03")
 output_dir = Path(output_dir)
 
 #%%
@@ -82,7 +82,7 @@ mg = load_maggot_graph()
 print(f"Before anything: {len(mg)}")
 mg = mg[mg.nodes["paper_clustered_neurons"] | mg.nodes["accessory_neurons"]]
 total_paper_neurons = len(mg)
-glue("total_paper_neurons", total_paper_neurons, form='long')
+glue("total_paper_neurons", total_paper_neurons, form="long")
 print(f"After filter by groups to consider for paper: {len(mg)}")
 
 #%%
@@ -93,6 +93,8 @@ print(f"After largest connected component: {len(mg)}")
 
 mg.nodes.sort_values("hemisphere", inplace=True)
 mg.nodes["_inds"] = range(len(mg.nodes))
+
+mg.nodes["celltype_discrete"] = mg.nodes["simple_group"]
 
 left_mg, right_mg = mg.bisect(lcc=True)
 left_nodes = left_mg.nodes

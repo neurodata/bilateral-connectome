@@ -1,5 +1,5 @@
 #%% [markdown]
-# # Group connection test
+# # Group connection test   
 # Next, we test bilateral symmetry by making an assumption that the left and the right
 # hemispheres both come from a stochastic block model, which models the probability
 # of any potential edge as a function of the groups that the source and target nodes
@@ -22,7 +22,7 @@ import seaborn as sns
 from matplotlib.font_manager import FontProperties
 from matplotlib.patches import PathPatch
 from matplotlib.text import TextPath
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
@@ -71,7 +71,6 @@ set_theme()
 rng = np.random.default_rng(8888)
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 neutral_color = sns.color_palette("Set2")[2]
 
 GROUP_KEY = "celltype_discrete"

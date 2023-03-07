@@ -21,6 +21,7 @@ DATA_VERSION = version
 DATA_PATH = Path(__file__).parent.parent.parent.parent  # don't judge me judge judy
 DATA_PATH = DATA_PATH / "data"
 
+
 def _get_folder(path, version):
     if path is None:
         path = DATA_PATH
@@ -68,11 +69,11 @@ def load_adjacency(
     return adj
 
 
-def load_palette(path=None, version=None):
-    folder = _get_folder(path, version)
-    with open(folder / "simple_color_map.json", "r") as f:
-        palette = json.load(f)
-    return palette
+# def load_palette(path=None, version=None):
+#     folder = _get_folder(path, version)
+#     with open(folder / "simple_color_map.json", "r") as f:
+#         palette = json.load(f)
+#     return palette
 
 
 def load_unmatched(side="left", weights=False):
@@ -153,14 +154,14 @@ def load_network_palette():
     return palette, "Side"
 
 
-def load_node_palette(key="simple_group"):
-    if key == "merge_class":
-        from src.visualization import CLASS_COLOR_DICT
+# def load_node_palette(key="simple_group"):
+#     if key == "merge_class":
+#         from src.visualization import CLASS_COLOR_DICT
 
-        return CLASS_COLOR_DICT, "merge_class"
-    elif key == "simple_group":
-        palette = load_palette()
-        return palette, "simple_group"
+#         return CLASS_COLOR_DICT, "merge_class"
+#     elif key == "simple_group":
+#         palette = load_palette()
+#         return palette, "simple_group"
 
 
 def load_navis_neurons(ids=None, path=None, version=None):

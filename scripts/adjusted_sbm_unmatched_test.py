@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, OUT_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
@@ -59,7 +59,6 @@ set_theme()
 rng = np.random.default_rng(8888)
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 neutral_color = sns.color_palette("Set2")[2]
 
 GROUP_KEY = "celltype_discrete"
@@ -207,35 +206,35 @@ glue("n_remove", n_remove)
 
 
 #%%
-
-rows = []
-n_resamples = 500
-glue("n_resamples", n_resamples)
-
 # NOTE: not running this right now as this figure is no longer in the final paper
-if False:
-    for i in tqdm(range(n_resamples)):
-        subsampled_right_adj = remove_edges(
-            right_adj, effect_size=n_remove, random_seed=rng
-        )
-        stat, pvalue, misc = stochastic_block_test(
-            left_adj,
-            subsampled_right_adj,
-            labels1=left_labels,
-            labels2=right_labels,
-        )
-        rows.append(
-            {
-                "stat": stat,
-                "pvalue": pvalue,
-                "misc": misc,
-                "resample": i,
-            }
-        )
-    resample_results = pd.DataFrame(rows)
-    resample_results.to_csv(OUT_PATH / "resample_results.csv")
-else:
-    resample_results = pd.read_csv(OUT_PATH / "resample_results.csv", index_col=0)
+
+# rows = []
+# n_resamples = 500
+# glue("n_resamples", n_resamples)
+
+# if False:
+#     for i in tqdm(range(n_resamples)):
+#         subsampled_right_adj = remove_edges(
+#             right_adj, effect_size=n_remove, random_seed=rng
+#         )
+#         stat, pvalue, misc = stochastic_block_test(
+#             left_adj,
+#             subsampled_right_adj,
+#             labels1=left_labels,
+#             labels2=right_labels,
+#         )
+#         rows.append(
+#             {
+#                 "stat": stat,
+#                 "pvalue": pvalue,
+#                 "misc": misc,
+#                 "resample": i,
+#             }
+#         )
+#     resample_results = pd.DataFrame(rows)
+#     resample_results.to_csv(OUT_PATH / "resample_results.csv")
+# else:
+#     resample_results = pd.read_csv(OUT_PATH / "resample_results.csv", index_col=0)
 
 
 #%%
@@ -253,56 +252,8 @@ stat, pvalue, misc = stochastic_block_test(
     density_adjustment=True,
 )
 glue("pvalue", pvalue, form="pvalue")
+print("pvalue", pvalue)
 
-
-#%%
-
-set_theme(font_scale=1.25)
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(
-    data=resample_results,
-    x="pvalue",
-    ax=ax,
-    color=neutral_color,
-    kde=True,
-    log_scale=True,
-    stat="density",
-)
-ax.set(xlabel="p-value", ylabel="", yticks=[])
-ax.spines["left"].set_visible(False)
-ax.axvline(0.05, linestyle=":", color="black")
-ylim = ax.get_ylim()
-ax.text(0.06, ylim[1] * 0.9, r"$\alpha = 0.05$")
-
-median_resample_pvalue = np.median(resample_results["pvalue"])
-
-colors = sns.color_palette("Set2")
-
-
-color = colors[2]
-ax.axvline(median_resample_pvalue, color=color, linewidth=3)
-
-ax.text(
-    median_resample_pvalue - 0.0025,
-    ylim[1] * 0.9,
-    f"Median = {median_resample_pvalue:0.2g}",
-    color=color,
-    ha="right",
-)
-
-color = "darkred"
-ax.axvline(pvalue, 0, 0.58, color=color, linewidth=3, linestyle="--")
-ax.text(
-    pvalue - 0.0002,
-    ylim[1] * 0.48,
-    f"Analytic = {pvalue:0.2g}",
-    ha="right",
-    color=color,
-)
-
-gluefig("resampled_pvalues_distribution", fig)
-
-#%%
 
 fig, axs = plot_pvalues(misc)
 
@@ -311,6 +262,56 @@ gluefig("sbm_pvalues", fig)
 fig, axs = plot_pvalues(misc, annot_missing=False)
 
 gluefig("sbm_pvalues_unlabeled", fig)
+
+
+#%%
+
+# #%%
+
+# set_theme(font_scale=1.25)
+# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+# sns.histplot(
+#     data=resample_results,
+#     x="pvalue",
+#     ax=ax,
+#     color=neutral_color,
+#     kde=True,
+#     log_scale=True,
+#     stat="density",
+# )
+# ax.set(xlabel="p-value", ylabel="", yticks=[])
+# ax.spines["left"].set_visible(False)
+# ax.axvline(0.05, linestyle=":", color="black")
+# ylim = ax.get_ylim()
+# ax.text(0.06, ylim[1] * 0.9, r"$\alpha = 0.05$")
+
+# median_resample_pvalue = np.median(resample_results["pvalue"])
+
+# colors = sns.color_palette("Set2")
+
+
+# color = colors[2]
+# ax.axvline(median_resample_pvalue, color=color, linewidth=3)
+
+# ax.text(
+#     median_resample_pvalue - 0.0025,
+#     ylim[1] * 0.9,
+#     f"Median = {median_resample_pvalue:0.2g}",
+#     color=color,
+#     ha="right",
+# )
+
+# color = "darkred"
+# ax.axvline(pvalue, 0, 0.58, color=color, linewidth=3, linestyle="--")
+# ax.text(
+#     pvalue - 0.0002,
+#     ylim[1] * 0.48,
+#     f"Analytic = {pvalue:0.2g}",
+#     ha="right",
+#     color=color,
+# )
+
+# gluefig("resampled_pvalues_distribution", fig)
 
 
 #%%
@@ -357,50 +358,50 @@ svg_to_pdf(
 
 fig
 
-#%%
-methods = SmartSVG(FIG_PATH / "edge_removal_methods.svg")
-methods.set_width(200)
-methods.move(5, 15)
-methods_panel = Panel(
-    methods,
-    Text(
-        "A) Random edge removal methods",
-        0,
-        10,
-        size=fontsize,
-        weight="bold",
-    ),
-)
+# #%%
+# methods = SmartSVG(FIG_PATH / "edge_removal_methods.svg")
+# methods.set_width(200)
+# methods.move(5, 15)
+# methods_panel = Panel(
+#     methods,
+#     Text(
+#         "A) Random edge removal methods",
+#         0,
+#         10,
+#         size=fontsize,
+#         weight="bold",
+#     ),
+# )
 
-distribution = SmartSVG(FIG_PATH / "resampled_pvalues_distribution.svg")
-distribution.set_width(200)
-distribution.move(10, 15)
-distribution_panel = Panel(
-    distribution,
-    Text(
-        "B) Distribution of p-values from subsamples",
-        5,
-        10,
-        size=fontsize,
-        weight="bold",
-    ),
-)
-distribution_panel.move(methods.width * 0.9, 0)
+# distribution = SmartSVG(FIG_PATH / "resampled_pvalues_distribution.svg")
+# distribution.set_width(200)
+# distribution.move(10, 15)
+# distribution_panel = Panel(
+#     distribution,
+#     Text(
+#         "B) Distribution of p-values from subsamples",
+#         5,
+#         10,
+#         size=fontsize,
+#         weight="bold",
+#     ),
+# )
+# distribution_panel.move(methods.width * 0.9, 0)
 
-fig = Figure(
-    (methods.width + distribution.width) * 0.9,
-    (distribution.height) * 0.9,
-    methods_panel,
-    distribution_panel,
-)
-fig.save(FIG_PATH / "adjusted_sbm_random_composite.svg")
+# fig = Figure(
+#     (methods.width + distribution.width) * 0.9,
+#     (distribution.height) * 0.9,
+#     methods_panel,
+#     distribution_panel,
+# )
+# fig.save(FIG_PATH / "adjusted_sbm_random_composite.svg")
 
-svg_to_pdf(
-    FIG_PATH / "adjusted_sbm_random_composite.svg",
-    FIG_PATH / "adjusted_sbm_random_composite.pdf",
-)
+# svg_to_pdf(
+#     FIG_PATH / "adjusted_sbm_random_composite.svg",
+#     FIG_PATH / "adjusted_sbm_random_composite.pdf",
+# )
 
-fig
+# fig
 
 #%% [markdown]
 # ## End

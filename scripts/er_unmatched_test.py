@@ -72,7 +72,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
@@ -114,7 +114,6 @@ t0 = time.time()
 set_theme(font_scale=1.25)
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")

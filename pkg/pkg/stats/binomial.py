@@ -39,7 +39,7 @@ def binom_2samp(x1, n1, x2, n2, null_ratio=1.0, method="fisher"):
     if x1 == 0 or x2 == 0:
         # logging.warn("One or more counts were 0, not running test and returning nan")
         return np.nan, np.nan
-    if null_ratio != 1 and method != "fisher":
+    if null_ratio != 1 and (method not in ["fisher", "score"]):
         raise ValueError("Non-unity null odds only works with Fisher's exact test")
 
     cont_table = np.array([[x1, n1 - x1], [x2, n2 - x2]])
@@ -48,7 +48,26 @@ def binom_2samp(x1, n1, x2, n2, null_ratio=1.0, method="fisher"):
     elif method == "boschloo" and null_ratio == 1.0:
         stat, pvalue = boschloo_exact(cont_table, alternative="two-sided", n=16)
     elif method == "fisher" and null_ratio != 1.0:
-        stat, pvalue = fisher_exact_nonunity(cont_table, null_ratio=null_ratio)
+        p = (x1 + x2) / (n1 + n2)
+        # p1 = x1 / n1
+        # p2 = null_ratio * x2 / n2
+        # odds1 = p1 / (1 - p1)
+        # odds2 = p2 / (1 - p2)
+        odds1 = p / (1 - p)
+        odds2 = null_ratio * p / (1 - null_ratio * p)
+        null_odds = odds1 / odds2
+        stat, pvalue = fisher_exact_nonunity(cont_table, null_ratio=null_odds)
+    elif method == "score":
+        stat, pvalue = test_proportions_2indep(
+            x1,
+            n1,
+            x2,
+            n2,
+            method="score",
+            compare="ratio",
+            alternative="two-sided",
+            value=null_ratio,
+        )
     elif method == "chi2":
         stat, pvalue, _, _ = chi2_contingency(cont_table)
     elif method == "agresti-caffo":

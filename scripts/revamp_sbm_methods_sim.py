@@ -14,17 +14,17 @@ import pandas as pd
 import seaborn as sns
 from giskard.plot import subuniformity_plot
 from matplotlib.transforms import Bbox
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.plot import SmartSVG, set_theme, svg_to_pdf
 from pkg.stats import binom_2samp, stochastic_block_test
 from scipy.stats import beta, binom, chi2
-from scipy.stats import combine_pvalues as scipy_combine_pvalues
+from scipy.stats import combine_pvalues
 from scipy.stats import ks_1samp, uniform
 from svgutils.compose import Figure, Panel, Text
-
+from tqdm.autonotebook import tqdm
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 
@@ -52,7 +52,6 @@ set_theme()
 rng = np.random.default_rng(8888)
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 fisher_color = sns.color_palette("Set2")[2]
 min_color = sns.color_palette("Set2")[3]
 eric_color = sns.color_palette("Set2")[4]
@@ -135,107 +134,109 @@ stat, pvalue, misc = stochastic_block_test(
 #%%
 
 
-def random_shift_pvalues(pvalues, rng=None):
-    pvalues = np.sort(pvalues)  # already makes a copy
-    diffs = list(pvalues[1:] - pvalues[:-1])
-    if rng is None:
-        rng = np.random.default_rng()
-    uniform_samples = rng.uniform(size=len(diffs))
-    moves = uniform_samples * diffs
-    pvalues[1:] = pvalues[1:] - moves
-    return pvalues
+# def random_shift_pvalues(pvalues, rng=None):
+#     pvalues = np.sort(pvalues)  # already makes a copy
+#     diffs = list(pvalues[1:] - pvalues[:-1])
+#     if rng is None:
+#         rng = np.random.default_rng()
+#     uniform_samples = rng.uniform(size=len(diffs))
+#     moves = uniform_samples * diffs
+#     pvalues[1:] = pvalues[1:] - moves
+#     return pvalues
 
 
-def my_combine_pvalues(pvalues, method="fisher", pad_high=0, n_resamples=100):
-    pvalues = np.array(pvalues)
-    # some methods use log(1 - pvalue) as part of the test statistic - thus when pvalue
-    # is exactly 1 (which is possible for Fisher's exact test) we get an underfined
-    # answer.
-    if pad_high > 0:
-        upper_lim = 1 - pad_high
-        pvalues[pvalues >= upper_lim] = upper_lim
+# def my_combine_pvalues(pvalues, method="fisher", pad_high=0, n_resamples=100):
+#     pvalues = np.array(pvalues)
+#     # some methods use log(1 - pvalue) as part of the test statistic - thus when pvalue
+#     # is exactly 1 (which is possible for Fisher's exact test) we get an underfined
+#     # answer.
+#     if pad_high > 0:
+#         upper_lim = 1 - pad_high
+#         pvalues[pvalues >= upper_lim] = upper_lim
 
-    scipy_methods = ["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
+#     scipy_methods = ["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
 
-    if method == "fisher-discrete-random":
-        stat = 0
-        pvalue = 0
-        shifted_pvalues = []
-        for i in range(n_resamples):
-            shifted_pvalues = random_shift_pvalues(pvalues)
-            curr_stat, curr_pvalue = scipy_combine_pvalues(
-                shifted_pvalues, method="fisher"
-            )
-            stat += curr_stat / n_resamples
-            pvalue += curr_pvalue / n_resamples
-    # elif method == "pearson":  # HACK: https://github.com/scipy/scipy/pull/15452
-    #     stat = 2 * np.sum(np.log1p(-pvalues))
-    #     pvalue = chi2.cdf(-stat, 2 * len(pvalues))
-    # elif method == "tippett":
-    #     stat = np.min(pvalues)
-    #     pvalue = beta.cdf(stat, 1, len(pvalues))
-    elif method in scipy_methods:
-        stat, pvalue = scipy_combine_pvalues(pvalues, method=method)
-    elif method == "eric":
-        stat, pvalue = ks_1samp(pvalues, uniform(0, 1).cdf, alternative="greater")
-    elif method == "min":
-        pvalue = min(pvalues.min() * len(pvalues), 1)
-        stat = pvalue
-    else:
-        raise NotImplementedError()
+#     if method == "fisher-discrete-random":
+#         stat = 0
+#         pvalue = 0
+#         shifted_pvalues = []
+#         for i in range(n_resamples):
+#             shifted_pvalues = random_shift_pvalues(pvalues)
+#             curr_stat, curr_pvalue = scipy_combine_pvalues(
+#                 shifted_pvalues, method="fisher"
+#             )
+#             stat += curr_stat / n_resamples
+#             pvalue += curr_pvalue / n_resamples
+#     # elif method == "pearson":  # HACK: https://github.com/scipy/scipy/pull/15452
+#     #     stat = 2 * np.sum(np.log1p(-pvalues))
+#     #     pvalue = chi2.cdf(-stat, 2 * len(pvalues))
+#     # elif method == "tippett":
+#     #     stat = np.min(pvalues)
+#     #     pvalue = beta.cdf(stat, 1, len(pvalues))
+#     elif method in scipy_methods:
+#         stat, pvalue = scipy_combine_pvalues(pvalues, method=method)
+#     elif method == "eric":
+#         stat, pvalue = ks_1samp(pvalues, uniform(0, 1).cdf, alternative="greater")
+#     elif method == "min":
+#         pvalue = min(pvalues.min() * len(pvalues), 1)
+#         stat = pvalue
+#     else:
+#         raise NotImplementedError()
 
-    return stat, pvalue
-
-
-def bootstrap_sample(counts, n_possible):
-    probs = counts / n_possible
-    return binom.rvs(n_possible, probs)
+#     return stat, pvalue
 
 
-def compute_test_statistic(
-    counts1, n_possible1, counts2, n_possible2, statistic="norm"
+# def bootstrap_sample(counts, n_possible):
+#     probs = counts / n_possible
+#     return binom.rvs(n_possible, probs)
+
+
+# def compute_test_statistic(
+#     counts1, n_possible1, counts2, n_possible2, statistic="norm"
+# ):
+#     probs1 = counts1 / n_possible1
+#     probs2 = counts2 / n_possible2
+#     if statistic == "norm":
+#         stat = np.linalg.norm(probs1 - probs2)
+#     elif statistic == "max":
+#         stat = np.max(np.abs(probs1 - probs2))
+#     elif statistic == "abs":
+#         stat = np.linalg.norm(probs1 - probs2, ord=1)
+#     return stat
+
+
+# def bootstrap_test(counts1, n_possible1, counts2, n_possible2, n_bootstraps=200):
+#     counts1 = np.array(counts1)
+#     n_possible1 = np.array(n_possible1)
+#     counts2 = np.array(counts2)
+#     n_possible2 = np.array(n_possible2)
+
+#     stat = compute_test_statistic(counts1, n_possible1, counts2, n_possible2)
+
+#     pooled_counts = (counts1 + counts2) / 2
+#     pooled_n_possible = (n_possible1 + n_possible2) / 2  # roughly correct?
+#     pooled_n_possible = pooled_n_possible.astype(int)
+#     null_stats = []
+#     for i in range(n_bootstraps):
+#         # TODO I think these should use the slightly different counts here actually
+#         bootstrap_counts1 = bootstrap_sample(pooled_counts, pooled_n_possible)
+#         bootstrap_counts2 = bootstrap_sample(pooled_counts, pooled_n_possible)
+#         null_stat = compute_test_statistic(
+#             bootstrap_counts1, pooled_n_possible, bootstrap_counts2, pooled_n_possible
+#         )
+#         null_stats.append(null_stat)
+#     null_stats = np.sort(null_stats)
+
+#     pvalue = (1 + (null_stats >= stat).sum()) / (1 + n_bootstraps)
+
+#     misc = {}
+
+#     return stat, pvalue, misc
+
+
+def compare_individual_probabilities(
+    counts1, n_possible1, counts2, n_possible2, method="fisher"
 ):
-    probs1 = counts1 / n_possible1
-    probs2 = counts2 / n_possible2
-    if statistic == "norm":
-        stat = np.linalg.norm(probs1 - probs2)
-    elif statistic == "max":
-        stat = np.max(np.abs(probs1 - probs2))
-    elif statistic == "abs":
-        stat = np.linalg.norm(probs1 - probs2, ord=1)
-    return stat
-
-
-def bootstrap_test(counts1, n_possible1, counts2, n_possible2, n_bootstraps=200):
-    counts1 = np.array(counts1)
-    n_possible1 = np.array(n_possible1)
-    counts2 = np.array(counts2)
-    n_possible2 = np.array(n_possible2)
-
-    stat = compute_test_statistic(counts1, n_possible1, counts2, n_possible2)
-
-    pooled_counts = (counts1 + counts2) / 2
-    pooled_n_possible = (n_possible1 + n_possible2) / 2  # roughly correct?
-    pooled_n_possible = pooled_n_possible.astype(int)
-    null_stats = []
-    for i in range(n_bootstraps):
-        # TODO I think these should use the slightly different counts here actually
-        bootstrap_counts1 = bootstrap_sample(pooled_counts, pooled_n_possible)
-        bootstrap_counts2 = bootstrap_sample(pooled_counts, pooled_n_possible)
-        null_stat = compute_test_statistic(
-            bootstrap_counts1, pooled_n_possible, bootstrap_counts2, pooled_n_possible
-        )
-        null_stats.append(null_stat)
-    null_stats = np.sort(null_stats)
-
-    pvalue = (1 + (null_stats >= stat).sum()) / (1 + n_bootstraps)
-
-    misc = {}
-
-    return stat, pvalue, misc
-
-
-def compare_individual_probabilities(counts1, n_possible1, counts2, n_possible2):
     pvalue_collection = []
     for i in range(len(counts1)):
         sub_stat, sub_pvalue = binom_2samp(
@@ -244,7 +245,7 @@ def compare_individual_probabilities(counts1, n_possible1, counts2, n_possible2)
             counts2[i],
             n_possible2[i],
             null_ratio=1.0,
-            method="fisher",
+            method=method,
         )
         pvalue_collection.append(sub_pvalue)
 
@@ -264,23 +265,20 @@ uncorrected_pvalue_path = Path(
     f"outputs/{FILENAME}/uncorrected_pvalues.csv"
 )
 
-fieldnames = [
-    "perturb_size",
-    "n_perturb",
-    "sim",
-    "uncorrected_pvalues",
-]
+fieldnames = ["perturb_size", "n_perturb", "sim", "uncorrected_pvalues", "method"]
 
 combine_methods = [
     "fisher",
-    "pearson",
     "tippett",
-    "stouffer",
-    "mudholkar_george",
-    "min",
+    # "pearson",
+    # "stouffer",
+    # "mudholkar_george",
+    # "min",
 ]
-bootstrap_methods = ["bootstrap-norm", "bootstrap-max", "bootstrap-abs"]
-methods = combine_methods + bootstrap_methods
+methods = ["fisher", "score"]
+
+# bootstrap_methods = ["bootstrap-norm", "bootstrap-max", "bootstrap-abs"]
+# methods = combine_methods
 
 B_base = misc["probabilities1"].values
 inds = np.nonzero(B_base)
@@ -289,7 +287,7 @@ n_possible_matrix = misc["possible1"].values
 ns = n_possible_matrix[inds]
 
 # n_null_sims = 100
-n_bootstraps = 1000
+# n_bootstraps = 1000
 n_sims = 50
 n_perturb_range = np.linspace(0, 125, 6, dtype=int)
 perturb_size_range = np.round(np.linspace(0, 0.5, 6), decimals=3)
@@ -298,14 +296,15 @@ print(f"Perturb number range: {n_perturb_range}")
 n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
 print(f"Number of runs: {n_runs}")
 
-
-if RERUN_SIMS:
-    t0 = time.time()
-    mean_itertimes = 0
-    n_time_first = 5
-    progress_steps = 0.05
-    progress_counter = 0
-    last_progress = -0.05
+pbar = tqdm(
+    total=len(n_perturb_range)
+    * len(perturb_size_range)
+    * n_sims
+    * len(methods)
+    * len(combine_methods)
+)
+if True:
+    # if RERUN_SIMS:
     rows = []
     example_perturb_probs = {}
 
@@ -320,15 +319,6 @@ if RERUN_SIMS:
         for n_perturb in n_perturb_range:
             # if (perturb_size == 0) or (n_perturb == 0):
             for sim in range(n_sims):
-                itertime = time.time()
-
-                # just a way to track progress
-                progress_counter += 1
-                progress_prop = progress_counter / n_runs
-                if progress_prop - progress_steps > last_progress:
-                    print(f"{progress_prop:.2f}")
-                    last_progress = progress_prop
-
                 # choose some elements to perturb
                 perturb_probs = base_probs.copy()
                 choice_indices = rng.choice(
@@ -353,53 +343,39 @@ if RERUN_SIMS:
                 base_samples = binom.rvs(ns, base_probs)
                 perturb_samples = binom.rvs(ns, perturb_probs)
 
-                pvalue_collection = compare_individual_probabilities(
-                    base_samples, ns, perturb_samples, ns
-                )
-
-                pvalue_row = {
-                    "perturb_size": perturb_size,
-                    "n_perturb": n_perturb,
-                    "sim": sim,
-                    "uncorrected_pvalues": list(pvalue_collection),
-                }
-
-                with open(uncorrected_pvalue_path, "a") as f:
-                    writer = csv.DictWriter(f, fieldnames)
-                    writer.writerow(pvalue_row)
-
                 for method in methods:
-                    if method in combine_methods:
-                        stat, pvalue = my_combine_pvalues(
-                            pvalue_collection, method=method
-                        )
-                    elif method in bootstrap_methods:
-                        stat, pvalue, _ = bootstrap_test(
-                            base_samples,
-                            ns,
-                            perturb_samples,
-                            ns,
-                            n_bootstraps=n_bootstraps,
-                        )
-                    row = {
+                    pvalue_collection = compare_individual_probabilities(
+                        base_samples, ns, perturb_samples, ns, method=method
+                    )
+
+                    pvalue_row = {
                         "perturb_size": perturb_size,
                         "n_perturb": n_perturb,
                         "sim": sim,
-                        "stat": stat,
-                        "pvalue": pvalue,
+                        "uncorrected_pvalues": list(pvalue_collection),
                         "method": method,
                     }
-                    rows.append(row)
 
-                if progress_counter < n_time_first:
-                    iter_elapsed = time.time() - itertime
-                    mean_itertimes += iter_elapsed / n_time_first
-                elif progress_counter == n_time_first:
-                    projected_time = mean_itertimes * n_runs
-                    projected_time = datetime.timedelta(seconds=projected_time)
-                    print("---")
-                    print(f"Projected time: {projected_time}")
-                    print("---")
+                    with open(uncorrected_pvalue_path, "a") as f:
+                        writer = csv.DictWriter(f, fieldnames)
+                        writer.writerow(pvalue_row)
+
+                    for combine_method in combine_methods:
+                        stat, pvalue = combine_pvalues(
+                            pvalue_collection, method=combine_method
+                        )
+                        row = {
+                            "perturb_size": perturb_size,
+                            "n_perturb": n_perturb,
+                            "sim": sim,
+                            "stat": stat,
+                            "pvalue": pvalue,
+                            "method": method,
+                            "combine_method": combine_method,
+                        }
+                        rows.append(row)
+
+                        pbar.update(1)
 
     total_elapsed = time.time() - t0
 
@@ -407,6 +383,7 @@ if RERUN_SIMS:
     print(f"Total experiment took: {datetime.timedelta(seconds=total_elapsed)}")
     results = pd.DataFrame(rows)
     results.to_csv(save_path)
+    pbar.close()
 else:
     results = pd.read_csv(save_path, index_col=0)
 #%%
@@ -551,6 +528,130 @@ results["detected"] = 0
 results.loc[results[(results["pvalue"] < alpha)].index, "detected"] = 1
 
 #%%
+def shrink_axis(ax, scale=0.7):
+    pos = ax.get_position()
+    mid = (pos.ymax + pos.ymin) / 2
+    height = pos.ymax - pos.ymin
+    new_pos = Bbox(
+        [
+            [pos.xmin, mid - scale * 0.5 * height],
+            [pos.xmax, mid + scale * 0.5 * height],
+        ]
+    )
+    ax.set_position(new_pos)
+
+
+def power_heatmap(
+    data,
+    ax=None,
+    center=0,
+    vmin=0,
+    vmax=1,
+    cmap="RdBu_r",
+    cbar=False,
+    labels=True,
+    **kwargs,
+):
+    out = sns.heatmap(
+        data.values[1:, 1:],
+        ax=ax,
+        yticklabels=perturb_size_range[1:],
+        xticklabels=n_perturb_range[1:],
+        square=True,
+        center=center,
+        vmin=vmin,
+        vmax=vmax,
+        cbar_kws=dict(shrink=0.7),
+        cbar=cbar,
+        cmap=cmap,
+        **kwargs,
+    )
+    ax.invert_yaxis()
+    if not labels:
+        ax.set(xticklabels=[], yticklabels=[])
+    return out
+
+
+#%%
+fig, axs = plt.subplots(len(combine_methods), len(methods), figsize=(10, 10))
+for i, combine_method in enumerate(combine_methods):
+    for j, method in enumerate(methods):
+        sub_results = results.query(
+            "combine_method == @combine_method & method == @method"
+        )
+        sub_powers_square = sub_results.reset_index().pivot_table(
+            index="perturb_size", columns="n_perturb", values="detected", aggfunc="mean"
+        )
+        power_heatmap(sub_powers_square, ax=axs[i, j])
+        ax = axs[i, j]
+        if i == 0:
+            ax.set_title(method.capitalize())
+        if j == 0:
+            ax.set_ylabel(combine_method.capitalize())
+
+#%%
+fig, axs = plt.subplots(
+    len(combine_methods) * len(methods),
+    len(combine_methods) * len(methods),
+    figsize=(10, 10),
+)
+
+pal = sns.diverging_palette(145, 300, s=60, as_cmap=True)
+
+for i, ((combine_method1, method1), sub_results1) in enumerate(
+    results.groupby(["combine_method", "method"])
+):
+    sub_powers_square1 = sub_results1.reset_index().pivot_table(
+        index="perturb_size", columns="n_perturb", values="detected", aggfunc="mean"
+    )
+    for j, ((combine_method2, method2), sub_results2) in enumerate(
+        results.groupby(["combine_method", "method"])
+    ):
+        ax = axs[i, j]
+        if i > j:
+            sub_powers_square2 = sub_results2.reset_index().pivot_table(
+                index="perturb_size",
+                columns="n_perturb",
+                values="detected",
+                aggfunc=np.nanmean,
+            )
+
+            ratios_square = sub_powers_square1 / sub_powers_square2
+            ratios_square.fillna(1, inplace=True)
+            ratios_square[ratios_square == np.inf] = 1
+
+            if np.nanmean(ratios_square.values) > 1:
+                print(
+                    f"{method1.capitalize()}, {combine_method1.capitalize()} > {method2.capitalize()}, {combine_method2.capitalize()}"
+                )
+
+            im = power_heatmap(
+                np.log10(ratios_square),
+                ax=ax,
+                vmin=-2,
+                vmax=2,
+                center=0,
+                cmap=pal,
+                labels=False,
+            )
+        if i == j:
+            null_results = sub_results1.query("perturb_size == 0.0 & n_perturb == 0")
+            subuniformity_plot(
+                null_results["pvalue"], ax=ax, legend=False, write_pvalue=False
+            )
+            ax.set(ylabel="", xlabel="", yticks=[])
+        if i == 0:
+            ax.set_title(f"{method2.capitalize()}, {combine_method2.capitalize()}")
+        if j == 0:
+            ax.set_ylabel(f"{method1.capitalize()}, {combine_method1.capitalize()}")
+        if i < j:
+            ax.axis("off")
+        # else:
+        #     ax.axis("off")
+
+gluefig('power_validity_grid', fig)
+
+#%%
 fisher_results = results[results["method"] == "fisher"]
 min_results = results[results["method"] == "tippett"]
 
@@ -574,6 +675,7 @@ ratios_square = mean_diffs.pivot(
 
 v = np.max(np.abs(mean_diffs.values))
 
+#%%
 set_theme(font_scale=1.5)
 # set up plot
 pad = 0.5
@@ -591,39 +693,7 @@ min_col = 4
 ratio_col = 6
 
 
-def shrink_axis(ax, scale=0.7):
-    pos = ax.get_position()
-    mid = (pos.ymax + pos.ymin) / 2
-    height = pos.ymax - pos.ymin
-    new_pos = Bbox(
-        [
-            [pos.xmin, mid - scale * 0.5 * height],
-            [pos.xmax, mid + scale * 0.5 * height],
-        ]
-    )
-    ax.set_position(new_pos)
-
-
-def power_heatmap(
-    data, ax=None, center=0, vmin=0, vmax=1, cmap="RdBu_r", cbar=False, **kwargs
-):
-    out = sns.heatmap(
-        data.values[1:, 1:],
-        ax=ax,
-        yticklabels=perturb_size_range[1:],
-        xticklabels=n_perturb_range[1:],
-        square=True,
-        center=center,
-        vmin=vmin,
-        vmax=vmax,
-        cbar_kws=dict(shrink=0.7),
-        cbar=cbar,
-        cmap=cmap,
-        **kwargs,
-    )
-    ax.invert_yaxis()
-    return out
-
+#%%
 
 ax = axs[fisher_col]
 im = power_heatmap(fisher_power_square, ax=ax)

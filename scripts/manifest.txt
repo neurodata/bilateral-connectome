@@ -6,3 +6,5 @@ adjusted_sbm_unmatched_test
 kc_minus
 thresholding_tests
 revamp_sbm_methods_sim
+single_subgraph_power
+sbm_block_power

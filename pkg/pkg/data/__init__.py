@@ -10,8 +10,7 @@ from .load_data import (
     load_network_palette,
     load_networkx,
     load_node_meta,
-    load_node_palette,
-    load_palette,
+    # load_node_palette,
     load_unmatched,
 )
 from .preprocess import select_nice_nodes

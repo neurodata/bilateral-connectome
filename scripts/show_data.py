@@ -10,13 +10,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from giskard.plot import adjplot, scattermap
-from graspologic.embed import AdjacencySpectralEmbed
+from graspologic.embed import AdjacencySpectralEmbed, LaplacianSpectralEmbed
 from graspologic.plot import networkplot
 from matplotlib.patheffects import Normal, Stroke
 from pkg.data import (
-    load_maggot_graph,
     load_network_palette,
-    load_node_palette,
     load_unmatched,
 )
 from pkg.io import get_environment_variables
@@ -25,6 +23,7 @@ from pkg.io import savefig
 from pkg.plot import set_theme
 from scipy.cluster import hierarchy
 from umap import UMAP
+import pandas as pd
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -52,7 +51,6 @@ set_theme(font_scale=1.25)
 network_palette, NETWORK_KEY = load_network_palette()
 network_palette["L"] = network_palette["Left"]
 network_palette["R"] = network_palette["Right"]
-node_palette, NODE_KEY = load_node_palette()
 
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
@@ -61,7 +59,9 @@ right_adj, right_nodes = load_unmatched("right")
 #%%
 
 
-ase = AdjacencySpectralEmbed(n_components=24, check_lcc=False, concat=True)
+ase = LaplacianSpectralEmbed(
+    n_components=24, check_lcc=False, concat=True, form="R-DAD", svd_seed=0
+)
 left_ase_embedding = ase.fit_transform(left_adj)
 right_ase_embedding = ase.fit_transform(right_adj)
 
@@ -73,8 +73,22 @@ umapper = UMAP(
     metric="cosine",
     random_state=rng.integers(np.iinfo(np.int32).max),
 )
-left_umap_embedding = umapper.fit_transform(left_ase_embedding)
+og_left_umap_embedding = umapper.fit_transform(left_ase_embedding)
 right_umap_embedding = umapper.fit_transform(right_ase_embedding)
+
+#%%
+# from graspologic.align import SeedlessProcrustes
+
+# sp = SeedlessProcrustes()
+# left_umap_embedding = sp.fit_transform(left_umap_embedding, right_umap_embedding)
+
+#%%
+theta = -20
+R = [
+    [np.cos(np.deg2rad(theta)), -np.sin(np.deg2rad(theta))],
+    [np.sin(np.deg2rad(theta)), np.cos(np.deg2rad(theta))],
+]
+left_umap_embedding = og_left_umap_embedding @ R
 
 #%%
 
@@ -105,7 +119,7 @@ soft_axis_off(ax)
 
 left_nodes["degree"] = left_adj.sum(axis=0) + left_adj.sum(axis=1)
 left_nodes["x"] = left_umap_embedding[:, 0]
-left_nodes["y"] = left_umap_embedding[:, 1]
+left_nodes["y"] = -left_umap_embedding[:, 1]
 
 networkplot(left_adj, node_data=left_nodes.reset_index(), ax=ax, **networkplot_kws)
 
@@ -141,6 +155,18 @@ def specsort(X, metric="cosine"):
     return sorted_indices
 
 
+# #%%
+
+# fig, ax = plt.subplots(1, 1, figsize=(15, 15))
+# adjplot(
+#     adj,
+#     meta=nodes,
+#     sort_class="hemisphere",
+#     plot_type="scattermap",
+#     sizes=(0.5, 0.5),
+#     ax=ax,
+# )
+
 #%%
 
 left_sort_inds = specsort(left_ase_embedding)
@@ -151,26 +177,12 @@ right_sorted_index = np.array(right_nodes.index[right_sort_inds])
 
 #%%
 
+adj, nodes = load_unmatched("full")
+
 sorted_index = np.concatenate((left_sorted_index, right_sorted_index))
 
-mg = load_maggot_graph()
-
-mg = mg.node_subgraph(sorted_index)
-
-nodes = mg.nodes
-adj = mg.sum.adj
-
-#%%
-
-fig, ax = plt.subplots(1, 1, figsize=(15, 15))
-adjplot(
-    adj,
-    meta=nodes,
-    sort_class="hemisphere",
-    plot_type="scattermap",
-    sizes=(0.5, 0.5),
-    ax=ax,
-)
+adjacency = pd.DataFrame(adj, index=nodes.index, columns=nodes.index)
+adj = adjacency.loc[sorted_index, sorted_index].values
 
 # %%
 
@@ -298,7 +310,7 @@ soft_axis_off(ax)
 
 left_nodes["degree"] = left_adj.sum(axis=0) + left_adj.sum(axis=1)
 left_nodes["x"] = left_umap_embedding[:, 0]
-left_nodes["y"] = left_umap_embedding[:, 1]
+left_nodes["y"] = -left_umap_embedding[:, 1]
 
 
 networkplot_kws = dict(

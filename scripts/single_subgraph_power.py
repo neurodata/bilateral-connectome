@@ -1,4 +1,5 @@
 #%%
+import datetime
 import time
 
 import matplotlib.pyplot as plt
@@ -14,7 +15,6 @@ from pkg.stats import binom_2samp
 from scipy.interpolate import RegularGridInterpolator, interp1d
 from scipy.stats import binom
 from tqdm.autonotebook import tqdm
-
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 
@@ -203,3 +203,9 @@ yax2.set_ylabel("Base connection probability")
 xax2.set_xlabel("Number of nodes")
 
 gluefig("power_heatmap_contours", fig)
+
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

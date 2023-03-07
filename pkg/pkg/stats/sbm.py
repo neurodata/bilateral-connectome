@@ -7,7 +7,7 @@ from scipy.stats import combine_pvalues
 from statsmodels.stats.multitest import multipletests
 
 from .binomial import binom_2samp, binom_2samp_paired
-from .utils import compute_density_adjustment
+from .utils import compute_density_adjustment, compute_density
 
 # from .combine import combine_pvalues # old, was bug before scipy 1.9.0
 
@@ -109,7 +109,10 @@ def stochastic_block_test(
     stats = _make_adjacency_dataframe(stats, index)
 
     if isinstance(density_adjustment, bool) and density_adjustment:
-        adjustment_factor = compute_density_adjustment(A1, A2)
+        # adjustment_factor = compute_density_adjustment(A1, A2)
+        density1 = compute_density(A1)
+        density2 = compute_density(A2)
+        adjustment_factor = density1 / density2
     elif isinstance(density_adjustment, bool) and not density_adjustment:
         adjustment_factor = 1.0
     elif isinstance(density_adjustment, (float, int)):

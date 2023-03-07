@@ -43,9 +43,6 @@
 #   neuron $j$ as opposed to from $j$ to $i$.
 # - **Loopless**: we remove any edges which go from neuron $i$ to neuron $i$.
 #%%
-from pkg.utils import set_warnings
-
-set_warnings()
 
 import datetime
 import time
@@ -71,11 +68,7 @@ def glue(name, var, **kwargs):
 RESAVE_DATA, _, _ = get_environment_variables()
 
 print(f"Using data from {DATA_VERSION}")
-# os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
-# output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-final")
-# output_dir = Path(output_dir)
-# DATA_PATH / DATA_VERSION
-output_dir = DATA_PATH / "processed-final"
+output_dir = DATA_PATH / "processed-science"
 input_dir = DATA_PATH / DATA_VERSION
 
 #%%
@@ -83,6 +76,9 @@ adjacency = pd.read_csv(
     input_dir / "Supplementary-Data-S1" / "all-all_connectivity_matrix.csv", index_col=0
 )
 adjacency.columns = adjacency.columns.astype(int)
+adjacency = pd.DataFrame(
+    data=adjacency.values, index=adjacency.index, columns=adjacency.columns
+)
 inputs = pd.read_csv(input_dir / "Supplementary-Data-S1" / "inputs.csv", index_col=0)
 outputs = pd.read_csv(input_dir / "Supplementary-Data-S1" / "outputs.csv", index_col=0)
 
@@ -101,6 +97,12 @@ meta["hemisphere"] = meta["hemisphere"].map({"left_id": "L", "right_id": "R"})
 
 meta["id"] = meta["id"].astype(int)
 meta = meta.set_index("id").sort_index()
+
+#%%
+meta.loc[meta.index.duplicated(False)]
+
+#%%
+meta = meta.loc[~meta.index.duplicated()]
 
 #%%
 
@@ -134,18 +136,31 @@ celltype_map = {
 meta["celltype_discrete"] = meta["celltype"].map(celltype_map)
 
 #%%
-#  g_type = load_networkx(graph_type="G")
-#     for u, v, data in g_type.edges(data=True):
-#         g.add_edge(u, v, key="sum", edge_type="sum", **data)
-
 
 assert is_fully_connected(adjacency.values)
 
 #%%
+meta.loc[meta.index.duplicated(False)]
+
+#%%
 intersect_index = adjacency.index.intersection(meta.index)
+intersect_index.name = "id"
 adjacency = adjacency.loc[intersect_index, intersect_index]
 meta = meta.loc[intersect_index]
+g = nx.from_pandas_adjacency(adjacency, create_using=nx.DiGraph)
 
+if RESAVE_DATA:
+    print("Saved full data")
+    nx.write_edgelist(
+        g,
+        output_dir / "unmatched_full_edgelist.csv",
+        delimiter=",",
+        data=["weight"],
+    )
+    meta.to_csv(output_dir / "unmatched_full_nodes.csv")
+
+
+#%%
 meta = meta.sort_values(["hemisphere", "celltype_discrete"])
 
 left_nodes = meta.query("hemisphere == 'L'")
@@ -153,7 +168,6 @@ right_nodes = meta.query("hemisphere == 'R'")
 
 left_adjacency = adjacency.loc[left_nodes.index, left_nodes.index]
 right_adjacency = adjacency.loc[right_nodes.index, right_nodes.index]
-
 
 #%%
 assert is_fully_connected(left_adjacency.values)

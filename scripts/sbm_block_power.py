@@ -1,48 +1,22 @@
-#%% [markdown]
-# # Group connection test
-# Next, we test bilateral symmetry by making an assumption that the left and the right
-# hemispheres both come from a stochastic block model, which models the probability
-# of any potential edge as a function of the groups that the source and target nodes
-# are part of.
-#
-# For now, we use some broad cell type categorizations for each neuron to determine its
-# group. Alternatively, there are many methods for *estimating* these assignments to
-# groups for each neuron, which we do not explore here.
-
 #%%
 import datetime
 import time
 
-import matplotlib as mpl
+
 import matplotlib.pyplot as plt
-import matplotlib.transforms as mtrans
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import merge_axes, rotate_labels, soft_axis_off
-from graspologic.simulations import sbm
-from matplotlib.font_manager import FontProperties
-from matplotlib.patches import PathPatch
-from matplotlib.text import TextPath
+
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import (
-    SmartSVG,
-    draw_hypothesis_box,
-    heatmap_grouped,
-    make_sequential_colormap,
-    networkplot_simple,
-    plot_pvalues,
-    plot_stochastic_block_probabilities,
-    rainbowarrow,
-    set_theme,
-)
-from pkg.stats import stochastic_block_test
-from pkg.utils import get_toy_palette, sample_toy_networks
-from seaborn.utils import relative_luminance
-from svgutils.compose import Figure, Panel, Text
+from pkg.plot import set_theme
+from pkg.stats import binom_2samp, stochastic_block_test
+from scipy.stats import binom
+
+from tqdm.autonotebook import tqdm
 
 
 _, _, DISPLAY_FIGS = get_environment_variables()
@@ -104,9 +78,6 @@ probs2 = misc["probabilities2"]
 
 # %%
 
-from scipy.stats import binom
-from pkg.stats import binom_2samp
-from tqdm.autonotebook import tqdm
 
 method = "fisher"
 index = possible1.index
@@ -199,3 +170,9 @@ ax.set(ylabel="Source group", xlabel="Target group")
 cax = fig.get_axes()[1]
 cax.set_title("# possible\nedges", pad=10)
 gluefig("n_possible_by_block", fig)
+
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")
