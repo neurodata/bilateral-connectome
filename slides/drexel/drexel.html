@@ -4,47 +4,55 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome &#8212; Bilateral Connectome</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=4ec06e9971c5264fbd345897d5258098f11cc577" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -54,60 +62,577 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'slides/drexel/drexel';</script>
     <link rel="shortcut icon" href="../../_static/nd_logo_small.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../abstract.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../_static/nd_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../_static/nd_logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
         
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../introduction.html">
+                        Introduction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../outline.html">
+                        Outline
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../unmatched_vs_matched.html">
+                        Unmatched vs. matched networks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../define_data.html">
+                        Larval Drosophila melanogaster brain connectome
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../show_data.html">
+                        Visualize the connectome
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../er_unmatched_test.html">
+                        Density test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../sbm_unmatched_test.html">
+                        Group connection test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../adjusted_sbm_unmatched_test.html">
+                        Density-adjusted group connection test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../kc_minus.html">
+                        Removing the Kenyon cells
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../thresholding_tests.html">
+                        Comparing edge weight thresholds
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../revamp_sbm_methods_sim.html">
+                        Comparing methods for SBM testing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../references.html">
+                        References
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/berlin.pdf">
+                        Berlin Connectomics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/drexel.pdf">
+                        Drexel
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/lab-meeting-2022-02-24.pdf">
+                        Lab meeting
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/nmc-4.0.pdf">
+                        neuromatch 4.0
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/nn2-data-blitz.pdf">
+                        NN2 Data Blitz
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/princeton.pdf">
+                        Princeton July 2022
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/princeton-2022-12-06.pdf">
+                        Princeton December 2022
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/naisys-2022.pdf">
+                        NAISys
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../ad.html">
+                        Further info
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../nhypergeom_sims.html">
+                        An exact test for non-unity null odds ratios
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../rdpg_unmatched_test.html">
+                        An embedding-based test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../er_matched_test.html">
+                        A density-based test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../sbm_matched_test.html">
+                        A group-based test
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
       
       
-      <img src="../../_static/nd_logo.png" class="logo" alt="logo">
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
       
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
       
-      <h1 class="site-logo" id="site-title">Bilateral Connectome</h1>
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../introduction.html">
+                        Introduction
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../outline.html">
+                        Outline
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../unmatched_vs_matched.html">
+                        Unmatched vs. matched networks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../define_data.html">
+                        Larval Drosophila melanogaster brain connectome
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../show_data.html">
+                        Visualize the connectome
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../er_unmatched_test.html">
+                        Density test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../sbm_unmatched_test.html">
+                        Group connection test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../adjusted_sbm_unmatched_test.html">
+                        Density-adjusted group connection test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../kc_minus.html">
+                        Removing the Kenyon cells
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../thresholding_tests.html">
+                        Comparing edge weight thresholds
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../revamp_sbm_methods_sim.html">
+                        Comparing methods for SBM testing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../references.html">
+                        References
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/berlin.pdf">
+                        Berlin Connectomics
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/drexel.pdf">
+                        Drexel
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/lab-meeting-2022-02-24.pdf">
+                        Lab meeting
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/nmc-4.0.pdf">
+                        neuromatch 4.0
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/nn2-data-blitz.pdf">
+                        NN2 Data Blitz
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/princeton.pdf">
+                        Princeton July 2022
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/princeton-2022-12-06.pdf">
+                        Princeton December 2022
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://docs.neurodata.io/bilateral-connectome/naisys-2022.pdf">
+                        NAISys
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../ad.html">
+                        Further info
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../nhypergeom_sims.html">
+                        An exact test for non-unity null odds ratios
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../rdpg_unmatched_test.html">
+                        An embedding-based test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../er_matched_test.html">
+                        A density-based test
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../sbm_matched_test.html">
+                        A group-based test
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+  
+
+
+<a class="navbar-brand logo" href="../../abstract.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <img src="../../_static/nd_logo.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../_static/nd_logo.png" class="logo__image only-dark" alt="Logo image">
+  
+  
+</a>
+    </div>
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
@@ -116,997 +641,521 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Preliminaries
- </span>
-</p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../introduction.html">
-   Introduction
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../outline.html">
-   Outline
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../unmatched_vs_matched.html">
-   Unmatched vs. matched networks
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../define_data.html">
-   Larval
-   <em>
-    Drosophila melanogaster
-   </em>
-   brain connectome
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../show_data.html">
-   Visualize the connectome
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../outline.html">Outline</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../unmatched_vs_matched.html">Unmatched vs. matched networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../define_data.html">Larval <em>Drosophila melanogaster</em> brain connectome</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../show_data.html">Visualize the connectome</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Tests for bilateral symmetry
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tests for bilateral symmetry</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../er_unmatched_test.html">
-   Density test
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../sbm_unmatched_test.html">
-   Group connection test
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../adjusted_sbm_unmatched_test.html">
-   Density-adjusted group connection test
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../kc_minus.html">
-   Removing the Kenyon cells
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../thresholding_tests.html">
-   Comparing edge weight thresholds
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../er_unmatched_test.html">Density test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sbm_unmatched_test.html">Group connection test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../adjusted_sbm_unmatched_test.html">Density-adjusted group connection test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kc_minus.html">Removing the Kenyon cells</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../thresholding_tests.html">Comparing edge weight thresholds</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Appendix
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../revamp_sbm_methods_sim.html">
-   Comparing methods for SBM testing
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../revamp_sbm_methods_sim.html">Comparing methods for SBM testing</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  References
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../references.html">
-   References
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Slides
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Slides</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/berlin.pdf">
-   Berlin Connectomics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/drexel.pdf">
-   Drexel
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/lab-meeting-2022-02-24.pdf">
-   Lab meeting
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/nmc-4.0.pdf">
-   neuromatch 4.0
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/nn2-data-blitz.pdf">
-   NN2 Data Blitz
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/princeton.pdf">
-   Princeton July 2022
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/princeton-2022-12-06.pdf">
-   Princeton December 2022
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/berlin.pdf">Berlin Connectomics</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/drexel.pdf">Drexel</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/lab-meeting-2022-02-24.pdf">Lab meeting</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/nmc-4.0.pdf">neuromatch 4.0</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/nn2-data-blitz.pdf">NN2 Data Blitz</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/princeton.pdf">Princeton July 2022</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/princeton-2022-12-06.pdf">Princeton December 2022</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Posters
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Posters</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/naisys-2022.pdf">
-   NAISys
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.neurodata.io/bilateral-connectome/naisys-2022.pdf">NAISys</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Errata
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Errata</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../ad.html">
-   Further info
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../nhypergeom_sims.html">
-   An exact test for non-unity null odds ratios
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../rdpg_unmatched_test.html">
-   An embedding-based test
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../er_matched_test.html">
-   A density-based test
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../sbm_matched_test.html">
-   A group-based test
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../ad.html">Further info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nhypergeom_sims.html">An exact test for non-unity null odds ratios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rdpg_unmatched_test.html">An embedding-based test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../er_matched_test.html">A density-based test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sbm_matched_test.html">A group-based test</a></li>
 </ul>
 
     </div>
-</nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
+</nav>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
+  </div>
+  
 
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
 
-          
+  
+  <div id="rtd-footer-container"></div>
 
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
+      </div>
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
 
 
 
 <div class="col py-1 d-flex header-article-main">
     <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
+        <label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" data-toggle="tooltip" data-placement="right" title="Toggle primary sidebar">
+            <span class="fa-solid fa-bars"></span>
+        </label>
     </div>
     <div class="header-article__right">
 <button onclick="toggleFullScreen()"
-  class="headerbtn"
+  class="btn btn-sm"
   data-toggle="tooltip"
 data-placement="bottom"
 title="Fullscreen mode"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-<div class="menu-dropdown menu-dropdown-repository-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Source repositories">
-      <i class="fab fa-github"></i>
+
+
+<div class="dropdown dropdown-repository-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://github.com/neurodata/bilateral-connectome"
-   class="headerbtn"
+  <ul class="dropdown-menu">
+      <li><a href="https://github.com/neurodata/bilateral-connectome" target="_blank"
+   class="btn btn-sm dropdown-item"
    data-toggle="tooltip"
 data-placement="left"
 title="Source repository"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
-<span class="headerbtn__text-container">repository</span>
+<span class="btn__text-container">repository</span>
 </a>
-
-      </li>
+</a>
       
-      <li>
-        <a href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fslides/drexel/drexel.html&body=Your%20issue%20content%20here."
-   class="headerbtn"
+      <li><a href="https://github.com/neurodata/bilateral-connectome/issues/new?title=Issue%20on%20page%20%2Fslides/drexel/drexel.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm dropdown-item"
    data-toggle="tooltip"
 data-placement="left"
 title="Open an issue"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-lightbulb"></i>
   </span>
-<span class="headerbtn__text-container">open issue</span>
+<span class="btn__text-container">open issue</span>
 </a>
-
-      </li>
+</a>
       
-    </ul>
-  </div>
+  </ul>
 </div>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="../../_sources/slides/drexel/drexel.md"
-   class="headerbtn"
+  <ul class="dropdown-menu">
+      <li><a href="../../_sources/slides/drexel/drexel.md" target="_blank"
+   class="btn btn-sm dropdown-item"
    data-toggle="tooltip"
 data-placement="left"
 title="Download source file"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.md</span>
+<span class="btn__text-container">.md</span>
 </a>
-
-      </li>
+</a>
       
       <li>
-        
 <button onclick="printPdf(this)"
-  class="headerbtn"
+  class="btn btn-sm dropdown-item"
   data-toggle="tooltip"
 data-placement="left"
 title="Print to PDF"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</a>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary" data-toggle="tooltip" data-placement="left" title="Toggle secondary sidebar">
+            <span class="fa-solid fa-list"></span>
+        </label>
     </div>
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#benjamin-d-pedigo">
-     Benjamin D. Pedigo
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#outline">
-   Outline
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#electron-microscopy-connectomics">
-   Electron microscopy connectomics
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#drosophila-larva-aka-a-maggot-brain-connectome">
-   <em>
-    Drosophila
-   </em>
-   larva (AKA a maggot) brain connectome
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-re-just-going-to-consider-this-to-be-a-network">
-   We’re just going to consider this to be a network
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
-   Why bilateral symmetry?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#many-connectomics-questions-require-comparison">
-   Many connectomics questions require comparison
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connectomes-across-development">
-   Connectomes across development
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connectomes-across-evolution-cortex">
-   Connectomes across evolution, cortex
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#so-studying-bilateral-symmetry-here-lets-us">
-   So, studying bilateral symmetry here lets us
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
-   Are the
-   <span style="color: var(--left)">
-    left
-   </span>
-   and
-   <span style="color: var(--right)">
-    right
-   </span>
-   sides of this connectome
-   <p>
-   </p>
-   <em>
-    different
-   </em>
-   ?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-populations-different">
-   Are these populations different?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-two-networks-different">
-   Are these two
-   <em>
-    networks
-   </em>
-   different?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#assumptions">
-   Assumptions
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#erdos-renyi-model">
-   Erdos-Renyi model
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#density-based-testing">
-   Density-based testing
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-detect-a-difference-in-density">
-   We detect a difference in density
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#stochastic-block-model">
-   Stochastic block model
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connection-probabilities-between-groups">
-   Connection probabilities between groups
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#group-based-testing">
-   Group-based testing
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-detect-a-difference-in-group-to-group-connection-probabilities">
-   We detect a difference in group-to-group connection probabilities
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#should-we-be-surprised">
-   Should we be surprised?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#adjusting-for-a-difference-in-density">
-   Adjusting for a difference in density
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#even-with-density-adjustment-we-detect-a-difference">
-   Even with density adjustment, we detect a difference
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#so-the-kenyon-cells-kcs-are-the-only-group-where-we-detect-remaining-differences">
-   So the Kenyon cells (KCs) are the only group where we detect remaining differences…
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#to-sum-up">
-   To sum up…
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extensions-and-other-tools">
-   Extensions (and other tools)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#but-you-threw-out-all-of-the-edge-weights">
-   But you threw out all of the edge weights!
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#thresholding-at-higher-synapse-counts-reduces-asymmetry">
-   Thresholding at higher synapse counts reduces asymmetry
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-do-we-consider-to-be-a-cell-type">
-   What do we consider to be a “cell type”?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity">
-   Hierarchical clustering of neurons based on observed connectivity
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-nodes-edges-matched-across-hemispheres">
-   Are nodes/edges matched across hemispheres?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bilateral-neuron-pairs">
-   Bilateral neuron pairs
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#graph-matching">
-   Graph matching
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres">
-   Graph matching predicts single-neuron pairs between hemispheres
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#predicted-pairs-are-morphologically-similar">
-   Predicted pairs are morphologically similar
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#in-summary">
-   In summary…
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#graspologic">
-     graspologic:
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#this-work">
-     This work:
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#acknowledgements">
-   Acknowledgements
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#johns-hopkins-university">
-     Johns Hopkins University
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#university-of-cambridge-mrc-laboratory-of-molecular-biology">
-     University of Cambridge / MRC Laboratory of Molecular Biology
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#funding">
-     Funding
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#questions">
-   Questions?
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Benjamin D. Pedigo
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#appendix">
-   Appendix
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#there-are-so-many-other-models">
-   There are so many other models!
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
-   Combining p-values: nobody’s perfect
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy-until-1-9-0">
-   Combining p-values: don’t trust SciPy until 1.9.0
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combining-p-values">
-   Distribution under the null for combining p-values
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-be-careful-with-discreetness">
-   Combining p-values: be careful with discreetness
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#power-for-combining-p-values">
-   Power for combining p-values
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
-   Relative power (Fisher’s vs Tippett’s)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plotting-connection-probabilities">
-   Plotting connection probabilities
-  </a>
- </li>
-</ul>
-
-    </nav>
-</div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#benjamin-d-pedigo">
-     Benjamin D. Pedigo
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#outline">
-   Outline
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#electron-microscopy-connectomics">
-   Electron microscopy connectomics
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#drosophila-larva-aka-a-maggot-brain-connectome">
-   <em>
-    Drosophila
-   </em>
-   larva (AKA a maggot) brain connectome
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-re-just-going-to-consider-this-to-be-a-network">
-   We’re just going to consider this to be a network
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
-   Why bilateral symmetry?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#many-connectomics-questions-require-comparison">
-   Many connectomics questions require comparison
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connectomes-across-development">
-   Connectomes across development
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connectomes-across-evolution-cortex">
-   Connectomes across evolution, cortex
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#so-studying-bilateral-symmetry-here-lets-us">
-   So, studying bilateral symmetry here lets us
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
-   Are the
-   <span style="color: var(--left)">
-    left
-   </span>
-   and
-   <span style="color: var(--right)">
-    right
-   </span>
-   sides of this connectome
-   <p>
-   </p>
-   <em>
-    different
-   </em>
-   ?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-populations-different">
-   Are these populations different?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-these-two-networks-different">
-   Are these two
-   <em>
-    networks
-   </em>
-   different?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#assumptions">
-   Assumptions
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#erdos-renyi-model">
-   Erdos-Renyi model
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#density-based-testing">
-   Density-based testing
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-detect-a-difference-in-density">
-   We detect a difference in density
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#stochastic-block-model">
-   Stochastic block model
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#connection-probabilities-between-groups">
-   Connection probabilities between groups
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#group-based-testing">
-   Group-based testing
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#we-detect-a-difference-in-group-to-group-connection-probabilities">
-   We detect a difference in group-to-group connection probabilities
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#should-we-be-surprised">
-   Should we be surprised?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#adjusting-for-a-difference-in-density">
-   Adjusting for a difference in density
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#even-with-density-adjustment-we-detect-a-difference">
-   Even with density adjustment, we detect a difference
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#so-the-kenyon-cells-kcs-are-the-only-group-where-we-detect-remaining-differences">
-   So the Kenyon cells (KCs) are the only group where we detect remaining differences…
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#to-sum-up">
-   To sum up…
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extensions-and-other-tools">
-   Extensions (and other tools)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#but-you-threw-out-all-of-the-edge-weights">
-   But you threw out all of the edge weights!
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#thresholding-at-higher-synapse-counts-reduces-asymmetry">
-   Thresholding at higher synapse counts reduces asymmetry
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-do-we-consider-to-be-a-cell-type">
-   What do we consider to be a “cell type”?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity">
-   Hierarchical clustering of neurons based on observed connectivity
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#are-nodes-edges-matched-across-hemispheres">
-   Are nodes/edges matched across hemispheres?
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bilateral-neuron-pairs">
-   Bilateral neuron pairs
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#graph-matching">
-   Graph matching
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres">
-   Graph matching predicts single-neuron pairs between hemispheres
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#predicted-pairs-are-morphologically-similar">
-   Predicted pairs are morphologically similar
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#in-summary">
-   In summary…
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#graspologic">
-     graspologic:
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#this-work">
-     This work:
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#acknowledgements">
-   Acknowledgements
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#johns-hopkins-university">
-     Johns Hopkins University
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#university-of-cambridge-mrc-laboratory-of-molecular-biology">
-     University of Cambridge / MRC Laboratory of Molecular Biology
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#funding">
-     Funding
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#questions">
-   Questions?
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Benjamin D. Pedigo
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#appendix">
-   Appendix
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#there-are-so-many-other-models">
-   There are so many other models!
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
-   Combining p-values: nobody’s perfect
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy-until-1-9-0">
-   Combining p-values: don’t trust SciPy until 1.9.0
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combining-p-values">
-   Distribution under the null for combining p-values
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#combining-p-values-be-careful-with-discreetness">
-   Combining p-values: be careful with discreetness
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#power-for-combining-p-values">
-   Power for combining p-values
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
-   Relative power (Fisher’s vs Tippett’s)
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plotting-connection-probabilities">
-   Plotting connection probabilities
-  </a>
- </li>
-</ul>
-
-                        </nav>
-                    </div>
-                </div>
             </div>
-            <main id="main-content" role="main">
-                
-              <div>
-                
+            
+            
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#benjamin-d-pedigo">
+     Benjamin D. Pedigo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#outline">
+   Outline
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#electron-microscopy-connectomics">
+   Electron microscopy connectomics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#drosophila-larva-aka-a-maggot-brain-connectome">
+   <em>
+    Drosophila
+   </em>
+   larva (AKA a maggot) brain connectome
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#we-re-just-going-to-consider-this-to-be-a-network">
+   We’re just going to consider this to be a network
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
+   Why bilateral symmetry?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#many-connectomics-questions-require-comparison">
+   Many connectomics questions require comparison
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#connectomes-across-development">
+   Connectomes across development
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#connectomes-across-evolution-cortex">
+   Connectomes across evolution, cortex
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#so-studying-bilateral-symmetry-here-lets-us">
+   So, studying bilateral symmetry here lets us
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
+   Are the
+   <span style="color: var(--left)">
+    left
+   </span>
+   and
+   <span style="color: var(--right)">
+    right
+   </span>
+   sides of this connectome
+   <p>
+   </p>
+   <em>
+    different
+   </em>
+   ?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-these-populations-different">
+   Are these populations different?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-these-two-networks-different">
+   Are these two
+   <em>
+    networks
+   </em>
+   different?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assumptions">
+   Assumptions
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#erdos-renyi-model">
+   Erdos-Renyi model
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#density-based-testing">
+   Density-based testing
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#we-detect-a-difference-in-density">
+   We detect a difference in density
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stochastic-block-model">
+   Stochastic block model
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#connection-probabilities-between-groups">
+   Connection probabilities between groups
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#group-based-testing">
+   Group-based testing
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#we-detect-a-difference-in-group-to-group-connection-probabilities">
+   We detect a difference in group-to-group connection probabilities
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#should-we-be-surprised">
+   Should we be surprised?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adjusting-for-a-difference-in-density">
+   Adjusting for a difference in density
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#even-with-density-adjustment-we-detect-a-difference">
+   Even with density adjustment, we detect a difference
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#so-the-kenyon-cells-kcs-are-the-only-group-where-we-detect-remaining-differences">
+   So the Kenyon cells (KCs) are the only group where we detect remaining differences…
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-sum-up">
+   To sum up…
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extensions-and-other-tools">
+   Extensions (and other tools)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#but-you-threw-out-all-of-the-edge-weights">
+   But you threw out all of the edge weights!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#thresholding-at-higher-synapse-counts-reduces-asymmetry">
+   Thresholding at higher synapse counts reduces asymmetry
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-do-we-consider-to-be-a-cell-type">
+   What do we consider to be a “cell type”?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity">
+   Hierarchical clustering of neurons based on observed connectivity
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-nodes-edges-matched-across-hemispheres">
+   Are nodes/edges matched across hemispheres?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bilateral-neuron-pairs">
+   Bilateral neuron pairs
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching">
+   Graph matching
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres">
+   Graph matching predicts single-neuron pairs between hemispheres
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predicted-pairs-are-morphologically-similar">
+   Predicted pairs are morphologically similar
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#in-summary">
+   In summary…
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graspologic">
+     graspologic:
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#this-work">
+     This work:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#acknowledgements">
+   Acknowledgements
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#johns-hopkins-university">
+     Johns Hopkins University
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#university-of-cambridge-mrc-laboratory-of-molecular-biology">
+     University of Cambridge / MRC Laboratory of Molecular Biology
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#funding">
+     Funding
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#questions">
+   Questions?
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Benjamin D. Pedigo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#appendix">
+   Appendix
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#there-are-so-many-other-models">
+   There are so many other models!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
+   Combining p-values: nobody’s perfect
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy-until-1-9-0">
+   Combining p-values: don’t trust SciPy until 1.9.0
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combining-p-values">
+   Distribution under the null for combining p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-be-careful-with-discreetness">
+   Combining p-values: be careful with discreetness
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#power-for-combining-p-values">
+   Power for combining p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
+   Relative power (Fisher’s vs Tippett’s)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plotting-connection-probabilities">
+   Plotting connection probabilities
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+            <article class="bd-article" role="main">
+              
   <style scoped> 
 h1 {
     font-size:40px;
@@ -1120,9 +1169,9 @@ p {
 <!-- # Two-sample hypothesis testing for connectomes: 
 ## A case study on the bilateral symmetry of the *Drosophila* larva connectome -->
 <section class="tex2jax_ignore mathjax_ignore" id="hypothesis-testing-for-connectome-comparisons-a-statistical-analysis-of-bilateral-symmetry-in-an-insect-brain-connectome">
-<h1>Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome<a class="headerlink" href="#hypothesis-testing-for-connectome-comparisons-a-statistical-analysis-of-bilateral-symmetry-in-an-insect-brain-connectome" title="Permalink to this headline">#</a></h1>
+<h1>Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome<a class="headerlink" href="#hypothesis-testing-for-connectome-comparisons-a-statistical-analysis-of-bilateral-symmetry-in-an-insect-brain-connectome" title="Permalink to this heading">#</a></h1>
 <section id="benjamin-d-pedigo">
-<h2>Benjamin D. Pedigo<a class="headerlink" href="#benjamin-d-pedigo" title="Permalink to this headline">#</a></h2>
+<h2>Benjamin D. Pedigo<a class="headerlink" href="#benjamin-d-pedigo" title="Permalink to this heading">#</a></h2>
 <p>(he/him) - <em><a class="reference external" href="https://neurodata.io/">NeuroData lab</a></em>
 <em>Johns Hopkins University - Biomedical Engineering</em></p>
 <p><img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a>
@@ -1134,7 +1183,7 @@ p {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="outline">
-<h1>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">#</a></h1>
+<h1>Outline<a class="headerlink" href="#outline" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>What is electron microscopy connectomics</p></li>
 <li><p><em>Drosophila</em> larva brain connectome</p></li>
@@ -1153,7 +1202,7 @@ What about matched pairs? -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="electron-microscopy-connectomics">
-<h1>Electron microscopy connectomics<a class="headerlink" href="#electron-microscopy-connectomics" title="Permalink to this headline">#</a></h1>
+<h1>Electron microscopy connectomics<a class="headerlink" href="#electron-microscopy-connectomics" title="Permalink to this heading">#</a></h1>
 <p><img alt="center w:1000" src="../../_images/FigureS1-reconstruction.png" /></p>
 <footer>
 Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022)
@@ -1161,7 +1210,7 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="drosophila-larva-aka-a-maggot-brain-connectome">
-<h1><em>Drosophila</em> larva (AKA a maggot) brain connectome<a class="headerlink" href="#drosophila-larva-aka-a-maggot-brain-connectome" title="Permalink to this headline">#</a></h1>
+<h1><em>Drosophila</em> larva (AKA a maggot) brain connectome<a class="headerlink" href="#drosophila-larva-aka-a-maggot-brain-connectome" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <!-- See [Michael Windings's talk](https://conference.neuromatch.io/abstract?edition=2021-4&submission_id=recVeh4RZFFRAQnIo) -->
@@ -1183,12 +1232,12 @@ Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="we-re-just-going-to-consider-this-to-be-a-network">
-<h1>We’re just going to consider this to be a network<a class="headerlink" href="#we-re-just-going-to-consider-this-to-be-a-network" title="Permalink to this headline">#</a></h1>
+<h1>We’re just going to consider this to be a network<a class="headerlink" href="#we-re-just-going-to-consider-this-to-be-a-network" title="Permalink to this heading">#</a></h1>
 <p><img alt="center h:500" src="../results/figs/show_data/Figure(1500x1500).png" /></p>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="why-bilateral-symmetry">
-<h1>Why bilateral symmetry?<a class="headerlink" href="#why-bilateral-symmetry" title="Permalink to this headline">#</a></h1>
+<h1>Why bilateral symmetry?<a class="headerlink" href="#why-bilateral-symmetry" title="Permalink to this heading">#</a></h1>
 <blockquote>
 <div><p>“We examined the connectivity of members of left–right homologous neuron pairs … <strong>to assess the amount of natural variability in connectivity.</strong> … <strong>Differences between individual worms will be expected to be at least this large.</strong>”</p>
 </div></blockquote>
@@ -1207,7 +1256,7 @@ section {
 </style>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="many-connectomics-questions-require-comparison">
-<h1>Many connectomics questions require comparison<a class="headerlink" href="#many-connectomics-questions-require-comparison" title="Permalink to this headline">#</a></h1>
+<h1>Many connectomics questions require comparison<a class="headerlink" href="#many-connectomics-questions-require-comparison" title="Permalink to this heading">#</a></h1>
 <!-- For instance,
 - Understand connectomes across evolution [1]
 - Understand connectomes across development [2]
@@ -1223,13 +1272,13 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="connectomes-across-development">
-<h1>Connectomes across development<a class="headerlink" href="#connectomes-across-development" title="Permalink to this headline">#</a></h1>
+<h1>Connectomes across development<a class="headerlink" href="#connectomes-across-development" title="Permalink to this heading">#</a></h1>
 <p><img alt="center h:475" src="../../_images/witvliet-fig1.png" /></p>
 <footer>Witvliet et al. Nature (2021)</footer>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="connectomes-across-evolution-cortex">
-<h1>Connectomes across evolution, cortex<a class="headerlink" href="#connectomes-across-evolution-cortex" title="Permalink to this headline">#</a></h1>
+<h1>Connectomes across evolution, cortex<a class="headerlink" href="#connectomes-across-evolution-cortex" title="Permalink to this heading">#</a></h1>
 <p><img alt="center w:550" src="../../_images/bartsotti-fig2.png" /></p>
 <footer>
 Bartsotti + Correia et al. Curr. Op. Neurobiology (2021)
@@ -1237,7 +1286,7 @@ Bartsotti + Correia et al. Curr. Op. Neurobiology (2021)
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="so-studying-bilateral-symmetry-here-lets-us">
-<h1>So, studying bilateral symmetry here lets us<a class="headerlink" href="#so-studying-bilateral-symmetry-here-lets-us" title="Permalink to this headline">#</a></h1>
+<h1>So, studying bilateral symmetry here lets us<a class="headerlink" href="#so-studying-bilateral-symmetry-here-lets-us" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>Try to formalize what we even mean by this property, and make claims about what we find in this connectome, and</p></li>
 <li><p>Test out methods for comparing networks for these future pursuits</p></li>
@@ -1251,11 +1300,11 @@ section {
 </style>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
-<h1>Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> <em>different</em>?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different" title="Permalink to this headline">#</a></h1>
+<h1>Are the <span style="color: var(--left)"> left </span> and <span style="color: var(--right)"> right </span> sides of this connectome <p> </p> <em>different</em>?<a class="headerlink" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different" title="Permalink to this heading">#</a></h1>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="are-these-populations-different">
-<h1>Are these populations different?<a class="headerlink" href="#are-these-populations-different" title="Permalink to this headline">#</a></h1>
+<h1>Are these populations different?<a class="headerlink" href="#are-these-populations-different" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <p><img alt="center w:400" src="../results/figs/two_sample_testing/2_sample_real_line.svg" /></p>
@@ -1272,7 +1321,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="are-these-two-networks-different">
-<h1>Are these two <em>networks</em> different?<a class="headerlink" href="#are-these-two-networks-different" title="Permalink to this headline">#</a></h1>
+<h1>Are these two <em>networks</em> different?<a class="headerlink" href="#are-these-two-networks-different" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <p><img alt="center w:1000" src="../results/figs/plot_side_layouts/2_network_layout.png" /></p>
@@ -1289,7 +1338,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="assumptions">
-<h1>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">#</a></h1>
+<h1>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>We know the direction of synapses, so network is <em>directed</em>.</p></li>
 <li><p>For simplicity (for now), consider networks to be <em>unweighted</em>.</p></li>
@@ -1300,7 +1349,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="erdos-renyi-model">
-<h1>Erdos-Renyi model<a class="headerlink" href="#erdos-renyi-model" title="Permalink to this headline">#</a></h1>
+<h1>Erdos-Renyi model<a class="headerlink" href="#erdos-renyi-model" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>All edges are indepentent</p></li>
 <li><p>All edges generated with the same probability, <span class="math notranslate nohighlight">\(p\)</span></p></li>
@@ -1309,7 +1358,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="density-based-testing">
-<h1>Density-based testing<a class="headerlink" href="#density-based-testing" title="Permalink to this headline">#</a></h1>
+<h1>Density-based testing<a class="headerlink" href="#density-based-testing" title="Permalink to this heading">#</a></h1>
 <!-- <div class="columns">
 <div> -->
 <!-- - $P[i \rightarrow j] = p$ -->
@@ -1324,7 +1373,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="we-detect-a-difference-in-density">
-<h1>We detect a difference in density<a class="headerlink" href="#we-detect-a-difference-in-density" title="Permalink to this headline">#</a></h1>
+<h1>We detect a difference in density<a class="headerlink" href="#we-detect-a-difference-in-density" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <p><img alt="" src="../results/figs/er_unmatched_test/er_density.svg" /></p>
@@ -1338,7 +1387,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="stochastic-block-model">
-<h1>Stochastic block model<a class="headerlink" href="#stochastic-block-model" title="Permalink to this headline">#</a></h1>
+<h1>Stochastic block model<a class="headerlink" href="#stochastic-block-model" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>Edge probabilities are a function of a neuron’s group</p></li>
 </ul>
@@ -1346,7 +1395,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="connection-probabilities-between-groups">
-<h1>Connection probabilities between groups<a class="headerlink" href="#connection-probabilities-between-groups" title="Permalink to this headline">#</a></h1>
+<h1>Connection probabilities between groups<a class="headerlink" href="#connection-probabilities-between-groups" title="Permalink to this heading">#</a></h1>
 <!-- ![center h:160](./../../images/Figure1-cell-classes.png)
 
 ![center h:350](../../../results/figs/sbm_unmatched_test/sbm_uncorrected.svg) -->
@@ -1368,12 +1417,12 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="group-based-testing">
-<h1>Group-based testing<a class="headerlink" href="#group-based-testing" title="Permalink to this headline">#</a></h1>
+<h1>Group-based testing<a class="headerlink" href="#group-based-testing" title="Permalink to this heading">#</a></h1>
 <p><img alt="center" src="../results/figs/sbm_unmatched_test/sbm_methods_explain.svg" /></p>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="we-detect-a-difference-in-group-to-group-connection-probabilities">
-<h1>We detect a difference in group-to-group connection probabilities<a class="headerlink" href="#we-detect-a-difference-in-group-to-group-connection-probabilities" title="Permalink to this headline">#</a></h1>
+<h1>We detect a difference in group-to-group connection probabilities<a class="headerlink" href="#we-detect-a-difference-in-group-to-group-connection-probabilities" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <p><img alt="center h:450" src="../results/figs/sbm_unmatched_test/sbm_uncorrected_pvalues_unlabeled.svg" /></p>
@@ -1388,7 +1437,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="should-we-be-surprised">
-<h1>Should we be surprised?<a class="headerlink" href="#should-we-be-surprised" title="Permalink to this headline">#</a></h1>
+<h1>Should we be surprised?<a class="headerlink" href="#should-we-be-surprised" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <ul class="simple">
@@ -1409,12 +1458,12 @@ where <span class="math notranslate nohighlight">\(c\)</span> is a density-adjus
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="adjusting-for-a-difference-in-density">
-<h1>Adjusting for a difference in density<a class="headerlink" href="#adjusting-for-a-difference-in-density" title="Permalink to this headline">#</a></h1>
+<h1>Adjusting for a difference in density<a class="headerlink" href="#adjusting-for-a-difference-in-density" title="Permalink to this heading">#</a></h1>
 <p><img alt="center" src="../results/figs/adjusted_sbm_unmatched_test/adjusted_methods_explain.svg" /></p>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="even-with-density-adjustment-we-detect-a-difference">
-<h1>Even with density adjustment, we detect a difference<a class="headerlink" href="#even-with-density-adjustment-we-detect-a-difference" title="Permalink to this headline">#</a></h1>
+<h1>Even with density adjustment, we detect a difference<a class="headerlink" href="#even-with-density-adjustment-we-detect-a-difference" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <p><img alt="center" src="../results/figs/adjusted_sbm_unmatched_test/resampled_pvalues_distribution.svg" /></p>
@@ -1426,7 +1475,7 @@ where <span class="math notranslate nohighlight">\(c\)</span> is a density-adjus
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="so-the-kenyon-cells-kcs-are-the-only-group-where-we-detect-remaining-differences">
-<h1>So the Kenyon cells (KCs) are the only group where we detect remaining differences…<a class="headerlink" href="#so-the-kenyon-cells-kcs-are-the-only-group-where-we-detect-remaining-differences" title="Permalink to this headline">#</a></h1>
+<h1>So the Kenyon cells (KCs) are the only group where we detect remaining differences…<a class="headerlink" href="#so-the-kenyon-cells-kcs-are-the-only-group-where-we-detect-remaining-differences" title="Permalink to this heading">#</a></h1>
 <div class="columns">
 <div>
 <p><img alt="center h:450" src="../results/figs/kc_minus/kc_minus_methods.svg" /></p>
@@ -1442,57 +1491,57 @@ where <span class="math notranslate nohighlight">\(c\)</span> is a density-adjus
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="to-sum-up">
-<h1>To sum up…<a class="headerlink" href="#to-sum-up" title="Permalink to this headline">#</a></h1>
+<h1>To sum up…<a class="headerlink" href="#to-sum-up" title="Permalink to this heading">#</a></h1>
 <style scoped>
 table {
     font-size: 24px;
     margin-bottom: 50px;
 }
 </style>
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Model</p></th>
 <th class="head"><p><span class="math notranslate nohighlight">\(H_0\)</span> (vs. <span class="math notranslate nohighlight">\(H_A \neq\)</span>)</p></th>
-<th class="text-align:center head"><p>KCs</p></th>
-<th class="text-align:center head"><p>p-value</p></th>
+<th class="head text-center"><p>KCs</p></th>
+<th class="head text-center"><p>p-value</p></th>
 <th class="head"><p>Interpretation</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>ER</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>+</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-23}\)</span></p></td>
+<td class="text-center"><p>+</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(&lt;10^{-23}\)</span></p></td>
 <td><p>Reject densities the same</p></td>
 </tr>
 <tr class="row-odd"><td><p>SBM</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>+</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt; 10^{-7}\)</span></p></td>
+<td class="text-center"><p>+</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(&lt; 10^{-7}\)</span></p></td>
 <td><p>Reject group connection probabilities the same</p></td>
 </tr>
 <tr class="row-even"><td><p>aSBM</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>+</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.002\)</span></p></td>
+<td class="text-center"><p>+</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\approx 0.002\)</span></p></td>
 <td><p>Reject above even after accounting for density</p></td>
 </tr>
 <tr class="row-odd"><td><p>ER</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} p^{(L)} \color{black} = \color{#fc8d62}p^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(&lt;10^{-26}\)</span></p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(&lt;10^{-26}\)</span></p></td>
 <td><p>Reject densities the same (w/o KCs)</p></td>
 </tr>
 <tr class="row-even"><td><p>SBM</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5} B^{(L)} \color{black} = \color{#fc8d62} B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.003\)</span></p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\approx 0.003\)</span></p></td>
 <td><p>Reject group connection probabilities the same (w/o KCs)</p></td>
 </tr>
 <tr class="row-odd"><td><p>aSBM</p></td>
 <td><p><span class="math notranslate nohighlight">\(\color{#66c2a5}B^{(L)} \color{black}  = c \color{#fc8d62}B^{(R)}\)</span></p></td>
-<td class="text-align:center"><p>-</p></td>
-<td class="text-align:center"><p><span class="math notranslate nohighlight">\(\approx 0.43\)</span></p></td>
+<td class="text-center"><p>-</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\approx 0.43\)</span></p></td>
 <td><p>Don’t reject above after density adjustment (w/o KCs)</p></td>
 </tr>
 </tbody>
@@ -1506,7 +1555,7 @@ section {
 </style>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="extensions-and-other-tools">
-<h1>Extensions (and other tools)<a class="headerlink" href="#extensions-and-other-tools" title="Permalink to this headline">#</a></h1>
+<h1>Extensions (and other tools)<a class="headerlink" href="#extensions-and-other-tools" title="Permalink to this heading">#</a></h1>
 <hr class="docutils" />
 <style scoped>
 section {
@@ -1516,11 +1565,11 @@ section {
 </style>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="but-you-threw-out-all-of-the-edge-weights">
-<h1>But you threw out all of the edge weights!<a class="headerlink" href="#but-you-threw-out-all-of-the-edge-weights" title="Permalink to this headline">#</a></h1>
+<h1>But you threw out all of the edge weights!<a class="headerlink" href="#but-you-threw-out-all-of-the-edge-weights" title="Permalink to this heading">#</a></h1>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="thresholding-at-higher-synapse-counts-reduces-asymmetry">
-<h1>Thresholding at higher synapse counts reduces asymmetry<a class="headerlink" href="#thresholding-at-higher-synapse-counts-reduces-asymmetry" title="Permalink to this headline">#</a></h1>
+<h1>Thresholding at higher synapse counts reduces asymmetry<a class="headerlink" href="#thresholding-at-higher-synapse-counts-reduces-asymmetry" title="Permalink to this heading">#</a></h1>
 <p><img alt="center h:450" src="../results/figs/thresholding_tests/integer_threshold_pvalues.svg" /></p>
 <hr class="docutils" />
 <style scoped>
@@ -1531,13 +1580,13 @@ section {
 </style>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="what-do-we-consider-to-be-a-cell-type">
-<h1>What do we consider to be a “cell type”?<a class="headerlink" href="#what-do-we-consider-to-be-a-cell-type" title="Permalink to this headline">#</a></h1>
+<h1>What do we consider to be a “cell type”?<a class="headerlink" href="#what-do-we-consider-to-be-a-cell-type" title="Permalink to this heading">#</a></h1>
 <!-- ---
 # Something about methods for this stuff -->
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="hierarchical-clustering-of-neurons-based-on-observed-connectivity">
-<h1>Hierarchical clustering of neurons based on observed connectivity<a class="headerlink" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity" title="Permalink to this headline">#</a></h1>
+<h1>Hierarchical clustering of neurons based on observed connectivity<a class="headerlink" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity" title="Permalink to this heading">#</a></h1>
 <p><img alt="center" src="../../_images/bar-dendrogram-wide.svg" /></p>
 <p><img alt="center w:800" src="../../_images/cell-type-labels-legend.png" /></p>
 <footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
@@ -1551,22 +1600,22 @@ section {
 </style>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="are-nodes-edges-matched-across-hemispheres">
-<h1>Are nodes/edges matched across hemispheres?<a class="headerlink" href="#are-nodes-edges-matched-across-hemispheres" title="Permalink to this headline">#</a></h1>
+<h1>Are nodes/edges matched across hemispheres?<a class="headerlink" href="#are-nodes-edges-matched-across-hemispheres" title="Permalink to this heading">#</a></h1>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="bilateral-neuron-pairs">
-<h1>Bilateral neuron pairs<a class="headerlink" href="#bilateral-neuron-pairs" title="Permalink to this headline">#</a></h1>
+<h1>Bilateral neuron pairs<a class="headerlink" href="#bilateral-neuron-pairs" title="Permalink to this heading">#</a></h1>
 <p><img alt="center" src="../../_images/mbon-expression.jpg" /></p>
 <footer>Eschbach et al. eLife (2021)</footer>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="graph-matching">
-<h1>Graph matching<a class="headerlink" href="#graph-matching" title="Permalink to this headline">#</a></h1>
+<h1>Graph matching<a class="headerlink" href="#graph-matching" title="Permalink to this heading">#</a></h1>
 <p><img alt="center h:500" src="../../_images/network-matching-explanation.svg" /></p>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="graph-matching-predicts-single-neuron-pairs-between-hemispheres">
-<h1>Graph matching predicts single-neuron pairs between hemispheres<a class="headerlink" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres" title="Permalink to this headline">#</a></h1>
+<h1>Graph matching predicts single-neuron pairs between hemispheres<a class="headerlink" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>~86% of predicted pairs are confirmed by a human annotator</p></li>
 </ul>
@@ -1575,13 +1624,13 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="predicted-pairs-are-morphologically-similar">
-<h1>Predicted pairs are morphologically similar<a class="headerlink" href="#predicted-pairs-are-morphologically-similar" title="Permalink to this headline">#</a></h1>
+<h1>Predicted pairs are morphologically similar<a class="headerlink" href="#predicted-pairs-are-morphologically-similar" title="Permalink to this heading">#</a></h1>
 <p><img alt="center h:490" src="../results/figs/match_examine/left-pair-predictions.svg" /></p>
 <footer> Winding, Pedigo et al. “The complete connectome of an insect brain.” In prep. (2022) </footer>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="in-summary">
-<h1>In summary…<a class="headerlink" href="#in-summary" title="Permalink to this headline">#</a></h1>
+<h1>In summary…<a class="headerlink" href="#in-summary" title="Permalink to this heading">#</a></h1>
 <ul>
 <li><p>Studied statistical ways of framing “bilateral symmetry”, proposing a test procedure for each</p></li>
 <li><p>All tests found the left and the right hemispheres significantly different, unless ignoring Kenyon cells and adjust for the difference in density</p>
@@ -1600,7 +1649,7 @@ section {
 <div class="columns">
 <div>
 <section id="graspologic">
-<h2>graspologic:<a class="headerlink" href="#graspologic" title="Permalink to this headline">#</a></h2>
+<h2>graspologic:<a class="headerlink" href="#graspologic" title="Permalink to this heading">#</a></h2>
 <p><a class="reference external" href="https://github.com/microsoft/graspologic">github.com/microsoft/graspologic</a></p>
 <p><img alt="w:450" src="../../_images/graspologic_svg.svg" /></p>
 <p><a class="reference external" href="https://pepy.tech/project/graspologic"><img alt="h:50" src="https://pepy.tech/badge/graspologic" /></a>  <a class="reference external" href="https://github.com/microsoft/graspologic"><img alt="h:50" src="https://img.shields.io/github/stars/microsoft/graspologic?style=social" /></a>  <a class="reference external" href="https://github.com/microsoft/graspologic/graphs/contributors"><img alt="h:50" src="https://img.shields.io/github/contributors/microsoft/graspologic" /></a>  <a class="reference external" href="https://opensource.org/licenses/MIT"><img alt="h:50" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a></p>
@@ -1608,7 +1657,7 @@ section {
 <div>
 </section>
 <section id="this-work">
-<h2>This work:<a class="headerlink" href="#this-work" title="Permalink to this headline">#</a></h2>
+<h2>This work:<a class="headerlink" href="#this-work" title="Permalink to this heading">#</a></h2>
 <p><a class="reference external" href="https://github.com/neurodata/bilateral-connectome">github.com/neurodata/bilateral-connectome</a>
 <img alt="center w:400" src="../../_images/jb_example.png" />
 <a class="reference external" href="http://docs.neurodata.io/bilateral-connectome/"><img alt="h:50" src="https://jupyterbook.org/badge.svg" /></a></p>
@@ -1619,7 +1668,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="acknowledgements">
-<h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">#</a></h1>
+<h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this heading">#</a></h1>
 <style scoped> 
 p {
     font-size: 22px
@@ -1627,15 +1676,15 @@ p {
 h4 {font-size: 28px}
 </style>
 <section id="johns-hopkins-university">
-<h2>Johns Hopkins University<a class="headerlink" href="#johns-hopkins-university" title="Permalink to this headline">#</a></h2>
+<h2>Johns Hopkins University<a class="headerlink" href="#johns-hopkins-university" title="Permalink to this heading">#</a></h2>
 <p><strong>Mike Powell</strong>, <strong>Eric Bridgeford</strong>, <strong>Carey Priebe</strong>, <strong>Joshua Vogelstein</strong>, Kareef Ullah, Diane Lee, Sambit Panda, Jaewon Chung, Ali Saad-Eldin, NeuroData lab</p>
 </section>
 <section id="university-of-cambridge-mrc-laboratory-of-molecular-biology">
-<h2>University of Cambridge / MRC Laboratory of Molecular Biology<a class="headerlink" href="#university-of-cambridge-mrc-laboratory-of-molecular-biology" title="Permalink to this headline">#</a></h2>
+<h2>University of Cambridge / MRC Laboratory of Molecular Biology<a class="headerlink" href="#university-of-cambridge-mrc-laboratory-of-molecular-biology" title="Permalink to this heading">#</a></h2>
 <p><strong>Michael Winding</strong>, Albert Cardona, Marta Zlatic, Chris Barnes</p>
 </section>
 <section id="funding">
-<h2>Funding<a class="headerlink" href="#funding" title="Permalink to this headline">#</a></h2>
+<h2>Funding<a class="headerlink" href="#funding" title="Permalink to this heading">#</a></h2>
 <p><img alt="h:125" src="../../_images/NSF_4-Color_bitmap_Logo.png" /></p>
 <!-- #### Microsoft Research 
 Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McLean, Carolyn Buractaon, Amber Hoak -->
@@ -1643,7 +1692,7 @@ Hayden Helm, Dax Pryce, Nick Caurvina, Bryan Tower, Patrick Bourke, Jonathan McL
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="questions">
-<h1>Questions?<a class="headerlink" href="#questions" title="Permalink to this headline">#</a></h1>
+<h1>Questions?<a class="headerlink" href="#questions" title="Permalink to this heading">#</a></h1>
 <p><img alt="bg opacity:.6 95%" src="../results/figs/plot_side_layouts/2_network_layout.png" /></p>
 <p><span> </span>
 <span> </span>
@@ -1657,7 +1706,7 @@ section {
 }
 </style>
 <section id="id1">
-<h2>Benjamin D. Pedigo<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<h2>Benjamin D. Pedigo<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p><img alt="icon" src="../../_images/email.png" /> <a class="reference external" href="mailto:bpedigo&#37;&#52;&#48;jhu&#46;edu"><em>bpedigo<span>&#64;</span>jhu<span>&#46;</span>edu</em></a>
 <img alt="icon" src="../../_images/github.png" /> <a class="reference external" href="https://github.com/bdpedigo"><em>&#64;bdpedigo (Github)</em></a>
 <img alt="icon" src="../../_images/twitter.png" /> <a class="reference external" href="https://twitter.com/bpedigod"><em>&#64;bpedigod (Twitter)</em></a>
@@ -1672,11 +1721,11 @@ section {
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="appendix">
-<h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">#</a></h1>
+<h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this heading">#</a></h1>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="there-are-so-many-other-models">
-<h1>There are so many other models!<a class="headerlink" href="#there-are-so-many-other-models" title="Permalink to this headline">#</a></h1>
+<h1>There are so many other models!<a class="headerlink" href="#there-are-so-many-other-models" title="Permalink to this heading">#</a></h1>
 <p>Latent distribution test (random dot product graph)</p>
 <div class="columns">
 <div>
@@ -1691,7 +1740,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="combining-p-values-nobody-s-perfect">
-<h1>Combining p-values: nobody’s perfect<a class="headerlink" href="#combining-p-values-nobody-s-perfect" title="Permalink to this headline">#</a></h1>
+<h1>Combining p-values: nobody’s perfect<a class="headerlink" href="#combining-p-values-nobody-s-perfect" title="Permalink to this heading">#</a></h1>
 <p><img alt="center h:475" src="../../_images/heard-fig1.png" /></p>
 <footer>
 <p>Heard, Rubin-Delanchy <em>Biometrika</em> (2018)</p>
@@ -1699,17 +1748,17 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="combining-p-values-don-t-trust-scipy-until-1-9-0">
-<h1>Combining p-values: don’t trust SciPy until 1.9.0<a class="headerlink" href="#combining-p-values-don-t-trust-scipy-until-1-9-0" title="Permalink to this headline">#</a></h1>
+<h1>Combining p-values: don’t trust SciPy until 1.9.0<a class="headerlink" href="#combining-p-values-don-t-trust-scipy-until-1-9-0" title="Permalink to this heading">#</a></h1>
 <p><img alt="center w:600" src="../../_images/tippett-bug.png" /></p>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="distribution-under-the-null-for-combining-p-values">
-<h1>Distribution under the null for combining p-values<a class="headerlink" href="#distribution-under-the-null-for-combining-p-values" title="Permalink to this headline">#</a></h1>
+<h1>Distribution under the null for combining p-values<a class="headerlink" href="#distribution-under-the-null-for-combining-p-values" title="Permalink to this heading">#</a></h1>
 <p><img alt="bg right h:600" src="../results/figs/revamp_sbm_methods_sim/null_distributions.svg" /></p>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="combining-p-values-be-careful-with-discreetness">
-<h1>Combining p-values: be careful with discreetness<a class="headerlink" href="#combining-p-values-be-careful-with-discreetness" title="Permalink to this headline">#</a></h1>
+<h1>Combining p-values: be careful with discreetness<a class="headerlink" href="#combining-p-values-be-careful-with-discreetness" title="Permalink to this heading">#</a></h1>
 <p><img alt="center w:800" src="../../_images/lancaster-title.png" /></p>
 <div class="columns">
 <div>
@@ -1722,7 +1771,7 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="power-for-combining-p-values">
-<h1>Power for combining p-values<a class="headerlink" href="#power-for-combining-p-values" title="Permalink to this headline">#</a></h1>
+<h1>Power for combining p-values<a class="headerlink" href="#power-for-combining-p-values" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p>We perturb:</p>
 <ul>
@@ -1735,12 +1784,12 @@ section {
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="relative-power-fisher-s-vs-tippett-s">
-<h1>Relative power (Fisher’s vs Tippett’s)<a class="headerlink" href="#relative-power-fisher-s-vs-tippett-s" title="Permalink to this headline">#</a></h1>
+<h1>Relative power (Fisher’s vs Tippett’s)<a class="headerlink" href="#relative-power-fisher-s-vs-tippett-s" title="Permalink to this heading">#</a></h1>
 <p><img alt="center" src="../results/figs/revamp_sbm_methods_sim/relative_power.svg" /></p>
 </section>
 <hr class="docutils" />
 <section class="tex2jax_ignore mathjax_ignore" id="plotting-connection-probabilities">
-<h1>Plotting connection probabilities<a class="headerlink" href="#plotting-connection-probabilities" title="Permalink to this headline">#</a></h1>
+<h1>Plotting connection probabilities<a class="headerlink" href="#plotting-connection-probabilities" title="Permalink to this heading">#</a></h1>
 <p><img alt="center h:500" src="../results/figs/sbm_unmatched_test/probs_scatter.svg" /></p>
 <!-- ---
 <div class="columns">
@@ -1776,36 +1825,390 @@ section {
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
-              
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
+            </article>
+            
+
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'>
 </div>
             </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
   
-    By Benjamin D. Pedigo<br/>
-  
-      &copy; Copyright 2022.<br/>
-</p>
-        </footer>
-    </div>
-    
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Hypothesis testing for connectome comparisons: a statistical analysis of bilateral symmetry in an insect brain connectome
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#benjamin-d-pedigo">
+     Benjamin D. Pedigo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#outline">
+   Outline
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#electron-microscopy-connectomics">
+   Electron microscopy connectomics
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#drosophila-larva-aka-a-maggot-brain-connectome">
+   <em>
+    Drosophila
+   </em>
+   larva (AKA a maggot) brain connectome
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#we-re-just-going-to-consider-this-to-be-a-network">
+   We’re just going to consider this to be a network
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-bilateral-symmetry">
+   Why bilateral symmetry?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#many-connectomics-questions-require-comparison">
+   Many connectomics questions require comparison
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#connectomes-across-development">
+   Connectomes across development
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#connectomes-across-evolution-cortex">
+   Connectomes across evolution, cortex
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#so-studying-bilateral-symmetry-here-lets-us">
+   So, studying bilateral symmetry here lets us
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-the-span-style-color-var-left-left-span-and-span-style-color-var-right-right-span-sides-of-this-connectome-p-p-different">
+   Are the
+   <span style="color: var(--left)">
+    left
+   </span>
+   and
+   <span style="color: var(--right)">
+    right
+   </span>
+   sides of this connectome
+   <p>
+   </p>
+   <em>
+    different
+   </em>
+   ?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-these-populations-different">
+   Are these populations different?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-these-two-networks-different">
+   Are these two
+   <em>
+    networks
+   </em>
+   different?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assumptions">
+   Assumptions
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#erdos-renyi-model">
+   Erdos-Renyi model
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#density-based-testing">
+   Density-based testing
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#we-detect-a-difference-in-density">
+   We detect a difference in density
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stochastic-block-model">
+   Stochastic block model
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#connection-probabilities-between-groups">
+   Connection probabilities between groups
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#group-based-testing">
+   Group-based testing
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#we-detect-a-difference-in-group-to-group-connection-probabilities">
+   We detect a difference in group-to-group connection probabilities
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#should-we-be-surprised">
+   Should we be surprised?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adjusting-for-a-difference-in-density">
+   Adjusting for a difference in density
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#even-with-density-adjustment-we-detect-a-difference">
+   Even with density adjustment, we detect a difference
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#so-the-kenyon-cells-kcs-are-the-only-group-where-we-detect-remaining-differences">
+   So the Kenyon cells (KCs) are the only group where we detect remaining differences…
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-sum-up">
+   To sum up…
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extensions-and-other-tools">
+   Extensions (and other tools)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#but-you-threw-out-all-of-the-edge-weights">
+   But you threw out all of the edge weights!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#thresholding-at-higher-synapse-counts-reduces-asymmetry">
+   Thresholding at higher synapse counts reduces asymmetry
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-do-we-consider-to-be-a-cell-type">
+   What do we consider to be a “cell type”?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hierarchical-clustering-of-neurons-based-on-observed-connectivity">
+   Hierarchical clustering of neurons based on observed connectivity
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#are-nodes-edges-matched-across-hemispheres">
+   Are nodes/edges matched across hemispheres?
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bilateral-neuron-pairs">
+   Bilateral neuron pairs
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching">
+   Graph matching
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#graph-matching-predicts-single-neuron-pairs-between-hemispheres">
+   Graph matching predicts single-neuron pairs between hemispheres
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predicted-pairs-are-morphologically-similar">
+   Predicted pairs are morphologically similar
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#in-summary">
+   In summary…
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#graspologic">
+     graspologic:
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#this-work">
+     This work:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#acknowledgements">
+   Acknowledgements
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#johns-hopkins-university">
+     Johns Hopkins University
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#university-of-cambridge-mrc-laboratory-of-molecular-biology">
+     University of Cambridge / MRC Laboratory of Molecular Biology
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#funding">
+     Funding
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#questions">
+   Questions?
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Benjamin D. Pedigo
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#appendix">
+   Appendix
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#there-are-so-many-other-models">
+   There are so many other models!
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-nobody-s-perfect">
+   Combining p-values: nobody’s perfect
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-don-t-trust-scipy-until-1-9-0">
+   Combining p-values: don’t trust SciPy until 1.9.0
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-under-the-null-for-combining-p-values">
+   Distribution under the null for combining p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-p-values-be-careful-with-discreetness">
+   Combining p-values: be careful with discreetness
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#power-for-combining-p-values">
+   Power for combining p-values
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#relative-power-fisher-s-vs-tippett-s">
+   Relative power (Fisher’s vs Tippett’s)
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plotting-connection-probabilities">
+   Plotting connection probabilities
+  </a>
+ </li>
+</ul>
+
+</nav>
 </div>
 
-
-      </div>
-    </div>
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+<div class="bd-footer-content__inner container">
   
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Benjamin D. Pedigo
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </div>
+        </footer>
+        
+
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
 
   </body>
 </html>
