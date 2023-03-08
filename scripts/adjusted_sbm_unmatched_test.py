@@ -27,7 +27,7 @@ from pkg.plot import (
 )
 from pkg.stats import compute_density, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm
 
 from giskard.plot import merge_axes
 from graspologic.simulations import sbm
@@ -200,41 +200,58 @@ n_right = right_adj.shape[0]
 density_left = n_edges_left / (n_left**2)
 density_right = n_edges_right / (n_right**2)
 
-n_remove = int((density_right - density_left) * (n_right**2))
+# TODO double check this
+n_remove = (density_right - density_left) * (n_right**2)
+print("n_remove", n_remove)
+n_remove = int(np.round(n_remove))
+print("n_remove", n_remove)
 
 glue("n_remove", n_remove)
 
+#%%
+# test
+
+subsampled_right_adj = remove_edges(right_adj, effect_size=n_remove, random_seed=rng)
+
+new_right_density = compute_density(subsampled_right_adj)
+
+print("density left", density_left)
+print("density right", density_right)
+print("density right (subsampled)", new_right_density)
 
 #%%
 # NOTE: not running this right now as this figure is no longer in the final paper
 
-# rows = []
-# n_resamples = 500
-# glue("n_resamples", n_resamples)
+rows = []
+n_resamples = 500
+glue("n_resamples", n_resamples)
 
-# if False:
-#     for i in tqdm(range(n_resamples)):
-#         subsampled_right_adj = remove_edges(
-#             right_adj, effect_size=n_remove, random_seed=rng
-#         )
-#         stat, pvalue, misc = stochastic_block_test(
-#             left_adj,
-#             subsampled_right_adj,
-#             labels1=left_labels,
-#             labels2=right_labels,
-#         )
-#         rows.append(
-#             {
-#                 "stat": stat,
-#                 "pvalue": pvalue,
-#                 "misc": misc,
-#                 "resample": i,
-#             }
-#         )
-#     resample_results = pd.DataFrame(rows)
-#     resample_results.to_csv(OUT_PATH / "resample_results.csv")
-# else:
-#     resample_results = pd.read_csv(OUT_PATH / "resample_results.csv", index_col=0)
+if RERUN_SIMS:
+    for i in tqdm(range(n_resamples)):
+        subsampled_right_adj = remove_edges(
+            right_adj, effect_size=n_remove, random_seed=rng
+        )
+        for method in ["fisher", "score"]:
+            stat, pvalue, misc = stochastic_block_test(
+                left_adj,
+                subsampled_right_adj,
+                labels1=left_labels,
+                labels2=right_labels,
+                method=method,
+            )
+            rows.append(
+                {
+                    "stat": stat,
+                    "pvalue": pvalue,
+                    "misc": misc,
+                    "resample": i,
+                    "method": method,
+                }
+            )
+    resample_results = pd.DataFrame(rows)
+    resample_results.to_csv(OUT_PATH / "resample_results.csv")
+else:
+    resample_results = pd.read_csv(OUT_PATH / "resample_results.csv", index_col=0)
 
 
 #%%
@@ -266,52 +283,53 @@ gluefig("sbm_pvalues_unlabeled", fig)
 
 #%%
 
-# #%%
+set_theme(font_scale=1.25)
 
-# set_theme(font_scale=1.25)
-# fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-# sns.histplot(
-#     data=resample_results,
-#     x="pvalue",
-#     ax=ax,
-#     color=neutral_color,
-#     kde=True,
-#     log_scale=True,
-#     stat="density",
-# )
-# ax.set(xlabel="p-value", ylabel="", yticks=[])
-# ax.spines["left"].set_visible(False)
-# ax.axvline(0.05, linestyle=":", color="black")
-# ylim = ax.get_ylim()
-# ax.text(0.06, ylim[1] * 0.9, r"$\alpha = 0.05$")
+palette = dict(zip(["fisher", "score"], sns.color_palette(n_colors=2)))
 
-# median_resample_pvalue = np.median(resample_results["pvalue"])
+fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+sns.histplot(
+    data=resample_results,
+    x="pvalue",
+    ax=ax,
+    # color=neutral_color,
+    hue="method",
+    kde=True,
+    log_scale=True,
+    stat="density",
+    bins=15,
+    palette=palette,
+)
+sns.move_legend(ax, "upper left", title="Method")
+leg = ax.get_legend()
+for text in leg.get_texts():
+    text.set_text(text.get_text().capitalize())
 
-# colors = sns.color_palette("Set2")
+for method in ["fisher", "score"]:
+    median = np.median(resample_results.query(f"method == '{method}'")["pvalue"])
+    ax.axvline(median, linestyle="-", color=palette[method], linewidth=3)
 
 
-# color = colors[2]
-# ax.axvline(median_resample_pvalue, color=color, linewidth=3)
+ax.set(xlabel="p-value", ylabel="", yticks=[])
 
+# draw line for alpha
+ax.spines["left"].set_visible(False)
+ax.axvline(0.05, linestyle=":", color="black", linewidth=3)
+ylim = ax.get_ylim()
+ax.text(0.06, ylim[1] * 0.9, r"$\alpha = 0.05$")
+
+
+color = "darkred"
+ax.axvline(pvalue, color=color, linewidth=3, linestyle="--")
 # ax.text(
-#     median_resample_pvalue - 0.0025,
-#     ylim[1] * 0.9,
-#     f"Median = {median_resample_pvalue:0.2g}",
-#     color=color,
-#     ha="right",
-# )
-
-# color = "darkred"
-# ax.axvline(pvalue, 0, 0.58, color=color, linewidth=3, linestyle="--")
-# ax.text(
-#     pvalue - 0.0002,
-#     ylim[1] * 0.48,
+#     pvalue - 0.0005,
+#     ylim[1] * 0.85,
 #     f"Analytic = {pvalue:0.2g}",
 #     ha="right",
 #     color=color,
 # )
 
-# gluefig("resampled_pvalues_distribution", fig)
+gluefig("resampled_pvalues_distribution", fig)
 
 
 #%%

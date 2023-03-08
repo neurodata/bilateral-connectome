@@ -7,7 +7,7 @@ from scipy.stats import combine_pvalues
 from statsmodels.stats.multitest import multipletests
 
 from .binomial import binom_2samp, binom_2samp_paired
-from .utils import compute_density_adjustment, compute_density
+from .utils import compute_density
 
 # from .combine import combine_pvalues # old, was bug before scipy 1.9.0
 
@@ -81,7 +81,7 @@ def stochastic_block_test(
     labels1,
     labels2,
     density_adjustment=False,
-    method="fisher",
+    method="score",
     combine_method="tippett",
     correct_method="holm",
     alpha=0.05,
