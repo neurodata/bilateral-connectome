@@ -43,9 +43,6 @@
 #   neuron $j$ as opposed to from $j$ to $i$.
 # - **Loopless**: we remove any edges which go from neuron $i$ to neuron $i$.
 #%%
-from pkg.utils import set_warnings
-
-set_warnings()
 
 import datetime
 import os
@@ -55,10 +52,11 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 import pandas as pd
-from graspologic.utils import remove_loops
-from pkg.io import glue as default_glue
-from pkg.io import get_environment_variables
 from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
+from pkg.io import get_environment_variables
+from pkg.io import glue as default_glue
+
+from graspologic.utils import remove_loops
 
 t0 = time.time()
 

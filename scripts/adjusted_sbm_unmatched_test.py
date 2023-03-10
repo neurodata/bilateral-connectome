@@ -20,6 +20,7 @@ from pkg.plot import (
     SmartSVG,
     draw_hypothesis_box,
     heatmap_grouped,
+    merge_axes,
     networkplot_simple,
     plot_pvalues,
     set_theme,
@@ -29,7 +30,6 @@ from pkg.stats import compute_density, stochastic_block_test
 from svgutils.compose import Figure, Panel, Text
 from tqdm.autonotebook import tqdm
 
-from giskard.plot import merge_axes
 from graspologic.simulations import sbm
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()

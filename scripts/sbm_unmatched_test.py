@@ -26,24 +26,16 @@ from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import (
-    SmartSVG,
-    draw_hypothesis_box,
-    heatmap_grouped,
-    make_sequential_colormap,
-    networkplot_simple,
-    plot_pvalues,
-    plot_stochastic_block_probabilities,
-    rainbowarrow,
-    set_theme,
-    svg_to_pdf,
-)
+from pkg.plot import (SmartSVG, draw_hypothesis_box, heatmap_grouped,
+                      make_sequential_colormap, merge_axes, networkplot_simple,
+                      plot_pvalues, plot_stochastic_block_probabilities,
+                      rainbowarrow, rotate_labels, set_theme, soft_axis_off,
+                      svg_to_pdf)
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from seaborn.utils import relative_luminance
 from svgutils.compose import Figure, Panel, Text
 
-from giskard.plot import merge_axes, rotate_labels, soft_axis_off
 from graspologic.simulations import sbm
 
 _, _, DISPLAY_FIGS = get_environment_variables()

@@ -16,6 +16,7 @@ from scipy.stats import binom
 from seaborn.utils import relative_luminance
 from tqdm.autonotebook import tqdm
 
+
 _, _, DISPLAY_FIGS = get_environment_variables()
 
 FILENAME = "sbm_block_power"

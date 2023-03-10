@@ -12,20 +12,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import subuniformity_plot
 from matplotlib.transforms import Bbox
 from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import SmartSVG, set_theme, svg_to_pdf
+from pkg.plot import SmartSVG, set_theme, subuniformity_plot, svg_to_pdf
 from pkg.stats import binom_2samp, stochastic_block_test
-from scipy.stats import beta, binom, chi2
-from scipy.stats import combine_pvalues
-from scipy.stats import ks_1samp, uniform
+from scipy.stats import binom, combine_pvalues
+from statsmodels.stats.contingency_tables import StratifiedTable
 from svgutils.compose import Figure, Panel, Text
 from tqdm.autonotebook import tqdm
-from statsmodels.stats.contingency_tables import StratifiedTable
+
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 

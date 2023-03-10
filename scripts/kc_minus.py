@@ -15,6 +15,7 @@ from pkg.io import savefig
 from pkg.plot import (
     SmartSVG,
     draw_hypothesis_box,
+    merge_axes,
     networkplot_simple,
     plot_density,
     plot_pvalues,
@@ -24,8 +25,6 @@ from pkg.plot import (
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
-
-from giskard.plot import merge_axes
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 

@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 import pickle
 import networkx as nx

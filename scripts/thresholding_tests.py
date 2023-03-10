@@ -11,18 +11,24 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import merge_axes, soft_axis_off
+from matplotlib.patches import Circle, FancyArrowPatch
 from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import SmartSVG, rainbowarrow, set_theme, svg_to_pdf
+from pkg.plot import (
+    SmartSVG,
+    merge_axes,
+    rainbowarrow,
+    set_theme,
+    soft_axis_off,
+    svg_to_pdf,
+)
 from pkg.stats import erdos_renyi_test, stochastic_block_test
 from pkg.utils import remove_group, sample_toy_networks
 from scipy.interpolate import interp1d
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
-from matplotlib.patches import Circle, FancyArrowPatch
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 

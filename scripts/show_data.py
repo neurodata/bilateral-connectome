@@ -8,22 +8,19 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
-from giskard.plot import scattermap
-from graspologic.embed import LaplacianSpectralEmbed
-from graspologic.plot import networkplot
 from matplotlib.patheffects import Normal, Stroke
-from pkg.data import (
-    load_network_palette,
-    load_unmatched,
-)
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import get_environment_variables
 from pkg.io import glue as default_glue
-from pkg.io import savefig
+from pkg.io import savefig, scattermap
 from pkg.plot import set_theme
 from scipy.cluster import hierarchy
 from umap import UMAP
-import pandas as pd
+
+from graspologic.embed import LaplacianSpectralEmbed
+from graspologic.plot import networkplot
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -154,18 +151,6 @@ def specsort(X, metric="cosine"):
     sorted_indices = hierarchy.leaves_list(Z_ordered)
     return sorted_indices
 
-
-# #%%
-
-# fig, ax = plt.subplots(1, 1, figsize=(15, 15))
-# adjplot(
-#     adj,
-#     meta=nodes,
-#     sort_class="hemisphere",
-#     plot_type="scattermap",
-#     sizes=(0.5, 0.5),
-#     ax=ax,
-# )
 
 #%%
 

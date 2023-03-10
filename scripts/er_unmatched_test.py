@@ -79,17 +79,18 @@ from pkg.io import savefig
 from pkg.plot import (
     SmartSVG,
     draw_hypothesis_box,
+    merge_axes,
     networkplot_simple,
     plot_density,
     rainbowarrow,
     set_theme,
+    soft_axis_off,
     svg_to_pdf,
 )
 from pkg.stats import erdos_renyi_test
 from pkg.utils import sample_toy_networks
 from svgutils.compose import Figure, Panel, Text
 
-from giskard.plot import merge_axes, soft_axis_off
 from graspologic.simulations import er_np
 
 _, _, DISPLAY_FIGS = get_environment_variables()
