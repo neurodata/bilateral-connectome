@@ -1,5 +1,5 @@
 #%% [markdown]
-# # Group connection test   
+# # Group connection test
 # Next, we test bilateral symmetry by making an assumption that the left and the right
 # hemispheres both come from a stochastic block model, which models the probability
 # of any potential edge as a function of the groups that the source and target nodes
@@ -627,6 +627,7 @@ n_tests = misc["n_tests"]
 glue("n_tests", n_tests)
 print(pvalue)
 
+
 #%%
 
 
@@ -770,6 +771,7 @@ ax.set(
 gluefig("probs_scatter", fig)
 
 #%%
+set_theme(font_scale=1.25)
 
 fig, ax = plt.subplots(1, 1, figsize=(10, 5))
 
@@ -814,6 +816,8 @@ gluefig("group_counts", fig)
 
 #%%
 
+set_theme(font_scale=1.25)
+
 fig, axs = plot_stochastic_block_probabilities(misc, network_palette)
 
 gluefig("sbm_uncorrected", fig)
@@ -821,23 +825,48 @@ gluefig("sbm_uncorrected", fig)
 
 #%%
 
+set_theme(font_scale=1.25)
+
 # need to save this for later for setting colorbar the same on other plot
 pvalue_vmin = np.log10(np.nanmin(misc["corrected_pvalues"].values))
 glue("pvalue_vmin", pvalue_vmin)
 
-plot_pvalues(
+fig, ax = plot_pvalues(
     misc,
     pvalue_vmin,
     annot_missing=True,
 )
 gluefig("sbm_uncorrected_pvalues", fig)
 
-plot_pvalues(
+fig, ax = plot_pvalues(
     misc,
     pvalue_vmin,
     annot_missing=False,
 )
 gluefig("sbm_uncorrected_pvalues_unlabeled", fig)
+
+#%%
+
+# repeat everything but with fisher's exact test just to show the results are basically
+# the same here
+
+fstat, fpvalue, fmisc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_labels,
+    labels2=right_labels,
+    method='fisher'
+)
+glue("fisher_pvalue", fpvalue, form="pvalue")
+
+print("with fisher's:", fpvalue)
+
+fig, ax = plot_pvalues(
+    fmisc,
+    pvalue_vmin,
+    annot_missing=True,
+)
+gluefig("fisher_sbm_pvalues", fig)
 
 
 #%% [markdown]

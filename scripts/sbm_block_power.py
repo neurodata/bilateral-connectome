@@ -2,22 +2,19 @@
 import datetime
 import time
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.plot import set_theme
 from pkg.stats import binom_2samp, stochastic_block_test
 from scipy.stats import binom
-
+from seaborn.utils import relative_luminance
 from tqdm.autonotebook import tqdm
-
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -44,7 +41,6 @@ set_theme()
 rng = np.random.default_rng(8888)
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 neutral_color = sns.color_palette("Set2")[2]
 
 GROUP_KEY = "celltype_discrete"
@@ -79,7 +75,7 @@ probs2 = misc["probabilities2"]
 # %%
 
 
-method = "fisher"
+method = "score"
 index = possible1.index
 n_sims = 100
 effect_scale = 0.8
@@ -138,7 +134,7 @@ square_power
 
 # %%
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-sns.heatmap(
+im = sns.heatmap(
     square_power,
     square=True,
     cmap="RdBu_r",
@@ -147,10 +143,34 @@ sns.heatmap(
     vmax=1,
     cbar_kws=dict(shrink=0.5, pad=0.1),
     ax=ax,
+    # annot=misc['rejections']
 )
 ax.set(ylabel="Source group", xlabel="Target group")
 cax = fig.get_axes()[1]
 cax.set_title("Power @\n" + r"$\alpha=0.05$", pad=20)
+
+significant = misc["rejections"]
+
+colors = im.get_children()[0].get_facecolors()
+K = square_power.shape[0]
+
+# NOTE: the x's looked bad so I did this super hacky thing...
+pad = 0.2
+for idx, (is_significant, color) in enumerate(zip(significant.values.ravel(), colors)):
+    if is_significant:
+        i, j = np.unravel_index(idx, (K, K))
+        # REF: seaborn heatmap
+        lum = relative_luminance(color)
+        text_color = ".15" if lum > 0.408 else "w"
+
+        xs = [j + pad, j + 1 - pad]
+        ys = [i + pad, i + 1 - pad]
+        ax.plot(xs, ys, color=text_color, linewidth=3)
+        xs = [j + 1 - pad, j + pad]
+        ys = [i + pad, i + 1 - pad]
+        ax.plot(xs, ys, color=text_color, linewidth=3)
+
+
 gluefig("empirical_power_by_block", fig)
 
 #%%

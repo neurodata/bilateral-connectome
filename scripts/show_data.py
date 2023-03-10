@@ -9,8 +9,8 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from giskard.plot import adjplot, scattermap
-from graspologic.embed import AdjacencySpectralEmbed, LaplacianSpectralEmbed
+from giskard.plot import scattermap
+from graspologic.embed import LaplacianSpectralEmbed
 from graspologic.plot import networkplot
 from matplotlib.patheffects import Normal, Stroke
 from pkg.data import (
@@ -29,7 +29,7 @@ _, _, DISPLAY_FIGS = get_environment_variables()
 
 FILENAME = "show_data"
 
-rng = np.random.default_rng(8888)
+rng = np.random.default_rng(888)
 
 
 def gluefig(name, fig, **kwargs):
@@ -83,7 +83,7 @@ right_umap_embedding = umapper.fit_transform(right_ase_embedding)
 # left_umap_embedding = sp.fit_transform(left_umap_embedding, right_umap_embedding)
 
 #%%
-theta = -20
+theta = 100
 R = [
     [np.cos(np.deg2rad(theta)), -np.sin(np.deg2rad(theta))],
     [np.sin(np.deg2rad(theta)), np.cos(np.deg2rad(theta))],

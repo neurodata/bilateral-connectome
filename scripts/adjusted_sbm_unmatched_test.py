@@ -271,6 +271,7 @@ stat, pvalue, misc = stochastic_block_test(
 glue("pvalue", pvalue, form="pvalue")
 print("pvalue", pvalue)
 
+set_theme(font_scale=1.25)
 
 fig, axs = plot_pvalues(misc)
 
@@ -308,7 +309,6 @@ for text in leg.get_texts():
 for method in ["fisher", "score"]:
     median = np.median(resample_results.query(f"method == '{method}'")["pvalue"])
     ax.axvline(median, linestyle="-", color=palette[method], linewidth=3)
-
 
 ax.set(xlabel="p-value", ylabel="", yticks=[])
 

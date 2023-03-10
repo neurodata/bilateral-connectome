@@ -24,7 +24,7 @@ def plot_stochastic_block_probabilities(misc, network_palette):
     # set up plot
     pad = 2
     width_ratios = [0.5, pad + 0.8, 10, pad, 10]
-    set_theme(font_scale=1.25)
+   
     fig, axs = plt.subplots(
         1,
         len(width_ratios),
@@ -203,6 +203,7 @@ def plot_pvalues(
         ha="right",
         arrowprops={"arrowstyle": "-", "linewidth": 3, "relpos": (0, 0.5)},
     )
+    cax.yaxis.set_major_locator(plt.MaxNLocator(4))
 
     if annot_missing:
         texts = []

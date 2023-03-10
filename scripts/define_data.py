@@ -94,8 +94,48 @@ print(f"After largest connected component: {len(mg)}")
 mg.nodes.sort_values("hemisphere", inplace=True)
 mg.nodes["_inds"] = range(len(mg.nodes))
 
-mg.nodes["celltype_discrete"] = mg.nodes["simple_group"]
+#%%
+#%%
+# updating to match the nomenclature in the figures in Winding/Pedigo et al 2023 Science
+celltype_map = {
+    "KCs": "KC",
+    "sensories": "Sensory",
+    "dSEZs": r"DN$^{\mathrm{SEZ}}$",
+    "PNs": "PN",
+    "ascendings": "Ascending",
+    "dVNCs": r"DN$^{\mathrm{VNC}}$",
+    "PNs-somato": r"PN$^{\mathrm{Somato}}$",
+    "pre-dVNCs": r"Pre-DN$^{\mathrm{VNC}}$",
+    "unk": "Other",
+    "pre-dSEZs": r"Pre-DN$^{\mathrm{SEZ}}$",
+    "RGNs": "RGN",
+    "LHNs": "LHN",
+    "MBINs": "MBIN",
+    "CNs": "CN",
+    "LNs": "LN",
+    "MB-FBNs": "MB-FBN",
+    "MBONs": "MBON",
+    "FFNs": "MB-FFN",
+}
 
+mg.nodes["celltype_discrete"] = mg.nodes["simple_group"].map(celltype_map)
+
+#%%
+
+
+if RESAVE_DATA:
+    g = mg.g
+    nx.write_edgelist(
+        g,
+        output_dir / "unmatched_full_edgelist.csv",
+        delimiter=",",
+        data=["weight"],
+    )
+    mg.nodes.to_csv(output_dir / "unmatched_full_nodes.csv")
+    print("Saved full data")
+
+
+#%%
 left_mg, right_mg = mg.bisect(lcc=True)
 left_nodes = left_mg.nodes
 right_nodes = right_mg.nodes

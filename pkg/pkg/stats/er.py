@@ -9,7 +9,7 @@ def _squeeze_value(old_misc, new_misc, old_key, new_key):
     new_misc[new_key] = variable
 
 
-def erdos_renyi_test(A1, A2, method="fisher"):
+def erdos_renyi_test(A1, A2, method="score"):
     stat, pvalue, sbm_misc = stochastic_block_test(
         A1,
         A2,

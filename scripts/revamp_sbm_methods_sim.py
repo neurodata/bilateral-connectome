@@ -25,6 +25,7 @@ from scipy.stats import combine_pvalues
 from scipy.stats import ks_1samp, uniform
 from svgutils.compose import Figure, Panel, Text
 from tqdm.autonotebook import tqdm
+from statsmodels.stats.contingency_tables import StratifiedTable
 
 _, RERUN_SIMS, DISPLAY_FIGS = get_environment_variables()
 
@@ -275,7 +276,7 @@ combine_methods = [
     # "mudholkar_george",
     # "min",
 ]
-methods = ["fisher", "score"]
+methods = ["fisher", "score", "cmh"]
 
 # bootstrap_methods = ["bootstrap-norm", "bootstrap-max", "bootstrap-abs"]
 # methods = combine_methods
@@ -291,20 +292,17 @@ ns = n_possible_matrix[inds]
 n_sims = 50
 n_perturb_range = np.linspace(0, 125, 6, dtype=int)
 perturb_size_range = np.round(np.linspace(0, 0.5, 6), decimals=3)
+# n_perturb_range = [0]
+# perturb_size_range = [0.0]
+
 print(f"Perturb sizes: {perturb_size_range}")
 print(f"Perturb number range: {n_perturb_range}")
 n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
 print(f"Number of runs: {n_runs}")
 
-pbar = tqdm(
-    total=len(n_perturb_range)
-    * len(perturb_size_range)
-    * n_sims
-    * len(methods)
-    * len(combine_methods)
-)
-if True:
-    # if RERUN_SIMS:
+pbar = tqdm(total=len(n_perturb_range) * len(perturb_size_range) * n_sims)
+
+if RERUN_SIMS:
     rows = []
     example_perturb_probs = {}
 
@@ -343,27 +341,61 @@ if True:
                 base_samples = binom.rvs(ns, base_probs)
                 perturb_samples = binom.rvs(ns, perturb_probs)
 
+                pbar.update(1)
+
                 for method in methods:
-                    pvalue_collection = compare_individual_probabilities(
-                        base_samples, ns, perturb_samples, ns, method=method
-                    )
-
-                    pvalue_row = {
-                        "perturb_size": perturb_size,
-                        "n_perturb": n_perturb,
-                        "sim": sim,
-                        "uncorrected_pvalues": list(pvalue_collection),
-                        "method": method,
-                    }
-
-                    with open(uncorrected_pvalue_path, "a") as f:
-                        writer = csv.DictWriter(f, fieldnames)
-                        writer.writerow(pvalue_row)
-
-                    for combine_method in combine_methods:
-                        stat, pvalue = combine_pvalues(
-                            pvalue_collection, method=combine_method
+                    if method != "cmh":
+                        pvalue_collection = compare_individual_probabilities(
+                            base_samples, ns, perturb_samples, ns, method=method
                         )
+
+                        pvalue_row = {
+                            "perturb_size": perturb_size,
+                            "n_perturb": n_perturb,
+                            "sim": sim,
+                            "uncorrected_pvalues": list(pvalue_collection),
+                            "method": method,
+                        }
+
+                        with open(uncorrected_pvalue_path, "a") as f:
+                            writer = csv.DictWriter(f, fieldnames)
+                            writer.writerow(pvalue_row)
+
+                        for combine_method in combine_methods:
+                            stat, pvalue = combine_pvalues(
+                                pvalue_collection, method=combine_method
+                            )
+                            row = {
+                                "perturb_size": perturb_size,
+                                "n_perturb": n_perturb,
+                                "sim": sim,
+                                "stat": stat,
+                                "pvalue": pvalue,
+                                "method": method,
+                                "combine_method": combine_method,
+                            }
+                            rows.append(row)
+                    else:
+                        tables = []
+                        for i in range(len(base_samples)):
+                            if base_samples[i] == 0 and perturb_samples[i] == 0:
+                                continue
+                            else:
+                                table = np.array(
+                                    [
+                                        [base_samples[i], ns[i] - base_samples[i]],
+                                        [
+                                            perturb_samples[i],
+                                            ns[i] - perturb_samples[i],
+                                        ],
+                                    ]
+                                )
+                                tables.append(table)
+
+                        st = StratifiedTable(tables)
+                        out = st.test_null_odds()
+                        stat = out.statistic
+                        pvalue = out.pvalue
                         row = {
                             "perturb_size": perturb_size,
                             "n_perturb": n_perturb,
@@ -371,11 +403,9 @@ if True:
                             "stat": stat,
                             "pvalue": pvalue,
                             "method": method,
-                            "combine_method": combine_method,
+                            "combine_method": "cmh",
                         }
                         rows.append(row)
-
-                        pbar.update(1)
 
     total_elapsed = time.time() - t0
 
@@ -392,23 +422,34 @@ method_palette = dict(zip(methods, sns.color_palette()))
 
 null_results = results[(results["n_perturb"] == 0) | (results["perturb_size"] == 0)]
 
-n_methods = len(methods)
-n_cols = min(n_methods, 3)
-n_rows = int(np.ceil(n_methods / n_cols))
-fig, axs = plt.subplots(n_rows, n_cols, squeeze=False, figsize=(n_cols * 5, n_rows * 5))
-
-for i, method in enumerate(methods):
-    ax = axs.flat[i]
-    method_null_results = null_results[null_results["method"] == method]
-    subuniformity_plot(
-        method_null_results["pvalue"],
-        ax=ax,
+for key, sub_data in null_results.groupby(["method", "combine_method"]):
+    method = key[0]
+    combine_method = key[1]
+    ax, _, _ = subuniformity_plot(
+        sub_data["pvalue"],
         color=method_palette[method],
-        bins=np.linspace(0, 1, 100),
+        bins=np.linspace(0, 1, 50),
     )
-    ax.set_title(method.capitalize())
-plt.tight_layout()
-gluefig("null_distributions", fig)
+    title = f"{method.capitalize()} ({combine_method.capitalize()})"
+    ax.set_title(title)
+
+# n_methods = len(methods)
+# n_cols = min(n_methods, 3)
+# n_rows = int(np.ceil(n_methods / n_cols))
+# fig, axs = plt.subplots(n_rows, n_cols, squeeze=False, figsize=(n_cols * 5, n_rows * 5))
+
+# for i, method in enumerate(methods):
+#     ax = axs.flat[i]
+#     method_null_results = null_results[null_results["method"] == method]
+#     subuniformity_plot(
+#         method_null_results["pvalue"],
+#         ax=ax,
+#         color=method_palette[method],
+#         bins=np.linspace(0, 1, 100),
+#     )
+#     ax.set_title(method.capitalize())
+# plt.tight_layout()
+# gluefig("null_distributions", fig)
 
 #%%
 if RERUN_SIMS:
@@ -649,14 +690,20 @@ for i, ((combine_method1, method1), sub_results1) in enumerate(
         # else:
         #     ax.axis("off")
 
-gluefig('power_validity_grid', fig)
+gluefig("power_validity_grid", fig)
 
 #%%
-fisher_results = results[results["method"] == "fisher"]
-min_results = results[results["method"] == "tippett"]
+# fisher_results = results[results["method"] == "fisher"]
+# min_results = results[results["method"] == "tippett"]
+fisher_results = results.query("method == 'score' & combine_method == 'fisher'")
+tippett_results = results.query("method == 'score' & combine_method == 'tippett'")
 
-fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean()
-min_means = min_results.groupby(["perturb_size", "n_perturb"]).mean()
+fisher_means = fisher_results.groupby(["perturb_size", "n_perturb"]).mean(
+    numeric_only=True
+)
+min_means = tippett_results.groupby(["perturb_size", "n_perturb"]).mean(
+    numeric_only=True
+)
 
 fisher_power_square = fisher_means.reset_index().pivot(
     index="perturb_size", columns="n_perturb", values="detected"
@@ -692,8 +739,6 @@ fisher_col = 2
 min_col = 4
 ratio_col = 6
 
-
-#%%
 
 ax = axs[fisher_col]
 im = power_heatmap(fisher_power_square, ax=ax)
@@ -758,8 +803,8 @@ gluefig("relative_power", fig)
 set_theme(font_scale=1.25)
 
 
-min_null_results = min_results[
-    (min_results["n_perturb"] == 0) | (min_results["perturb_size"] == 0)
+min_null_results = tippett_results[
+    (tippett_results["n_perturb"] == 0) | (tippett_results["perturb_size"] == 0)
 ]
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))

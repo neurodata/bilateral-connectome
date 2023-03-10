@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from matplotlib.patches import Circle, FancyArrowPatch
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
@@ -19,12 +18,10 @@ from pkg.plot import (
     svg_to_pdf,
 )
 from pkg.stats import erdos_renyi_test, stochastic_block_test
-from pkg.utils import get_toy_palette, remove_group, sample_toy_networks
 from scipy.interpolate import interp1d
 from svgutils.compose import Figure, Panel, Text
 from tqdm import tqdm
 
-from giskard.plot import merge_axes, soft_axis_off
 
 _, _, DISPLAY_FIGS = get_environment_variables()
 
@@ -55,7 +52,6 @@ rng = np.random.default_rng(8888)
 #%%
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 neutral_color = sns.color_palette("Set2")[2]
 
 left_adj, left_nodes = load_unmatched(side="left", weights=True)
@@ -72,10 +68,10 @@ og_sbm_stat, og_sbm_pval, og_sbm_misc = stochastic_block_test(
 
 #%%
 left_nodes["inds"] = range(len(left_nodes))
-kc_left_inds = left_nodes[left_nodes[GROUP_KEY] == "KCs"]["inds"].values
+kc_left_inds = left_nodes[left_nodes[GROUP_KEY] == "KC"]["inds"].values
 
 right_nodes["inds"] = range(len(right_nodes))
-kc_right_inds = right_nodes[right_nodes[GROUP_KEY] == "KCs"]["inds"].values
+kc_right_inds = right_nodes[right_nodes[GROUP_KEY] == "KC"]["inds"].values
 
 #%%
 left_adj = left_adj[kc_left_inds][:, kc_left_inds]
@@ -388,3 +384,7 @@ svg_to_pdf(
 fig
 
 # %%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f"Script took {delta}")
+print(f"Completed at {datetime.datetime.now()}")

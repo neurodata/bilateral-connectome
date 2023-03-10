@@ -120,18 +120,46 @@ def stochastic_block_test(
     else:
         raise ValueError('wrong type for "density_adjustment"')
 
-    for i in index:
-        for j in index:
-            curr_stat, curr_pvalue = binom_2samp(
-                n_observed1.loc[i, j],
-                n_possible1.loc[i, j],
-                n_observed2.loc[i, j],
-                n_possible2.loc[i, j],
-                method=method,
-                null_ratio=adjustment_factor,
-            )
-            uncorrected_pvalues.loc[i, j] = curr_pvalue
-            stats.loc[i, j] = curr_stat
+    if method == "cmh":
+        tables = []
+        for i in index:
+            for j in index:
+                if n_observed1.loc[i, j] != 0 and n_observed2.loc[i, j] != 0:
+                    table = np.array(
+                        [
+                            [
+                                n_observed1.loc[i, j],
+                                n_possible1.loc[i, j] - n_observed1.loc[i, j],
+                            ],
+                            [
+                                n_observed2.loc[i, j],
+                                n_possible2.loc[i, j] - n_observed2.loc[i, j],
+                            ],
+                        ]
+                    )
+                    tables.append(table)
+
+        from statsmodels.stats.contingency_tables import StratifiedTable
+
+        st = StratifiedTable(tables)
+        out = st.test_null_odds()
+        stat = out.statistic
+        pvalue = out.pvalue
+        return stat, pvalue, {}
+
+    else:
+        for i in index:
+            for j in index:
+                curr_stat, curr_pvalue = binom_2samp(
+                    n_observed1.loc[i, j],
+                    n_possible1.loc[i, j],
+                    n_observed2.loc[i, j],
+                    n_possible2.loc[i, j],
+                    method=method,
+                    null_ratio=adjustment_factor,
+                )
+                uncorrected_pvalues.loc[i, j] = curr_pvalue
+                stats.loc[i, j] = curr_stat
 
     misc = {}
     misc["uncorrected_pvalues"] = uncorrected_pvalues

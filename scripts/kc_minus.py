@@ -65,10 +65,10 @@ right_adj, right_nodes = load_unmatched(side="right")
 
 # Remove kenyon cells
 left_nodes["inds"] = range(len(left_nodes))
-sub_left_nodes = left_nodes[left_nodes[GROUP_KEY] != "KCs"]
+sub_left_nodes = left_nodes[left_nodes[GROUP_KEY] != "KC"]
 sub_left_inds = sub_left_nodes["inds"].values
 right_nodes["inds"] = range(len(right_nodes))
-sub_right_nodes = right_nodes[right_nodes[GROUP_KEY] != "KCs"]
+sub_right_nodes = right_nodes[right_nodes[GROUP_KEY] != "KC"]
 sub_right_inds = sub_right_nodes["inds"].values
 
 sub_left_adj = left_adj[np.ix_(sub_left_inds, sub_left_inds)]

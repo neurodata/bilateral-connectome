@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib.ticker import ScalarFormatter
-from pkg.io import FIG_PATH, get_environment_variables
+from pkg.io import FIG_PATH, OUT_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
 from pkg.plot import set_theme
@@ -50,7 +50,7 @@ print(base_p_range)
 n_sims = 1000
 
 effect_scale = 0.8
-method = "fisher"
+method = "score"
 
 #%%
 
@@ -85,14 +85,9 @@ if RERUN_SIMS:
 
     pbar.close()
     results = pd.DataFrame(rows)
-    results.to_csv(
-        "bilateral-connectome/results/outputs/single_subgraph_power/sim_results.csv"
-    )
+    results.to_csv(OUT_PATH / FILENAME / "sim_results.csv")
 else:
-    results = pd.read_csv(
-        "bilateral-connectome/results/outputs/single_subgraph_power/sim_results.csv",
-        index_col=0,
-    )
+    results = pd.read_csv(OUT_PATH / FILENAME / "sim_results.csv", index_col=0)
 
 
 # %%

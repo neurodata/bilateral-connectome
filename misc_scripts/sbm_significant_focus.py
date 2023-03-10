@@ -11,22 +11,17 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import seaborn as sns
-from giskard.plot import rotate_labels
-from matplotlib.transforms import Bbox
 from myst_nb import glue as default_glue
 from pkg.data import load_network_palette, load_node_palette, load_unmatched
 from pkg.io import savefig
-from pkg.perturb import remove_edges
 from pkg.plot import set_theme
 from pkg.stats import stochastic_block_test
-from seaborn.utils import relative_luminance
 
 
 DISPLAY_FIGS = False
 
-FILENAME = "sbm_unmatched_test"
+FILENAME = "sbm_significant_focus"
 
 
 def gluefig(name, fig, **kwargs):
@@ -257,3 +252,9 @@ for ax in axs.flat:
         ax.set_visible(False)
 
 plt.tight_layout()
+
+#%%
+elapsed = time.time() - t0
+delta = datetime.timedelta(seconds=elapsed)
+print(f'Script took {delta}')
+print(f'Completed at {datetime.datetime.now()}')
