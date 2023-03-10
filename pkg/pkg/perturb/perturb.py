@@ -1,7 +1,6 @@
 import numpy as np
 from numpy.random import default_rng
-from giskard.utils import get_random_seed
-from sklearn.utils import shuffle
+from ..utils import get_random_seed
 
 
 def _input_checks(adjacency, random_seed, effect_size, max_tries):

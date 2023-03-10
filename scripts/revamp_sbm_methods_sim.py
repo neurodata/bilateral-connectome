@@ -298,9 +298,10 @@ print(f"Perturb number range: {n_perturb_range}")
 n_runs = n_sims * len(n_perturb_range) * len(perturb_size_range)
 print(f"Number of runs: {n_runs}")
 
-pbar = tqdm(total=len(n_perturb_range) * len(perturb_size_range) * n_sims)
 
 if RERUN_SIMS:
+    pbar = tqdm(total=len(n_perturb_range) * len(perturb_size_range) * n_sims)
+
     rows = []
     example_perturb_probs = {}
 

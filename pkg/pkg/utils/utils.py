@@ -1,4 +1,6 @@
 import warnings
+
+import numpy as np
 from beartype.roar import BeartypeDecorHintPepDeprecatedWarning
 
 
@@ -11,3 +13,6 @@ def set_warnings():
     )
 
 
+def get_random_seed(random_state):
+    seed = random_state.integers(np.iinfo(np.int32).max)
+    return seed
