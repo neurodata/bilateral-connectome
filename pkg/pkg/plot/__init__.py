@@ -16,7 +16,7 @@ from .sbm import (
     plot_pvalues,
     plot_stochastic_block_probabilities,
 )
-from .scatter import scatterplot
+from .scatter import scatterplot, scattermap
 from .subuniformity import subuniformity_plot
 from .svg import SmartSVG
 from .theme import set_theme

@@ -14,12 +14,14 @@ from matplotlib.patheffects import Normal, Stroke
 from pkg.data import load_network_palette, load_unmatched
 from pkg.io import get_environment_variables
 from pkg.io import glue as default_glue
-from pkg.io import savefig, scattermap
-from pkg.plot import set_theme
+from pkg.io import savefig
+from pkg.plot import scattermap, set_theme
 from scipy.cluster import hierarchy
 from umap import UMAP
 
+from graspologic.align import OrthogonalProcrustes
 from graspologic.embed import LaplacianSpectralEmbed
+from graspologic.match import graph_match
 from graspologic.plot import networkplot
 
 _, _, DISPLAY_FIGS = get_environment_variables()
@@ -52,9 +54,17 @@ network_palette["R"] = network_palette["Right"]
 left_adj, left_nodes = load_unmatched("left")
 right_adj, right_nodes = load_unmatched("right")
 
-
 #%%
 
+indices_left, indices_right, _, _ = graph_match(
+    left_adj, right_adj, max_iter=30, rng=88
+)
+
+#%%
+left_adj = left_adj[indices_left, :][:, indices_left]
+right_adj = right_adj[indices_right, :][:, indices_right]
+
+#%%
 
 ase = LaplacianSpectralEmbed(
     n_components=24, check_lcc=False, concat=True, form="R-DAD", svd_seed=0
@@ -62,30 +72,24 @@ ase = LaplacianSpectralEmbed(
 left_ase_embedding = ase.fit_transform(left_adj)
 right_ase_embedding = ase.fit_transform(right_adj)
 
+#%%
 
+op = OrthogonalProcrustes()
+left_ase_embedding = op.fit_transform(left_ase_embedding, right_ase_embedding)
+
+cat_embedding = np.concatenate((left_ase_embedding, right_ase_embedding), axis=0)
+
+#%%
 umapper = UMAP(
     n_components=2,
     n_neighbors=64,
-    min_dist=0.8,
+    min_dist=0.8,  # .85
     metric="cosine",
-    random_state=rng.integers(np.iinfo(np.int32).max),
+    random_state=45,
 )
-og_left_umap_embedding = umapper.fit_transform(left_ase_embedding)
-right_umap_embedding = umapper.fit_transform(right_ase_embedding)
-
-#%%
-# from graspologic.align import SeedlessProcrustes
-
-# sp = SeedlessProcrustes()
-# left_umap_embedding = sp.fit_transform(left_umap_embedding, right_umap_embedding)
-
-#%%
-theta = 100
-R = [
-    [np.cos(np.deg2rad(theta)), -np.sin(np.deg2rad(theta))],
-    [np.sin(np.deg2rad(theta)), np.cos(np.deg2rad(theta))],
-]
-left_umap_embedding = og_left_umap_embedding @ R
+umap_embedding = umapper.fit_transform(cat_embedding)
+left_umap_embedding = umap_embedding[: len(left_ase_embedding)]
+right_umap_embedding = umap_embedding[len(left_ase_embedding) :]
 
 #%%
 
@@ -116,9 +120,14 @@ soft_axis_off(ax)
 
 left_nodes["degree"] = left_adj.sum(axis=0) + left_adj.sum(axis=1)
 left_nodes["x"] = left_umap_embedding[:, 0]
-left_nodes["y"] = -left_umap_embedding[:, 1]
+left_nodes["y"] = left_umap_embedding[:, 1]
 
-networkplot(left_adj, node_data=left_nodes.reset_index(), ax=ax, **networkplot_kws)
+networkplot(
+    left_adj,
+    node_data=left_nodes.reset_index(),
+    ax=ax,
+    **networkplot_kws,
+)
 
 ax.set_xlabel("Left", color=network_palette["Left"], fontsize=60)
 ax.set_ylabel("")
@@ -130,7 +139,12 @@ right_nodes["x"] = right_umap_embedding[:, 0]
 right_nodes["y"] = right_umap_embedding[:, 1]
 right_nodes["degree"] = right_adj.sum(axis=0) + right_adj.sum(axis=1)
 
-networkplot(right_adj, node_data=right_nodes.reset_index(), ax=ax, **networkplot_kws)
+networkplot(
+    right_adj,
+    node_data=right_nodes.reset_index(),
+    ax=ax,
+    **networkplot_kws,
+)
 
 ax.set_xlabel("Right", color=network_palette["Right"], fontsize=60)
 ax.set_ylabel("")
