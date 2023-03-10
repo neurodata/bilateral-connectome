@@ -10,8 +10,7 @@ scikit-learn = "^0.24.2"
 umap-learn = "^0.5.1"
 anytree = "^2.8.0"
 pkg = {path = "pkg", develop = true}
-graspologic = "^1.0.0"
-giskard = {path = "../giskard", develop = true}
+graspologic = "2.0.1"
 statsmodels = "^0.13.0"
 jupyter-client = "6.1.12" # https://github.com/jupyter/jupyter_client/issues/637
 svgutils = "^0.3.4"
@@ -20,6 +19,7 @@ python-catmaid = "^2.0.6"
 scikit-image = "^0.19.3"
 inflect = "^6.0.0"
 svglib = "^1.5.1"
+networkx = "<3.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

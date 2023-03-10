@@ -1,6 +1,7 @@
 from .load_data import (
     DATA_PATH,
     DATA_VERSION,
+    DATA_PROCESSED_VERSION,
     load_adjacency,
     load_data,
     load_edgelist,

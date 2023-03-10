@@ -1,16 +1,4 @@
 [[package]]
-name = "adjusttext"
-version = "0.7.3"
-description = "Iteratively adjust text position in matplotlib plots to minimize overlaps"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-matplotlib = "*"
-numpy = "*"
-
-[[package]]
 name = "alabaster"
 version = "0.7.12"
 description = "A configurable sidebar-enabled Sphinx theme"
@@ -473,32 +461,6 @@ python-dateutil = ">=2.8.1"
 dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
-name = "giskard"
-version = "0.1.0"
-description = "A random collection of tools I find useful for data science."
-category = "main"
-optional = false
-python-versions = ">=3.7, <4"
-develop = true
-
-[package.dependencies]
-adjustText = "*"
-colorcet = "*"
-graspologic-native = "*"
-hyppo = ">=0.1.3"
-joblib = ">=0.17.0"
-matplotlib = ">=3.3.2"
-numpy = ">=1.8.1"
-scikit-learn = ">=0.19.1"
-scipy = ">=1.4.0"
-seaborn = ">=0.11.0"
-umap-learn = "*"
-
-[package.source]
-type = "directory"
-url = "../giskard"
-
-[[package]]
 name = "gitdb"
 version = "4.0.9"
 description = "Git Object Database"
@@ -522,7 +484,7 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "graspologic"
-version = "1.0.0"
+version = "2.0.1"
 description = "A set of python modules for graph statistics"
 category = "main"
 optional = false
@@ -535,17 +497,18 @@ gensim = ">=4.0.0"
 graspologic-native = ">=1.1.1"
 hyppo = ">=0.3.2"
 joblib = ">=0.17.0"
-matplotlib = ">=3.0.0,<3.3.0 || >=3.4.0"
+matplotlib = ">=3.0.0,<3.3.0 || >=3.4.0,<3.6.1 || >3.6.1"
 networkx = ">=2.1"
 numpy = ">=1.8.1"
 POT = ">=0.7.0"
 scikit-learn = ">=0.22.0"
 scipy = ">=1.4.0"
 seaborn = ">=0.11.0"
+typing-extensions = ">=4.4.0"
 umap-learn = ">=0.4.6"
 
 [package.extras]
-dev = ["black", "ipykernel (>=5.1.0)", "ipython (>=7.4.0)", "isort (>=5.9.3)", "mypy (>=0.910)", "nbsphinx (>=0.8.7)", "numpydoc (>=1.1.0)", "pandoc (>=1.1.0)", "pytest (>=6.2.5)", "pytest-cov (>=3.0.0)", "sphinx (>=4.2.0)", "sphinx-rtd-theme (>=1.0.0)", "sphinxcontrib-rawfiles (>=0.1.1)", "testfixtures (>=6.18.3)"]
+dev = ["black", "ipykernel (>=5.1.0)", "ipython (>=7.4.0,!=8.7.0)", "isort (>=5.9.3)", "mypy (>=0.910)", "nbsphinx (>=0.8.7)", "numpydoc (>=1.1.0)", "pandoc (>=1.1.0)", "pytest (>=6.2.5)", "pytest-cov (>=3.0.0)", "sphinx (>=4.2.0)", "sphinx-rtd-theme (>=1.0.0)", "sphinxcontrib-rawfiles (>=0.1.1)", "testfixtures (>=6.18.3)"]
 
 [[package]]
 name = "graspologic-native"
@@ -1445,7 +1408,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "networkx"
-version = "2.8"
+version = "2.8.8"
 description = "Python package for creating and manipulating graphs and networks"
 category = "main"
 optional = false
@@ -1453,10 +1416,10 @@ python-versions = ">=3.8"
 
 [package.extras]
 default = ["matplotlib (>=3.4)", "numpy (>=1.19)", "pandas (>=1.3)", "scipy (>=1.8)"]
-developer = ["mypy (>=0.942)", "pre-commit (>=2.18)"]
-doc = ["nb2plots (>=0.6)", "numpydoc (>=1.2)", "pillow (>=9.1)", "pydata-sphinx-theme (>=0.8.1)", "sphinx (>=4.5)", "sphinx-gallery (>=0.10)", "texext (>=0.6.6)"]
+developer = ["mypy (>=0.982)", "pre-commit (>=2.20)"]
+doc = ["nb2plots (>=0.6)", "numpydoc (>=1.5)", "pillow (>=9.2)", "pydata-sphinx-theme (>=0.11)", "sphinx (>=5.2)", "sphinx-gallery (>=0.11)", "texext (>=0.6.6)"]
 extra = ["lxml (>=4.6)", "pydot (>=1.4.2)", "pygraphviz (>=1.9)", "sympy (>=1.10)"]
-test = ["codecov (>=2.1)", "pytest (>=7.1)", "pytest-cov (>=3.0)"]
+test = ["codecov (>=2.1)", "pytest (>=7.2)", "pytest-cov (>=4.0)"]
 
 [[package]]
 name = "notebook"
@@ -2890,7 +2853,7 @@ test = ["coveralls", "ezdxf", "pyinstrument", "pytest", "pytest-cov"]
 
 [[package]]
 name = "typing-extensions"
-version = "4.2.0"
+version = "4.5.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
@@ -3055,12 +3018,9 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.*"
-content-hash = "09c5b58894ff77ddca3529e6bbd504b71ebeec88364f5287fa74b08ce18b5555"
+content-hash = "19823d90b53eb16bf12f595ef7eccdf74404721a0153c934c409e59a6a22d368"
 
 [metadata.files]
-adjusttext = [
-    {file = "adjustText-0.7.3.tar.gz", hash = "sha256:b90e275a95b4d980cbbac7967914b8d66477c09bc346a0b3c9e2125bba664b06"},
-]
 alabaster = [
     {file = "alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
@@ -3333,7 +3293,6 @@ ghp-import = [
     {file = "ghp-import-2.0.2.tar.gz", hash = "sha256:947b3771f11be850c852c64b561c600fdddf794bab363060854c1ee7ad05e071"},
     {file = "ghp_import-2.0.2-py3-none-any.whl", hash = "sha256:5f8962b30b20652cdffa9c5a9812f7de6bcb56ec475acac579807719bf242c46"},
 ]
-giskard = []
 gitdb = [
     {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},
     {file = "gitdb-4.0.9.tar.gz", hash = "sha256:bac2fd45c0a1c9cf619e63a90d62bdc63892ef92387424b855792a6cabe789aa"},
@@ -3343,7 +3302,7 @@ gitpython = [
     {file = "GitPython-3.1.27.tar.gz", hash = "sha256:1c885ce809e8ba2d88a29befeb385fcea06338d3640712b59ca623c220bb5704"},
 ]
 graspologic = [
-    {file = "graspologic-1.0.0.tar.gz", hash = "sha256:06c4fc32114ca7f6b8ee9cf9cdf2a8ac5b2c6264bf49093ce2ca75dbc7549e35"},
+    {file = "graspologic-2.0.1.tar.gz", hash = "sha256:52f70708cf6a59d970f7911091b54f7d06f8822416f25a10eb7995d6db3e06ae"},
 ]
 graspologic-native = [
     {file = "graspologic_native-1.1.1-cp36-abi3-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:60d05cffed20d8f9e227f984b301eec346b3f0e321e9d5ffa546f0d0353ff254"},
@@ -3871,8 +3830,8 @@ nest-asyncio = [
     {file = "nest_asyncio-1.5.5.tar.gz", hash = "sha256:e442291cd942698be619823a17a86a5759eabe1f8613084790de189fe9e16d65"},
 ]
 networkx = [
-    {file = "networkx-2.8-py3-none-any.whl", hash = "sha256:1a1e8fe052cc1b4e0339b998f6795099562a264a13a5af7a32cad45ab9d4e126"},
-    {file = "networkx-2.8.tar.gz", hash = "sha256:4a52cf66aed221955420e11b3e2e05ca44196b4829aab9576d4d439212b0a14f"},
+    {file = "networkx-2.8.8-py3-none-any.whl", hash = "sha256:e435dfa75b1d7195c7b8378c3859f0445cd88c6b0375c181ed66823a9ceb7524"},
+    {file = "networkx-2.8.8.tar.gz", hash = "sha256:230d388117af870fce5647a3c52401fcf753e94720e6ea6b4197a5355648885e"},
 ]
 notebook = [
     {file = "notebook-6.4.11-py3-none-any.whl", hash = "sha256:b4a6baf2eba21ce67a0ca11a793d1781b06b8078f34d06c710742e55f3eee505"},
@@ -4855,8 +4814,8 @@ trimesh = [
     {file = "trimesh-3.10.8.tar.gz", hash = "sha256:4851b7c06185c7364a7cdc8842ba4319b94bdaf0b4a5082e58861dc05d0c8390"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-4.2.0-py3-none-any.whl", hash = "sha256:6657594ee297170d19f67d55c05852a874e7eb634f4f753dbd667855e07c1708"},
-    {file = "typing_extensions-4.2.0.tar.gz", hash = "sha256:f1c24655a0da0d1b67f07e17a5e6b2a105894e6824b92096378bb3668ef02376"},
+    {file = "typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"},
+    {file = "typing_extensions-4.5.0.tar.gz", hash = "sha256:5cb5f4a79139d699607b3ef622a1dedafa84e115ab0024e0d9c044a9479ca7cb"},
 ]
 uc-micro-py = [
     {file = "uc-micro-py-1.0.1.tar.gz", hash = "sha256:b7cdf4ea79433043ddfe2c82210208f26f7962c0cfbe3bacb05ee879a7fdb596"},

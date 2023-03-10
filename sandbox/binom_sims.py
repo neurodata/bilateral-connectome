@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import set_theme
+from pkg.plot import set_theme
 from scipy.stats import binom, chi2_contingency, ks_1samp, uniform
 
 c = 1.5

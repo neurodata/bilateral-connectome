@@ -1,12 +1,14 @@
-from pathlib import Path
 import pickle
+from pathlib import Path
+
 import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.graph import MaggotGraph
-from giskard.utils import to_pandas_edgelist
 from sklearn.utils import Bunch
+
+from ..graph import MaggotGraph
+from ..graph.utils import to_pandas_edgelist
 
 version_loc = Path(__file__).parent / "version.txt"
 with open(version_loc) as f:
@@ -17,6 +19,7 @@ with open(processed_loc) as f:
     processed_version = f.readline()
 
 DATA_VERSION = version
+DATA_PROCESSED_VERSION = processed_version
 DATA_PATH = Path(__file__).parent.parent.parent.parent  # don't judge me judge judy
 DATA_PATH = DATA_PATH / "data"
 
@@ -132,11 +135,12 @@ def load_maggot_graph(path=None, version=None):
     g = nx.MultiDiGraph()
     g.add_nodes_from(nodes.index)
     nx.set_node_attributes(g, nodes.to_dict(orient="index"))
-    graph_types = ["Gaa", "Gad", "Gda", "Gdd"]
-    for graph_type in graph_types:
-        g_type = load_networkx(graph_type=graph_type)
-        for u, v, data in g_type.edges(data=True):
-            g.add_edge(u, v, key=graph_type[1:], edge_type=graph_type[1:], **data)
+
+    # graph_types = ["Gaa", "Gad", "Gda", "Gdd"]
+    # for graph_type in graph_types:
+    #     g_type = load_networkx(graph_type=graph_type)
+    #     for u, v, data in g_type.edges(data=True):
+    #         g.add_edge(u, v, key=graph_type[1:], edge_type=graph_type[1:], **data)
 
     g_type = load_networkx(graph_type="G")
     for u, v, data in g_type.edges(data=True):

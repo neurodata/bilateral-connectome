@@ -45,14 +45,18 @@
 #%%
 
 import datetime
-import os
 import time
-from pathlib import Path
 
 import networkx as nx
 import numpy as np
 import pandas as pd
-from pkg.data import DATA_VERSION, load_maggot_graph, select_nice_nodes
+from pkg.data import (
+    DATA_PATH,
+    DATA_PROCESSED_VERSION,
+    DATA_VERSION,
+    load_maggot_graph,
+    select_nice_nodes,
+)
 from pkg.io import get_environment_variables
 from pkg.io import glue as default_glue
 
@@ -69,10 +73,11 @@ def glue(name, var, **kwargs):
 
 RESAVE_DATA, _, _ = get_environment_variables()
 
+
 print(f"Using data from {DATA_VERSION}")
-os.chdir("/Users/bpedigo/JHU_code/bilateral")  # TODO fix, make this less fragile
-output_dir = os.path.join(os.getcwd(), "bilateral-connectome/data/processed-2022-11-03")
-output_dir = Path(output_dir)
+print(f"Saving data to {DATA_PROCESSED_VERSION}")
+output_dir = DATA_PATH / DATA_PROCESSED_VERSION
+input_dir = DATA_PATH / DATA_VERSION
 
 #%%
 mg = load_maggot_graph()
