@@ -439,6 +439,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">SmartSVG</span><span class="p">,</span>
     <span class="n">draw_hypothesis_box</span><span class="p">,</span>
+    <span class="n">merge_axes</span><span class="p">,</span>
     <span class="n">networkplot_simple</span><span class="p">,</span>
     <span class="n">plot_density</span><span class="p">,</span>
     <span class="n">plot_pvalues</span><span class="p">,</span>
@@ -448,8 +449,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">erdos_renyi_test</span><span class="p">,</span> <span class="n">stochastic_block_test</span>
 <span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">get_toy_palette</span><span class="p">,</span> <span class="n">sample_toy_networks</span>
 <span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
-
-<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">merge_axes</span>
 
 <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
 
@@ -481,8 +480,8 @@ document.write(`
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: True
-   RERUN_SIMS: False
+   RESAVE_DATA: true
+   RERUN_SIMS: true
    DISPLAY_FIGS: False
 </pre></div>
 </div>
@@ -505,10 +504,10 @@ document.write(`
 
 <span class="c1"># Remove kenyon cells</span>
 <span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left_nodes</span><span class="p">))</span>
-<span class="n">sub_left_nodes</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="p">[</span><span class="n">left_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;KCs&quot;</span><span class="p">]</span>
+<span class="n">sub_left_nodes</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="p">[</span><span class="n">left_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;KC&quot;</span><span class="p">]</span>
 <span class="n">sub_left_inds</span> <span class="o">=</span> <span class="n">sub_left_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">right_nodes</span><span class="p">))</span>
-<span class="n">sub_right_nodes</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="p">[</span><span class="n">right_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;KCs&quot;</span><span class="p">]</span>
+<span class="n">sub_right_nodes</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="p">[</span><span class="n">right_nodes</span><span class="p">[</span><span class="n">GROUP_KEY</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;KC&quot;</span><span class="p">]</span>
 <span class="n">sub_right_inds</span> <span class="o">=</span> <span class="n">sub_right_nodes</span><span class="p">[</span><span class="s2">&quot;inds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 <span class="n">sub_left_adj</span> <span class="o">=</span> <span class="n">left_adj</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">sub_left_inds</span><span class="p">,</span> <span class="n">sub_left_inds</span><span class="p">)]</span>
@@ -613,7 +612,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.8739355535358796e-24
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.441433220577899e-28
 </pre></div>
 </div>
 </div>
@@ -647,7 +646,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.2645011493987496e-08
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00564594712387758
 </pre></div>
 </div>
 </div>
@@ -680,7 +679,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0046509184480731805
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5962651977046253
 </pre></div>
 </div>
 </div>
@@ -744,7 +743,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/18b41d5a9bc313a6580e13bc1ba6ffe996c26ead83d0571641c77d8d2aacf339.svg" src="_images/18b41d5a9bc313a6580e13bc1ba6ffe996c26ead83d0571641c77d8d2aacf339.svg" /></div>
+<img alt="_images/4492ded38487a9931486bf01b651dcec36f75fdf87aa51bb8808515316f3e1e7.svg" src="_images/4492ded38487a9931486bf01b651dcec36f75fdf87aa51bb8808515316f3e1e7.svg" /></div>
 </div>
 <p>End</p>
 <div class="cell tag_hide-input docutils container">
@@ -763,8 +762,8 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:11.716930
-Completed at 2023-03-08 12:41:36.630820
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:12.315365
+Completed at 2023-03-10 13:43:09.314189
 </pre></div>
 </div>
 </div>

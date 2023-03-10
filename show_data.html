@@ -417,22 +417,21 @@ document.write(`
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">scattermap</span>
-<span class="kn">from</span> <span class="nn">graspologic.embed</span> <span class="kn">import</span> <span class="n">LaplacianSpectralEmbed</span>
-<span class="kn">from</span> <span class="nn">graspologic.plot</span> <span class="kn">import</span> <span class="n">networkplot</span>
 <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="kn">import</span> <span class="n">Normal</span><span class="p">,</span> <span class="n">Stroke</span>
-<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">load_network_palette</span><span class="p">,</span>
-    <span class="n">load_unmatched</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pkg.data</span> <span class="kn">import</span> <span class="n">load_network_palette</span><span class="p">,</span> <span class="n">load_unmatched</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">get_environment_variables</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">glue</span> <span class="k">as</span> <span class="n">default_glue</span>
 <span class="kn">from</span> <span class="nn">pkg.io</span> <span class="kn">import</span> <span class="n">savefig</span>
-<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">set_theme</span>
+<span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="n">scattermap</span><span class="p">,</span> <span class="n">set_theme</span>
 <span class="kn">from</span> <span class="nn">scipy.cluster</span> <span class="kn">import</span> <span class="n">hierarchy</span>
 <span class="kn">from</span> <span class="nn">umap</span> <span class="kn">import</span> <span class="n">UMAP</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">graspologic.align</span> <span class="kn">import</span> <span class="n">OrthogonalProcrustes</span>
+<span class="kn">from</span> <span class="nn">graspologic.embed</span> <span class="kn">import</span> <span class="n">LaplacianSpectralEmbed</span>
+<span class="kn">from</span> <span class="nn">graspologic.match</span> <span class="kn">import</span> <span class="n">graph_match</span>
+<span class="kn">from</span> <span class="nn">graspologic.plot</span> <span class="kn">import</span> <span class="n">networkplot</span>
 
 <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
 
@@ -469,12 +468,41 @@ document.write(`
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: True
-   RERUN_SIMS: False
+   RESAVE_DATA: true
+   RERUN_SIMS: true
    DISPLAY_FIGS: False
 </pre></div>
 </div>
 </div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indices_left</span><span class="p">,</span> <span class="n">indices_right</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">graph_match</span><span class="p">(</span>
+    <span class="n">left_adj</span><span class="p">,</span> <span class="n">right_adj</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="mi">88</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">left_adj</span><span class="p">[</span><span class="n">indices_left</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">indices_left</span><span class="p">]</span>
+<span class="n">right_adj</span> <span class="o">=</span> <span class="n">right_adj</span><span class="p">[</span><span class="n">indices_right</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">indices_right</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</details>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -488,51 +516,44 @@ document.write(`
 <span class="p">)</span>
 <span class="n">left_ase_embedding</span> <span class="o">=</span> <span class="n">ase</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">left_adj</span><span class="p">)</span>
 <span class="n">right_ase_embedding</span> <span class="o">=</span> <span class="n">ase</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">right_adj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">OrthogonalProcrustes</span><span class="p">()</span>
+<span class="n">left_ase_embedding</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">left_ase_embedding</span><span class="p">,</span> <span class="n">right_ase_embedding</span><span class="p">)</span>
 
-
-<span class="n">umapper</span> <span class="o">=</span> <span class="n">UMAP</span><span class="p">(</span>
+<span class="n">cat_embedding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">left_ase_embedding</span><span class="p">,</span> <span class="n">right_ase_embedding</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">umapper</span> <span class="o">=</span> <span class="n">UMAP</span><span class="p">(</span>
     <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
-    <span class="n">min_dist</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">min_dist</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># .85</span>
     <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
-    <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">iinfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">),</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">og_left_umap_embedding</span> <span class="o">=</span> <span class="n">umapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">left_ase_embedding</span><span class="p">)</span>
-<span class="n">right_umap_embedding</span> <span class="o">=</span> <span class="n">umapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">right_ase_embedding</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from graspologic.align import SeedlessProcrustes</span>
-
-<span class="c1"># sp = SeedlessProcrustes()</span>
-<span class="c1"># left_umap_embedding = sp.fit_transform(left_umap_embedding, right_umap_embedding)</span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">R</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta</span><span class="p">)),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta</span><span class="p">))],</span>
-    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta</span><span class="p">))],</span>
-<span class="p">]</span>
-<span class="n">left_umap_embedding</span> <span class="o">=</span> <span class="n">og_left_umap_embedding</span> <span class="o">@</span> <span class="n">R</span>
+<span class="n">umap_embedding</span> <span class="o">=</span> <span class="n">umapper</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">cat_embedding</span><span class="p">)</span>
+<span class="n">left_umap_embedding</span> <span class="o">=</span> <span class="n">umap_embedding</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">left_ase_embedding</span><span class="p">)]</span>
+<span class="n">right_umap_embedding</span> <span class="o">=</span> <span class="n">umap_embedding</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">left_ase_embedding</span><span class="p">)</span> <span class="p">:]</span>
 </pre></div>
 </div>
 </div>
@@ -572,9 +593,14 @@ document.write(`
 
 <span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 
-<span class="n">networkplot</span><span class="p">(</span><span class="n">left_adj</span><span class="p">,</span> <span class="n">node_data</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">)</span>
+<span class="n">networkplot</span><span class="p">(</span>
+    <span class="n">left_adj</span><span class="p">,</span>
+    <span class="n">node_data</span><span class="o">=</span><span class="n">left_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Left&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -586,7 +612,12 @@ document.write(`
 <span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">right_nodes</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">right_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">networkplot</span><span class="p">(</span><span class="n">right_adj</span><span class="p">,</span> <span class="n">node_data</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">)</span>
+<span class="n">networkplot</span><span class="p">(</span>
+    <span class="n">right_adj</span><span class="p">,</span>
+    <span class="n">node_data</span><span class="o">=</span><span class="n">right_nodes</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">networkplot_kws</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Right&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">network_palette</span><span class="p">[</span><span class="s2">&quot;Right&quot;</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -614,19 +645,6 @@ document.write(`
     <span class="n">Z_ordered</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">optimal_leaf_ordering</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
     <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">hierarchy</span><span class="o">.</span><span class="n">leaves_list</span><span class="p">(</span><span class="n">Z_ordered</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sorted_indices</span>
-
-
-<span class="c1"># #%%</span>
-
-<span class="c1"># fig, ax = plt.subplots(1, 1, figsize=(15, 15))</span>
-<span class="c1"># adjplot(</span>
-<span class="c1">#     adj,</span>
-<span class="c1">#     meta=nodes,</span>
-<span class="c1">#     sort_class=&quot;hemisphere&quot;,</span>
-<span class="c1">#     plot_type=&quot;scattermap&quot;,</span>
-<span class="c1">#     sizes=(0.5, 0.5),</span>
-<span class="c1">#     ax=ax,</span>
-<span class="c1"># )</span>
 </pre></div>
 </div>
 </div>
@@ -882,8 +900,8 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:01:43.149435
-Completed at 2023-03-08 12:39:35.887453
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:02:24.050459
+Completed at 2023-03-10 13:25:43.562227
 </pre></div>
 </div>
 </div>

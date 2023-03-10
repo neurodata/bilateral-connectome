@@ -497,17 +497,18 @@ alternative hypotheses above.</p>
 <span class="kn">from</span> <span class="nn">pkg.plot</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">SmartSVG</span><span class="p">,</span>
     <span class="n">draw_hypothesis_box</span><span class="p">,</span>
+    <span class="n">merge_axes</span><span class="p">,</span>
     <span class="n">networkplot_simple</span><span class="p">,</span>
     <span class="n">plot_density</span><span class="p">,</span>
     <span class="n">rainbowarrow</span><span class="p">,</span>
     <span class="n">set_theme</span><span class="p">,</span>
+    <span class="n">soft_axis_off</span><span class="p">,</span>
     <span class="n">svg_to_pdf</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pkg.stats</span> <span class="kn">import</span> <span class="n">erdos_renyi_test</span>
 <span class="kn">from</span> <span class="nn">pkg.utils</span> <span class="kn">import</span> <span class="n">sample_toy_networks</span>
 <span class="kn">from</span> <span class="nn">svgutils.compose</span> <span class="kn">import</span> <span class="n">Figure</span><span class="p">,</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span>
 
-<span class="kn">from</span> <span class="nn">giskard.plot</span> <span class="kn">import</span> <span class="n">merge_axes</span><span class="p">,</span> <span class="n">soft_axis_off</span>
 <span class="kn">from</span> <span class="nn">graspologic.simulations</span> <span class="kn">import</span> <span class="n">er_np</span>
 
 <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">DISPLAY_FIGS</span> <span class="o">=</span> <span class="n">get_environment_variables</span><span class="p">()</span>
@@ -541,8 +542,8 @@ alternative hypotheses above.</p>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: True
-   RERUN_SIMS: False
+   RESAVE_DATA: true
+   RERUN_SIMS: true
    DISPLAY_FIGS: False
 </pre></div>
 </div>
@@ -828,7 +829,7 @@ explained by this difference in density alone.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/bac927fae4466303374ffd51333e80e7915e64610e9f71060b558df0eb56ba91.svg" src="_images/bac927fae4466303374ffd51333e80e7915e64610e9f71060b558df0eb56ba91.svg" /></div>
+<img alt="_images/d0e666309f60d6cdeb983498b2867c82155a803b2033180d76986e06ea99feab.svg" src="_images/d0e666309f60d6cdeb983498b2867c82155a803b2033180d76986e06ea99feab.svg" /></div>
 </div>
 </section>
 <section id="end">
@@ -849,8 +850,8 @@ explained by this difference in density alone.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:05.330183
-Completed at 2023-03-08 12:39:56.869956
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:00:05.677516
+Completed at 2023-03-10 13:26:05.593312
 </pre></div>
 </div>
 </div>
