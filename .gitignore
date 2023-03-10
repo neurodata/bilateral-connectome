@@ -168,3 +168,5 @@ docs/slides/committee-2023-03-06/committee-2023-03-06.html
 .gitignore
 docs/slides/committee-2023-03-06/committee-2023-03-06.md
 docs/slides/dfence/dfence.md
+!data/elife
+!data/processed-elife
