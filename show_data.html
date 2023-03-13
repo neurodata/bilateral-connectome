@@ -468,8 +468,8 @@ document.write(`
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Environment variables:
-   RESAVE_DATA: true
-   RERUN_SIMS: true
+   RESAVE_DATA: True
+   RERUN_SIMS: False
    DISPLAY_FIGS: False
 </pre></div>
 </div>
@@ -499,6 +499,8 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_adj</span> <span class="o">=</span> <span class="n">left_adj</span><span class="p">[</span><span class="n">indices_left</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">indices_left</span><span class="p">]</span>
 <span class="n">right_adj</span> <span class="o">=</span> <span class="n">right_adj</span><span class="p">[</span><span class="n">indices_right</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">indices_right</span><span class="p">]</span>
+<span class="n">left_nodes</span> <span class="o">=</span> <span class="n">left_nodes</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indices_left</span><span class="p">]</span>
+<span class="n">right_nodes</span> <span class="o">=</span> <span class="n">right_nodes</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indices_right</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -832,7 +834,7 @@ document.write(`
 
 <span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">left_adj</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">left_nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_umap_embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 
 
 <span class="n">networkplot_kws</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -900,8 +902,8 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:02:24.050459
-Completed at 2023-03-10 13:25:43.562227
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Script took 0:02:14.970391
+Completed at 2023-03-10 15:01:30.108429
 </pre></div>
 </div>
 </div>
