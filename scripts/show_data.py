@@ -63,6 +63,8 @@ indices_left, indices_right, _, _ = graph_match(
 #%%
 left_adj = left_adj[indices_left, :][:, indices_left]
 right_adj = right_adj[indices_right, :][:, indices_right]
+left_nodes = left_nodes.iloc[indices_left]
+right_nodes = right_nodes.iloc[indices_right]
 
 #%%
 
@@ -309,7 +311,7 @@ soft_axis_off(ax)
 
 left_nodes["degree"] = left_adj.sum(axis=0) + left_adj.sum(axis=1)
 left_nodes["x"] = left_umap_embedding[:, 0]
-left_nodes["y"] = -left_umap_embedding[:, 1]
+left_nodes["y"] = left_umap_embedding[:, 1]
 
 
 networkplot_kws = dict(

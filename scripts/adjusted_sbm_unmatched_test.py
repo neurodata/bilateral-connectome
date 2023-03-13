@@ -246,6 +246,9 @@ if RERUN_SIMS:
                     "misc": misc,
                     "resample": i,
                     "method": method,
+                    "kc-kc": misc["uncorrected_pvalues"].loc["KC", "KC"],
+                    "kc-mbon": misc["uncorrected_pvalues"].loc["KC", "MBON"],
+                    "kc-cn": misc["uncorrected_pvalues"].loc["KC", "CN"],
                 }
             )
     resample_results = pd.DataFrame(rows)
@@ -284,52 +287,77 @@ gluefig("sbm_pvalues_unlabeled", fig)
 
 #%%
 
-set_theme(font_scale=1.25)
+set_theme(font_scale=1)
 
 palette = dict(zip(["fisher", "score"], sns.color_palette(n_colors=2)))
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-sns.histplot(
-    data=resample_results,
-    x="pvalue",
-    ax=ax,
-    # color=neutral_color,
-    hue="method",
-    kde=True,
-    log_scale=True,
-    stat="density",
-    bins=15,
-    palette=palette,
+
+def plot_subgraph_pvalues(overall=False, source=None, target=None, ax=None):
+    if overall:
+        x = "pvalue"
+        title = "Overall"
+        analytic = pvalue
+        alpha = 0.05
+    else:
+        x = f"{source}-{target}"
+        title = (
+            "Subgraph: " + f"{source.upper()}" + r"$\rightarrow$" + f"{target.upper()}"
+        )
+        analytic = misc["uncorrected_pvalues"].loc[source.upper(), target.upper()]
+        alpha = 0.05 / misc["n_tests"]
+    sns.histplot(
+        resample_results,
+        x=x,
+        hue="method",
+        ax=ax,
+        log_scale=True,
+        bins=25,
+        stat="density",
+        palette=palette,
+    )
+    ax.axvline(alpha, color="black", linestyle=":", linewidth=2)
+    ax.axvline(analytic, color="darkred", linestyle="--", linewidth=3, label="Analytic")
+    ax.set(
+        xlabel="p-value",
+        ylabel="",
+        yticks=[],
+        title=title,
+    )
+    ax.spines["left"].set_visible(False)
+    sns.move_legend(ax, "upper left", title="Method", frameon=True, fontsize='small')
+    leg = ax.get_legend()
+    for text in leg.get_texts():
+        new_text = text.get_text().capitalize()
+        if new_text == "Score":
+            new_text = "Chi-squared"
+        text.set_text(new_text)
+
+    xlims = ax.get_xlim()
+    ylims = ax.get_ylim()
+    ax.fill_between(
+        [alpha, ax.get_xlim()[1]], 0, ax.get_ylim()[1], color="gray", alpha=0.2
+    )
+    ax.set_xlim(xlims)
+    ax.set_ylim(ylims)
+
+
+fig, axs = plt.subplots(1, 3, figsize=(16, 4), sharex=False)
+plot_subgraph_pvalues(overall=True, ax=axs[0])
+axs[0].annotate(
+    "Analytic\ndensity\nadjustment",
+    (pvalue, 0.2),
+    color="darkred",
+    xytext=(-140, -10),
+    textcoords="offset points",
+    arrowprops=dict(arrowstyle="-|>", color="darkred"),
 )
-sns.move_legend(ax, "upper left", title="Method")
-leg = ax.get_legend()
-for text in leg.get_texts():
-    text.set_text(text.get_text().capitalize())
+axs[0].text(0.065, 0.4, "Not\nsig.")
+plot_subgraph_pvalues(source="kc", target="kc", ax=axs[1])
+plot_subgraph_pvalues(source="kc", target="mbon", ax=axs[2])
+axs[1].get_legend().remove()
+axs[2].get_legend().remove()
 
-for method in ["fisher", "score"]:
-    median = np.median(resample_results.query(f"method == '{method}'")["pvalue"])
-    ax.axvline(median, linestyle="-", color=palette[method], linewidth=3)
-
-ax.set(xlabel="p-value", ylabel="", yticks=[])
-
-# draw line for alpha
-ax.spines["left"].set_visible(False)
-ax.axvline(0.05, linestyle=":", color="black", linewidth=3)
-ylim = ax.get_ylim()
-ax.text(0.06, ylim[1] * 0.9, r"$\alpha = 0.05$")
-
-
-color = "darkred"
-ax.axvline(pvalue, color=color, linewidth=3, linestyle="--")
-# ax.text(
-#     pvalue - 0.0005,
-#     ylim[1] * 0.85,
-#     f"Analytic = {pvalue:0.2g}",
-#     ha="right",
-#     color=color,
-# )
-
-gluefig("resampled_pvalues_distribution", fig)
+gluefig("resampled_pvalues_distributions", fig)
 
 
 #%%
