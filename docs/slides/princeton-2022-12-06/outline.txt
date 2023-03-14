@@ -1,9 +1,0 @@
-we have this brain 
-anatomy is helpful...
-one way is by giving us some broad organizing cell types 
-another way is by allowing us to define axon dendrite splits
-wanted to understand potential flows of information through this network; how could use the different channels
-we used x method to try to sort network from sensory to motor and in between, briefly explain
-we compared amount of feedforward/feedback synapses in the different channels 
-<some kind of segue?>
-next, wanted to look at cell types based on connectivity
