@@ -817,3 +817,8 @@ section {
 ![icon](../../images/github.png) [@bdpedigo (Github)](https://github.com/bdpedigo)
 ![icon](../../images/twitter.png) [@bpedigod (Twitter)](https://twitter.com/bpedigod)
 ![icon](../../images/web.png) [bdpedigo.github.io](https://bdpedigo.github.io/)
+
+---
+<!-- _paginate: false -->
+
+![bg center blur:3px opacity:20%](./../../../results/figs/background/background.svg)
