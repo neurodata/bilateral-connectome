@@ -178,6 +178,12 @@ right_sorted_index = np.array(right_nodes.index[right_sort_inds])
 
 #%%
 
+adj, nodes = load_unmatched("full", weights=True)
+
+print(adj.sum())
+print(adj.sum() / adj.shape[0])
+
+#%%
 adj, nodes = load_unmatched("full")
 
 sorted_index = np.concatenate((left_sorted_index, right_sorted_index))

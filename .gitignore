@@ -149,8 +149,8 @@ results/*
 !results/.gitkeep
 
 !results/figs 
-results/figs/*
-!results/figs/.gitkeep
+# results/figs/*
+# !results/figs/.gitkeep
 
 !results/outputs 
 results/outputs/*

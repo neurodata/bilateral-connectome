@@ -9,10 +9,11 @@ import matplotlib.transforms
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from giskard.plot import merge_axes, soft_axis_off
+from pkg.plot import merge_axes, soft_axis_off
 from graspologic.simulations import er_np
 from matplotlib.collections import LineCollection
-from pkg.data import load_network_palette, load_node_palette, load_unmatched
+from graspologic.match import graph_match
+from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH
 from pkg.io import glue as default_glue
 from pkg.io import savefig
@@ -26,7 +27,6 @@ from graspologic.simulations import er_np
 from pkg.perturb import shuffle_edges, add_edges
 from pkg.stats import erdos_renyi_test, erdos_renyi_test_paired
 from tqdm.autonotebook import tqdm
-from graspologic.match import GraphMatch
 
 
 DISPLAY_FIGS = True
@@ -51,7 +51,6 @@ t0 = time.time()
 set_theme(font_scale=1.25)
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 
 rng = np.random.default_rng(88)
 np.random.seed(77)
@@ -99,8 +98,7 @@ with tqdm(total=n_sims * len(effect_sizes) * 4) as pbar:
                     stat, pvalue, misc = erdos_renyi_test_paired(A1, A2)
                 elif test == "er_auto_paired":
                     name = "Paired density test (matched)"
-                    gm = GraphMatch()
-                    pred_perm = gm.fit_predict(A1, A2)
+                    _, pred_perm, _, _ = graph_match(A1, A2)
                     A2_pred = A2[pred_perm][:, pred_perm]
                     match_ratio = (pred_perm == np.arange(len(A2))).mean()
                     stat, pvalue, misc = erdos_renyi_test_paired(A1, A2_pred)
