@@ -17,7 +17,7 @@ from pkg.data import load_network_palette
 from pkg.io import savefig
 from pkg.plot import set_theme
 from pkg.utils import set_warnings
-from giskard.plot import soft_axis_off
+from pkg.plot import soft_axis_off
 
 DISPLAY_FIGS = True
 
