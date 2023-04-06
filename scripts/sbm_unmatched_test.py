@@ -26,11 +26,21 @@ from pkg.data import load_network_palette, load_unmatched
 from pkg.io import FIG_PATH, get_environment_variables
 from pkg.io import glue as default_glue
 from pkg.io import savefig
-from pkg.plot import (SmartSVG, draw_hypothesis_box, heatmap_grouped,
-                      make_sequential_colormap, merge_axes, networkplot_simple,
-                      plot_pvalues, plot_stochastic_block_probabilities,
-                      rainbowarrow, rotate_labels, set_theme, soft_axis_off,
-                      svg_to_pdf)
+from pkg.plot import (
+    SmartSVG,
+    draw_hypothesis_box,
+    heatmap_grouped,
+    make_sequential_colormap,
+    merge_axes,
+    networkplot_simple,
+    plot_pvalues,
+    plot_stochastic_block_probabilities,
+    rainbowarrow,
+    rotate_labels,
+    set_theme,
+    soft_axis_off,
+    svg_to_pdf,
+)
 from pkg.stats import stochastic_block_test
 from pkg.utils import get_toy_palette, sample_toy_networks
 from seaborn.utils import relative_luminance
@@ -814,6 +824,15 @@ fig, axs = plot_stochastic_block_probabilities(misc, network_palette)
 
 gluefig("sbm_uncorrected", fig)
 
+#%%
+set_theme(font_scale=1.25)
+
+fig, axs = plot_stochastic_block_probabilities(
+    misc, network_palette, annotate_zeros=False
+)
+
+gluefig("sbm_uncorrected_clean", fig)
+
 
 #%%
 
@@ -843,11 +862,7 @@ gluefig("sbm_uncorrected_pvalues_unlabeled", fig)
 # the same here
 
 fstat, fpvalue, fmisc = stochastic_block_test(
-    left_adj,
-    right_adj,
-    labels1=left_labels,
-    labels2=right_labels,
-    method='fisher'
+    left_adj, right_adj, labels1=left_labels, labels2=right_labels, method="fisher"
 )
 glue("fisher_pvalue", fpvalue, form="pvalue")
 

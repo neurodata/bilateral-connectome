@@ -11,7 +11,7 @@ from .theme import set_theme
 from .utils import bound_texts, draw_colors, remove_shared_ax, shrink_axis
 
 
-def plot_stochastic_block_probabilities(misc, network_palette):
+def plot_stochastic_block_probabilities(misc, network_palette, annotate_zeros=True):
     # get values
     B1 = misc["probabilities1"]
     B2 = misc["probabilities2"]
@@ -24,7 +24,7 @@ def plot_stochastic_block_probabilities(misc, network_palette):
     # set up plot
     pad = 2
     width_ratios = [0.5, pad + 0.8, 10, pad, 10]
-   
+
     fig, axs = plt.subplots(
         1,
         len(width_ratios),
@@ -42,16 +42,22 @@ def plot_stochastic_block_probabilities(misc, network_palette):
     )
 
     # heatmap of left connection probabilities
-    annot = np.full((K, K), "")
-    annot[B1.values == 0] = 0
+    if annotate_zeros:
+        annot = np.full((K, K), "")
+        annot[B1.values == 0] = 0
+    else:
+        annot = None
     ax = axs[left_col]
     sns.heatmap(B1, ax=ax, annot=annot, **heatmap_kws)
     ax.set(ylabel="Source group", xlabel="Target group")
     ax.set_title(r"$\hat{B}$ left", fontsize="xx-large", color=network_palette["Left"])
 
     # heatmap of right connection probabilities
-    annot = np.full((K, K), "")
-    annot[B2.values == 0] = 0
+    if annotate_zeros:
+        annot = np.full((K, K), "")
+        annot[B2.values == 0] = 0
+    else:
+        annot = None
     ax = axs[right_col]
     im = sns.heatmap(B2, ax=ax, annot=annot, **heatmap_kws)
     ax.set(ylabel="", xlabel="Target group")
@@ -84,13 +90,14 @@ def plot_stochastic_block_probabilities(misc, network_palette):
 
     ax = axs[left_col]
 
-    texts = []
-    texts.append(ax.text(-0.5, -0.16, "0 - No edges", transform=ax.transAxes))
-    texts.append(ax.text(-0.41, -0.22, "observed", transform=ax.transAxes))
+    if annotate_zeros:
+        texts = []
+        texts.append(ax.text(-0.5, -0.16, "0 - No edges", transform=ax.transAxes))
+        texts.append(ax.text(-0.41, -0.22, "observed", transform=ax.transAxes))
 
-    bound_texts(
-        texts, ax=ax, facecolor="white", edgecolor="lightgrey", xpad=0.3, ypad=1.2
-    )
+        bound_texts(
+            texts, ax=ax, facecolor="white", edgecolor="lightgrey", xpad=0.3, ypad=1.2
+        )
 
     return fig, axs
 
