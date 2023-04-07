@@ -220,6 +220,8 @@ def stochastic_block_test_paired(
     A1,
     A2,
     labels,
+    alpha=0.05,
+    correct_method="holm",
 ):
     index, group_indices, group_counts = np.unique(
         labels, return_counts=True, return_inverse=True
@@ -268,8 +270,34 @@ def stochastic_block_test_paired(
     misc["uncorrected_pvalues"] = uncorrected_pvalues
 
     run_pvalues = uncorrected_pvalues.values
-    run_pvalues = run_pvalues[~np.isnan(run_pvalues)]
-    stat, pvalue = combine_pvalues(run_pvalues, method="tippett")
+    indices = np.nonzero(~np.isnan(run_pvalues))
+    run_pvalues = run_pvalues[indices]
     n_tests = len(run_pvalues)
     misc["n_tests"] = n_tests
+
+    stat, pvalue = combine_pvalues(run_pvalues, method="tippett")
+
+     # correct for multiple comparisons
+    rejections_flat, corrected_pvalues_flat, _, _ = multipletests(
+        run_pvalues,
+        alpha,
+        method=correct_method,
+        is_sorted=False,
+        returnsorted=False,
+    )
+    rejections = np.full((K, K), False, dtype=bool)
+    rejections[indices] = rejections_flat
+    rejections = _make_adjacency_dataframe(rejections, index)
+    misc["rejections"] = rejections
+
+    corrected_pvalues = np.full((K, K), np.nan, dtype=float)
+    corrected_pvalues[indices] = corrected_pvalues_flat
+    corrected_pvalues = _make_adjacency_dataframe(corrected_pvalues, index)
+    misc["corrected_pvalues"] = corrected_pvalues
+
+
+    _, _, unpaired_misc = stochastic_block_test(A1, A2, labels, labels)
+    misc['probabilities1'] = unpaired_misc["probabilities1"]
+    misc['probabilities2'] = unpaired_misc['probabilities2']
+
     return stat, pvalue, misc

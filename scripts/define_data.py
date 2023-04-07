@@ -221,6 +221,8 @@ if RESAVE_DATA:
 #%%
 mg = load_maggot_graph()
 mg = select_nice_nodes(mg)
+mg.nodes["celltype_discrete"] = mg.nodes["simple_group"].map(celltype_map)
+
 left_mg, right_mg = mg.bisect(lcc=True, paired=True)
 left_nodes = left_mg.nodes
 right_nodes = right_mg.nodes

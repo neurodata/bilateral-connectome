@@ -3,10 +3,6 @@
 
 #%%
 
-from pkg.utils import set_warnings
-
-set_warnings()
-
 import datetime
 import time
 
@@ -15,14 +11,14 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from myst_nb import glue as default_glue
-from pkg.data import load_matched, load_network_palette, load_node_palette
+from pkg.data import load_matched, load_network_palette
 from pkg.io import savefig
 from pkg.perturb import remove_edges
 from pkg.plot import set_theme
 from pkg.stats import stochastic_block_test_paired
 from seaborn.utils import relative_luminance
 
-DISPLAY_FIGS = False
+DISPLAY_FIGS = True
 FILENAME = "sbm_matched_test"
 
 rng = np.random.default_rng(8888)
@@ -48,80 +44,53 @@ t0 = time.time()
 set_theme(font_scale=1.25)
 
 network_palette, NETWORK_KEY = load_network_palette()
-node_palette, NODE_KEY = load_node_palette()
 
 left_adj, left_nodes = load_matched("left")
 right_adj, right_nodes = load_matched("right")
 
 #%% [markdown]
 # ## A test based on group connection probabilities
-
+#%%
+GROUP_KEY = "celltype_discrete"
 #%% [markdown]
 # ### Run the test
 #%%
 # TODO double check that all simple groups are the same
 stat, pvalue, misc = stochastic_block_test_paired(
-    left_adj, right_adj, labels=left_nodes["simple_group"]
+    left_adj, right_adj, labels=left_nodes[GROUP_KEY]
 )
 glue("uncorrected_pvalue", pvalue)
 
-#%% [markdown]
-# ### Plot the p-values for the individual comparisons
+print(pvalue)
+
 #%%
-uncorrected_pvalues = misc["uncorrected_pvalues"]
-n_tests = misc["n_tests"]
-K = uncorrected_pvalues.shape[0]
-alpha = 0.05
-hb_thresh = alpha / n_tests
-index = uncorrected_pvalues.index
+from pkg.plot import plot_pvalues
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-# colors = im.get_children()[0].get_facecolors()
-significant = uncorrected_pvalues < hb_thresh
-pvalue_vmin = np.nanmin(np.log10(uncorrected_pvalues.values))
-# annot = np.full((K, K), "")
-# annot[(B1.values == 0) & (B2.values == 0)] = "B"
-# annot[(B1.values == 0) & (B2.values != 0)] = "L"
-# annot[(B1.values != 0) & (B2.values == 0)] = "R"
+fig, ax = plot_pvalues(misc, annot_missing=False)
 
-plot_pvalues = np.log10(uncorrected_pvalues)
-plot_pvalues[np.isnan(plot_pvalues)] = 0
-im = sns.heatmap(
-    plot_pvalues,
-    ax=ax,
-    # annot=annot,
-    cmap="RdBu",
-    center=0,
-    square=True,
-    cbar=True,
-    vmin=pvalue_vmin,
-    cbar_kws=dict(shrink=0.6),
+gluefig("pvalue_heatmap_paired_matched", fig)
+
+#%%
+from pkg.stats import stochastic_block_test
+
+stat, pvalue, misc = stochastic_block_test(
+    left_adj,
+    right_adj,
+    labels1=left_nodes[GROUP_KEY],
+    labels2=right_nodes[GROUP_KEY],
 )
-ax.set(ylabel="", xlabel="Target group")
-ax.set(xticks=np.arange(K) + 0.5, xticklabels=index)
-ax.set(yticks=np.arange(K) + 0.5, yticklabels=index)
-ax.set_title(r"$log_{10}($p-value$)$", fontsize="xx-large")
+glue("uncorrected_pvalue", pvalue)
 
-colors = im.get_children()[0].get_facecolors()
-significant = uncorrected_pvalues < hb_thresh
+print(pvalue)
 
-# NOTE: the x's looked bad so I did this super hacky thing...
-pad = 0.2
-for idx, (is_significant, color) in enumerate(zip(significant.values.ravel(), colors)):
-    if is_significant:
-        i, j = np.unravel_index(idx, (K, K))
-        # REF: seaborn heatmap
-        lum = relative_luminance(color)
-        text_color = ".15" if lum > 0.408 else "w"
 
-        xs = [j + pad, j + 1 - pad]
-        ys = [i + pad, i + 1 - pad]
-        ax.plot(xs, ys, color=text_color, linewidth=4)
-        xs = [j + 1 - pad, j + pad]
-        ys = [i + pad, i + 1 - pad]
-        ax.plot(xs, ys, color=text_color, linewidth=4)
+#%%
+from pkg.plot import plot_pvalues
 
-gluefig("uncorrected_pvalues", fig)
+plot_pvalues(misc, annot_missing=False)
+
+gluefig("pvalue_heatmap_unpaired_matched", fig)
+
 
 #%% [markdown]
 # ```{glue:figure} fig:sbm_matched_test-uncorrected_pvalues

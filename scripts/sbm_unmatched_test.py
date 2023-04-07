@@ -290,6 +290,18 @@ fig.set_facecolor("w")
 
 gluefig("sbm_explain", fig)
 
+#%%
+
+fig, ax = plt.subplots(1, 1, figsize=(4, 4))
+heatmap_grouped(B_mod, [1, 2, 3], palette=palette, ax=ax)
+gluefig('example_b1', fig)
+
+fig, ax = plt.subplots(1, 1, figsize=(4, 4))
+heatmap_grouped(
+    B_mod + np.random.normal(0, 0.1, size=(3, 3)), [1, 2, 3], palette=palette, ax=ax
+)
+gluefig('example_b2', fig)
+
 
 #%%
 

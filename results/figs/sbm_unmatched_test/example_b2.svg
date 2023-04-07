@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="224.64pt" height="224.64pt" viewBox="0 0 224.64 224.64" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2023-04-06T16:04:36.698585</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.5.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 224.64 
+L 224.64 224.64 
+L 224.64 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 13.954286 221.04 
+L 221.04 221.04 
+L 221.04 13.954286 
+L 13.954286 13.954286 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1"/>
+   <g id="matplotlib.axis_2"/>
+   <g id="QuadMesh_1">
+    <path d="M 13.954286 13.954286 
+L 82.982857 13.954286 
+L 82.982857 82.982857 
+L 13.954286 82.982857 
+L 13.954286 13.954286 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #4493c7"/>
+    <path d="M 82.982857 13.954286 
+L 152.011429 13.954286 
+L 152.011429 82.982857 
+L 82.982857 82.982857 
+L 82.982857 13.954286 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #2a7ab9"/>
+    <path d="M 152.011429 13.954286 
+L 221.04 13.954286 
+L 221.04 82.982857 
+L 152.011429 82.982857 
+L 152.011429 13.954286 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #f2f8fd"/>
+    <path d="M 13.954286 82.982857 
+L 82.982857 82.982857 
+L 82.982857 152.011429 
+L 13.954286 152.011429 
+L 13.954286 82.982857 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #edf4fc"/>
+    <path d="M 82.982857 82.982857 
+L 152.011429 82.982857 
+L 152.011429 152.011429 
+L 82.982857 152.011429 
+L 82.982857 82.982857 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #1966ad"/>
+    <path d="M 152.011429 82.982857 
+L 221.04 82.982857 
+L 221.04 152.011429 
+L 152.011429 152.011429 
+L 152.011429 82.982857 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #caddf0"/>
+    <path d="M 13.954286 152.011429 
+L 82.982857 152.011429 
+L 82.982857 221.04 
+L 13.954286 221.04 
+L 13.954286 152.011429 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #d5e5f4"/>
+    <path d="M 82.982857 152.011429 
+L 152.011429 152.011429 
+L 152.011429 221.04 
+L 82.982857 221.04 
+L 82.982857 152.011429 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #f0f6fd"/>
+    <path d="M 152.011429 152.011429 
+L 221.04 152.011429 
+L 221.04 221.04 
+L 152.011429 221.04 
+L 152.011429 152.011429 
+" clip-path="url(#p44fb6c4b9c)" style="fill: #1967ad"/>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_3">
+    <path d="M 13.954286 13.954286 
+L 221.04 13.954286 
+L 221.04 3.6 
+L 13.954286 3.6 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_3"/>
+   <g id="matplotlib.axis_4"/>
+   <g id="QuadMesh_2">
+    <path d="M 13.954286 3.6 
+L 82.982857 3.6 
+L 82.982857 13.954286 
+L 13.954286 13.954286 
+L 13.954286 3.6 
+" clip-path="url(#pb1dbe0ab3a)" style="fill: #e78ac3"/>
+    <path d="M 82.982857 3.6 
+L 152.011429 3.6 
+L 152.011429 13.954286 
+L 82.982857 13.954286 
+L 82.982857 3.6 
+" clip-path="url(#pb1dbe0ab3a)" style="fill: #a6d854"/>
+    <path d="M 152.011429 3.6 
+L 221.04 3.6 
+L 221.04 13.954286 
+L 152.011429 13.954286 
+L 152.011429 3.6 
+" clip-path="url(#pb1dbe0ab3a)" style="fill: #ffd92f"/>
+   </g>
+  </g>
+  <g id="axes_3">
+   <g id="patch_4">
+    <path d="M 3.6 221.04 
+L 13.954286 221.04 
+L 13.954286 13.954286 
+L 3.6 13.954286 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_5"/>
+   <g id="matplotlib.axis_6"/>
+   <g id="QuadMesh_3">
+    <path d="M 3.6 13.954286 
+L 13.954286 13.954286 
+L 13.954286 82.982857 
+L 3.6 82.982857 
+L 3.6 13.954286 
+" clip-path="url(#p73e5ef604b)" style="fill: #e78ac3"/>
+    <path d="M 3.6 82.982857 
+L 13.954286 82.982857 
+L 13.954286 152.011429 
+L 3.6 152.011429 
+L 3.6 82.982857 
+" clip-path="url(#p73e5ef604b)" style="fill: #a6d854"/>
+    <path d="M 3.6 152.011429 
+L 13.954286 152.011429 
+L 13.954286 221.04 
+L 3.6 221.04 
+L 3.6 152.011429 
+" clip-path="url(#p73e5ef604b)" style="fill: #ffd92f"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p44fb6c4b9c">
+   <rect x="13.954286" y="13.954286" width="207.085714" height="207.085714"/>
+  </clipPath>
+  <clipPath id="pb1dbe0ab3a">
+   <rect x="13.954286" y="3.6" width="207.085714" height="10.354286"/>
+  </clipPath>
+  <clipPath id="p73e5ef604b">
+   <rect x="3.6" y="13.954286" width="10.354286" height="207.085714"/>
+  </clipPath>
+ </defs>
+</svg>
