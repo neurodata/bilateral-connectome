@@ -176,7 +176,7 @@ right_labels = right_nodes[GROUP_KEY].values
 
 
 np.random.seed(8888)
-ps = [0.2, 0.4, 0.6]
+ps = [0.05, 0.3, 0.9]
 n_steps = len(ps)
 fig, axs = plt.subplots(
     3,
@@ -188,7 +188,7 @@ fig, axs = plt.subplots(
 
 
 ns = [5, 6, 7]
-B = np.array([[0.8, 0.2, 0.05], [0.05, 0.9, 0.2], [0.05, 0.05, 0.7]])
+B = np.array([[0.8, 0.05, 0.05], [0.05, 0.9, 0.2], [0.05, 0.05, 0.7]])
 palette = get_toy_palette()
 
 
