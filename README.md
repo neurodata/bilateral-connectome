@@ -2,6 +2,14 @@
 
 [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](http://docs.neurodata.io/bilateral-connectome/) [![DOI](https://zenodo.org/badge/410043679.svg)](https://zenodo.org/badge/latestdoi/410043679)
 
+Code accompanying the publication: [Generative network modeling reveals quantitative definitions of bilateral symmetry exhibited by a whole insect brain connectome](https://elifesciences.org/articles/83739)
+
+*eLife*
+
+2023
+
+Benjamin D. Pedigo, Mike Powell, Eric W. Bridgeford, Michael Winding, Carey E. Priebe, Joshua T. Vogelstein
+
 
 ## Abstract 
 Comparing connectomes can help explain how neural connectivity is related to genetics, disease, development, or learning. However, making statistical inferences about the significance and nature of differences between two networks is an open problem, and such analysis has not been extensively applied to nanoscale connectomes. Here, we investigate this problem via a case study on the bilateral symmetry of a larval *Drosophila* brain connectome. We translate notions of “bilateral symmetry” to generative models of the network structure of the left and right hemispheres, allowing us to test and refine our understanding of symmetry. We find significant differences in connection probabilities both across the entire left and right networks and between specific cell types. By rescaling connection probabilities or removing certain edges based on weight, we also present adjusted definitions of bilateral symmetry exhibited by this connectome. This work shows how statistical inferences from networks can inform the study of connectomes, facilitating future comparisons of neural structures.
